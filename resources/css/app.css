@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* (Optional) small site tweaks */
+.prose :where(img) {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+@layer base {
+    body {
+        margin: 0;
+    }
+}
+
+/* Theme tokens */
+@theme {
+    /* Colors */
+    --color-transparent: transparent;
+    --color-white: #ffffff;
+    --color-canary: #ffb500;
+    --color-azure: #366bcf;
+    --color-notification-red: #dd3c27;
+
+    /* Indigo palette (flat + nested like v3) */
+    --color-indigo: #012169; /* DEFAULT */
+    --color-indigo-100: #f9fbff;
+    --color-indigo-200: #eef4ff;
+    --color-indigo-300: #dfecfe;
+    --color-indigo-400: #d2dff2;
+    --color-indigo-500: #b7c2d5;
+    --color-indigo-600: #93a3be;
+    --color-indigo-700: #7487ac;
+    --color-indigo-800: #5a6e94;
+    --color-indigo-900: #365185;
+    --color-indigo-1000: #012169;
+
+    --color-gray-100: #f9fbff;
+    --color-gray-200: #f2f3f8;
+    --color-gray-300: #e4e8f0;
+    --color-gray-400: #d8dce3;
+    --color-gray-500: #c3c8d0;
+    --color-gray-600: #aaafb8;
+    --color-gray-700: #8d929b;
+    --color-gray-800: #707682;
+    --color-gray-900: #4d535f;
+    --color-gray-1000: #232b3b;
+
+    /* Fonts */
+    --font-display: 'nimbus-sans', sans-serif;
+    --font-extended: 'nimbus-sans-extended', sans-serif;
+    --font-body: 'Libre Franklin', sans-serif;
+
+    /* Font sizes (class names like text-10, text-14, etc.) */
+    --text-8: 0.5rem;
+    --text-10: 0.625rem;
+    --text-12: 0.75rem;
+    --text-14: 0.875rem;
+    --text-16: 1rem;
+    --text-18: 1.125rem;
+    --text-20: 1.25rem;
+    --text-24: 1.5rem;
+    --text-28: 1.75rem;
+    --text-30: 1.875rem;
+    --text-36: 2.25rem;
+    --text-48: 3rem;
+    --text-60: 3.75rem;
+
+    /* Weights */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Line heights (use leading-[key]) */
+    --leading-100: 100%;
+    --leading-110: 110%;
+    --leading-115: 115%;
+    --leading-120: 120%;
+    --leading-130: 130%;
+    --leading-140: 140%;
+
+    /* Letter spacing (tracking-[key]) */
+    --tracking-8: 0.08em;
+    --tracking--3: -0.03em;
+
+    /* Background images (use bg-hero__pattern, etc.) */
+    /* Adjust paths to where these images live relative to this CSS file */
+    --bg-hero__pattern: url('/resources/images/hero__pattern.jpg');
+    --bg-notfound__pattern: url('/resources/images/miller3.jpeg');
+    --bg-darkinterstitial__pattern: url('/resources/images/Background-3.jpg');
+    --bg-marble__pattern: url('/resources/images/mountain.jpg');
+    --bg-bluemarble__pattern: url('/resources/images/Treatment-36.jpg');
+
+    /* Lists */
+    --list-none: none;
+    --list-disc: disc;
+    --list-decimal: decimal;
+    --list-square: square;
+    --list-circle: circle;
+
+    /* Extend-like tokens */
+    /* Max width utilities (max-w-25, max-w-50, max-w-75) */
+    --max-w-25: 25%;
+    --max-w-50: 50%;
+    --max-w-75: 75%;
+
+    /* Spacing token to mirror your gap 10 = 1.25rem (already default in Tailwind, but redefining is fine) */
+    --spacing-10: 1.25rem;
+    --spacing: 2px;
+
+    --breakpoint-xs: 30rem;
+    --breakpoint-sm: 40rem;
+    --breakpoint-md: 48rem;
+    --breakpoint-lg: 64rem;
+    --breakpoint-xl: 80rem;
+    --breakpoint-2xl: 98rem;
+}
