@@ -1,28 +1,23 @@
 // vite.config.js
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import path from 'node:path';
 
 export default defineConfig({
     plugins: [vue()],
-    root: '.',
-    base: '',
-    css: {
-        postcss: './postcss.config.js',
-    },
-    build: {
-        outDir: 'dist',
-        emptyOutDir: false,
-        manifest: true,
-        rollupOptions: {
-            input: {
-                app: path.resolve(__dirname, 'resources/js/app.js'),
-            },
+    server: {
+        host: '0.0.0.0',
+        port: 5173,
+        strictPort: true,
+        watch: { usePolling: true, interval: 100 },
+        origin: 'https://colby.lndo.site',
+        // HMR through same origin proxy still uses the internal host
+        hmr: {
+            protocol: 'wss',
+            host: 'colby.lndo.site',
+            clientPort: 443,
+            path: '/vite',
         },
+        allowedHosts: ['.lndo.site', 'localhost', 'node'],
     },
-    resolve: {
-        alias: {
-            '@': path.resolve(__dirname, 'resources/js'),
-        },
-    },
+    base: '/vite/',
 });

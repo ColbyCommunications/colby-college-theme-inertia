@@ -845,20 +845,19 @@ function colby_get_menu($location) {
 
 // Enqueue scripts.
 add_action('wp_enqueue_scripts', function () {
-  $dev  = 'http://localhost:5173';
-  $ok  = false;
+  $vite_internal = 'http://node:5173';
+  $res = wp_remote_get("$vite_internal/vite/@vite/client", ['timeout' => 0.5]);
+  $vite_running = !is_wp_error($res) && (int) wp_remote_retrieve_response_code($res) === 200;
 
-  // Try hitting Vite's HMR client with a short timeout.
-  $res = wp_remote_get("$dev/@vite/client", ['timeout' => 1.0]);
-  if (!is_wp_error($res) && wp_remote_retrieve_response_code($res) === 200) {
-    $ok = true;
-  }
 
-  if ($ok) {
-    // DEV: load from Vite
-    wp_enqueue_script('vite-client', "$dev/@vite/client", [], null, true);
-    wp_enqueue_script('colby-app', "$dev/resources/js/app.js", [], null, true);
-    wp_script_add_data('colby-app', 'type', 'module');
+  if ($vite_running) {
+    $vite_public = home_url('/vite'); // e.g., https://colby.lndo.site/vite
+
+    wp_enqueue_script_module('vite-client', "$vite_public/@vite/client", [], null, true);
+    // wp_script_add_data('vite-client', 'type', 'module');
+
+    wp_enqueue_script_module('colby-app', "$vite_public/resources/js/app.js", [], null, true);
+    // wp_script_add_data('colby-app', 'type', 'module');
 
   } else {
     // PROD: load built assets via manifest
