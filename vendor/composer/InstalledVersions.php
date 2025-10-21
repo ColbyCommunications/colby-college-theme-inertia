@@ -98,11 +98,7 @@ class InstalledVersions
     {
         foreach (self::getInstalled() as $installed) {
             if (isset($installed['versions'][$packageName])) {
-<<<<<<< HEAD
-                return $includeDevRequirements || !isset($installed['versions'][$packageName]['dev_requirement']) || $installed['versions'][$packageName]['dev_requirement'] === false;
-=======
                 return $includeDevRequirements || empty($installed['versions'][$packageName]['dev_requirement']);
->>>>>>> d50788e (add tailwind changes and SiteHeader changes)
             }
         }
 

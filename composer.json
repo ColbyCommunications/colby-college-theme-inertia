@@ -1,5 +1,21 @@
 {
+    "name": "colbycommunications/colby-college-theme-inertia",
+    "description": "Colby College inertia theme",
+    "type": "wordpress-theme",
+    "authors": [
+        {
+            "name": "Brandon Waltz",
+            "email": "brandon.waltz@colby.edu"
+        }
+    ],
     "require": {
+        "php": ">=7.1",
         "boxybird/inertia-wordpress": "^0.5.6"
+    },
+    "keywords": [
+        "wordpress"
+    ],
+    "config": {
+        "allow-plugins": true
     }
 }
