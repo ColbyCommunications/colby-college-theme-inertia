@@ -13,17 +13,18 @@ composer require boxybird/inertia-wordpress
 Option 2: Clone or download as a plugin and run `composer install` before activating in WordPress Admin.
 
 ## Example Movie CPT WordPress Project
-- Demo: https://wp-inertia.andrewrhyand.com
-- Theme: https://github.com/boxybird/wordpress-inertia-demo-theme
+
+-   Demo: https://wp-inertia.andrewrhyand.com
+-   Theme: https://github.com/boxybird/wordpress-inertia-demo-theme
 
 ## Inertia Docs
 
-- Links: https://inertiajs.com/links
-- Pages: https://inertiajs.com/pages
-- Requests: https://inertiajs.com/requests
-- Shared Data: https://inertiajs.com/shared-data
-- Asset Versioning: https://inertiajs.com/asset-versioning
-- Partial Reloads: https://inertiajs.com/partial-reloads
+-   Links: https://inertiajs.com/links
+-   Pages: https://inertiajs.com/pages
+-   Requests: https://inertiajs.com/requests
+-   Shared Data: https://inertiajs.com/shared-data
+-   Asset Versioning: https://inertiajs.com/asset-versioning
+-   Partial Reloads: https://inertiajs.com/partial-reloads
 
 ## Root Template Example
 
@@ -154,13 +155,13 @@ add_action('init', function () {
 
     // Synchronously using array
     Inertia::share([
-        'primary_menu' => array_map(function ($menu_item) {
+        'main_menu' => array_map(function ($menu_item) {
             return [
                 'id'   => $menu_item->ID,
                 'link' => $menu_item->url,
                 'name' => $menu_item->title,
             ];
-        }, wp_get_nav_menu_items('Primary Menu'))
+        }, wp_get_nav_menu_items('Main Menu'))
     ]);
 
     // Lazily using key/callback

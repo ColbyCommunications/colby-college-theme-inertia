@@ -784,9 +784,11 @@ add_action('after_setup_theme', function () {
   add_theme_support('post-thumbnails');
   add_theme_support('html5', ['script', 'style', 'search-form', 'gallery', 'caption']);
   register_nav_menus([
-    'primary' => __('Primary Menu', 'colby'),
+    'main' => __('Main Menu', 'colby'),
     'footer'  => __('Footer Menu', 'colby'),
     'utility'  => __('Utility Menu', 'colby'),
+    'action'  => __('Action Menu', 'colby'),
+    'people'  => __('People Menu', 'colby'),
   ]);
 });
 
@@ -802,9 +804,11 @@ add_action('init', function () {
       'url'         => home_url('/'),
     ],
     'menus' => [
-      'primary' => colby_get_menu('primary'),
+      'main' => colby_get_menu('main'),
       'utility' => colby_get_menu('utility'),
       'footer'  => colby_get_menu('footer'),
+      'action'  => colby_get_menu('action'),
+      'people'  => colby_get_menu('people'),
     ],
   ]);
 

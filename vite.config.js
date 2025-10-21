@@ -10,6 +10,9 @@ export default defineConfig({
         strictPort: true,
         watch: { usePolling: true, interval: 100 },
         origin: 'https://colby.lndo.site',
+        css: {
+            postcss: './postcss.config.js',
+        },
         // HMR through same origin proxy still uses the internal host
         hmr: {
             protocol: 'wss',

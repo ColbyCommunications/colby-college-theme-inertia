@@ -22,17 +22,13 @@
             },
             "type": "library",
             "autoload": {
-                "files": [
-                    "src/functions.php"
-                ],
+                "files": ["src/functions.php"],
                 "psr-4": {
                     "BoxyBird\\Inertia\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
+            "license": ["MIT"],
             "authors": [
                 {
                     "name": "Andrew Rhyand",
@@ -40,11 +36,7 @@
                 }
             ],
             "description": "The WordPress adapter for Inertia.js",
-            "keywords": [
-                "inertia.js",
-                "plugin",
-                "wordpress"
-            ],
+            "keywords": ["inertia.js", "plugin", "wordpress"],
             "support": {
                 "issues": "https://github.com/boxybird/inertia-wordpress/issues",
                 "source": "https://github.com/boxybird/inertia-wordpress/tree/v0.5.6"

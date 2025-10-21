@@ -10,10 +10,7 @@
         <Alert v-if="global_alert && global_alert.active" v-bind="global_alert" />
 
         <!-- Header (replaces {% include 'header.twig' %}) -->
-        <SiteHeader
-            :utility="menus.utility ? menus.utility : []"
-            :main="menus.primary ? menus.primary : []"
-        />
+        <SiteHeader />
 
         <!-- Main (replaces {% block content %}...{% endblock %}) -->
         <main
