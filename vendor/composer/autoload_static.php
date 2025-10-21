@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit8031e3e0a6e04618871727a67ab19f54
+class ComposerStaticInit4cbaa6db4cd296d87b4535ef66e1f40b
 {
     public static $files = array (
         '917f0eecfc4cb0b05701e792490fc1ed' => __DIR__ . '/..' . '/boxybird/inertia-wordpress/src/functions.php',
@@ -31,9 +31,9 @@ class ComposerStaticInit8031e3e0a6e04618871727a67ab19f54
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit8031e3e0a6e04618871727a67ab19f54::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit8031e3e0a6e04618871727a67ab19f54::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit8031e3e0a6e04618871727a67ab19f54::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit4cbaa6db4cd296d87b4535ef66e1f40b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit4cbaa6db4cd296d87b4535ef66e1f40b::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit4cbaa6db4cd296d87b4535ef66e1f40b::$classMap;
 
         }, null, ClassLoader::class);
     }
