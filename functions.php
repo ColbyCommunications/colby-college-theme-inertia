@@ -852,7 +852,6 @@ add_action('wp_enqueue_scripts', function () {
   $vite_internal = 'http://node:5173';
   $res = wp_remote_get("$vite_internal/vite/@vite/client", ['timeout' => 0.5]);
   $vite_running = !is_wp_error($res) && (int) wp_remote_retrieve_response_code($res) === 200;
-  var_dump($vite_running);
 
   if ($vite_running) {
     $vite_public = home_url('/vite'); // e.g., https://colby.lndo.site/vite

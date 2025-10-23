@@ -35,5 +35,5 @@ export default defineConfig({
         },
         outDir: 'dist',
     },
-    base: '/vite/',
+    base: command === 'build' ? '/wp-content/themes/colby-college-theme-inertia/dist/' : '/vite/',
 });
