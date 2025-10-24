@@ -798,10 +798,14 @@ add_action('init', function () {
 
 add_action('init', function () {
   Inertia::share([
-    'site' => [
+    'site_data' => [
       'name'        => get_bloginfo('name'),
       'description' => get_bloginfo('description'),
       'url'         => home_url('/'),
+      'alert'  => get_field('alert', 'options'),
+      'address' => get_field('address', 'options'),
+      'phone'   => get_field('phone', 'options'),
+      'social'  => get_field('social_media', 'options')
     ],
     'menus' => [
       'main' => colby_get_menu('main'),
@@ -879,3 +883,81 @@ add_action('wp_enqueue_scripts', function () {
     }
   }
 }, 20);
+
+add_action( 'after_setup_theme', 'theme_supports'  );
+
+function theme_supports() {
+		// Add default posts and comments RSS feed links to head.
+		add_theme_support( 'automatic-feed-links' );
+
+		/*
+		* Let WordPress manage the document title.
+		* By adding theme support, we declare that this theme does not use a
+		* hard-coded <title> tag in the document head, and expect WordPress to
+		* provide it for us.
+		*/
+		add_theme_support( 'title-tag' );
+
+		/*
+		* Enable support for Post Thumbnails on posts and pages.
+		*
+		* @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
+		*/
+		add_theme_support( 'post-thumbnails' );
+
+		/*
+		* Switch default core markup for search form, comment form, and comments
+		* to output valid HTML5.
+		*/
+		add_theme_support(
+			'html5',
+			array(
+				'comment-form',
+				'comment-list',
+				'gallery',
+				'caption',
+			)
+		);
+
+		/*
+		* Enable support for Post Formats.
+		*
+		* See: https://codex.wordpress.org/Post_Formats
+		*/
+		add_theme_support(
+			'post-formats',
+			array(
+				'aside',
+				'image',
+				'video',
+				'quote',
+				'link',
+				'gallery',
+				'audio',
+			)
+		);
+
+		add_theme_support( 'menus' );
+
+		add_image_size( 'Square', 800, 800, true );
+		add_image_size( 'Square_mobile', 300, 300, true );
+		add_image_size( 'Rectangle', 760, 430, true );
+		add_image_size( 'Rectangle_mobile', 410, 290, true );
+		add_image_size( 'Landscape', 860, 400, true );
+		add_image_size( 'Landscape_mobile', 430, 200, true );
+		add_image_size( 'Portrait', 380, 580, true );
+		add_image_size( 'Portrait_mobile', 190, 290, true );
+		add_image_size( 'Hero', 2400, 1320, true );
+
+		if ( function_exists( 'acf_add_options_page' ) ) {
+			acf_add_options_page(
+				array(
+					'page_title' => 'Global Settings',
+					'menu_title' => 'Global Settings',
+					'menu_slug'  => 'global-settings',
+					'capability' => 'edit_colbyedu_global_settings',
+					'redirect'   => false,
+				)
+			);
+		}
+	}

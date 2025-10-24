@@ -5,9 +5,7 @@
     <div
       class="header__left flex w-full items-center justify-between md:w-auto"
     >
-      <a href="/" aria-label="Go to colby.edu homepage">
-        <Logo />
-      </a>
+      <colbyLogo :url="url" fillColor="indigo" />
 
       <!-- Action menu (mobile) -->
       <ActionMenu :class="actionMenuMobileBreakpoints" />
@@ -57,7 +55,7 @@
             class="header__main flex w-full flex-col justify-center space-y-6 overflow-y-auto pl-16 md:h-auto md:w-auto md:flex-row md:justify-end md:space-y-0 md:space-x-12 md:px-4 md:px-6"
           >
             <li
-              v-for="item in main"
+              v-for="item in menus.main"
               :key="item.id || item.url || item.title"
               class="!ml-8 font-extended text-20 leading-110 font-normal md:text-14 lg:!ml-12 md:[&:first-child]:!ml-0"
             >
@@ -78,7 +76,7 @@
             class="grid w-full grid-cols-3 grid-rows-2 gap-2 md:inline-flex md:w-auto md:grid-cols-none md:grid-rows-none md:gap-0 md:space-x-6"
           >
             <li
-              v-for="u in utility"
+              v-for="u in menus.utility"
               :key="u.id || u.url || u.title"
               class="font-body text-16 leading-110 font-normal md:text-10"
             >
@@ -103,7 +101,7 @@
             class="grid w-full grid-cols-3 grid-rows-2 gap-x-5 md:inline-flex md:w-auto md:grid-cols-none md:grid-rows-none md:gap-0 md:space-x-6"
           >
             <li
-              v-for="u in utility"
+              v-for="u in menus.utility"
               :key="u.id || u.url || u.title"
               class="list-none font-body text-16 leading-110 font-normal md:text-10"
             >
@@ -125,7 +123,7 @@
           aria-label="Main menu"
         >
           <li
-            v-for="item in main"
+            v-for="item in menus.main"
             :key="item.id || item.url || item.title"
             class="!ml-6 list-none font-extended text-24 leading-110 font-normal md:text-14 lg:!ml-12 md:[&:first-child]:!ml-0"
           >
@@ -145,9 +143,16 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import { usePage } from "@inertiajs/vue3";
 import ActionMenu from "../ActionMenu/ActionMenu.vue";
-import Logo from "../Logo/Logo.vue";
+import colbyLogo from "../Logos/colbyLogo.vue";
+
+const props = defineProps({
+  menus: {
+    type: Object,
+    default: () => ({ main: [], utility: [] }),
+  },
+  url: { type: String, default: "" },
+});
 
 // Reactive toggle for mobile menu
 const active = ref(false);
@@ -155,18 +160,7 @@ const toggleActive = () => {
   active.value = !active.value;
 };
 
-// Access global Inertia page props (shared WP menus and site info)
-const page = usePage();
-
-// Site info (e.g., home URL)
-const site = computed(() => page.props.site || { url: "/" });
-
-// Menus
-const main = computed(() => page.props.menus?.main || []);
-const utility = computed(() => page.props.menus?.utility || []);
-
 // Optional presentation props
-const logoClass = "fill-indigo w-[120px] md:w-[100px]";
 const actionMenuMobileBreakpoints = "flex md:hidden";
 const actionMenuDesktopBreakpoints = "hidden md:block float-right";
 
@@ -182,10 +176,4 @@ const isCurrent = (item) => {
     return false;
   }
 };
-
-// Debugging
-console.log("Inertia menus:", page.props.menus);
-console.log("Main menu:", main.value);
-console.log("Utility menu:", utility.value);
-console.log("Site info:", site.value);
 </script>
