@@ -1,6 +1,10 @@
 <template>
   <div>
-    <a href="#main" class="skip-to-main">Skip to Main Content</a>
+    <a
+      href="#main"
+      class="absolute top-auto left-[-9999px] h-px w-px overflow-hidden focus:static focus:h-auto focus:w-auto"
+      >Skip to Main Content</a
+    >
 
     <Alert v-if="global_alert && global_alert.active" v-bind="global_alert" />
 
@@ -22,7 +26,11 @@
       :url="siteData.url"
       :address="siteData.address"
       :phone="siteData.phone"
-      :menu="menus.footer"
+      :menus="{
+        action: menus.action,
+        footer: menus.footer,
+        social: menus.social,
+      }"
     />
   </div>
 </template>
@@ -38,19 +46,4 @@ const siteData = page.props.site_data;
 const menus = page.props.menus;
 </script>
 
-<style>
-/* carry over skip link behavior if you had it in CSS */
-.skip-to-main {
-  position: absolute;
-  left: -9999px;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-.skip-to-main:focus {
-  position: static;
-  width: auto;
-  height: auto;
-}
-</style>
+<style scoped></style>

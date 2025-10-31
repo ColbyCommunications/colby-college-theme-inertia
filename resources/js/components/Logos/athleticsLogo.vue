@@ -1,6 +1,6 @@
 <template>
   <a
-    class="relative hidden transition-all duration-200 ease-in-out hover:text-white hover:underline lg:block"
+    class="relative transition-all duration-200 ease-in-out hover:text-white hover:underline"
     href="https://colbyathletics.com"
     aria-label="Go to colbyathletics.com homepage"
   >

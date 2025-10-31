@@ -5,8 +5,8 @@
       viewBox="0 0 98 50"
       style="enable-background: new 0 0 98 50"
       xml:space="preserve"
-      class="w-60 md:w-50"
-      :class="`fill-${fillColor}`"
+      class="w-[120px] md:w-[100px]"
+      :style="`fill: var(${fillColor})`"
     >
       <title>Colby College logo</title>
       <desc>Go to colby.edu homepage</desc>
@@ -25,7 +25,7 @@ defineProps({
   },
   fillColor: {
     type: String,
-    default: "indigo",
+    default: "--color-indigo",
   },
 });
 </script>

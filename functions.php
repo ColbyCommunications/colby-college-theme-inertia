@@ -5,6 +5,13 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
   require_once __DIR__ . '/vendor/autoload.php';
 }
 
+add_action('wp_enqueue_scripts', function() {
+    wp_enqueue_style('google-font-libre-franklin', 'https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap', [], null);
+    wp_enqueue_style('typekit', 'https://use.typekit.net/ven5cit.css', [], null);
+    wp_enqueue_style('material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons+Sharp', [], null);
+});
+
+
 function my_acf_init() {
 
   // check function exists
@@ -789,6 +796,7 @@ add_action('after_setup_theme', function () {
     'utility'  => __('Utility Menu', 'colby'),
     'action'  => __('Action Menu', 'colby'),
     'people'  => __('People Menu', 'colby'),
+    'social'  => __('Social Menu', 'colby'),
   ]);
 });
 
@@ -805,7 +813,6 @@ add_action('init', function () {
       'alert'  => get_field('alert', 'options'),
       'address' => get_field('address', 'options'),
       'phone'   => get_field('phone', 'options'),
-      'social'  => get_field('social_media', 'options')
     ],
     'menus' => [
       'main' => colby_get_menu('main'),
@@ -813,6 +820,7 @@ add_action('init', function () {
       'footer'  => colby_get_menu('footer'),
       'action'  => colby_get_menu('action'),
       'people'  => colby_get_menu('people'),
+      'social'  => colby_get_menu('social'),
     ],
   ]);
 
