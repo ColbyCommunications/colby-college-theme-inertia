@@ -1,26 +1,42 @@
 <template>
-  <component
-    v-if="Icon"
-    :is="Icon"
-    :width="size"
-    :height="size"
-    :fill="fill"
-    :class="class"
-  />
-  <span v-else class="text-xs text-red-500">⚠ Missing icon: {{ name }}</span>
+  <component v-if="IconComponent" :is="IconComponent" />
 </template>
 
 <script setup>
+import { shallowRef, watch } from "vue";
 import { icons } from "@/images/svg/icons/index.js";
 
 const props = defineProps({
-  name: { type: String, required: true },
-  size: { type: [String, Number], default: 24 },
-  fill: { type: String, default: "currentColor" },
-  class: String,
+  name: String,
 });
 
-// Build the full key dynamically
-const key = `/src/images/svg/icons/${props.name}.svg`;
-const Icon = icons[key]?.default;
+const IconComponent = shallowRef(null);
+
+watch(
+  () => props.name,
+  async (newName) => {
+    if (!newName) {
+      IconComponent.value = null;
+      return;
+    }
+
+    const normalizedName = newName
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+
+    const key = Object.keys(icons).find((k) => {
+      const fileName = k.split("/").pop().replace(".svg", "");
+      return fileName === normalizedName;
+    });
+
+    if (key) {
+      const module = await icons[key]();
+      IconComponent.value = module.default;
+    } else {
+      IconComponent.value = null;
+    }
+  },
+  { immediate: true },
+);
 </script>

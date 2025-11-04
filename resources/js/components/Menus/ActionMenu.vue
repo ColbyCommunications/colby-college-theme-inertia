@@ -13,7 +13,7 @@
       >
         <!-- Icon component -->
         <Icon
-          :name="item.title.toLowerCase()"
+          :name="item.title"
           class="mr-2 h-4 w-4 fill-canary md:mr-1 md:h-3 md:w-3"
         />
         {{ item.title }}
@@ -21,7 +21,9 @@
     </li>
   </ul>
 </template>
+
 <script setup>
+import Icon from "@/js/components/Icon/Icon.vue";
 defineProps({
   menu: {
     type: Array,

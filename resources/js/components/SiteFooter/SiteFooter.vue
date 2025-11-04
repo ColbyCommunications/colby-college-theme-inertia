@@ -86,6 +86,4 @@ const props = defineProps({
   address: { type: Object, default: () => ({}) },
   phone: { type: String, default: "" },
 });
-
-console.log(props.menus.social);
 </script>

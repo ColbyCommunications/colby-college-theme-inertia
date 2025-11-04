@@ -32,17 +32,9 @@
           class="flex py-2 text-indigo-800 transition-all duration-200 ease-in-out group-hover:text-indigo-1000 group-hover:underline"
           href="https://my.colby.edu/"
         >
-          <svg
+          <MyColbyIcon
             class="mr-1.5 w-[16px] fill-indigo-500 transition-all duration-200 ease-in-out group-hover:fill-indigo-700 md:w-[10px]"
-            x="0"
-            y="0"
-            viewBox="0 0 14 15"
-            aria-hidden="true"
-          >
-            <path
-              d="M7 6c1.7 0 3-1.3 3-3S8.7 0 7 0 4 1.3 4 3s1.3 3 3 3zM0 15c0-3.9 3.1-7 7-7s7 3.1 7 7H0z"
-            />
-          </svg>
+          />
           myColby
         </a>
       </li>
@@ -59,16 +51,9 @@
               class="flex cursor-pointer py-2 text-indigo-800 transition-all duration-200 ease-in-out group-hover:text-indigo-1000 group-hover:underline"
               aria-haspopup="dialog"
             >
-              <svg
-                class="mr-1.5 w-[17px] fill-indigo-500 transition-all duration-200 ease-in-out group-hover:fill-indigo-700 md:w-[12px]"
-                viewBox="0 0 16 16"
-                aria-hidden="true"
-              >
-                <path
-                  d="M6 2C3.8 2 2 3.8 2 6s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4zM0 6c0-3.3 2.7-6 6-6s6 2.7 6 6c0 1.3-.4 2.5-1.1 3.5l4.8 4.8c.4.4.4 1 0 1.4-.4.4-1 .4-1.4 0l-4.8-4.8C8.5 11.6 7.3 12 6 12c-3.3 0-6-2.7-6-6z"
-                  style="fill-rule: evenodd; clip-rule: evenodd"
-                />
-              </svg>
+              <SearchIcon
+                class="mr-1.5 w-[16px] fill-indigo-500 transition-all duration-200 ease-in-out group-hover:fill-indigo-700 md:w-[10px]"
+              />
               Search
             </button>
           </template>
@@ -79,7 +64,7 @@
               class="mx-auto my-0 mt-16 w-full max-w-screen-2xl px-5 md:mt-20 md:grid md:grid-cols-12"
             >
               <div class="md:col-span-12">
-                <!-- <Search /> -->
+                <Search />
               </div>
             </div>
           </template>
@@ -90,6 +75,10 @@
 </template>
 <script setup>
 import Modal from "../Modal/Modal.vue";
+import Search from "../Search/Search.vue";
+import SearchIcon from "@/images/svg/icons/search.svg?component";
+import MyColbyIcon from "@/images/svg/icons/mycolby.svg?component";
+
 const props = defineProps({
   menu: {
     type: Array,
@@ -98,4 +87,3 @@ const props = defineProps({
   breakpoints: { type: String, default: "" },
 });
 </script>
-<style scoped></style>
