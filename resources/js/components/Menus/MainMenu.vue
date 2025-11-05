@@ -26,4 +26,3 @@ const props = defineProps({
   isCurrent: Function,
 });
 </script>
-<style scoped></style>
