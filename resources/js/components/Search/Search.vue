@@ -65,17 +65,12 @@
                           </p>
                         </div>
                         <div class="button-group flex flex-wrap gap-4">
-                          <a
-                            class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary"
-                            :href="item.permalink"
-                          >
-                            <span class="btn__text">
-                              Read More
-                              <div
-                                class="btn__border block h-px w-0 bg-indigo transition-all duration-200 ease-in-out group-hover:w-full"
-                              ></div>
-                            </span>
-                          </a>
+                          <Button
+                            size="small"
+                            type="light"
+                            :url="item.permalink"
+                            title="Read More"
+                          />
                         </div>
                       </div>
                     </article>
@@ -98,10 +93,11 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, defineExpose } from "vue";
 import { liteClient } from "algoliasearch/lite";
 import Searchbox from "./Searchbox.vue";
 import QuerySuggestions from "./QuerySuggestions.vue";
+import Button from "../Button/Button.vue";
 
 const searchClient = liteClient(
   "2XJQHYFX2S",
@@ -113,6 +109,23 @@ const aisIS = ref(null);
 
 function search(newQuery) {
   query.value = newQuery;
+
+  const helper = aisIS.value?.instantSearchInstance?.helper;
+  if (helper) {
+    helper.setQuery(newQuery).search();
+  }
+}
+
+function clearSearch() {
+  query.value = "";
+
+  const helper = aisIS.value?.instantSearchInstance?.helper;
+  if (helper) {
+    helper.setQuery("").search();
+  }
+
+  const inputEl = aisIS.value?.$el.querySelector('input[type="search"]');
+  if (inputEl) inputEl.value = "";
 }
 
 function removeExactQueryQuerySuggestion(items) {
@@ -124,4 +137,6 @@ function removeExactQueryQuerySuggestion(items) {
   }
   return items;
 }
+
+defineExpose({ clearSearch });
 </script>

@@ -43,13 +43,18 @@
       <li
         class="group inline-block font-body text-14 leading-110 font-normal md:text-10"
       >
-        <Modal :full="true" classes="w-screen h-screen top-0">
+        <Modal
+          :full="true"
+          classes="w-screen h-screen top-0"
+          v-model="showModal"
+        >
           <!-- Trigger button -->
           <template #button>
             <button
               type="button"
               class="flex cursor-pointer py-2 text-indigo-800 transition-all duration-200 ease-in-out group-hover:text-indigo-1000 group-hover:underline"
               aria-haspopup="dialog"
+              @click="showModal = true"
             >
               <SearchIcon
                 class="mr-1.5 w-[16px] fill-indigo-500 transition-all duration-200 ease-in-out group-hover:fill-indigo-700 md:w-[10px]"
@@ -64,7 +69,7 @@
               class="mx-auto my-0 mt-16 w-full max-w-screen-2xl px-5 md:mt-20 md:grid md:grid-cols-12"
             >
               <div class="md:col-span-12">
-                <Search />
+                <Search ref="searchRef" />
               </div>
             </div>
           </template>
@@ -74,6 +79,7 @@
   </nav>
 </template>
 <script setup>
+import { ref, watch } from "vue";
 import Modal from "../Modal/Modal.vue";
 import Search from "../Search/Search.vue";
 import SearchIcon from "@/images/svg/icons/search.svg?component";
@@ -85,5 +91,14 @@ const props = defineProps({
     default: () => [],
   },
   breakpoints: { type: String, default: "" },
+});
+
+const showModal = ref(false);
+const searchRef = ref(null);
+
+watch(showModal, (val) => {
+  if (!val) {
+    searchRef.value?.clearSearch();
+  }
 });
 </script>

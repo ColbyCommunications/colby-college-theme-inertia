@@ -1,7 +1,6 @@
 <template>
-  <!-- Modal -->
   <vue-final-modal
-    v-model="showModal"
+    v-model="isOpen"
     :class="classes"
     :classes="{
       '!px-0': full,
@@ -13,11 +12,11 @@
       'modal__content relative w-full overflow-hidden bg-white overflow-y-auto': true,
     }"
   >
-    <!-- Close Button -->
+    <!-- Close button -->
     <button
       class="absolute cursor-pointer py-2.5"
       :class="{ 'top-7 right-5': full, 'top-3 right-3': !full }"
-      @click="closeModal"
+      @click="isOpen = false"
     >
       <span class="relative block h-0.5 w-6 bg-transparent">
         <span
@@ -29,52 +28,44 @@
       </span>
     </button>
 
-    <!-- Slot: Modal Content -->
-    <slot name="content" :showModal="showModal" />
+    <!-- Slot: modal content -->
+    <slot name="content" />
   </vue-final-modal>
 
-  <!-- Trigger Button -->
+  <!-- <Menu search button -->
   <button
     class="group active text-left"
     :class="{
-      '[&>span]:text-indigo-1000 [&>span>svg]:fill-indigo-1000': showModal,
+      '[&>span]:text-indigo-1000 [&>span>svg]:fill-indigo-1000': isOpen,
     }"
-    @click="toggleModal"
+    @click="isOpen = true"
   >
-    <slot name="button" :showModal="showModal" />
+    <slot name="button" />
   </button>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { VueFinalModal } from "vue-final-modal";
 
-// Props
 const props = defineProps({
-  full: {
-    type: Boolean,
-    default: false,
-  },
-  classes: {
-    type: String,
-    default: "",
-  },
+  full: { type: Boolean, default: false },
+  classes: { type: String, default: "" },
+  modelValue: { type: Boolean, required: true },
 });
 
-// Emits
-const emit = defineEmits(["open-modal", "close-modal"]);
+const emit = defineEmits(["update:modelValue"]);
 
-// State
-const showModal = ref(false);
+const isOpen = ref(props.modelValue);
 
-// Methods
-const toggleModal = () => {
-  showModal.value = !showModal.value;
-  emit(showModal.value ? "open-modal" : "close-modal");
-};
+watch(
+  () => props.modelValue,
+  (val) => {
+    isOpen.value = val;
+  },
+);
 
-const closeModal = () => {
-  showModal.value = false;
-  emit("close-modal");
-};
+watch(isOpen, (val) => {
+  emit("update:modelValue", val);
+});
 </script>
