@@ -51,11 +51,15 @@ const toggleActive = () => {
 // Current page detection for active menu items
 const isCurrent = (item) => {
   try {
-    const here = new URL(window.location.href);
     const there = new URL(item.url, window.location.origin);
-    return (
-      here.pathname.replace(/\/+$/, "") === there.pathname.replace(/\/+$/, "")
-    );
+
+    // Only mark as current if it's on the same origin
+    if (there.origin !== window.location.origin) return false;
+
+    const herePath = window.location.pathname.replace(/\/+$/, "") || "/";
+    const therePath = there.pathname.replace(/\/+$/, "") || "/";
+
+    return herePath === therePath;
   } catch {
     return false;
   }
