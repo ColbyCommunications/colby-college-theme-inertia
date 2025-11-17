@@ -1,0 +1,15 @@
+{
+  "name": "acf/article-grid",
+  "title": "Article Grid",
+  "description": "Layout dedicated to article display. Features several column layout styles and supports varying image sizes.",
+  "category": "layout",
+  "icon": "admin-post",
+  "keywords": ["layout", "article", "grid", "image"],
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  },
+  "supports": {
+    "align": false
+  }
+}

@@ -1,6 +1,8 @@
 <?php
 use BoxyBird\Inertia\Inertia;
 
+include __DIR__ . '/acf_fields.php';
+
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
   require_once __DIR__ . '/vendor/autoload.php';
 }
@@ -9,6 +11,15 @@ add_action('wp_enqueue_scripts', function() {
     wp_enqueue_style('google-font-libre-franklin', 'https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap', [], null);
     wp_enqueue_style('typekit', 'https://use.typekit.net/ven5cit.css', [], null);
     wp_enqueue_style('material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons+Sharp', [], null);
+});
+
+// Register ACF blocks from block.json files in components directory
+add_action('init', function () {
+    $components = glob(get_theme_file_path('resources/js/components/*/block.json'));
+
+    foreach ($components as $json) {
+        register_block_type(dirname($json));
+    }
 });
 
 
@@ -225,24 +236,7 @@ function my_acf_init() {
       )
     );
 
-    // register article grid
-    acf_register_block(
-      array(
-        'name'            => 'article-grid',
-        'title'           => __( 'Article Grid' ),
-        'description'     => __( 'Layout dedicated to article display. Features several column layout styles and supports varying image sizes.' ),
-        'render_callback' => 'my_acf_block_render_callback',
-        'category'        => 'layout',
-        'icon'            => file_get_contents( get_template_directory() . '/resources/images/svg/c.svg' ),
-        'keywords'        => array( 'layout', 'article', 'grid', 'image' ),
-        'mode'            => 'edit',
-        'supports'        => array(
-          'align' => false,
-        ),
-      )
-    );
-
-    // register article grid
+    // register people grid
     acf_register_block(
       array(
         'name'            => 'people-grid',
