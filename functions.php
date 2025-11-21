@@ -963,3 +963,13 @@ function theme_supports() {
 			);
 		}
 	}
+
+  add_filter('acf/fields/wysiwyg/toolbars', function( $toolbars ) {
+    $toolbars['limited'] = array();
+    $toolbars['limited'][1] = array('bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist');
+
+    $toolbars['full'] = array();
+    $toolbars['full'][1] = array('formatselect', 'bold', 'italic', 'underline', 'bullist', 'numlist', 'blockquote', 'alignleft', 'aligncenter', 'alignright', 'link', 'unlink', 'undo', 'redo', 'removeformat');
+
+    return $toolbars;
+});

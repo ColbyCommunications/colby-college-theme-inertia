@@ -1,8 +1,11 @@
 <template>
   <div class="relative">
-    <!-- API-rendered grid -->
+    <!-- API-rendered grid (internal or api) -->
     <div
-      v-if="props.render_api"
+      v-if="
+        props.display_posts_method === 'internal' ||
+        props.display_posts_method === 'api'
+      "
       class="mx-auto my-0 grid w-full max-w-screen-2xl grid-cols-12 gap-10"
     >
       <div
@@ -58,6 +61,10 @@
           </div>
         </article>
       </div>
+    </div>
+
+    <div v-else>
+      <pre>{{ rawProps }}</pre>
     </div>
 
     <!-- Accordion style (non-API) -->
@@ -285,14 +292,17 @@ import TextGroup from "../TextGroup/TextGroup.vue";
 import Article from "../Article/Article.vue";
 
 const rawProps = defineProps({
+  display_posts_method: { type: String, default: "internal" },
   render_api: { type: Boolean, default: false },
   api_source: { type: String, default: "" },
   external_media_api: { type: String, default: "" },
   range: { type: [Number, String], default: 6 },
+  post_limit: { type: [Number, String], default: -1 },
   size: { type: String, default: "" },
   columns: { type: [Number, String], default: 3 },
   image_orientation: { type: String, default: "" },
   border: { type: [Boolean, String], default: false },
+  render_posts_category: { type: Number, default: 1 },
   cta: { type: String, default: "Read Story" },
   style: { type: String, default: "" },
   items: { type: Array, default: () => [] },
@@ -300,23 +310,28 @@ const rawProps = defineProps({
 
 // ---------- Normalize / Coerce ----------
 const props = {
+  display_posts_method: String(rawProps.display_posts_method || "internal"),
   render_api: Boolean(rawProps.render_api),
   api_source: String(rawProps.api_source || ""),
   external_media_api: String(rawProps.external_media_api || ""),
   range: Number(rawProps.range) || 6,
+  post_limit: Number(rawProps.post_limit) || -1,
   size: String(rawProps.size || ""),
   columns: Number(rawProps.columns) || 3,
   image_orientation: String(rawProps.image_orientation || ""),
   border: rawProps.border === "true" || rawProps.border === true,
+  render_posts_category: Number(rawProps.render_posts_category || 1),
   cta: String(rawProps.cta || "Read Story"),
   style: String(rawProps.style || ""),
   items: Array.isArray(rawProps.items) ? rawProps.items : [],
 };
 
-const data = ref([]); // API items (normalized)
-const expandedIndex = ref(null); // which card is open
-const itemRefs = reactive([]); // per-card element refs
-const contextRefs = reactive([]); // per-card context refs
+console.log(rawProps.items);
+
+const data = ref([]);
+const expandedIndex = ref(null);
+const itemRefs = reactive([]);
+const contextRefs = reactive([]);
 const accordionWidth = ref("auto");
 const currentColumns = ref(props.columns);
 
@@ -339,51 +354,88 @@ const itemColClass = computed(() => {
 const isMobileAccordion = computed(() => currentColumns.value === 1);
 
 const fetchApiData = async () => {
-  if (!props.render_api) return;
+  const internalPostsEndpoint =
+    "/wp-json/wp/v2/posts?categories=" +
+    props.render_posts_category +
+    "&per_page=" +
+    props.range;
+  const newsPostsEndpoint =
+    "https://news.colby.edu/wp-json/custom/v1/external-posts";
 
-  const endpoint = "https://news.colby.edu/wp-json/custom/v1/external-posts";
+  // Use a variable to hold the final, mapped data
+  let finalData = [];
 
   try {
-    const { data: output } = await axios.get(endpoint);
+    if (props.display_posts_method === "api") {
+      const { data: output } = await axios.get(newsPostsEndpoint);
 
-    const filtered = output.filter((item) => {
-      if (props.api_source === "media_coverage") {
+      const filtered = output.filter((item) => {
+        if (props.api_source !== "media_coverage") {
+          return false;
+        }
+
         const isMedia =
           item.story_type?.[0]?.slug === "media-coverage" &&
           item.content?.rendered;
-        if (!isMedia) return false;
 
-        if (props.external_media_api === "all_media") return true;
-        if (props.external_media_api === "president")
-          return item.tags && item.tags.some((tag) => tag.name === "president");
-        if (props.external_media_api === "highlight")
-          return (
-            item.tags && item.tags.some((tag) => tag.name === "editors-pick")
-          );
-      }
-      return false;
-    });
+        if (!isMedia) {
+          return false;
+        }
 
-    data.value = filtered
-      .map((item) => ({
-        title: {
-          rendered: item.title.rendered.replace(/<(?!\/?(i|em)\b)[^>]+>/gi, ""),
-        },
-        "post-meta-fields": {
-          summary: [
-            `${item.content.rendered
-              .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "")
-              .substring(0, 120)}...`,
-          ],
-        },
-        url: item.external_url,
-        image: item.image,
-        // date: moment(item.date).format('MMM DD, YYYY'),
-      }))
-      .slice(0, props.range);
-  } catch (e) {
-    // optional: console.error(e);
-  }
+        switch (props.external_media_api) {
+          case "all_media":
+            return true;
+          case "president":
+            return (
+              item.tags && item.tags.some((tag) => tag.name === "president")
+            );
+          case "highlight":
+            return (
+              item.tags && item.tags.some((tag) => tag.name === "editors-pick")
+            );
+          default:
+            return false;
+        }
+      });
+
+      finalData = filtered
+        .map((item) => ({
+          title: {
+            rendered: item.title.rendered.replace(
+              /<(?!\/?(i|em)\b)[^>]+>/gi,
+              "",
+            ),
+          },
+          "post-meta-fields": {
+            summary: [
+              `${item.content.rendered
+                .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "")
+                .substring(0, 120)}...`,
+            ],
+          },
+          url: item.external_url,
+          image: item.image,
+        }))
+        .slice(0, props.range);
+    } else if (props.display_posts_method === "internal") {
+      const { data: output } = await axios.get(internalPostsEndpoint);
+      finalData = output
+        .map((item) => ({
+          title: item.title,
+          "post-meta-fields": {
+            summary: [
+              item.excerpt.rendered
+                .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "")
+                .substring(0, 120),
+            ],
+          },
+          url: item.link,
+          image: item.featured_media,
+        }))
+        .slice(0, props.post_limit);
+    }
+    data.value = finalData;
+  } catch (e) {}
 };
 
 /* Layout / accordion logic */
