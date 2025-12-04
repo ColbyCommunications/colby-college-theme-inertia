@@ -20,13 +20,18 @@
       >
         <article
           class="article space-y-4"
-          :class="{
-            'border-t-2 border-solid border-indigo-600 pt-1': border,
-          }"
+          :class="[
+            props.border
+              ? 'border-t-2 border-solid border-indigo-600 pt-1'
+              : '',
+          ]"
         >
           <div class="context w-full py-4">
             <component is="text-group" class="text-group flex">
-              <div class="mr-6 flex shrink-0 flex-col justify-start">
+              <div
+                v-if="props.display_posts_method === 'api'"
+                class="mr-6 flex shrink-0 flex-col justify-start"
+              >
                 <img
                   class="h-[75px] w-[75px] lg:h-[96px] lg:w-[96px]"
                   :src="item.image"
@@ -34,6 +39,10 @@
                 />
               </div>
               <div>
+                <time
+                  class="text-left font-extended text-12 leading-130 font-bold tracking-8 text-azure uppercase"
+                  >{{ item.date }}</time
+                >
                 <h2
                   class="text-group__heading -tracking-3 text-left font-extended text-20 leading-110 font-normal text-indigo"
                   :class="{ 'lg:text-16': columns == 4 }"
@@ -61,6 +70,18 @@
           </div>
         </article>
       </div>
+    </div>
+
+    <div v-if="showLoadMore" class="mt-10 flex justify-center">
+      <button
+        @click="loadMore"
+        :disabled="isLoadingMore"
+        class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-indigo-600 bg-indigo-600 px-6 py-3 font-body text-14 leading-130 font-bold text-white !no-underline transition-all duration-200 ease-in-out hover:bg-indigo-700 disabled:opacity-50"
+      >
+        <span class="btn__text">
+          {{ isLoadingMore ? "Loading..." : "See More" }}
+        </span>
+      </button>
     </div>
 
     <div v-else>
@@ -301,7 +322,7 @@ const rawProps = defineProps({
   size: { type: String, default: "" },
   columns: { type: [Number, String], default: 3 },
   image_orientation: { type: String, default: "" },
-  border: { type: [Boolean, String], default: false },
+  border: { type: [Number, String], default: 0 },
   render_posts_category: { type: Number, default: 1 },
   cta: { type: String, default: "Read Story" },
   style: { type: String, default: "" },
@@ -319,14 +340,12 @@ const props = {
   size: String(rawProps.size || ""),
   columns: Number(rawProps.columns) || 3,
   image_orientation: String(rawProps.image_orientation || ""),
-  border: rawProps.border === "true" || rawProps.border === true,
+  border: Number(rawProps.border) || 0,
   render_posts_category: Number(rawProps.render_posts_category || 1),
   cta: String(rawProps.cta || "Read Story"),
   style: String(rawProps.style || ""),
   items: Array.isArray(rawProps.items) ? rawProps.items : [],
 };
-
-console.log(rawProps.items);
 
 const data = ref([]);
 const expandedIndex = ref(null);
@@ -336,6 +355,11 @@ const accordionWidth = ref("auto");
 const currentColumns = ref(props.columns);
 
 const gridContainer = ref(null);
+
+const currentPage = ref(1);
+const totalPages = ref(1);
+const isLoadingMore = ref(false);
+const postsPerPage = 12;
 
 /* Helpers */
 const gridColsClass = computed(() => {
@@ -353,35 +377,65 @@ const itemColClass = computed(() => {
 
 const isMobileAccordion = computed(() => currentColumns.value === 1);
 
-const fetchApiData = async () => {
+const showLoadMore = computed(() => {
+  // Only show if we are internally fetching and haven't loaded all pages
+  if (props.display_posts_method !== "internal") return false;
+
+  // If post_limit is -1, pagination is based on totalPages
+  if (props.post_limit === -1) {
+    return currentPage.value < totalPages.value;
+  }
+
+  // If post_limit is set, pagination stops when we reach the limit
+  // We check if the next page would exceed the limit
+  const totalLoaded = data.value.length;
+  return totalLoaded < props.post_limit;
+});
+
+const fetchApiData = async (page = 1) => {
+  isLoadingMore.value = true;
+
+  // Set the posts per page based on the requirement
+  let postsPerRequest = postsPerPage;
+
+  // If a post_limit is set, we calculate how many to fetch on the current page
+  // so we don't fetch more than the limit.
+  if (props.post_limit !== -1) {
+    const remaining = props.post_limit - data.value.length;
+    postsPerRequest = Math.min(postsPerRequest, remaining);
+
+    // If we've already hit the limit, stop fetching
+    if (remaining <= 0) {
+      isLoadingMore.value = false;
+      return;
+    }
+  }
+
+  // Build the internal endpoint dynamically
   const internalPostsEndpoint =
     "/wp-json/wp/v2/posts?categories=" +
     props.render_posts_category +
     "&per_page=" +
-    props.range;
-  const newsPostsEndpoint =
-    "https://news.colby.edu/wp-json/custom/v1/external-posts";
+    postsPerRequest +
+    "&page=" +
+    page;
 
-  // Use a variable to hold the final, mapped data
   let finalData = [];
 
   try {
     if (props.display_posts_method === "api") {
+      // Logic for external API remains the same (assuming no pagination needed here)
+      const newsPostsEndpoint =
+        "https://news.colby.edu/wp-json/custom/v1/external-posts";
       const { data: output } = await axios.get(newsPostsEndpoint);
+      // ... (your existing external API filtering/mapping logic) ...
 
       const filtered = output.filter((item) => {
-        if (props.api_source !== "media_coverage") {
-          return false;
-        }
-
+        if (props.api_source !== "media_coverage") return false;
         const isMedia =
           item.story_type?.[0]?.slug === "media-coverage" &&
           item.content?.rendered;
-
-        if (!isMedia) {
-          return false;
-        }
-
+        if (!isMedia) return false;
         switch (props.external_media_api) {
           case "all_media":
             return true;
@@ -408,9 +462,7 @@ const fetchApiData = async () => {
           },
           "post-meta-fields": {
             summary: [
-              `${item.content.rendered
-                .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "")
-                .substring(0, 120)}...`,
+              `${item.content.rendered.replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "").substring(0, 120)}...`,
             ],
           },
           url: item.external_url,
@@ -418,24 +470,67 @@ const fetchApiData = async () => {
         }))
         .slice(0, props.range);
     } else if (props.display_posts_method === "internal") {
-      const { data: output } = await axios.get(internalPostsEndpoint);
-      finalData = output
-        .map((item) => ({
-          title: item.title,
-          "post-meta-fields": {
-            summary: [
-              item.excerpt.rendered
-                .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "")
-                .substring(0, 120),
-            ],
-          },
-          url: item.link,
-          image: item.featured_media,
-        }))
-        .slice(0, props.post_limit);
+      // Fetch data for the current page
+      const response = await axios.get(internalPostsEndpoint);
+      const output = response.data;
+
+      // Read pagination headers on the first page load
+      if (page === 1) {
+        // ⚠️ NOTE: This relies on your WordPress API sending the headers
+        // X-WP-TotalPages and X-WP-Total. The default REST API does.
+        const totalPagesHeader = response.headers["x-wp-totalpages"];
+        if (totalPagesHeader) {
+          totalPages.value = Number(totalPagesHeader);
+        }
+      }
+
+      // Map and format the posts from the current page
+      const newPosts = output.map((item) => ({
+        title: item.title,
+        date: formatWpDate(item.date),
+        "post-meta-fields": {
+          summary: [
+            item.excerpt.rendered
+              .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "")
+              .substring(0, 120),
+          ],
+        },
+        url: item.link,
+        image: item.featured_media,
+      }));
+
+      // Append new posts to the existing data array
+      finalData = [...data.value, ...newPosts];
+
+      // Apply post_limit if it is not -1
+      if (props.post_limit !== -1) {
+        finalData = finalData.slice(0, props.post_limit);
+      }
     }
+
+    // Update the reactive data reference
     data.value = finalData;
-  } catch (e) {}
+  } catch (e) {
+    console.error("Error fetching API data:", e);
+  } finally {
+    isLoadingMore.value = false;
+  }
+};
+
+function formatWpDate(dateString) {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  }).format(date);
+}
+
+const loadMore = () => {
+  if (showLoadMore.value && !isLoadingMore.value) {
+    currentPage.value++;
+    fetchApiData(currentPage.value);
+  }
 };
 
 /* Layout / accordion logic */
