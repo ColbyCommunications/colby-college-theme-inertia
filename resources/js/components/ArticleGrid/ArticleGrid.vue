@@ -308,11 +308,10 @@ import {
   nextTick,
 } from "vue";
 import axios from "axios";
-// import moment from 'moment';
 import TextGroup from "../TextGroup/TextGroup.vue";
 import Article from "../Article/Article.vue";
 
-const rawProps = defineProps({
+const props = defineProps({
   display_posts_method: { type: String, default: "internal" },
   render_api: { type: Boolean, default: false },
   api_source: { type: String, default: "" },
@@ -328,24 +327,6 @@ const rawProps = defineProps({
   style: { type: String, default: "" },
   items: { type: Array, default: () => [] },
 });
-
-// ---------- Normalize / Coerce ----------
-const props = {
-  display_posts_method: String(rawProps.display_posts_method || "internal"),
-  render_api: Boolean(rawProps.render_api),
-  api_source: String(rawProps.api_source || ""),
-  external_media_api: String(rawProps.external_media_api || ""),
-  range: Number(rawProps.range) || 6,
-  post_limit: Number(rawProps.post_limit) || -1,
-  size: String(rawProps.size || ""),
-  columns: Number(rawProps.columns) || 3,
-  image_orientation: String(rawProps.image_orientation || ""),
-  border: Number(rawProps.border) || 0,
-  render_posts_category: Number(rawProps.render_posts_category || 1),
-  cta: String(rawProps.cta || "Read Story"),
-  style: String(rawProps.style || ""),
-  items: Array.isArray(rawProps.items) ? rawProps.items : [],
-};
 
 const data = ref([]);
 const expandedIndex = ref(null);
