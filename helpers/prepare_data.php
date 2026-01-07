@@ -2,20 +2,64 @@
 // helpers/normalize_types.php content (acf_normalize_types function)
 function acf_normalize_types(array $data, $parent_key = null): array
 {
+    var_dump($data);
     foreach ($data as $key => $value) {
 
-        // Skip nested arrays (handled recursively)
+
+        /**
+         * -------------------------------------------------
+         * SKIP already-normalized image objects
+         * -------------------------------------------------
+         */
+        if (
+            is_array($value) &&
+            isset($value['id'], $value['src']) &&
+            is_int($value['id'])
+        ) {
+            continue;
+        } 
+
+        /**
+         * -------------------------------------------------
+         * RECURSE into nested arrays
+         * -------------------------------------------------
+         */
         if (is_array($value)) {
             $data[$key] = acf_normalize_types($value, $key);
             continue;
         }
 
-        // Fetch ACF field object if available
+        /**
+         * -------------------------------------------------
+         * IMAGE NORMALIZATION (attachment-based)
+         * -------------------------------------------------
+         */
+        if (is_numeric($value)) {
+            $id = (int) $value;
+
+            if (wp_attachment_is_image($id)) {
+                $attachment = get_post($id);
+
+                $data[$key] = [
+                    'id'      => $id,
+                    'src'     => wp_get_attachment_url($id),
+                    'alt'     => get_post_meta($id, '_wp_attachment_image_alt', true),
+                    'caption' => $attachment ? $attachment->post_excerpt : '',
+                    'description' => $attachment ? $attachment->post_content : '',
+                ];
+
+                continue;
+            }
+        }
+
+        /**
+         * -------------------------------------------------
+         * ACF TYPE NORMALIZATION (best-effort)
+         * -------------------------------------------------
+         */
         $field = get_field_object($key) ?: get_field_object($parent_key);
 
         if (!$field || empty($field['type'])) {
-            // If we can't find the field object (which happens for nested repeater fields),
-            // but the value is numeric, force a conversion to number type.
             if (is_numeric($value)) {
                 $data[$key] = $value + 0;
             }
@@ -23,6 +67,7 @@ function acf_normalize_types(array $data, $parent_key = null): array
         }
 
         switch ($field['type']) {
+
             case 'true_false':
                 $data[$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
                 break;
@@ -41,41 +86,36 @@ function acf_normalize_types(array $data, $parent_key = null): array
 
             case 'post_object':
             case 'relationship':
-            case 'image':
-                // They come as strings—we normalize to int
                 if (is_numeric($value)) {
-                    $data[$key] = (int)$value;
+                    $data[$key] = (int) $value;
                 }
-                break;
-
-            case 'text':
-            case 'textarea':
-            case 'wysiwyg':
-            default:
                 break;
         }
     }
+
     return $data;
 }
 
+/**
+ * Unflatten ACF repeater keys.
+ */
 function acf_unflatten(array $data): array
 {
     $result = $data;
 
     foreach ($data as $key => $value) {
 
-        if (preg_match('/^([a-zA-Z0-9_]+)(?:_(\d+))_(.+)$/', $key, $matches)) {
+        if (preg_match('/^([a-zA-Z0-9_]+)_(\d+)_(.+)$/', $key, $matches)) {
 
-            $base   = $matches[1];
-            $index  = (int) $matches[2];
-            $rest   = $matches[3];
+            $base  = $matches[1];
+            $index = (int) $matches[2];
+            $rest  = $matches[3];
 
             if (!isset($result[$base]) || !is_array($result[$base])) {
                 $result[$base] = [];
             }
 
-            // Recursively resolve nested fields
-            $nested = acf_unflatten([ $rest => $value ]);
+            $nested = acf_unflatten([$rest => $value]);
 
             $result[$base][$index] = array_merge(
                 $result[$base][$index] ?? [],
@@ -89,18 +129,22 @@ function acf_unflatten(array $data): array
     return $result;
 }
 
+/**
+ * Prepare Gutenberg block data.
+ */
 function prepare_data(array $blocks): array
 {
     foreach ($blocks as &$block) {
 
         if (!empty($block['attrs']['data']) && is_array($block['attrs']['data'])) {
-            // Normalize scalar fields first (fixes top-level fields like 'columns' if not nested)
+
+            // Pass 1: normalize scalars + images
             $block['attrs']['data'] = acf_normalize_types($block['attrs']['data']);
 
-            // Then unflatten the nested arrays
+            // Unflatten repeaters
             $block['attrs']['data'] = acf_unflatten($block['attrs']['data']);
-            
-            // Normalize again to catch any numbers/booleans that were nested deep inside repeaters/flex fields
+
+            // Pass 2: normalize nested values (safe now)
             $block['attrs']['data'] = acf_normalize_types($block['attrs']['data']);
         }
 
@@ -111,3 +155,4 @@ function prepare_data(array $blocks): array
 
     return $blocks;
 }
+

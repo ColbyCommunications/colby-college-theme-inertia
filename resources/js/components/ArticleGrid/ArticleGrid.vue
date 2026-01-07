@@ -1,74 +1,108 @@
 <template>
   <div class="relative">
-    <!-- API-rendered grid (internal or api) -->
-    <div
-      v-if="
-        props.display_posts_method === 'internal' ||
-        props.display_posts_method === 'api'
-      "
-      class="mx-auto my-0 grid w-full max-w-screen-2xl grid-cols-12 gap-10"
-    >
-      <div
-        v-for="(item, index) in data"
-        :key="index"
-        class="article-grid__item glide__slide"
-        :class="{
-          'col-span-12 md:col-span-6': props.columns === 2,
-          'col-span-12 md:col-span-6 lg:col-span-4': props.columns === 3,
-          'col-span-12 md:col-span-6 lg:col-span-3': props.columns === 4,
-        }"
-      >
-        <article
-          class="article space-y-4"
-          :class="[
-            props.border
-              ? 'border-t-2 border-solid border-indigo-600 pt-1'
-              : '',
-          ]"
+    <div v-if="props.display_posts_method === 'internal'">
+      <div class="grid grid-cols-12 gap-10">
+        <div
+          v-for="(item, index) in data"
+          :key="index"
+          class="article-grid__item glide__slide"
+          :class="{
+            'col-span-12 md:col-span-6': props.columns === 2,
+            'col-span-12 md:col-span-6 lg:col-span-4': props.columns === 3,
+            'col-span-12 md:col-span-6 lg:col-span-3': props.columns === 4,
+          }"
         >
-          <div class="context w-full py-4">
-            <component is="text-group" class="text-group flex">
-              <div
-                v-if="props.display_posts_method === 'api'"
-                class="mr-6 flex shrink-0 flex-col justify-start"
-              >
-                <img
-                  class="h-[75px] w-[75px] lg:h-[96px] lg:w-[96px]"
-                  :src="item.image"
-                  :alt="item.title.rendered"
-                />
-              </div>
-              <div>
-                <time
-                  class="text-left font-extended text-12 leading-130 font-bold tracking-8 text-azure uppercase"
-                  >{{ item.date }}</time
-                >
-                <h2
-                  class="text-group__heading -tracking-3 text-left font-extended text-20 leading-110 font-normal text-indigo"
-                  :class="{ 'lg:text-16': columns == 4 }"
-                  v-html="item.title.rendered"
-                />
-                <p
-                  class="text-group__p mt-2 text-left font-body text-14 leading-130 font-normal text-indigo-800"
-                  v-html="item['post-meta-fields'].summary[0]"
-                />
-              </div>
-            </component>
-            <div class="button-group mt-4 flex flex-wrap items-end gap-4">
-              <a
-                class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary"
-                :href="item.url"
-              >
-                <span class="btn__text">
-                  {{ cta }}
-                  <div
-                    class="btn__border block h-px w-0 bg-indigo transition-all duration-200 ease-in-out group-hover:w-full"
-                  ></div>
-                </span>
-              </a>
-            </div>
-          </div>
-        </article>
+          <Article
+            size="small"
+            :image="item.image"
+            :subheading="item.date"
+            :heading="item.title.rendered"
+            :border="props.border"
+            :paragraph="item['post-meta-fields'].summary"
+            :buttons="[
+              {
+                button: {
+                  url: item.url,
+                  title: cta,
+                  type: 'light',
+                  size: 'small',
+                },
+              },
+            ]"
+            class="pt-4"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div v-if="props.display_posts_method === 'api'">
+      <div class="grid grid-cols-12 gap-10">
+        <div
+          v-for="(item, index) in data"
+          :key="index"
+          class="article-grid__item glide__slide"
+          :class="{
+            'col-span-12 md:col-span-6': props.columns === 2,
+            'col-span-12 md:col-span-6 lg:col-span-4': props.columns === 3,
+            'col-span-12 md:col-span-6 lg:col-span-3': props.columns === 4,
+          }"
+        >
+          <Article
+            :apiSource="props.api_source"
+            :size="props.size"
+            :image="item.image"
+            :heading="item.title.rendered"
+            :border="props.border"
+            :paragraph="item.summary"
+            :buttons="[
+              {
+                button: {
+                  url: item.url,
+                  title: cta,
+                  type: 'light',
+                  size: 'small',
+                },
+              },
+            ]"
+            class="pt-4"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div v-if="props.display_posts_method === 'manual'">
+      <div class="grid grid-cols-12 gap-10">
+        <div
+          v-for="(item, index) in props.items"
+          :key="index"
+          class="article-grid__item glide__slide"
+          :class="{
+            'col-span-12 md:col-span-6': props.columns === 2,
+            'col-span-12 md:col-span-6 lg:col-span-4': props.columns === 3,
+            'col-span-12 md:col-span-6 lg:col-span-3': props.columns === 4,
+          }"
+        >
+          <pre>{{ item }}</pre>
+          <Article
+            size="small"
+            :image="item.image"
+            :subheading="item.subheading"
+            :heading="item.heading"
+            :border="props.border"
+            :paragraph="item.paragraph"
+            :buttons="[
+              {
+                button: {
+                  url: item.url,
+                  title: cta,
+                  type: 'light',
+                  size: 'small',
+                },
+              },
+            ]"
+            class="pt-4"
+          />
+        </div>
       </div>
     </div>
 
@@ -82,10 +116,6 @@
           {{ isLoadingMore ? "Loading..." : "See More" }}
         </span>
       </button>
-    </div>
-
-    <div v-else>
-      <pre>{{ rawProps }}</pre>
     </div>
 
     <!-- Accordion style (non-API) -->
@@ -399,7 +429,9 @@ const fetchApiData = async (page = 1) => {
     "&per_page=" +
     postsPerRequest +
     "&page=" +
-    page;
+    page +
+    "&status=publish" +
+    "&_embed";
 
   let finalData = [];
 
@@ -441,13 +473,11 @@ const fetchApiData = async (page = 1) => {
               "",
             ),
           },
-          "post-meta-fields": {
-            summary: [
-              `${item.content.rendered.replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "").substring(0, 120)}...`,
-            ],
-          },
+          summary: [
+            `${item.content.rendered.replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "").substring(0, 120)}...`,
+          ],
           url: item.external_url,
-          image: item.image,
+          image: { src: item.image, alt: item.taxonomy?.[0]?.name || "" },
         }))
         .slice(0, props.range);
     } else if (props.display_posts_method === "internal") {
@@ -470,14 +500,46 @@ const fetchApiData = async (page = 1) => {
         title: item.title,
         date: formatWpDate(item.date),
         "post-meta-fields": {
-          summary: [
-            item.excerpt.rendered
-              .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "")
-              .substring(0, 120),
-          ],
+          summary: (function () {
+            const potentialSummary =
+              item.excerpt.rendered
+                .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "")
+                .trim()
+                .substring(0, 120) +
+              (item.excerpt.rendered.length > 120 &&
+              item.excerpt.rendered.trim().length > 0
+                ? "..."
+                : "");
+
+            if (potentialSummary.length === 0) {
+              const paragraphBlock = item.acf_blocks?.find(
+                (b) => b.name?.includes("paragraph") && b.fields,
+              );
+
+              const acfContent = paragraphBlock?.fields?.paragraph_text;
+
+              if (acfContent) {
+                const cleaned = acfContent
+                  .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "")
+                  .trim();
+
+                return (
+                  cleaned.substring(0, 120) +
+                  (cleaned.length > 120 ? "..." : "")
+                );
+              }
+
+              return "";
+            }
+
+            return potentialSummary;
+          })(),
         },
         url: item.link,
-        image: item.featured_media,
+        image: {
+          src: item.featured_img,
+          alt: item._embedded?.["wp:featuredmedia"]?.[0]?.alt_text || "",
+        },
       }));
 
       // Append new posts to the existing data array
