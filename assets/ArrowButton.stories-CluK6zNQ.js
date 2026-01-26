@@ -1,4 +1,4 @@
-import{_ as s}from"./ArrowButton-B0XOZd4Q.js";import"./iframe-hmysaSOo.js";import"./preload-helper-PPVm8Dsz.js";const n={title:"ArrowButton",component:s},r={name:"Primary"},e={name:"Reverse",args:{reverse:!0}};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:`{
+import{_ as s}from"./ArrowButton-DOGCP1QE.js";import"./iframe-BDgTgtjq.js";import"./preload-helper-PPVm8Dsz.js";const n={title:"ArrowButton",component:s},r={name:"Primary"},e={name:"Reverse",args:{reverse:!0}};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:`{
   // 👇 Rename this story
   name: "Primary"
 }`,...r.parameters?.docs?.source}}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
