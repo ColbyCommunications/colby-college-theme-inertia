@@ -2,7 +2,7 @@ import Article from "./Article.vue";
 
 // The default export metadata for your component
 export default {
-  title: "Article",
+  title: "Core Components/Article",
   component: Article,
 };
 

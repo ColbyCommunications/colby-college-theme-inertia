@@ -2,7 +2,7 @@ import ArrowButton from "./ArrowButton.vue";
 
 // The default export metadata for your component
 export default {
-  title: "ArrowButton",
+  title: "Core Components/ArrowButton",
   component: ArrowButton,
 };
 

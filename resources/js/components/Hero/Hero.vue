@@ -37,7 +37,6 @@
             :size-desktop="image.sizes.Square"
             :size-mobile="image.sizes.Square"
             :alt="image.alt"
-            :in-component-library="inComponentLibrary"
           />
         </div>
         <p
@@ -75,7 +74,6 @@
             :size-desktop="secondaryImage.image?.sizes?.Square"
             :size-mobile="secondaryImage.image?.sizes?.Square"
             :alt="secondaryImage.alt"
-            :in-component-library="inComponentLibrary"
           />
         </div>
         <p
@@ -99,10 +97,6 @@ import Context from "@/js/components/Context/Context.vue";
 import Picture from "@/js/components/Picture/Picture.vue";
 
 const props = defineProps({
-  inComponentLibrary: {
-    type: Boolean,
-    default: false,
-  },
   align: {
     type: String,
     default: "left",

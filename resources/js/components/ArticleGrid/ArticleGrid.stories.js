@@ -54,7 +54,7 @@ const mockItems = [
 ];
 
 export default {
-  title: "Article Grid",
+  title: "Core Components/Article Grid",
   component: ArticleGrid,
   // Define controls to toggle between grid types and styles
 };

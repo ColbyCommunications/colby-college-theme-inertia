@@ -2,7 +2,7 @@ import ButtonGroup from "./ButtonGroup.vue";
 
 // The default export metadata for your component
 export default {
-  title: "Button Group",
+  title: "Core Components/Button Group",
   component: ButtonGroup,
 };
 

@@ -2,7 +2,7 @@ import Button from "./Button.vue";
 
 // The default export metadata for your component
 export default {
-  title: "Button",
+  title: "Core Components/Button",
   component: Button,
 };
 

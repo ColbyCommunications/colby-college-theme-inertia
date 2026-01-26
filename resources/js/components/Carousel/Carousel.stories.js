@@ -2,7 +2,7 @@ import Carousel from "./Carousel.vue";
 
 // The default export metadata for your component
 export default {
-  title: "Carousel",
+  title: "Core Components/Carousel",
   component: Carousel,
 };
 

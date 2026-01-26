@@ -2,7 +2,7 @@ import Alert from "./Alert.vue";
 
 // The default export metadata for your component
 export default {
-  title: "Alert",
+  title: "Core Components/Alert",
   component: Alert,
   argTypes: {
     type: {

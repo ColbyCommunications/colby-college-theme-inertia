@@ -2,7 +2,7 @@ import DarkInterstitial from "./DarkInterstitial.vue";
 
 // The default export metadata for your component
 export default {
-  title: "Dark Interstitial",
+  title: "Core Components/Dark Interstitial",
   component: DarkInterstitial,
 };
 

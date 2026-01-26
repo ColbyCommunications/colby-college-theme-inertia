@@ -1,7 +1,7 @@
 import AnimatedBorder from "./AnimatedBorder.vue";
 
 export default {
-  title: "Animated Border",
+  title: "Core Components/Animated Border",
   component: AnimatedBorder,
   argTypes: {
     color: {

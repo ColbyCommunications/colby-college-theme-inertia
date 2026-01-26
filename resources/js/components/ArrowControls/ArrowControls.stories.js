@@ -2,7 +2,7 @@ import ArrowControls from "./ArrowControls.vue";
 
 // The default export metadata for your component
 export default {
-  title: "Arrow Controls",
+  title: "Core Components/Arrow Controls",
   component: ArrowControls,
 };
 

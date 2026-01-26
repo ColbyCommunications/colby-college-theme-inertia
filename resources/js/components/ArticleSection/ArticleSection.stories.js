@@ -82,7 +82,7 @@ const mockItems = [
 
 // The default export metadata for your component
 export default {
-  title: "Article Section",
+  title: "Core Components/Article Section",
   component: ArticleSection,
 };
 
