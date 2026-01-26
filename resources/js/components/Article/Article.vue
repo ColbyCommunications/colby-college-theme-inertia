@@ -103,7 +103,6 @@ const props = defineProps({
   paragraph: { type: String, default: "" },
   size: { type: String, default: "small" },
   imageSize: { type: String, default: "thumbnail" },
-  inComponentLibrary: { type: Boolean, default: false }, // kept for parity, if you need it
 });
 
 const hasButtons = computed(

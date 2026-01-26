@@ -18,8 +18,8 @@
 
 <script setup>
     const props = defineProps({
-        size: { type: String, default: 'large' },
-        type: { type: String, default: 'light' },
+        // size: { type: String, default: 'large' },
+        // type: { type: String, default: 'light' },
         reverse: { type: Boolean, default: false },
     });
 

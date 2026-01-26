@@ -82,7 +82,6 @@
             'col-span-12 md:col-span-6 lg:col-span-3': props.columns === 4,
           }"
         >
-          <pre>{{ item }}</pre>
           <Article
             size="small"
             :image="item.image"
