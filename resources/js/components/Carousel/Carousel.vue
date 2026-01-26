@@ -324,6 +324,8 @@ const featuredNews = ref([]);
 
 async function fetchApi() {
   if (!endpoint.value) return;
+
+  console.log(endpoint.value);
   const { data } = await axios.get(endpoint.value);
   featuredNews.value =
     mode.value === "faculty"
@@ -415,6 +417,7 @@ function changeSlide(dir) {
 }
 
 onMounted(async () => {
+  console.log("here");
   if (isApi.value) await fetchApi();
   await nextTick();
   // brief delay to ensure slides exist

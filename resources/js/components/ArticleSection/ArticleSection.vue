@@ -1,14 +1,17 @@
 <template>
-  <Carousel
-    class="article-section"
-    :perView="perView"
-    :gap="gap"
-    :render_api="renderApi"
-    :api="api"
-    v-slot="{ pauseCarousel, playCarousel }"
-  >
+  <div>
+    <Carousel
+      v-if="renderApi"
+      class="article-section"
+      :perView="perView"
+      :gap="gap"
+      :render_api="renderApi"
+      :api="api"
+      v-slot="{ pauseCarousel, playCarousel }"
+    />
     <div
       class="article-section__inner mx-auto my-0 w-full max-w-screen-2xl space-y-16 gap-x-10 px-5 md:grid md:grid-cols-12 md:space-y-0"
+      v-else
     >
       <!-- Intro / Context -->
       <div
@@ -36,10 +39,10 @@
         @mouseenter="pauseCarousel?.()"
         @mouseleave="playCarousel?.()"
       >
-        <ArticleGrid v-bind="gridProps" />
+        <ArticleGrid v-bind="gridProps" display_posts_method="manual" />
       </div>
     </div>
-  </Carousel>
+  </div>
 </template>
 
 <script setup>
