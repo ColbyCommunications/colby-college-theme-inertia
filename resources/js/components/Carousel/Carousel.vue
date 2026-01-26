@@ -325,7 +325,6 @@ const featuredNews = ref([]);
 async function fetchApi() {
   if (!endpoint.value) return;
 
-  console.log(endpoint.value);
   const { data } = await axios.get(endpoint.value);
   featuredNews.value =
     mode.value === "faculty"
@@ -368,7 +367,10 @@ function buildGlide() {
     type: "carousel",
     gap: props.gap,
     animationDuration: 600,
-    autoplay: 4000, // independent of our manual autoplay (kept for parity)
+    // CHANGE THIS LINE:
+    // Old: autoplay: 4000,
+    // New: set to false so it doesn't conflict with your startAutoplay function
+    autoplay: false,
     perView: props.perView,
   });
   glide.value.on("run", () => {
@@ -408,7 +410,6 @@ function next() {
   glide.value.go(">");
 }
 function prev() {
-  console.log("here");
   if (!glide.value) return;
   glide.value.go("<");
 }
@@ -417,7 +418,6 @@ function changeSlide(dir) {
 }
 
 onMounted(async () => {
-  console.log("here");
   if (isApi.value) await fetchApi();
   await nextTick();
   // brief delay to ensure slides exist
