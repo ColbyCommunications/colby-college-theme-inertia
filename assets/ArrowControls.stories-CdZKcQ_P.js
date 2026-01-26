@@ -1,0 +1,4 @@
+import{a as m,d as t,o as i}from"./iframe-hmysaSOo.js";import{_ as s}from"./ArrowButton-B0XOZd4Q.js";import"./preload-helper-PPVm8Dsz.js";const c={class:"arrow-controls space-x-4"},n={__name:"ArrowControls",emits:["prev","next"],setup(l){return(o,e)=>(i(),m("div",c,[t(s,{onPrev:e[0]||(e[0]=a=>o.$emit("prev"))}),t(s,{reverse:!0,onNext:e[1]||(e[1]=a=>o.$emit("next"))})]))}};n.__docgenInfo={exportName:"default",displayName:"ArrowControls",description:"",tags:{},events:[{name:"prev"},{name:"next"}],sourceFiles:["/home/runner/work/colby-college-theme-inertia/colby-college-theme-inertia/resources/js/components/ArrowControls/ArrowControls.vue"]};const _={title:"Arrow Controls",component:n},r={name:"Primary"};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:`{
+  // 👇 Rename this story
+  name: "Primary"
+}`,...r.parameters?.docs?.source}}};const v=["Primary"];export{r as Primary,v as __namedExportsOrder,_ as default};
