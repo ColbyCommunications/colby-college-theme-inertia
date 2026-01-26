@@ -1,0 +1,43 @@
+name: Deploy Storybook
+
+# Trigger the workflow on pushes to the main branch
+on:
+  push:
+    branches:
+      - master # Change this to 'master' if your default branch is master
+
+permissions:
+  contents: write # Required to push to the gh-pages branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use a version compatible with your project
+          cache: 'npm'
+
+      # 3. Install Dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Build Storybook
+      - name: Build Storybook
+        run: npm run build-storybook
+        # By default, this outputs to 'storybook-static'
+
+      # 5. Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: storybook-static # The folder the build step outputted
+          branch: gh-pages # The branch the action should deploy to
+          clean: true # Automatically remove deleted files from the deploy branch
