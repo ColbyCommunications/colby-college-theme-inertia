@@ -14,7 +14,7 @@
           >
             <span class="sr-only">Homepage</span>
 
-            <div class="size-[12px] fill-indigo"><Icon :name="'home'" /></div>
+            <div class="size-[10px] fill-indigo"><Icon :name="'home'" /></div>
           </a>
         </li>
 
