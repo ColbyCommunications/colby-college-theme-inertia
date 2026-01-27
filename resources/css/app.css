@@ -25,7 +25,7 @@
   --color-notification-red: #dd3c27;
 
   /* Indigo palette (flat + nested like v3) */
-  --color-indigo: #012169; /* DEFAULT */
+  --color-indigo: #012169;
   --color-indigo-100: #f9fbff;
   --color-indigo-200: #eef4ff;
   --color-indigo-300: #dfecfe;
