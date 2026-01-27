@@ -13,7 +13,8 @@
             href="/"
           >
             <span class="sr-only">Homepage</span>
-            <Icon :name="'home'" />
+
+            <div class="size-[12px] fill-indigo"><Icon :name="'home'" /></div>
           </a>
         </li>
 
@@ -27,7 +28,7 @@
             :href="item.url"
           >
             {{ item.title }}
-          </NuxtLink>
+          </a>
         </li>
       </ul>
     </div>
