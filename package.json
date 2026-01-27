@@ -5,7 +5,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build -o storybook-static && touch storybook-static/.nojekyll"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.0",

@@ -14,6 +14,10 @@ const config = {
   framework: "@storybook/vue3-vite",
   async viteFinal(config) {
     config.plugins.push(tailwindcss());
+
+    if (configType === "PRODUCTION") {
+      config.base = "./";
+    }
     return config;
   },
 };
