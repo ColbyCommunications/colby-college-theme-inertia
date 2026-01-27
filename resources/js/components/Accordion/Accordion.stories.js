@@ -41,7 +41,7 @@ const basicPanels = [
   {
     heading: "Admissions & Aid",
     content:
-      "<p>Learn about our application process, financial aid options, and deadlines for the upcoming academic year.</p>",
+      "<p>Learn about our application process, financial aid options, and deadlines for the upcoming academic year..</p>",
   },
   {
     heading: "Academics",
