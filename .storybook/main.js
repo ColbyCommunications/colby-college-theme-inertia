@@ -12,7 +12,7 @@ const config = {
     "@storybook/addon-docs",
   ],
   framework: "@storybook/vue3-vite",
-  async viteFinal(config) {
+  async viteFinal(config, { configType }) {
     config.plugins.push(tailwindcss());
 
     if (configType === "PRODUCTION") {
