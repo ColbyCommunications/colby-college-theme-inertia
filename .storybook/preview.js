@@ -6,9 +6,6 @@ import "../resources/css/app.css";
 import { setup } from "@storybook/vue3";
 import InstantSearch from "vue-instantsearch/vue3/es";
 
-// Import your global CSS/Tailwind here so styles look right
-// import '../src/assets/tailwind.css';
-
 setup((app) => {
   app.use(InstantSearch);
 });
