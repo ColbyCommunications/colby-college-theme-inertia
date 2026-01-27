@@ -1,16 +1,7 @@
 <template>
   <picture>
-    <template v-if="inComponentLibrary">
-      <source media="(min-width:768px)" :srcset="srcset" />
-
-      <img :class="class" :src="src" :alt="alt" />
-    </template>
-
-    <template v-else>
-      <source media="(min-width:768px)" :srcset="sizeDesktop" />
-
-      <img :class="class" :src="sizeMobile" :alt="alt" />
-    </template>
+    <source media="(min-width:768px)" :srcset="sizeDesktop" />
+    <img :class="class" :src="sizeMobile" :alt="alt" />
   </picture>
 </template>
 
@@ -23,41 +14,25 @@ const props = defineProps({
     type: String,
     default: "",
   },
-
-  // Used when inComponentLibrary is TRUE (for desktop source)
   srcset: {
     type: String,
     default: "",
   },
-
-  // Used when inComponentLibrary is TRUE (for mobile/default image src)
   src: {
     type: String,
     default: "",
   },
-
-  // Used when inComponentLibrary is FALSE (for desktop source)
   sizeDesktop: {
     type: String,
     default: "",
   },
-
-  // Used when inComponentLibrary is FALSE (for mobile/default image src)
   sizeMobile: {
     type: String,
     default: "",
   },
-
-  // Alt text for the <img> tag
   alt: {
     type: String,
     default: "",
-  },
-
-  // Conditional flag from Twig's logic
-  inComponentLibrary: {
-    type: Boolean,
-    default: false,
   },
 });
 </script>
