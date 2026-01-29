@@ -1,7 +1,7 @@
 <template>
   <picture>
     <source media="(min-width:768px)" :srcset="sizeDesktop" />
-    <img :class="class" :src="sizeMobile" :alt="alt" />
+    <img :class="class" :src="sizeMobile" :alt="alt" :loading="loading" />
   </picture>
 </template>
 
@@ -33,6 +33,10 @@ const props = defineProps({
   alt: {
     type: String,
     default: "",
+  },
+  loading: {
+    type: String,
+    default: "lazy",
   },
 });
 </script>

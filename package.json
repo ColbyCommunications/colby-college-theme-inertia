@@ -45,6 +45,8 @@
     "vue": "^3.4.0",
     "vue-final-modal": "^3.4.10",
     "vue-instantsearch": "^4.22.0",
-    "waypoints": "^4.0.1"
+    "waypoints": "^4.0.1",
+    "youtube-player": "^5.6.0",
+    "yt-player": "^3.6.1"
   }
 }
