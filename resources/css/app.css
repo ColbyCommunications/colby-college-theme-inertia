@@ -3,6 +3,22 @@
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
 
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+  }
+}
+
 /* (Optional) small site tweaks */
 .prose :where(img) {
   margin-top: 1rem;
