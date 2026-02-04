@@ -56,5 +56,23 @@ const mockItems = [
 export default {
   title: "Blocks/Article Grid",
   component: ArticleGrid,
-  // Define controls to toggle between grid types and styles
+};
+
+const Template = (args) => ({
+  components: { ArticleGrid },
+  setup() {
+    return { args };
+  },
+  template: '<ArticleGrid v-bind="args" />',
+});
+
+// 1. Manual Grid Story
+// Uses 'manual' method to bypass API calls and render passed items immediately
+export const ManualGrid = Template.bind({});
+ManualGrid.args = {
+  display_posts_method: "manual",
+  columns: 3,
+  cta: "Read Story",
+  items: mockItems,
+  border: 0,
 };
