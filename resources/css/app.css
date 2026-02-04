@@ -124,6 +124,7 @@
   --max-w-75: 75%;
 
   /* Spacing token to mirror your gap 10 = 1.25rem (already default in Tailwind, but redefining is fine) */
+  --spacing: 0.1rem;
   --spacing-10: 1.25rem;
 
   --breakpoint-xs: 30rem;
