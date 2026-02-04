@@ -133,4 +133,10 @@
   --breakpoint-lg: 64rem;
   --breakpoint-xl: 80rem;
   --breakpoint-2xl: 98rem;
+
+  --background-image-hero__pattern: url("../images/hero__pattern.jpg");
+  --background-image-notfound__pattern: url("../images/miller3.jpeg");
+  --background-image-darkinterstitial__pattern: url("../images/Background-3.jpg");
+  --background-image-marble__pattern: url("../images/mountain.jpg");
+  --background-image-bluemarble__pattern: url("../images/Treatment-36.jpg");
 }
