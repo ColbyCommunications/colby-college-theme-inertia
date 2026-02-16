@@ -55,10 +55,13 @@
                 <span class="absolute top-0 left-[20px] hidden md:block w-[calc(100%_-_40px)] h-px bg-white z-[1]"></span>
                 <div v-for="(img, idx) in images" :key="idx" class="inline-block col-span-4 w-full md:w-auto mr-6 md:mr-0">
                     <div class="dark-interstitial__image relative pb-[119.44444444444444%]">
-                        <picture>
-                            <source media="(min-width:768px)" :srcset="img?.image?.sizes?.Square" />
-                            <img class="absolute w-full h-full object-cover" :src="img?.image?.sizes?.Square" :alt="img.alt || ''" loading="lazy" decoding="async" />
-                        </picture>
+                        <Picture
+                            class="absolute w-full h-full object-cover"
+                            :size-desktop="img?.image?.sizes?.Square"
+                            :size-mobile="img?.image?.sizes?.Square"
+                            :alt="img.alt || ''"
+                            loading="lazy"
+                        />
                     </div>
                     <p v-if="img.caption" class="font-body font-normal text-12 text-indigo-200 leading-140 mt-2">
                         {{ img.caption }}
@@ -71,7 +74,8 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
-import Context from '../Context/Context.vue';
+import Context from '@/js/components/Context/Context.vue';
+import Picture from '@/js/components/Picture/Picture.vue';
 import { gsap } from 'gsap';
 import 'waypoints/lib/noframework.waypoints';
 

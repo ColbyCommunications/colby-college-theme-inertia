@@ -11,6 +11,7 @@ setup((app) => {
 });
 
 const preview = {
+  tags: ["autodocs"],
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },
 

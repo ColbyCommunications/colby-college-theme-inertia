@@ -148,18 +148,12 @@
             :href="item.url"
             :aria-label="item.heading"
           >
-            <picture>
-              <source
-                media="(min-width: 768px)"
-                :srcset="item.image.sizes.desktop"
-              />
-              <img
-                decoding="async"
-                class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
-                :src="item.image.sizes.mobile"
-                :alt="item.title"
-              />
-            </picture>
+            <Picture
+              class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
+              :size-desktop="item.image.sizes.desktop"
+              :size-mobile="item.image.sizes.mobile"
+              :alt="item.title"
+            />
           </a>
 
           <div
@@ -339,6 +333,7 @@ import {
 import axios from "axios";
 import TextGroup from "../TextGroup/TextGroup.vue";
 import Article from "../Article/Article.vue";
+import Picture from "../Picture/Picture.vue";
 
 const props = defineProps({
   display_posts_method: { type: String, default: "internal" },

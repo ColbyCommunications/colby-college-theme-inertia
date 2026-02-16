@@ -41,59 +41,19 @@
       >
         <article class="article space-y-4">
           <div class="context w-full space-y-5">
-            <div class="text-group--animated text-group">
-              <div
-                class="text-group__subheading text-left text-12 leading-130 font-bold tracking-8 uppercase"
-                :class="[type === 'dark' ? 'text-canary' : 'text-azure']"
-              >
-                {{ stripHTML(item.date) }}
-              </div>
+            <TextGroup
+              size="xsmall"
+              :type="type === 'dark' ? 'light' : 'dark'"
+              :subheading="stripHTML(item.date)"
+              :heading="stripHTML(item.title)"
+              :paragraph="stripHTML(item.time)"
+            />
 
-              <h2
-                class="text-group__heading -tracking-3 mt-2 text-left text-24 leading-110 font-bold md:text-18"
-                :class="[type === 'dark' ? 'text-white' : 'text-indigo']"
-                v-html="stripHTML(item.title)"
-              ></h2>
-
-              <p
-                class="text-group__p mt-2 text-left font-body text-12 leading-130 font-normal !opacity-100 md:text-12"
-                :class="[type === 'dark' ? 'text-white' : 'text-indigo-800']"
-              >
-                {{ stripHTML(item.time) }}
-              </p>
-            </div>
-
-            <div
-              class="button-group--animated button-group flex shrink-0 flex-wrap gap-4"
-            >
-              <a
-                v-if="type === 'light'"
-                class="btn group inline-flex !translate-x-0 flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline !opacity-100 outline-offset-[-1px] transition-all duration-200 ease-in-out hover:border-indigo-500 hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary"
-                :href="item.url"
-                target="_blank"
-              >
-                <span class="btn__text">
-                  Learn More
-                  <div
-                    class="btn__border block h-px w-0 bg-indigo transition-all duration-200 ease-in-out group-hover:w-full"
-                  ></div>
-                </span>
-              </a>
-
-              <a
-                v-if="type === 'dark'"
-                class="btn group inline-flex !translate-x-0 flex-row items-center space-x-1.5 rounded border border-solid border-indigo-800 bg-indigo/20 px-3 py-1 font-body text-10 leading-130 font-normal text-white !no-underline !opacity-100 outline-offset-[-1px] transition-all duration-200 ease-in-out hover:border-indigo-800 focus:outline focus:outline-2 focus:outline-canary"
-                :href="item.url"
-                target="_blank"
-              >
-                <span class="btn__text">
-                  Learn More
-                  <div
-                    class="btn__border block h-px w-0 bg-white transition-all duration-200 ease-in-out group-hover:w-full"
-                  ></div>
-                </span>
-              </a>
-            </div>
+            <ButtonGroup
+              :type="type"
+              size="small"
+              :items="[{ button: { url: item.url, title: 'Learn More', target: '_blank' } }]"
+            />
           </div>
         </article>
       </div>
@@ -103,6 +63,8 @@
 <script setup>
 import { ref, onMounted, defineProps } from "vue";
 import axios from "axios";
+import TextGroup from "../TextGroup/TextGroup.vue";
+import ButtonGroup from "../ButtonGroup/ButtonGroup.vue";
 
 // Define Props
 const props = defineProps({

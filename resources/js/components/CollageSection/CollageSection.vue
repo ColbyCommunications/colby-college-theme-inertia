@@ -66,7 +66,7 @@
                 :srcset="images[2].srcset"
                 :src="images[2].src"
                 :sizeMobile="images[2].image.sizes.Rectangle"
-                :siteDesktop="images[2].image.sizes.Rectangle"
+                :size-desktop="images[2].image.sizes.Rectangle"
                 :alt="images[2].alt"
               />
             </div>
@@ -80,8 +80,8 @@
 <script setup>
 import { defineProps } from "vue";
 
-import Context from "../Context/Context.vue";
-import Picture from "../Picture/Picture.vue";
+import Context from "@/js/components/Context/Context.vue";
+import Picture from "@/js/components/Picture/Picture.vue";
 
 // Define Props using standard Vue object syntax
 const props = defineProps({

@@ -23,22 +23,20 @@
           :href="buttons[0].button.url"
           :aria-label="ariaLabel"
         >
-          <picture v-if="useDesktopMobile">
-            <source media="(min-width:768px)" :srcset="image.sizes.desktop" />
-            <img
-              class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
-              :src="image.sizes.mobile || image.src"
-              :alt="image?.alt || ''"
-            />
-          </picture>
-          <picture v-else>
-            <source media="(min-width:768px)" :srcset="image.srcset" />
-            <img
-              class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
-              :src="image.src"
-              :alt="image?.alt || ''"
-            />
-          </picture>
+          <Picture
+            v-if="useDesktopMobile"
+            class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
+            :size-desktop="image.sizes.desktop"
+            :size-mobile="image.sizes.mobile || image.src"
+            :alt="image?.alt || ''"
+          />
+          <Picture
+            v-else
+            class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
+            :size-desktop="image.srcset"
+            :size-mobile="image.src"
+            :alt="image?.alt || ''"
+          />
         </a>
         <div
           v-else
@@ -49,22 +47,20 @@
             isMediaCoverageClass,
           ]"
         >
-          <picture v-if="useDesktopMobile">
-            <source media="(min-width:768px)" :srcset="image.sizes.desktop" />
-            <img
-              class="w-full object-cover"
-              :src="image.sizes.mobile || image.src"
-              :alt="image?.alt || ''"
-            />
-          </picture>
-          <picture v-else>
-            <source media="(min-width:768px)" :srcset="image.srcset" />
-            <img
-              class="w-full object-cover"
-              :src="image?.src"
-              :alt="image.alt || ''"
-            />
-          </picture>
+          <Picture
+            v-if="useDesktopMobile"
+            class="w-full object-cover"
+            :size-desktop="image.sizes.desktop"
+            :size-mobile="image.sizes.mobile || image.src"
+            :alt="image?.alt || ''"
+          />
+          <Picture
+            v-else
+            class="w-full object-cover"
+            :size-desktop="image.srcset"
+            :size-mobile="image?.src"
+            :alt="image.alt || ''"
+          />
         </div>
       </template>
 
@@ -91,6 +87,7 @@
 import { computed } from "vue";
 import TextGroup from "../TextGroup/TextGroup.vue";
 import ButtonGroup from "../ButtonGroup/ButtonGroup.vue";
+import Picture from "../Picture/Picture.vue";
 
 const props = defineProps({
   apiSource: { type: String, default: "" },

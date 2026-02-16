@@ -13,12 +13,11 @@
 </template>
 
 <script setup>
-import Article from "../Article/Article.vue";
+import Article from "@/js/components/Article/Article.vue";
 
 defineProps({
   items: {
     type: Array,
-    required: true,
     default: () => [],
   },
 });

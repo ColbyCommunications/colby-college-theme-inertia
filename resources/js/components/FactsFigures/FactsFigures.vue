@@ -27,17 +27,13 @@
 
             <!-- image -->
             <div class="facts-figures__image md:col-span-5 md:order-[-1] mt-12 md:mt-0">
-                <picture v-if="image">
-                    <source
-                        media="(min-width:768px)"
-                        :srcset="image?.sizes?.Square || image?.srcset"
-                    />
-                    <img
-                        class="w-full h-full object-cover"
-                        :src="image?.sizes?.Square || image?.src"
-                        :alt="image?.alt || ''"
-                    />
-                </picture>
+                <Picture
+                    v-if="image"
+                    class="w-full h-full object-cover"
+                    :size-desktop="image?.sizes?.Square || image?.srcset"
+                    :size-mobile="image?.sizes?.Square || image?.src"
+                    :alt="image?.alt || ''"
+                />
             </div>
         </div>
 
@@ -71,8 +67,9 @@
 </template>
 
 <script setup>
-    import Context from '../Context/Context.vue';
-    import AnimatedBorder from '../AnimatedBorder/AnimatedBorder.vue';
+    import Context from '@/js/components/Context/Context.vue';
+    import AnimatedBorder from '@/js/components/AnimatedBorder/AnimatedBorder.vue';
+    import Picture from '@/js/components/Picture/Picture.vue';
 
     const props = defineProps({
         heading: { type: String, default: '' },

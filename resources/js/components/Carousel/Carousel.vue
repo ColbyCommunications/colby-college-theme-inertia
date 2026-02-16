@@ -15,44 +15,22 @@
         :reverse="true"
         :heading="heading"
         :paragraph="paragraph"
-        :buttons="{ items: buttons }"
+        :buttons="{ items: basicButtonItems }"
       />
 
       <!-- API variants render a tiny, normalized context -->
       <div v-else class="context w-full space-y-5">
-        <div class="text-group">
-          <div
-            v-if="mode !== 'latest' && subheading"
-            class="text-group__subheading text-left font-extended text-12 leading-130 font-bold tracking-8 text-azure uppercase"
-            v-text="subheading"
-          />
-          <h2
-            class="text-group__heading -tracking-3 mt-2 text-left font-extended text-28 leading-110 font-normal text-indigo md:text-20"
-            v-text="heading"
-          />
-          <p
-            class="text-group__p mt-2 text-left font-body text-18 leading-130 font-normal text-indigo-800 md:text-14"
-            v-text="paragraph"
-          />
-        </div>
+        <TextGroup
+          size="small"
+          :subheading="mode !== 'latest' ? subheading : ''"
+          :heading="heading"
+          :paragraph="paragraph"
+        />
 
-        <!-- Buttons (API) -->
-        <div class="button-group flex flex-wrap gap-4">
-          <a
-            v-for="button in mode === 'faculty' ? FAbuttons : buttons"
-            :key="i"
-            class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary"
-            :href="button.url"
-            target="_blank"
-          >
-            <span class="btn__text">
-              {{ button.title }}
-              <div
-                class="btn__border block h-px w-0 bg-indigo transition-all duration-200 ease-in-out group-hover:w-full"
-              />
-            </span>
-          </a>
-        </div>
+        <ButtonGroup
+          :items="apiLeftButtonItems"
+          size="small"
+        />
 
         <!-- Inline controls (for grid modes) -->
         <div
@@ -105,17 +83,12 @@
               :key="'basic-' + idx"
               class="carousel__slide glide__slide"
             >
-              <picture>
-                <source
-                  media="(min-width:768px)"
-                  :srcset="item.image?.sizes?.Rectangle"
-                />
-                <img
-                  class="h-full w-full object-cover"
-                  :src="item.image?.sizes?.Rectangle_mobile"
-                  :alt="item.image?.alt || ''"
-                />
-              </picture>
+              <Picture
+                class="h-full w-full object-cover"
+                :size-desktop="item.image?.sizes?.Rectangle"
+                :size-mobile="item.image?.sizes?.Rectangle_mobile"
+                :alt="item.image?.alt || ''"
+              />
             </div>
 
             <!-- API modes share the same markup, just different data shape -->
@@ -177,40 +150,19 @@
           }"
         >
           <div class="context space-y-5">
-            <div class="text-group">
-              <div
-                v-if="primaryCategory(it)"
-                class="text-group__subheading text-left font-extended text-12 leading-130 font-bold tracking-8 text-azure uppercase"
-                v-text="primaryCategory(it)"
-              />
-              <h2
-                class="text-group__heading -tracking-3 text-left font-extended text-20 leading-110 font-normal text-indigo"
-                :class="{ 'mt-2': primaryCategory(it) }"
-                v-html="title(it)"
-              />
-              <p
-                class="text-group__p mt-2 text-left font-body text-14 leading-130 font-normal text-indigo-800"
-                v-text="summary(it)"
-              />
-            </div>
+            <TextGroup
+              size="small"
+              :static="true"
+              :subheading="primaryCategory(it)"
+              :heading="title(it)"
+              :paragraph="summary(it)"
+            />
 
-            <div
-              class="button-group flex flex-wrap gap-4"
+            <ButtonGroup
               v-if="mode === 'latest'"
-            >
-              <a
-                class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary"
-                :href="it.guid?.rendered || '#'"
-                target="_blank"
-              >
-                <span class="btn__text">
-                  {{ cta }}
-                  <div
-                    class="btn__border block h-px w-0 bg-indigo transition-all duration-200 ease-in-out group-hover:w-full"
-                  />
-                </span>
-              </a>
-            </div>
+              :items="[{ button: { url: it.guid?.rendered || '#', title: cta, target: '_blank' } }]"
+              size="small"
+            />
           </div>
         </div>
       </div>
@@ -242,6 +194,9 @@ import axios from "axios";
 import Glide from "@glidejs/glide";
 import Context from "../Context/Context.vue";
 import ArrowControls from "../ArrowControls/ArrowControls.vue";
+import TextGroup from "../TextGroup/TextGroup.vue";
+import ButtonGroup from "../ButtonGroup/ButtonGroup.vue";
+import Picture from "../Picture/Picture.vue";
 
 /* =========================
      Props (normalized)
@@ -301,6 +256,18 @@ watch(
     subheading.value = m === "academic" || m === "faculty" ? props.api : "";
   },
   { immediate: true },
+);
+
+const apiLeftButtonItems = computed(() =>
+  (mode.value === "faculty" ? props.FAbuttons : props.buttons).map((btn) => ({
+    button: { url: btn.url, title: btn.title, target: "_blank" },
+  })),
+);
+
+const basicButtonItems = computed(() =>
+  props.buttons.map((btn) => ({
+    button: { url: btn.url, title: btn.title, target: btn.target || "" },
+  })),
 );
 
 /* =========================
