@@ -1,6 +1,0 @@
-import{c as a,d as o}from"./iframe-BI_3ezP0.js";import"./preload-helper-PPVm8Dsz.js";const s=["innerHTML"],t={__name:"Paragraph",props:{text:{type:String,default:""}},setup(r){return(c,n)=>(o(),a("div",{class:"colby-paragraph-block",innerHTML:r.text},null,8,s))}};t.__docgenInfo={exportName:"default",displayName:"Paragraph",description:"",tags:{},props:[{name:"text",type:{name:"string"},defaultValue:{func:!1,value:'""'}}],sourceFiles:["/home/runner/work/colby-college-theme-inertia/colby-college-theme-inertia/resources/js/components/Paragraph/Paragraph.vue"]};const l={title:"Core Components/Paragraph",component:t,tags:["autodocs"]},e={name:"Default",args:{text:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed leo odio, ultrices quis auctor eu, fermentum at dolor. Vivamus cursus lorem ut ultrices iaculis."}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
-  name: "Default",
-  args: {
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed leo odio, ultrices quis auctor eu, fermentum at dolor. Vivamus cursus lorem ut ultrices iaculis."
-  }
-}`,...e.parameters?.docs?.source}}};const m=["Default"];export{e as Default,m as __namedExportsOrder,l as default};
