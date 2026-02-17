@@ -13,13 +13,29 @@ add_action('wp_enqueue_scripts', function() {
     wp_enqueue_style('material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons+Sharp', [], null);
 });
 
-// Register all ACF blocks from block.json files in components directory
+// Register all ACF blocks in component folders from ACF directories
 add_action('init', function () {
-    // Find all block.json files in components folders
-    $components = glob(get_theme_file_path('resources/js/components/*/block.json'));
 
-    foreach ($components as $json) {
-        register_block_type(dirname($json));
+    // Get all component ACF directories
+    $acf_dirs = glob(
+        get_theme_file_path('resources/js/components/*/acf'),
+        GLOB_ONLYDIR
+    );
+
+    foreach ($acf_dirs as $acf_dir) {
+
+        $block_json  = $acf_dir . '/block.json';
+        $fields_file = $acf_dir . '/fields.php';
+
+        // Register block if block.json exists
+        if ( file_exists($block_json) ) {
+            register_block_type($acf_dir);
+        }
+
+        // Include ACF fields if fields.php exists
+        if ( file_exists($fields_file) ) {
+            include_once $fields_file;
+        }
     }
 });
 

@@ -1,0 +1,115 @@
+<?php
+
+if ( function_exists( 'acf_add_local_field_group' ) ) :
+
+acf_add_local_field_group( array(
+	'key' => 'group_6324825d6bae7',
+	'title' => 'List Section',
+	'fields' => array(
+		array(
+			'key' => 'field_63248274c1927',
+			'label' => 'Lists',
+			'name' => 'lists',
+			'aria-label' => '',
+			'type' => 'repeater',
+			'instructions' => '',
+			'required' => 1,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'collapsed' => '',
+			'min' => 0,
+			'max' => 0,
+			'layout' => 'row',
+			'button_label' => 'Add List',
+			'rows_per_page' => 20,
+			'sub_fields' => array(
+				array(
+					'key' => 'field_63248285c1928',
+					'label' => 'Heading',
+					'name' => 'heading',
+					'aria-label' => '',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+					'parent_repeater' => 'field_63248274c1927',
+				),
+				array(
+					'key' => 'field_63248292c1929',
+					'label' => 'Items',
+					'name' => 'items',
+					'aria-label' => '',
+					'type' => 'repeater',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'collapsed' => '',
+					'min' => 0,
+					'max' => 0,
+					'layout' => 'table',
+					'button_label' => 'Add Item',
+					'rows_per_page' => 20,
+					'parent_repeater' => 'field_63248274c1927',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_632482a0c192a',
+							'label' => 'Link',
+							'name' => 'link',
+							'aria-label' => '',
+							'type' => 'link',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'return_format' => 'array',
+							'parent_repeater' => 'field_63248292c1929',
+						),
+					),
+				),
+			),
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'block',
+				'operator' => '==',
+				'value' => 'acf/list-section',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+	'show_in_rest' => 0,
+) );
+
+endif;
