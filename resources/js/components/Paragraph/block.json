@@ -1,0 +1,15 @@
+{
+  "name": "acf/paragraph",
+  "title": "Paragraph",
+  "description": "A custom paragraph block.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["paragraph", "body"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

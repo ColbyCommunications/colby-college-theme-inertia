@@ -1,0 +1,15 @@
+{
+  "name": "acf/featured-events",
+  "title": "Featured Events",
+  "description": "Exclusive featured events component for ColbyArts",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["featured", "events", "media", "context"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

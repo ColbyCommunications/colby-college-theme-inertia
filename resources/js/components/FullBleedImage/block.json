@@ -1,0 +1,15 @@
+{
+  "name": "acf/full-bleed-image",
+  "title": "Full Bleed Image",
+  "description": "Large image section with caption for full width pages.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["image", "large", "full"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

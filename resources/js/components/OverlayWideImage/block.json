@@ -1,0 +1,15 @@
+{
+  "name": "acf/overlay-wide-image",
+  "title": "Overlay Wide Image",
+  "description": "Landscape image layout with context overlayed on a dimmed background.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["layout", "image", "overlay", "landscape"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

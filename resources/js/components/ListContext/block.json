@@ -1,0 +1,15 @@
+{
+  "name": "acf/list-context",
+  "title": "List Context",
+  "description": "Standard context component with accompanying large list.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["layout", "list", "context"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

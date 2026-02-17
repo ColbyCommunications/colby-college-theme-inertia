@@ -1,0 +1,15 @@
+{
+  "name": "acf/dark-interstitial",
+  "title": "Dark Interstitial",
+  "description": "Navy colored divider component, typically utilized to highlight facts and figures or breakup page monotony.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["featured", "content", "image", "divider", "dark"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

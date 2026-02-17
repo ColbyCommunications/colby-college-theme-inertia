@@ -1,0 +1,15 @@
+{
+  "name": "acf/full-bleed-hero",
+  "title": "Full Bleed Hero",
+  "description": "Hero with inset image, context, and full width background image",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["hero", "media", "image", "context", "background"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

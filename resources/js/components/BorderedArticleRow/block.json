@@ -1,0 +1,15 @@
+{
+  "name": "acf/bordered-article-row",
+  "title": "Bordered Article Row",
+  "description": "Special article grid layout featuring borders.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["layout", "bordered", "article", "row"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

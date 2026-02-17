@@ -1,0 +1,15 @@
+{
+  "name": "acf/section-nav",
+  "title": "Section Navigation",
+  "description": "Top level landing page subnavigation, typically found below the hero. Used for navigation within a site subdivision.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["list", "section", "sub", "navigation"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

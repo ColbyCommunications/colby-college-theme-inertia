@@ -1,0 +1,15 @@
+{
+  "name": "acf/overlay-hero",
+  "title": "Overlay Hero",
+  "description": "Dynamic hero component typically deployed on all first-level landing pages, featuring text overlay.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["hero", "image", "heading", "landscape"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

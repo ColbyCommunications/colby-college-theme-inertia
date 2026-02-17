@@ -1,0 +1,15 @@
+{
+  "name": "acf/article-section",
+  "title": "Article Section",
+  "description": "Layout dedicated to article display. Features several variants including a carousel.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["layout", "article", "section", "carousel"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

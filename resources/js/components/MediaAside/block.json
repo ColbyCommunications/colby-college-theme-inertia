@@ -1,0 +1,15 @@
+{
+  "name": "acf/media-aside",
+  "title": "Media Aside",
+  "description": "Large image with small context. Supports carousel functionality.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["media", "context", "aside", "carousel"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

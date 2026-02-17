@@ -1,0 +1,15 @@
+{
+  "name": "acf/endpoint-filter",
+  "title": "Endpoint Filter",
+  "description": "Exclusive filter component for ColbyArts",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["filter", "events", "context"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

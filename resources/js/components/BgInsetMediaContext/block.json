@@ -1,0 +1,15 @@
+{
+  "name": "acf/bg-inset-media-context",
+  "title": "Background Inset Media Context",
+  "description": "Container component for the media context supporting background textures.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["media", "context", "background", "inset"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

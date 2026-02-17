@@ -1,0 +1,15 @@
+{
+  "name": "acf/testimonial-carousel",
+  "title": "Testimonial Carousel",
+  "description": "Testimonial section with carousel functionality and image support.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["featured", "testimonial", "quote", "carousel", "image"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

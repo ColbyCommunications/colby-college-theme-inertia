@@ -1,0 +1,15 @@
+{
+  "name": "acf/table",
+  "title": "Table",
+  "description": "Standard table layout with Colby API integrations for several data types.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["table", "row", "column", "layout"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "acf/image-grid",
+  "title": "Image Grid",
+  "description": "Layout dedicated to a bevy of image layout styles. Supports captions.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["image", "row", "column", "layout", "grid", "caption"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

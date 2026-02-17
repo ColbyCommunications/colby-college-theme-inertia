@@ -1,0 +1,15 @@
+{
+  "name": "acf/hw-image-section",
+  "title": "Half-Width Image Section",
+  "description": "Traditional side-by-side layout for any style of media with cooresponding context but in a nearly full-width display.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["media", "image", "context", "layout", "half", "width"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

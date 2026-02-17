@@ -1,0 +1,15 @@
+{
+  "name": "acf/inset-widget",
+  "title": "Inset Widget",
+  "description": "Decorative interstitial block",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["widget", "inset", "context"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

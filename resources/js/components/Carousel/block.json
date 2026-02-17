@@ -1,0 +1,15 @@
+{
+  "name": "acf/carousel",
+  "title": "Carousel",
+  "description": "Standard carousel component section.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["carousel", "slider", "image", "news"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

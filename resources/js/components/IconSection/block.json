@@ -1,0 +1,15 @@
+{
+  "name": "acf/icon-section",
+  "title": "Icon Section",
+  "description": "Section dedicated to grouping svg assets or transparent pngs.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["icon", "context", "section"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

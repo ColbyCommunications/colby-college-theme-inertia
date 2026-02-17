@@ -1,0 +1,15 @@
+{
+  "name": "acf/list-block-grid",
+  "title": "List Block Grid",
+  "description": "Dedicated grid for list blocks",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["list", "block", "grid"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

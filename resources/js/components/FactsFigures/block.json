@@ -1,0 +1,15 @@
+{
+  "name": "acf/facts-figures",
+  "title": "Facts & Figures",
+  "description": "Informational section supporting both an image and supplementary factoids.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["featured", "facts", "figures", "numbers", "image"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

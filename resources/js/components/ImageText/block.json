@@ -1,0 +1,15 @@
+{
+  "name": "acf/image-text",
+  "title": "Image with Text",
+  "description": "A custom image with text block.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["paragraph", "body", "image"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

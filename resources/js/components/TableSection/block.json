@@ -1,0 +1,15 @@
+{
+  "name": "acf/table-section",
+  "title": "Table Section",
+  "description": "Dedicated section for full-width inset pages.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["table", "row", "column", "layout", "section"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

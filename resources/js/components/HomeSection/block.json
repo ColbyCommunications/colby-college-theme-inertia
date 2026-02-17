@@ -1,0 +1,15 @@
+{
+  "name": "acf/home-section",
+  "title": "Home Section",
+  "description": "Advancement site exclusive block for rendering latest events and alumni news from the Colby News site",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["home", "context", "section", "news", "events"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

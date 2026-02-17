@@ -1,0 +1,15 @@
+{
+  "name": "acf/block-quote",
+  "title": "Block Quote",
+  "description": "Large interstitial text to facilitate body copy quotes.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["layout", "context", "paragraph", "quote"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "acf/collage-section",
+  "title": "Collage Section",
+  "description": "Decorative section with curated image group and context",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["collage", "context", "media", "section", "image"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

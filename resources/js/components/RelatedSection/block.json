@@ -1,0 +1,15 @@
+{
+  "name": "acf/related-section",
+  "title": "Related Section",
+  "description": "Component typically found at the bottom of post style pages.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["media", "context", "section", "related"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

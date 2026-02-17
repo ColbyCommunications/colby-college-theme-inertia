@@ -1,0 +1,15 @@
+{
+  "name": "acf/related-content",
+  "title": "Related Content",
+  "description": "Section typically found at the bottom of full-width page styles for links to supplementary pages.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["related", "content"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

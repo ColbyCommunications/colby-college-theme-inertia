@@ -1,0 +1,15 @@
+{
+  "name": "acf/media-context-section",
+  "title": "Media Context Section",
+  "description": "Section component dedicated to grouping media context with a decorative background",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["media", "context", "section"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

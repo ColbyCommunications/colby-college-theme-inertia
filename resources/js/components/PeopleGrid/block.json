@@ -1,0 +1,15 @@
+{
+  "name": "acf/people-grid",
+  "title": "People Grid",
+  "description": "Layout dedicated to displaying people posts for academic department and office pages.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["people", "layout", "article", "grid", "image"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

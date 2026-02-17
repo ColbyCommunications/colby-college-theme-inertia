@@ -1,0 +1,15 @@
+{
+  "name": "acf/home-hero",
+  "title": "Home Hero",
+  "description": "Large hero component, supporting both video and basic images.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["hero", "video", "image", "home", "loop"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

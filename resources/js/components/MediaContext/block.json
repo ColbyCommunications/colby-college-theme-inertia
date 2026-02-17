@@ -1,0 +1,15 @@
+{
+  "name": "acf/media-context",
+  "title": "Media Context",
+  "description": "Traditional side-by-side layout for any style of media with cooresponding context.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["media", "image", "context", "layout"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

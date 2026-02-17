@@ -1,0 +1,15 @@
+{
+  "name": "acf/image",
+  "title": "Image",
+  "description": "A custom image  block.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["image"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

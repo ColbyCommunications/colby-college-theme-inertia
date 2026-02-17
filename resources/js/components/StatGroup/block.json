@@ -1,0 +1,15 @@
+{
+  "name": "acf/stat-group",
+  "title": "Stat Group",
+  "description": "Display style component for a group of statistics with optional context.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["layout", "context", "stat", "grid", "group"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

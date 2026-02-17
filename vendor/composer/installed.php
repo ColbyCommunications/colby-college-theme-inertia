@@ -3,7 +3,7 @@
         'name' => 'colbycommunications/colby-college-theme-inertia',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'b6e29b1827246501d389fe2dec417b6e77f19276',
+        'reference' => 'ec1e24a2fead81436562937fe38e224f23e6dfce',
         'type' => 'wordpress-theme',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'colbycommunications/colby-college-theme-inertia' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'b6e29b1827246501d389fe2dec417b6e77f19276',
+            'reference' => 'ec1e24a2fead81436562937fe38e224f23e6dfce',
             'type' => 'wordpress-theme',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

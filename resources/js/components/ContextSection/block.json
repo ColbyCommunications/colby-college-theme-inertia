@@ -1,0 +1,15 @@
+{
+  "name": "acf/context-section",
+  "title": "Context Section",
+  "description": "Dedicated section component for context outside of the confines of a typical component.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["context", "section", "heading", "subheading", "paragraph"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

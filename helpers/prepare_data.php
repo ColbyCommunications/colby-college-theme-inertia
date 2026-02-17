@@ -2,7 +2,6 @@
 // helpers/normalize_types.php content (acf_normalize_types function)
 function acf_normalize_types(array $data, $parent_key = null): array
 {
-    var_dump($data);
     foreach ($data as $key => $value) {
 
 

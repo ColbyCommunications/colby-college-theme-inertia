@@ -1,0 +1,15 @@
+{
+  "name": "acf/intro-context",
+  "title": "Intro Context",
+  "description": "Two column context section component typically deployed as an alternative aesthetic for introductory context",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["introductory", "context", "section"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "acf/accordion",
+  "title": "Accordion",
+  "description": "A custom accordion block.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["accordion", "panels"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

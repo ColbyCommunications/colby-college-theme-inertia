@@ -1,0 +1,15 @@
+{
+  "name": "acf/list-section",
+  "title": "List Section",
+  "description": "Basic layout and section dedicated for the display of groups of lists.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["list", "section", "unordered", "layout"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}

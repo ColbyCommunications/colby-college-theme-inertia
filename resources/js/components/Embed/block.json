@@ -1,0 +1,15 @@
+{
+  "name": "acf/embed",
+  "title": "Embed",
+  "description": "A custom block that supports embed code.",
+  "category": "layout",
+  "icon": "c",
+  "keywords": ["layout", "context", "embed"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  }
+}
