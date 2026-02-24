@@ -1,0 +1,12 @@
+import{c as n,d as s}from"./iframe-BfBFAde5.js";import"./preload-helper-PPVm8Dsz.js";const o=["innerHTML"],a={__name:"Wysiwyg",props:{content:{type:String,default:""}},setup(e){return(c,r)=>(s(),n("div",{class:"wysiwyg [&>.wp-block-paragraph+.wp-block-heading]:mt-20 [&>.wp-block-paragraph+.colby-image-block]:mt-20 [&>.wp-block-heading+.wp-block-heading]:mt-8",innerHTML:e.content},null,8,o))}};a.__docgenInfo={exportName:"default",displayName:"Wysiwyg",description:"",tags:{},props:[{name:"content",type:{name:"string"},defaultValue:{func:!1,value:'""'}}],sourceFiles:["/home/runner/work/colby-college-theme-inertia/colby-college-theme-inertia/resources/js/components/Wysiwyg/Wysiwyg.vue"]};const{expect:i}=__STORYBOOK_MODULE_TEST__,m={title:"Core Components/Wysiwyg",component:a,tags:["autodocs"]},t={name:"Default",args:{content:'<h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2><p>Lorem ipsum dolor sit amet, <a href="/">consectetur</a> adipiscing elit. Sed leo odio, ultrices quis auctor eu, fermentum at dolor. Vivamus cursus lorem ut ultrices iaculis. Phasellus et ante nec urna facilisis fringilla.</p><h3>Spring 2023</h3><p>Fusce tincidunt, magna sit amet varius porttitor, orci metus lacinia mi, vel vulputate nisl diam lacinia augue. In lacinia nisl a nisl condimentum laoreet.</p>'},play:async({canvas:e})=>{await i(e.getByText("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")).toBeInTheDocument(),await i(e.getByText("Spring 2023")).toBeInTheDocument()}};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
+  name: "Default",
+  args: {
+    content: '<h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2><p>Lorem ipsum dolor sit amet, <a href="/">consectetur</a> adipiscing elit. Sed leo odio, ultrices quis auctor eu, fermentum at dolor. Vivamus cursus lorem ut ultrices iaculis. Phasellus et ante nec urna facilisis fringilla.</p><h3>Spring 2023</h3><p>Fusce tincidunt, magna sit amet varius porttitor, orci metus lacinia mi, vel vulputate nisl diam lacinia augue. In lacinia nisl a nisl condimentum laoreet.</p>'
+  },
+  play: async ({
+    canvas
+  }) => {
+    await expect(canvas.getByText("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")).toBeInTheDocument();
+    await expect(canvas.getByText("Spring 2023")).toBeInTheDocument();
+  }
+}`,...t.parameters?.docs?.source}}};const p=["Default"];export{t as Default,p as __namedExportsOrder,m as default};

@@ -1,0 +1,14 @@
+import{c as r,e as s,d as n}from"./iframe-BfBFAde5.js";import{_ as i}from"./ArticleGrid-KXy-Onmo.js";import"./preload-helper-PPVm8Dsz.js";import"./index-C0Zqfgkc.js";import"./TextGroup-T77HtXsG.js";import"./Article-D1DehH2s.js";import"./ButtonGroup-DeVPz35K.js";import"./Button-u50yI3p6.js";import"./Picture-CxKtrm5G.js";const p={class:"people-grid"},a={__name:"PeopleGrid",props:{people:{type:Array,default:()=>[]}},setup(e){return(c,m)=>(n(),r("div",p,[s(i,{display_posts_method:"manual",columns:4,items:e.people,image_orientation:"portrait"},null,8,["items"])]))}};a.__docgenInfo={exportName:"default",displayName:"PeopleGrid",description:"",tags:{},props:[{name:"people",type:{name:"array"},defaultValue:{func:!1,value:"[]"}}],sourceFiles:["/home/runner/work/colby-college-theme-inertia/colby-college-theme-inertia/resources/js/components/PeopleGrid/PeopleGrid.vue"]};const{expect:t}=__STORYBOOK_MODULE_TEST__,B={title:"Core Components/People Grid",component:a,tags:["autodocs"]},l=[{heading:"Dr. Jane Smith",subheading:"Professor of Biology",paragraph:"Department Chair, Environmental Studies Program",url:"#",image:{sizes:{desktop:"https://placehold.co/300x400",mobile:"https://placehold.co/300x400"},alt:"Dr. Jane Smith"}},{heading:"Dr. John Doe",subheading:"Associate Professor of Chemistry",paragraph:"Research focus on organic chemistry and catalysis",url:"#",image:{sizes:{desktop:"https://placehold.co/300x400",mobile:"https://placehold.co/300x400"},alt:"Dr. John Doe"}},{heading:"Dr. Emily Chen",subheading:"Assistant Professor of Physics",paragraph:"Quantum computing and theoretical physics",url:"#",image:{sizes:{desktop:"https://placehold.co/300x400",mobile:"https://placehold.co/300x400"},alt:"Dr. Emily Chen"}},{heading:"Prof. Michael Brown",subheading:"Professor of Mathematics",paragraph:"Applied mathematics and data science",url:"#",image:{sizes:{desktop:"https://placehold.co/300x400",mobile:"https://placehold.co/300x400"},alt:"Prof. Michael Brown"}}],o={name:"Default",args:{people:l},play:async({canvas:e})=>{await t(e.getByText("Dr. Jane Smith")).toBeInTheDocument(),await t(e.getByText("Dr. John Doe")).toBeInTheDocument(),await t(e.getByText("Dr. Emily Chen")).toBeInTheDocument(),await t(e.getByText("Prof. Michael Brown")).toBeInTheDocument()}};o.parameters={...o.parameters,docs:{...o.parameters?.docs,source:{originalSource:`{
+  name: "Default",
+  args: {
+    people: samplePeople
+  },
+  play: async ({
+    canvas
+  }) => {
+    await expect(canvas.getByText("Dr. Jane Smith")).toBeInTheDocument();
+    await expect(canvas.getByText("Dr. John Doe")).toBeInTheDocument();
+    await expect(canvas.getByText("Dr. Emily Chen")).toBeInTheDocument();
+    await expect(canvas.getByText("Prof. Michael Brown")).toBeInTheDocument();
+  }
+}`,...o.parameters?.docs?.source}}};const T=["Default"];export{o as Default,T as __namedExportsOrder,B as default};
