@@ -1,4 +1,5 @@
 import CollageSection from "./CollageSection.vue";
+import { expect } from "storybook/test";
 
 // The default export metadata for your component
 export default {
@@ -58,5 +59,33 @@ export const Primary = {
   name: "Default",
   args: {
     ...globalArgs,
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
+    await expect(
+      canvas.getByText(globalArgs.paragraph),
+    ).toBeInTheDocument();
+  },
+};
+
+export const SingleImage = {
+  name: "Single Image",
+  args: {
+    ...globalArgs,
+    images: [globalArgs.images[0]],
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
+  },
+};
+
+export const TwoImages = {
+  name: "Two Images",
+  args: {
+    ...globalArgs,
+    images: [globalArgs.images[0], globalArgs.images[1]],
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
   },
 };

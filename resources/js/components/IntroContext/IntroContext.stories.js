@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import IntroContext from "./IntroContext.vue";
 
 export default {
@@ -21,6 +22,12 @@ export const Default = {
       },
     ],
   },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("Dare Northward Overview"),
+    ).toBeInTheDocument();
+    await expect(canvas.getByText("Colby Impact")).toBeInTheDocument();
+  },
 };
 
 export const Inset = {
@@ -29,5 +36,10 @@ export const Inset = {
     ...Default.args,
     inset: true,
     size: "large",
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("Dare Northward Overview"),
+    ).toBeInTheDocument();
   },
 };

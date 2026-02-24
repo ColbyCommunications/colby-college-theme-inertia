@@ -1,4 +1,5 @@
 import BorderedArticleRow from "./BorderedArticleRow.vue";
+import { expect } from "storybook/test";
 
 // The default export metadata for your component
 export default {
@@ -63,5 +64,16 @@ export const Primary = {
   name: "Default",
   args: {
     items: mockItems,
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("Future of Artificial Intelligence"),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Sustainable Energy Solutions"),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Modern Architecture Trends"),
+    ).toBeInTheDocument();
   },
 };

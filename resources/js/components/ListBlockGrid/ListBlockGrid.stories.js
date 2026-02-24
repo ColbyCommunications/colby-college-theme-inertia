@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import ListBlockGrid from "./ListBlockGrid.vue";
 
 export default {
@@ -25,6 +26,10 @@ export const TwoColumns = {
     columns: 2,
     items: [sampleItem, sampleItem, sampleItem, sampleItem],
   },
+  play: async ({ canvas }) => {
+    const headings = canvas.getAllByText("Lorem ipsum dolor sit amet");
+    await expect(headings.length).toBe(4);
+  },
 };
 
 export const ThreeColumns = {
@@ -32,5 +37,21 @@ export const ThreeColumns = {
   args: {
     columns: 3,
     items: [sampleItem, sampleItem, sampleItem],
+  },
+  play: async ({ canvas }) => {
+    const headings = canvas.getAllByText("Lorem ipsum dolor sit amet");
+    await expect(headings.length).toBe(3);
+  },
+};
+
+export const FourColumns = {
+  name: "Four Columns",
+  args: {
+    columns: 4,
+    items: [sampleItem, sampleItem, sampleItem, sampleItem],
+  },
+  play: async ({ canvas }) => {
+    const headings = canvas.getAllByText("Lorem ipsum dolor sit amet");
+    await expect(headings.length).toBe(4);
   },
 };

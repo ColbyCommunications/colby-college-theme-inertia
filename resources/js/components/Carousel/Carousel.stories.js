@@ -1,4 +1,5 @@
 import Carousel from "./Carousel.vue";
+import { expect, waitFor } from "storybook/test";
 
 // The default export metadata for your component
 export default {
@@ -103,6 +104,13 @@ export const Primary = {
       },
     ],
   },
+  play: async ({ canvas }) => {
+    await waitFor(() => {
+      expect(
+        canvas.getByText("Future of Artificial Intelligence"),
+      ).toBeInTheDocument();
+    });
+  },
 };
 
 export const AutoplayFalse = {
@@ -120,5 +128,113 @@ export const AutoplayFalse = {
         },
       },
     ],
+  },
+  play: async ({ canvas }) => {
+    await waitFor(() => {
+      expect(
+        canvas.getByText("Future of Artificial Intelligence"),
+      ).toBeInTheDocument();
+    });
+  },
+};
+
+export const WithHeadingAndParagraph = {
+  name: "With Heading and Paragraph",
+  args: {
+    render_api: false,
+    items: mockItems,
+    heading: "Latest Stories",
+    subheading: "News",
+    paragraph: "Stay up to date with the latest from Colby.",
+    buttons: [
+      {
+        button: {
+          size: "small",
+          title: "All News",
+          url: "https://www.colby.edu",
+        },
+      },
+    ],
+  },
+  play: async ({ canvas }) => {
+    await waitFor(() => {
+      expect(canvas.getByText("Latest Stories")).toBeInTheDocument();
+    });
+  },
+};
+
+export const CustomInterval = {
+  name: "Custom Interval",
+  args: {
+    render_api: false,
+    items: mockItems,
+    autoplay: true,
+    interval: 3000,
+    buttons: [
+      {
+        button: {
+          size: "small",
+          title: "All News",
+          url: "https://www.colby.edu",
+        },
+      },
+    ],
+  },
+  play: async ({ canvas }) => {
+    await waitFor(() => {
+      expect(
+        canvas.getByText("Future of Artificial Intelligence"),
+      ).toBeInTheDocument();
+    });
+  },
+};
+
+export const SingleSlide = {
+  name: "Single Slide (No Autoplay)",
+  args: {
+    render_api: false,
+    items: [mockItems[0]],
+    autoplay: true,
+    buttons: [
+      {
+        button: {
+          size: "small",
+          title: "Read More",
+          url: "https://www.colby.edu",
+        },
+      },
+    ],
+  },
+  play: async ({ canvas }) => {
+    await waitFor(() => {
+      expect(
+        canvas.getByText("Future of Artificial Intelligence"),
+      ).toBeInTheDocument();
+    });
+  },
+};
+
+export const LightType = {
+  name: "Light Type",
+  args: {
+    render_api: false,
+    items: mockItems,
+    type: "light",
+    buttons: [
+      {
+        button: {
+          size: "small",
+          title: "All News",
+          url: "https://www.colby.edu",
+        },
+      },
+    ],
+  },
+  play: async ({ canvas }) => {
+    await waitFor(() => {
+      expect(
+        canvas.getByText("Future of Artificial Intelligence"),
+      ).toBeInTheDocument();
+    });
   },
 };

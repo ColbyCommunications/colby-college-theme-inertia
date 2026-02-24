@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import OverlayWideImage from "./OverlayWideImage.vue";
 
 export default {
@@ -27,5 +28,12 @@ export const Default = {
         Landscape: "https://placehold.co/880x400",
       },
     },
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Green Colby")).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Sustainability and Stewardship"),
+    ).toBeInTheDocument();
+    await expect(canvas.getByText("Go Green at Colby")).toBeInTheDocument();
   },
 };

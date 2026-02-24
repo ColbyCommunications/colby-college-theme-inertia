@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import RelatedContent from "./RelatedContent.vue";
 
 export default {
@@ -54,5 +55,13 @@ export const Default = {
   args: {
     heading: "Related Content",
     items: sampleItems,
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Related Content")).toBeInTheDocument();
+    await expect(canvas.getByText("Campus Life at Colby")).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Research Opportunities"),
+    ).toBeInTheDocument();
+    await expect(canvas.getByText("Athletic Programs")).toBeInTheDocument();
   },
 };

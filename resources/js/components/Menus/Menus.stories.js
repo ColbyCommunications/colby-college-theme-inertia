@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import MainMenu from "./MainMenu.vue";
 import MobileMenu from "./MobileMenu.vue";
 import SocialMenu from "./SocialMenu.vue";
@@ -47,6 +48,13 @@ export const MainMenuDefault = {
     },
     template: '<MainMenu :menu="menu" :isCurrent="isCurrent" />',
   }),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Academics")).toBeInTheDocument();
+    await expect(canvas.getByText("Admissions")).toBeInTheDocument();
+    await expect(canvas.getByText("Campus Life")).toBeInTheDocument();
+    await expect(canvas.getByText("Research")).toBeInTheDocument();
+    await expect(canvas.getByText("About")).toBeInTheDocument();
+  },
 };
 
 export const MobileMenuDefault = {
@@ -65,6 +73,12 @@ export const MobileMenuDefault = {
   parameters: {
     viewport: { defaultViewport: "mobile1" },
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Academics")).toBeInTheDocument();
+    await expect(canvas.getByText("Admissions")).toBeInTheDocument();
+    await expect(canvas.getByText("Alumni")).toBeInTheDocument();
+    await expect(canvas.getByText("Parents")).toBeInTheDocument();
+  },
 };
 
 export const SocialMenuDefault = {
@@ -76,6 +90,12 @@ export const SocialMenuDefault = {
     },
     template: '<div class="bg-indigo p-4"><SocialMenu :menu="menu" /></div>',
   }),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Facebook")).toBeInTheDocument();
+    await expect(canvas.getByText("Twitter")).toBeInTheDocument();
+    await expect(canvas.getByText("Instagram")).toBeInTheDocument();
+    await expect(canvas.getByText("YouTube")).toBeInTheDocument();
+  },
 };
 
 export const ActionMenuDefault = {
@@ -87,4 +107,9 @@ export const ActionMenuDefault = {
     },
     template: '<div class="bg-indigo p-4"><ActionMenu :menu="menu" /></div>',
   }),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Facebook")).toBeInTheDocument();
+    await expect(canvas.getByText("Twitter")).toBeInTheDocument();
+    await expect(canvas.getByText("Instagram")).toBeInTheDocument();
+  },
 };

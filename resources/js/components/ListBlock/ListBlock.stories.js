@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import ListBlock from "./ListBlock.vue";
 
 export default {
@@ -26,6 +27,10 @@ export const Default = {
       },
     ],
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Bylaws")).toBeInTheDocument();
+    await expect(canvas.getByText("Read Bylaws")).toBeInTheDocument();
+  },
 };
 
 export const Dark = {
@@ -34,6 +39,9 @@ export const Dark = {
     ...Default.args,
     type: "dark",
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Bylaws")).toBeInTheDocument();
+  },
 };
 
 export const Light = {
@@ -41,5 +49,8 @@ export const Light = {
   args: {
     ...Default.args,
     type: "light",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Bylaws")).toBeInTheDocument();
   },
 };

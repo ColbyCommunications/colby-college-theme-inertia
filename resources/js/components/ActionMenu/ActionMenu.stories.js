@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import ActionMenu from "./ActionMenu.vue";
 
 export default {
@@ -5,6 +6,14 @@ export default {
   component: ActionMenu,
   tags: ["autodocs"],
 };
+
+const render = (args) => ({
+  components: { ActionMenu },
+  setup() {
+    return { args };
+  },
+  template: '<div class="bg-indigo p-10"><ActionMenu v-bind="args" /></div>',
+});
 
 export const Default = {
   name: "Default",
@@ -16,9 +25,11 @@ export const Default = {
       { title: "Contact", url: "#" },
     ],
   },
-  decorators: [
-    () => ({
-      template: '<div class="bg-indigo p-10"><story /></div>',
-    }),
-  ],
+  render,
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Apply")).toBeInTheDocument();
+    await expect(canvas.getByText("Visit")).toBeInTheDocument();
+    await expect(canvas.getByText("Give")).toBeInTheDocument();
+    await expect(canvas.getByText("Contact")).toBeInTheDocument();
+  },
 };

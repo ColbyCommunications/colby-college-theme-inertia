@@ -1,3 +1,4 @@
+import { expect, waitFor } from "storybook/test";
 import Accordion from "./Accordion.vue";
 
 export default {
@@ -23,7 +24,7 @@ export default {
   },
 };
 
-const Template = (args) => ({
+const render = (args) => ({
   components: { Accordion },
   setup() {
     return { args };
@@ -74,27 +75,107 @@ const richContentPanels = [
 
 // 1. Default (Multi-Expand)
 // Allows multiple panels to be open at once.
-export const Default = Template.bind({});
-Default.args = {
-  panels: basicPanels,
-  single: false,
-  openByDefault: false,
+export const Default = {
+  args: {
+    panels: basicPanels,
+    single: false,
+    openByDefault: false,
+  },
+  render,
+  play: async ({ canvas, userEvent }) => {
+    const buttons = canvas.getAllByRole("button");
+    const firstButton = buttons[0];
+    const secondButton = buttons[1];
+    const thirdButton = buttons[2];
+
+    // Click first panel, assert it expanded
+    await userEvent.click(firstButton);
+    await expect(firstButton).toHaveAttribute("aria-expanded", "true");
+
+    // Click second panel, assert both are expanded (multi-expand mode)
+    await userEvent.click(secondButton);
+    await expect(firstButton).toHaveAttribute("aria-expanded", "true");
+    await expect(secondButton).toHaveAttribute("aria-expanded", "true");
+
+    // Click third panel, assert all three are expanded
+    await userEvent.click(thirdButton);
+    await expect(firstButton).toHaveAttribute("aria-expanded", "true");
+    await expect(secondButton).toHaveAttribute("aria-expanded", "true");
+    await expect(thirdButton).toHaveAttribute("aria-expanded", "true");
+
+    // Click first again, assert it collapsed while others stay open
+    await userEvent.click(firstButton);
+    await expect(firstButton).toHaveAttribute("aria-expanded", "false");
+    await expect(secondButton).toHaveAttribute("aria-expanded", "true");
+    await expect(thirdButton).toHaveAttribute("aria-expanded", "true");
+
+    // Collapse third, assert it collapsed
+    await userEvent.click(thirdButton);
+    await expect(thirdButton).toHaveAttribute("aria-expanded", "false");
+    await expect(secondButton).toHaveAttribute("aria-expanded", "true");
+  },
 };
 
 // 2. Single Expand Mode (Classic Accordion)
 // Opening one panel closes the others.
-export const SingleMode = Template.bind({});
-SingleMode.args = {
-  panels: basicPanels,
-  single: true,
-  openByDefault: false,
+export const SingleMode = {
+  args: {
+    panels: basicPanels,
+    single: true,
+    openByDefault: false,
+  },
+  render,
+  play: async ({ canvas, userEvent }) => {
+    const buttons = canvas.getAllByRole("button");
+    const firstButton = buttons[0];
+    const secondButton = buttons[1];
+    const thirdButton = buttons[2];
+
+    // Click first panel, assert it expanded
+    await userEvent.click(firstButton);
+    await expect(firstButton).toHaveAttribute("aria-expanded", "true");
+
+    // Click second panel, assert first auto-closes
+    await userEvent.click(secondButton);
+    await expect(secondButton).toHaveAttribute("aria-expanded", "true");
+    await expect(firstButton).toHaveAttribute("aria-expanded", "false");
+
+    // Click third panel, assert second auto-closes
+    await userEvent.click(thirdButton);
+    await expect(thirdButton).toHaveAttribute("aria-expanded", "true");
+    await expect(secondButton).toHaveAttribute("aria-expanded", "false");
+    await expect(firstButton).toHaveAttribute("aria-expanded", "false");
+
+    // Click third again to collapse it, assert all are now closed
+    await userEvent.click(thirdButton);
+    await expect(thirdButton).toHaveAttribute("aria-expanded", "false");
+    await expect(secondButton).toHaveAttribute("aria-expanded", "false");
+    await expect(firstButton).toHaveAttribute("aria-expanded", "false");
+  },
 };
 
 // 3. Open By Default
 // Useful for FAQ pages where the first answer should be visible immediately.
-export const PreOpened = Template.bind({});
-PreOpened.args = {
-  panels: basicPanels,
-  single: true, // Usually pairs well with single mode
-  openByDefault: true,
+export const PreOpened = {
+  args: {
+    panels: basicPanels,
+    single: true, // Usually pairs well with single mode
+    openByDefault: true,
+  },
+  render,
+  play: async ({ canvas, userEvent }) => {
+    const buttons = canvas.getAllByRole("button");
+    const firstButton = buttons[0];
+    const thirdButton = buttons[2];
+
+    // Assert first panel starts expanded
+    await waitFor(() => {
+      expect(firstButton).toHaveAttribute("aria-expanded", "true");
+    });
+
+    // Click third panel, assert first auto-closes (single mode)
+    await userEvent.click(thirdButton);
+    await expect(thirdButton).toHaveAttribute("aria-expanded", "true");
+    await expect(firstButton).toHaveAttribute("aria-expanded", "false");
+  },
 };

@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import RelatedSection from "./RelatedSection.vue";
 
 export default {
@@ -35,5 +36,14 @@ export const Default = {
         },
       },
     ],
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Related Programs")).toBeInTheDocument();
+    await expect(
+      canvas.getByText("View All Programs"),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Environmental Studies"),
+    ).toBeInTheDocument();
   },
 };

@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import ContextArticleGrid from "./ContextArticleGrid.vue"; // Adjust path as needed
 
 export default {
@@ -33,7 +34,7 @@ export default {
   },
 };
 
-const Template = (args) => ({
+const render = (args) => ({
   components: { ContextArticleGrid },
   setup() {
     return { args };
@@ -89,44 +90,85 @@ const mockItems = [
 ];
 
 // --- Story 1: Manual Mode (Static Data) ---
-export const ManualData = Template.bind({});
-ManualData.args = {
-  renderApi: false,
-  subheading: "Latest Updates",
-  heading: "News & Stories",
-  paragraph: "Explore the latest happenings from around the campus and beyond.",
-  cta: "Read Story",
-  items: mockItems,
+export const ManualData = {
+  render,
+  args: {
+    renderApi: false,
+    subheading: "Latest Updates",
+    heading: "News & Stories",
+    paragraph: "Explore the latest happenings from around the campus and beyond.",
+    cta: "Read Story",
+    items: mockItems,
+  },
+  play: async ({ canvas }) => {
+    // Assert the section heading renders
+    const heading = await canvas.findByText("News & Stories");
+    await expect(heading).toBeVisible();
+
+    // Assert article content from mock data renders
+    const articleHeading = await canvas.findByText("Innovative Research in Biology");
+    await expect(articleHeading).toBeVisible();
+
+    const articleHeading2 = await canvas.findByText("New Gallery Exhibition Opens");
+    await expect(articleHeading2).toBeVisible();
+  },
 };
 
 // --- Story 2: API Mode (Default / General) ---
 // Note: This relies on the live API endpoint defined in your component.
 // If CORS is blocked in your local environment, this might show an error.
-export const ApiGeneral = Template.bind({});
-ApiGeneral.args = {
-  renderApi: true,
-  api: "", // Default endpoint
-  perPage: 3,
-  subheading: "From the Feed",
-  heading: "Latest News (Live API)",
-  paragraph: "These items are fetched directly from news.colby.edu.",
-  cta: "Read Full Story",
+export const ApiGeneral = {
+  render,
+  args: {
+    renderApi: true,
+    api: "", // Default endpoint
+    perPage: 3,
+    subheading: "From the Feed",
+    heading: "Latest News (Live API)",
+    paragraph: "These items are fetched directly from news.colby.edu.",
+    cta: "Read Full Story",
+  },
+  play: async ({ canvas }) => {
+    // API variant: just assert the heading renders (skip API interaction)
+    const heading = await canvas.findByText("Latest News (Live API)");
+    await expect(heading).toBeVisible();
+  },
 };
 
 // --- Story 3: API Mode (Arts Filter) ---
-export const ApiArts = Template.bind({});
-ApiArts.args = {
-  ...ApiGeneral.args,
-  api: "Arts",
-  heading: "Arts & Culture (Live API)",
-  paragraph: "Fetching posts with the Arts category tag.",
+export const ApiArts = {
+  render,
+  args: {
+    renderApi: true,
+    api: "Arts",
+    perPage: 3,
+    subheading: "From the Feed",
+    heading: "Arts & Culture (Live API)",
+    paragraph: "Fetching posts with the Arts category tag.",
+    cta: "Read Full Story",
+  },
+  play: async ({ canvas }) => {
+    // API variant: just assert the heading renders (skip API interaction)
+    const heading = await canvas.findByText("Arts & Culture (Live API)");
+    await expect(heading).toBeVisible();
+  },
 };
 
 // --- Story 4: API Mode (Alumni Filter) ---
-export const ApiAlumni = Template.bind({});
-ApiAlumni.args = {
-  ...ApiGeneral.args,
-  api: "Alumni",
-  heading: "Alumni News (Live API)",
-  paragraph: "Fetching posts with the Alumni category tag.",
+export const ApiAlumni = {
+  render,
+  args: {
+    renderApi: true,
+    api: "Alumni",
+    perPage: 3,
+    subheading: "From the Feed",
+    heading: "Alumni News (Live API)",
+    paragraph: "Fetching posts with the Alumni category tag.",
+    cta: "Read Full Story",
+  },
+  play: async ({ canvas }) => {
+    // API variant: just assert the heading renders (skip API interaction)
+    const heading = await canvas.findByText("Alumni News (Live API)");
+    await expect(heading).toBeVisible();
+  },
 };

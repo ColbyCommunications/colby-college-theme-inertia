@@ -1,8 +1,9 @@
+import { expect } from "storybook/test";
 import Footer from "./SiteFooter.vue";
 
-// Mock subcomponents to ensure the story renders without errors
-// if you don't have these specific components available in your Storybook environment yet.
-// If you do have them, you can remove these components: {} stubs in the Template.
+// Import subcomponents to ensure the story renders correctly.
+// If you have these available globally, you can remove these imports
+// and the 'components' list in the render function.
 import ColbyLogo from "../Logos/ColbyLogo.vue";
 import AthleticsLogo from "../Logos/AthleticsLogo.vue";
 import ActionMenu from "../Menus/ActionMenu.vue";
@@ -20,7 +21,7 @@ export default {
   },
 };
 
-const Template = (args) => ({
+const render = (args) => ({
   components: {
     Footer,
     ColbyLogo,
@@ -62,10 +63,26 @@ const sampleAddress = {
   text: "4000 Mayflower Hill<br>Waterville, ME 04901",
 };
 
-export const Default = Template.bind({});
-Default.args = {
-  url: "https://www.colby.edu",
-  phone: "207-859-4000",
-  address: sampleAddress,
-  menus: sampleMenus,
+export const Default = {
+  args: {
+    url: "https://www.colby.edu",
+    phone: "207-859-4000",
+    address: sampleAddress,
+    menus: sampleMenus,
+  },
+  render,
+  play: async ({ canvas }) => {
+    // Assert footer menu items render
+    await expect(canvas.getByText("Admissions")).toBeVisible();
+    await expect(canvas.getByText("Academics")).toBeVisible();
+    await expect(canvas.getByText("Campus Life")).toBeVisible();
+    await expect(canvas.getByText("Alumni")).toBeVisible();
+
+    // Assert action menu items render
+    await expect(canvas.getByText("Contact Colby")).toBeVisible();
+    await expect(canvas.getByText("Support Colby")).toBeVisible();
+
+    // Assert phone number renders
+    await expect(canvas.getByText("207-859-4000")).toBeVisible();
+  },
 };

@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import ListSection from "./ListSection.vue";
 
 export default {
@@ -38,5 +39,33 @@ export const Default = {
         ],
       },
     ],
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Sciences")).toBeInTheDocument();
+    await expect(canvas.getByText("Humanities")).toBeInTheDocument();
+    await expect(canvas.getByText("Social Sciences")).toBeInTheDocument();
+    await expect(canvas.getByText("Biology")).toBeInTheDocument();
+    await expect(canvas.getByText("Economics")).toBeInTheDocument();
+  },
+};
+
+export const WithUrlFallback = {
+  name: "With URL Fallback",
+  args: {
+    lists: [
+      {
+        heading: "Resources",
+        items: [
+          { link: { title: "Library", url: "#" } },
+          { url: "#", link: { title: "IT Help Desk" } },
+          { link: { title: "Campus Map", url: "#" } },
+        ],
+      },
+    ],
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Resources")).toBeInTheDocument();
+    await expect(canvas.getByText("Library")).toBeInTheDocument();
+    await expect(canvas.getByText("IT Help Desk")).toBeInTheDocument();
   },
 };

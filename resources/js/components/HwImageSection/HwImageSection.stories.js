@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import HwImageSection from "./HwImageSection.vue";
 
 export default {
@@ -29,6 +30,15 @@ export const Default = {
       },
     },
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Majors and Minors")).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Majors and Minor at Colby"),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByAltText("Placeholder image"),
+    ).toBeInTheDocument();
+  },
 };
 
 export const Reverse = {
@@ -37,6 +47,9 @@ export const Reverse = {
     ...Default.args,
     reverse: true,
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Majors and Minors")).toBeInTheDocument();
+  },
 };
 
 export const Light = {
@@ -44,5 +57,8 @@ export const Light = {
   args: {
     ...Default.args,
     type: "light",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Majors and Minors")).toBeInTheDocument();
   },
 };

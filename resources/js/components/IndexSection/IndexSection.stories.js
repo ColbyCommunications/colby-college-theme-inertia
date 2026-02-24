@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import IndexSection from "./IndexSection.vue";
 
 export default {
@@ -21,9 +22,21 @@ export const Default = {
       ],
     },
     table: {
-      heading: "Directory",
-      renderApi: true,
-      externalItems: false,
+      renderApi: false,
+      api: "Departments",
+      externalItems: [
+        { post_title: "Biology", post_name: "biology" },
+        { post_title: "Chemistry", post_name: "chemistry" },
+        { post_title: "Computer Science", post_name: "computer-science" },
+      ],
     },
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("Faculty & Staff Directory"),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Departments & Programs"),
+    ).toBeInTheDocument();
   },
 };

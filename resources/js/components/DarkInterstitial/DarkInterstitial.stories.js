@@ -1,4 +1,5 @@
 import DarkInterstitial from "./DarkInterstitial.vue";
+import { expect } from "storybook/test";
 
 // The default export metadata for your component
 export default {
@@ -15,6 +16,16 @@ export const Primary = {
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
+  play: async ({ canvas }) => {
+    // Both subheading and heading are "Lorem ipsum", so use getAllByText
+    const loremElements = canvas.getAllByText("Lorem ipsum");
+    await expect(loremElements.length).toBeGreaterThanOrEqual(2);
+    await expect(
+      canvas.getByText(
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      ),
+    ).toBeInTheDocument();
+  },
 };
 
 export const Facts = {
@@ -28,6 +39,12 @@ export const Facts = {
     ],
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  play: async ({ canvas }) => {
+    // Both subheading and heading are "Lorem ipsum", so use getAllByText
+    const loremElements = canvas.getAllByText("Lorem ipsum");
+    await expect(loremElements.length).toBeGreaterThanOrEqual(2);
+    await expect(canvas.getAllByText("100%").length).toBeGreaterThan(0);
   },
 };
 
@@ -76,5 +93,38 @@ export const Images = {
     ],
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  play: async ({ canvas }) => {
+    // Both subheading and heading are "Lorem ipsum", so use getAllByText
+    const loremElements = canvas.getAllByText("Lorem ipsum");
+    await expect(loremElements.length).toBeGreaterThanOrEqual(2);
+  },
+};
+
+export const WithoutIcon = {
+  name: "Without Icon",
+  args: {
+    subheading: "Campus Update",
+    heading: "New Facilities",
+    icon: false,
+    paragraph: "Colby is investing in state-of-the-art facilities for students.",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Campus Update")).toBeInTheDocument();
+    await expect(canvas.getByText("New Facilities")).toBeInTheDocument();
+  },
+};
+
+export const WithoutFacts = {
+  name: "Without Facts or Images",
+  args: {
+    subheading: "Quick Info",
+    heading: "Important Dates",
+    icon: true,
+    paragraph: "Check the academic calendar for important deadlines.",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Quick Info")).toBeInTheDocument();
+    await expect(canvas.getByText("Important Dates")).toBeInTheDocument();
   },
 };

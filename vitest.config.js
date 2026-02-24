@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 import vue from "@vitejs/plugin-vue";
 import svgLoader from "vite-svg-loader";
+import tailwindcss from "@tailwindcss/vite";
 
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 
@@ -15,6 +16,7 @@ const dirname =
     : path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  plugins: [vue(), svgLoader(), tailwindcss()],
   resolve: {
     alias: {
       "@": path.resolve(dirname, "resources"),
@@ -25,11 +27,11 @@ export default defineConfig({
       {
         extends: true,
         plugins: [
-          vue(),
-          svgLoader(),
           storybookTest({
             configDir: path.join(dirname, ".storybook"),
-            storybookScript: "npx storybook dev -p 6006 --no-open",
+            tags: {
+              exclude: ["skip-test"],
+            },
           }),
         ],
         test: {
@@ -40,7 +42,7 @@ export default defineConfig({
             provider: playwright({}),
             instances: [{ browser: "chromium" }],
           },
-          setupFiles: ["./.storybook/vitest.setup.js"],
+          setupFiles: [".storybook/vitest.setup.js"],
         },
       },
     ],

@@ -1,4 +1,5 @@
 import ButtonGroup from "./ButtonGroup.vue";
+import { expect } from "storybook/test";
 
 // The default export metadata for your component
 export default {
@@ -18,6 +19,11 @@ export const Primary = {
     url: "https://www.colby.edu",
     items: globalItems,
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("button1")).toBeInTheDocument();
+    await expect(canvas.getByText("button2")).toBeInTheDocument();
+    await expect(canvas.getByText("button3")).toBeInTheDocument();
+  },
 };
 
 export const AlignCol = {
@@ -27,6 +33,9 @@ export const AlignCol = {
     url: "https://www.colby.edu",
     items: globalItems,
     align: "column",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("button1")).toBeInTheDocument();
   },
 };
 
@@ -38,6 +47,9 @@ export const BigButtonGroup = {
     items: globalItems,
     size: "large",
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("button1")).toBeInTheDocument();
+  },
 };
 
 export const Dark = {
@@ -47,5 +59,8 @@ export const Dark = {
     url: "https://www.colby.edu",
     items: globalItems,
     type: "dark",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("button1")).toBeInTheDocument();
   },
 };

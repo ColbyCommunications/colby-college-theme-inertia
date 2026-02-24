@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import FullBleedHero from "./FullBleedHero.vue";
 
 export default {
@@ -30,6 +31,15 @@ export const Dark = {
       },
     },
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Lorem ipsum")).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Lorem ipsum dolor sit amet"),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByAltText("Placeholder image"),
+    ).toBeInTheDocument();
+  },
 };
 
 export const Light = {
@@ -37,5 +47,53 @@ export const Light = {
   args: {
     ...Dark.args,
     type: "light",
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("Lorem ipsum dolor sit amet"),
+    ).toBeInTheDocument();
+  },
+};
+
+export const WithButtons = {
+  name: "With Buttons",
+  args: {
+    ...Dark.args,
+    buttons: [
+      { url: "#apply", title: "Apply Now", target: "_blank" },
+      { url: "#info", title: "Learn More", target: "" },
+    ],
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Apply Now")).toBeInTheDocument();
+    await expect(canvas.getByText("Learn More")).toBeInTheDocument();
+  },
+};
+
+export const WithCaption = {
+  name: "With Image Caption",
+  args: {
+    ...Dark.args,
+    image: {
+      ...Dark.args.image,
+      caption: "Colby College campus in winter",
+    },
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("Colby College campus in winter"),
+    ).toBeInTheDocument();
+  },
+};
+
+export const NoImage = {
+  name: "No Image",
+  args: {
+    type: "dark",
+    heading: "Text Only",
+    paragraph: "No image provided.",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Text Only")).toBeInTheDocument();
   },
 };

@@ -1,4 +1,5 @@
 import Alert from "./Alert.vue";
+import { expect } from "storybook/test";
 
 // The default export metadata for your component
 export default {
@@ -46,6 +47,16 @@ export const Primary = {
     ...globalArgs,
     type: "info",
   },
+  play: async ({ canvas }) => {
+    // The Alert component renders heading with a trailing colon: "Alert:"
+    await expect(canvas.getByText("Alert:")).toBeInTheDocument();
+    await expect(
+      canvas.getByText(
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      ),
+    ).toBeInTheDocument();
+    await expect(canvas.getByText("button1")).toBeInTheDocument();
+  },
 };
 
 export const Secondary = {
@@ -54,5 +65,14 @@ export const Secondary = {
   args: {
     ...globalArgs,
     type: "emergency",
+  },
+  play: async ({ canvas }) => {
+    // The Alert component renders heading with a trailing colon: "Alert:"
+    await expect(canvas.getByText("Alert:")).toBeInTheDocument();
+    await expect(
+      canvas.getByText(
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      ),
+    ).toBeInTheDocument();
   },
 };

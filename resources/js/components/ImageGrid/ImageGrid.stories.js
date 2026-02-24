@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import ImageGrid from "./ImageGrid.vue";
 
 export default {
@@ -33,6 +34,10 @@ export const Square = {
     images: sampleImages,
     imageOrientation: "square",
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByAltText("Placeholder 1")).toBeInTheDocument();
+    await expect(canvas.getByAltText("Placeholder 2")).toBeInTheDocument();
+  },
 };
 
 export const Landscape = {
@@ -41,6 +46,9 @@ export const Landscape = {
     images: [sampleImages[0]],
     imageOrientation: "landscape",
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByAltText("Placeholder 1")).toBeInTheDocument();
+  },
 };
 
 export const NoCaptions = {
@@ -48,5 +56,31 @@ export const NoCaptions = {
   args: {
     images: sampleImages.map(({ caption, ...img }) => img),
     imageOrientation: "square",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByAltText("Placeholder 1")).toBeInTheDocument();
+    await expect(canvas.getByAltText("Placeholder 2")).toBeInTheDocument();
+  },
+};
+
+export const Rectangle = {
+  name: "Rectangle",
+  args: {
+    images: sampleImages,
+    imageOrientation: "rectangle",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByAltText("Placeholder 1")).toBeInTheDocument();
+  },
+};
+
+export const Portrait = {
+  name: "Portrait",
+  args: {
+    images: sampleImages,
+    imageOrientation: "portrait",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByAltText("Placeholder 1")).toBeInTheDocument();
   },
 };

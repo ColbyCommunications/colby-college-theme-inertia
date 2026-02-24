@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import MediaContextSection from "./MediaContextSection.vue";
 
 export default {
@@ -44,6 +45,14 @@ export const Wide = {
     type: "wide",
     items: sampleItems,
   },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("A World-Class Education"),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Undergraduate Research"),
+    ).toBeInTheDocument();
+  },
 };
 
 export const Narrow = {
@@ -51,5 +60,13 @@ export const Narrow = {
   args: {
     type: "narrow",
     items: sampleItems,
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("A World-Class Education"),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Undergraduate Research"),
+    ).toBeInTheDocument();
   },
 };

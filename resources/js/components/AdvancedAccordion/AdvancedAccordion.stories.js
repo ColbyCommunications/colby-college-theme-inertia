@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import AdvancedAccordion from "./AdvancedAccordion.vue";
 
 export default {
@@ -26,5 +27,20 @@ export const Default = {
           "<p>You can schedule a campus visit through the admissions website. We offer both in-person and virtual visit options.</p>",
       },
     ],
+  },
+  play: async ({ canvas, userEvent }) => {
+    await expect(
+      canvas.getByText("What is the application deadline?"),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText("What standardized tests are required?"),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText("How do I schedule a campus visit?"),
+    ).toBeInTheDocument();
+
+    // Click first panel to trigger onPanelToggle
+    const buttons = canvas.getAllByRole("button");
+    await userEvent.click(buttons[0]);
   },
 };

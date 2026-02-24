@@ -1,8 +1,9 @@
+import { expect } from "storybook/test";
 import Header from "./SiteHeader.vue";
 
 // Import subcomponents to ensure the story renders correctly.
 // If your build system handles global components, you can remove these imports
-// and the 'components' list in the Template.
+// and the 'components' list in the render function.
 import ColbyLogo from "../Logos/ColbyLogo.vue";
 import Hamburger from "../Hamburger/Hamburger.vue";
 import UtilityMenu from "../Menus/UtilityMenu.vue";
@@ -31,7 +32,7 @@ export default {
   },
 };
 
-const Template = (args) => ({
+const render = (args) => ({
   components: {
     Header,
     ColbyLogo,
@@ -68,8 +69,21 @@ const sampleMenus = {
 // --- Stories ---
 
 // 1. Desktop View
-export const Default = Template.bind({});
-Default.args = {
-  url: "https://www.colby.edu",
-  menus: sampleMenus,
+export const Default = {
+  args: {
+    url: "https://www.colby.edu",
+    menus: sampleMenus,
+  },
+  render,
+  play: async ({ canvas }) => {
+    // Menu items appear in both desktop and mobile menus, so use getAllByText
+    const directoryLinks = canvas.getAllByText("Directory");
+    await expect(directoryLinks.length).toBeGreaterThan(0);
+
+    const admissionsLinks = canvas.getAllByText("Admissions & Aid");
+    await expect(admissionsLinks.length).toBeGreaterThan(0);
+
+    const academicsLinks = canvas.getAllByText("Academics");
+    await expect(academicsLinks.length).toBeGreaterThan(0);
+  },
 };

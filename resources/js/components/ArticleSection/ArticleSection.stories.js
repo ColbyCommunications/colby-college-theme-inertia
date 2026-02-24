@@ -1,4 +1,5 @@
 import ArticleSection from "./ArticleSection.vue";
+import { expect } from "storybook/test";
 
 const mockItems = [
   {
@@ -93,6 +94,9 @@ export const Primary = {
     api: "Latest News",
     perView: 1,
   },
+  play: async ({ canvasElement }) => {
+    await expect(canvasElement.querySelector(".article-section")).not.toBeNull();
+  },
 };
 
 export const Manual = {
@@ -101,6 +105,29 @@ export const Manual = {
     renderApi: false,
     heading: "Article Section Title",
     subheading: "Article Section subheading",
+    paragraph: "Discover recent updates from Colby College.",
+    buttons: [{ button: { url: "#", title: "View All" } }],
     gridProps: { items: mockItems },
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("Article Section Title"),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Article Section subheading"),
+    ).toBeInTheDocument();
+  },
+};
+
+export const ManualWithControls = {
+  name: "Manual With Arrow Controls",
+  args: {
+    renderApi: false,
+    heading: "Featured Stories",
+    showCarouselControls: true,
+    gridProps: { items: mockItems },
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Featured Stories")).toBeInTheDocument();
   },
 };

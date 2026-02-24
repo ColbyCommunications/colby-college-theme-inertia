@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import Image from "./Image.vue";
 
 export default {
@@ -21,6 +22,11 @@ export const Default = {
     },
     caption: "An example image caption",
   },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("An example image caption"),
+    ).toBeInTheDocument();
+  },
 };
 
 export const Scaled75 = {
@@ -33,6 +39,9 @@ export const Scaled75 = {
     imageScale: "75",
     caption: "Image at 75% scale",
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Image at 75% scale")).toBeInTheDocument();
+  },
 };
 
 export const Scaled50 = {
@@ -44,6 +53,9 @@ export const Scaled50 = {
     },
     imageScale: "50",
     caption: "Image at 50% scale",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Image at 50% scale")).toBeInTheDocument();
   },
 };
 
@@ -58,6 +70,11 @@ export const Centered = {
     alignCenter: true,
     caption: "Centered image at 50% scale",
   },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("Centered image at 50% scale"),
+    ).toBeInTheDocument();
+  },
 };
 
 export const WithPath = {
@@ -65,5 +82,38 @@ export const WithPath = {
   args: {
     imagePath: "https://placehold.co/800x500",
     caption: "Image loaded via path",
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("Image loaded via path"),
+    ).toBeInTheDocument();
+  },
+};
+
+export const Scaled25 = {
+  name: "25% Scale",
+  args: {
+    image: {
+      url: "https://placehold.co/800x500",
+      alt: "Placeholder image",
+    },
+    imageScale: "25",
+    caption: "Image at 25% scale",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Image at 25% scale")).toBeInTheDocument();
+  },
+};
+
+export const NoCaption = {
+  name: "No Caption",
+  args: {
+    image: {
+      url: "https://placehold.co/800x500",
+      alt: "No caption image",
+    },
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByAltText("No caption image")).toBeInTheDocument();
   },
 };

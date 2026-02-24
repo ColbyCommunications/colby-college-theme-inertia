@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import FeaturedEvents from "./FeaturedEvents.vue";
 
 // --- Mock Data for Carousel ---
@@ -80,7 +81,6 @@ export default {
   title: "Core Components/Featured Events",
   component: FeaturedEvents,
   parameters: {
-    // This component has 'full-bleed' classes, so we remove default padding
     layout: "fullscreen",
   },
   argTypes: {
@@ -90,7 +90,7 @@ export default {
   },
 };
 
-const Template = (args) => ({
+const render = (args) => ({
   components: { FeaturedEvents },
   setup() {
     return { args };
@@ -98,23 +98,41 @@ const Template = (args) => ({
   template: '<FeaturedEvents v-bind="args" />',
 });
 
-export const Default = Template.bind({});
-Default.args = {
-  heading: "Featured Events",
-  paragraph:
-    "Explore upcoming major events, lectures, and performances happening on Mayflower Hill.",
-  items: mockItems,
+export const Default = {
+  render,
+  args: {
+    heading: "Featured Events",
+    paragraph:
+      "Explore upcoming major events, lectures, and performances happening on Mayflower Hill.",
+    items: mockItems,
+  },
+  play: async ({ canvas }) => {
+    const heading = await canvas.findByText("Featured Events");
+    await expect(heading).toBeInTheDocument();
+  },
 };
 
-export const WithoutCarouselItems = Template.bind({});
-WithoutCarouselItems.args = {
-  heading: "Upcoming Schedule",
-  paragraph: "Check below for the full list of events from our live calendar.",
-  items: [], // Tests how the carousel behaves when empty
+export const WithoutCarouselItems = {
+  render,
+  args: {
+    heading: "Upcoming Schedule",
+    paragraph: "Check below for the full list of events from our live calendar.",
+    items: [], // Tests how the carousel behaves when empty
+  },
+  play: async ({ canvas }) => {
+    const heading = await canvas.findByText("Upcoming Schedule");
+    await expect(heading).toBeInTheDocument();
+  },
 };
 
-export const Minimal = Template.bind({});
-Minimal.args = {
-  heading: "Events",
-  items: [mockItems[0]], // Single item test
+export const Minimal = {
+  render,
+  args: {
+    heading: "Events",
+    items: [mockItems[0]], // Single item test
+  },
+  play: async ({ canvas }) => {
+    const heading = await canvas.findByText("Events");
+    await expect(heading).toBeInTheDocument();
+  },
 };

@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import ListContext from "./ListContext.vue";
 
 export default {
@@ -29,6 +30,11 @@ export const Default = {
       { link: { url: "#", title: "Faculty & Staff" } },
     ],
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("More from [Program]")).toBeInTheDocument();
+    await expect(canvas.getByText("Majors and Minors")).toBeInTheDocument();
+    await expect(canvas.getByText("Read More")).toBeInTheDocument();
+  },
 };
 
 export const Small = {
@@ -37,5 +43,9 @@ export const Small = {
     ...Default.args,
     size: "small",
     buttons: [],
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("More from [Program]")).toBeInTheDocument();
+    await expect(canvas.getByText("Majors and Minors")).toBeInTheDocument();
   },
 };

@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import FullBleedImage from "./FullBleedImage.vue";
 
 export default {
@@ -27,5 +28,13 @@ export const Default = {
         Square: "https://placehold.co/480x480",
       },
     },
+  },
+  play: async ({ canvas }) => {
+    // "Areas of Distinction" appears in both the heading and button, so use getAllByText
+    const elements = canvas.getAllByText("Areas of Distinction");
+    await expect(elements.length).toBeGreaterThanOrEqual(1);
+    await expect(
+      canvas.getByAltText("Placeholder image"),
+    ).toBeInTheDocument();
   },
 };

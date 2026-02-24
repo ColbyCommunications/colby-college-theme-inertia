@@ -15,6 +15,7 @@
           :heading="heading"
           :paragraph="paragraph"
           :items="items"
+          :buttons="[]"
         />
       </div>
     </div>

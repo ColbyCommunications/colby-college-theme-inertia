@@ -1,4 +1,5 @@
 import Article from "./Article.vue";
+import { expect } from "storybook/test";
 
 // The default export metadata for your component
 export default {
@@ -29,5 +30,11 @@ export const Primary = {
         },
       },
     ],
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
+    await expect(canvas.getByText("adipisci amet")).toBeInTheDocument();
+    await expect(canvas.getByText("button1")).toBeInTheDocument();
+    await expect(canvas.getByAltText("this is an alt tag")).toBeInTheDocument();
   },
 };

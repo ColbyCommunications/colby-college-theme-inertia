@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import Widget from "./Widget.vue";
 
 export default {
@@ -18,6 +19,11 @@ export const Default = {
       },
     ],
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Contact")).toBeInTheDocument();
+    await expect(canvas.getByText("207-859-4000")).toBeInTheDocument();
+    await expect(canvas.getByText("Download now")).toBeInTheDocument();
+  },
 };
 
 export const WithoutButtons = {
@@ -25,5 +31,40 @@ export const WithoutButtons = {
   args: {
     heading: "Hours",
     text: "<p>Monday - Friday: 8am - 5pm</p><p>Saturday - Sunday: Closed</p>",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Hours")).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Monday - Friday: 8am - 5pm"),
+    ).toBeInTheDocument();
+  },
+};
+
+export const WithoutHeading = {
+  name: "Without Heading",
+  args: {
+    heading: "",
+    text: "<p>Quick links and resources for current students.</p>",
+    buttons: [
+      { url: "#", title: "Student Portal" },
+    ],
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Student Portal")).toBeInTheDocument();
+  },
+};
+
+export const WithoutButtonTarget = {
+  name: "Without Button Target",
+  args: {
+    heading: "Links",
+    text: "<p>Important resources.</p>",
+    buttons: [
+      { url: "#", title: "Visit Site" },
+    ],
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Links")).toBeInTheDocument();
+    await expect(canvas.getByText("Visit Site")).toBeInTheDocument();
   },
 };

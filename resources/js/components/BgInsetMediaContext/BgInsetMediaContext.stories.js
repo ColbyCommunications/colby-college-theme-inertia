@@ -1,4 +1,5 @@
 import BgInsetMediaContext from "./BgInsetMediaContext.vue";
+import { expect } from "storybook/test";
 
 // The default export metadata for your component
 export default {
@@ -23,12 +24,17 @@ const globalArgs = {
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 };
 
+const assertHeadingVisible = async ({ canvas }) => {
+  await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
+};
+
 export const Primary = {
   // 👇 Rename this story
   name: "Default",
   args: {
     ...globalArgs,
   },
+  play: assertHeadingVisible,
 };
 
 export const Inset = {
@@ -38,6 +44,7 @@ export const Inset = {
     ...globalArgs,
     inset: true,
   },
+  play: assertHeadingVisible,
 };
 
 export const Reverse = {
@@ -47,6 +54,7 @@ export const Reverse = {
     ...globalArgs,
     reverse: true,
   },
+  play: assertHeadingVisible,
 };
 
 export const Large = {
@@ -56,6 +64,7 @@ export const Large = {
     ...globalArgs,
     size: "large",
   },
+  play: assertHeadingVisible,
 };
 export const Video = {
   // 👇 Rename this story
@@ -66,4 +75,5 @@ export const Video = {
       id: "jQixf1UCKac",
     },
   },
+  play: assertHeadingVisible,
 };

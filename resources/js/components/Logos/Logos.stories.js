@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import ColbyLogo from "./ColbyLogo.vue";
 import AthleticsLogo from "./AthleticsLogo.vue";
 
@@ -12,6 +13,10 @@ export const ColbyLogoDark = {
     components: { ColbyLogo },
     template: '<ColbyLogo url="/" fillColor="--color-indigo" />',
   }),
+  play: async ({ canvasElement }) => {
+    const link = canvasElement.querySelector("a");
+    await expect(link).toBeTruthy();
+  },
 };
 
 export const ColbyLogoWhite = {
@@ -20,6 +25,10 @@ export const ColbyLogoWhite = {
     components: { ColbyLogo },
     template: '<div class="bg-indigo p-10"><ColbyLogo url="/" fillColor="--color-white" /></div>',
   }),
+  play: async ({ canvasElement }) => {
+    const link = canvasElement.querySelector("a");
+    await expect(link).toBeTruthy();
+  },
 };
 
 export const AthleticsLogoDefault = {
@@ -28,4 +37,8 @@ export const AthleticsLogoDefault = {
     components: { AthleticsLogo },
     template: '<div class="relative bg-indigo p-10 h-20"><AthleticsLogo /></div>',
   }),
+  play: async ({ canvasElement }) => {
+    const svg = canvasElement.querySelector("svg");
+    await expect(svg).toBeTruthy();
+  },
 };

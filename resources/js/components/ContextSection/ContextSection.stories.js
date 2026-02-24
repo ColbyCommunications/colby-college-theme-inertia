@@ -1,4 +1,5 @@
 import ContextSection from "./ContextSection.vue";
+import { expect } from "storybook/test";
 
 // The default export metadata for your component
 export default {
@@ -16,6 +17,10 @@ export const Default = {
     paragraph:
       "As a semester-long project, students will create their own imaginary countries and give regular reports on their geography, folklore, education and political systems. Conducted in Russian.",
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
+    await expect(canvas.getByText("Anthropology")).toBeInTheDocument();
+  },
 };
 
 export const RightAlign = {
@@ -27,6 +32,10 @@ export const RightAlign = {
     subheading: "Anthropology",
     paragraph:
       "As a semester-long project, students will create their own imaginary countries and give regular reports on their geography, folklore, education and political systems. Conducted in Russian.",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
+    await expect(canvas.getByText("Anthropology")).toBeInTheDocument();
   },
 };
 
@@ -40,6 +49,10 @@ export const Large = {
     subheading: "Anthropology",
     paragraph:
       "As a semester-long project, students will create their own imaginary countries and give regular reports on their geography, folklore, education and political systems. Conducted in Russian.",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
+    await expect(canvas.getByText("Anthropology")).toBeInTheDocument();
   },
 };
 
@@ -68,5 +81,9 @@ export const WithButtons = {
     subheading: "Anthropology",
     paragraph:
       "As a semester-long project, students will create their own imaginary countries and give regular reports on their geography, folklore, education and political systems. Conducted in Russian.",
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
+    await expect(canvas.getByText("button1")).toBeInTheDocument();
   },
 };

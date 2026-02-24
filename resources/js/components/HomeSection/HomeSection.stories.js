@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import HomeSection from "./HomeSection.vue";
 
 export default {
@@ -94,5 +95,10 @@ export const Default = {
         sizes: { Landscape: "1200w" },
       },
     },
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Latest from Colby")).toBeInTheDocument();
+    await expect(canvas.getByText("Upcoming Events")).toBeInTheDocument();
+    await expect(canvas.getByText("Plan Your Visit")).toBeInTheDocument();
   },
 };

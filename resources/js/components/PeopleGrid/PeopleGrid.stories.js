@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import PeopleGrid from "./PeopleGrid.vue";
 
 export default {
@@ -53,5 +54,11 @@ export const Default = {
   name: "Default",
   args: {
     people: samplePeople,
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Dr. Jane Smith")).toBeInTheDocument();
+    await expect(canvas.getByText("Dr. John Doe")).toBeInTheDocument();
+    await expect(canvas.getByText("Dr. Emily Chen")).toBeInTheDocument();
+    await expect(canvas.getByText("Prof. Michael Brown")).toBeInTheDocument();
   },
 };

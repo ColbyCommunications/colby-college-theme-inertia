@@ -1,3 +1,4 @@
+import { expect } from "storybook/test";
 import IconSection from "./IconSection.vue";
 
 export default {
@@ -48,5 +49,13 @@ export const Default = {
           "Colby Connect allows you to use the trusted Colby College environment to expand your professional network.",
       },
     ],
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText("A global online community awaits."),
+    ).toBeInTheDocument();
+    await expect(canvas.getByText("Connect")).toBeInTheDocument();
+    await expect(canvas.getByText("Give back")).toBeInTheDocument();
+    await expect(canvas.getByText("Join Now")).toBeInTheDocument();
   },
 };
