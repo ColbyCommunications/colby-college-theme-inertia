@@ -35,21 +35,3 @@ export const Primary = {
   },
 };
 
-export const WithoutImage = {
-  name: "Without Image",
-  args: {
-    subheading: "By the Numbers",
-    heading: "Colby at a Glance",
-    facts: [
-      { figure: "2,000", paragraph: "students enrolled" },
-      { figure: "58", paragraph: "majors and minors" },
-      { figure: "10:1", paragraph: "student-to-faculty ratio" },
-    ],
-    paragraph: "Colby College is one of America's premier liberal arts colleges.",
-  },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText("Colby at a Glance")).toBeInTheDocument();
-    await expect(canvas.getByText("2,000")).toBeInTheDocument();
-    await expect(canvas.getByText("10:1")).toBeInTheDocument();
-  },
-};

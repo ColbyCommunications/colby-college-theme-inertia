@@ -30,7 +30,6 @@
         class="facts-figures__image mt-12 md:order-[-1] md:col-span-5 md:mt-0"
       >
         <Picture
-          v-if="image"
           class="h-full w-full object-cover"
           :size-desktop="image?.sizes?.Square || image?.srcset"
           :size-mobile="image?.sizes?.Square || image?.src"
@@ -87,6 +86,7 @@ const props = defineProps({
   image: {
     type: Object,
     default: null, // { srcset, src, sizes: { Square }, alt }
+    required: true
   },
   facts: {
     type: Array,
