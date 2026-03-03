@@ -17,8 +17,8 @@
             :image="item.image"
             :subheading="item.date"
             :heading="item.title.rendered"
-            :border="props.border"
-            :paragraph="item['post-meta-fields'].summary"
+            :border="normalizedBorder"
+            :paragraph="toSummaryText(item['post-meta-fields'].summary)"
             :buttons="[
               {
                 button: {
@@ -52,8 +52,8 @@
             :size="props.size"
             :image="item.image"
             :heading="item.title.rendered"
-            :border="props.border"
-            :paragraph="item.summary"
+            :border="normalizedBorder"
+            :paragraph="toSummaryText(item.summary)"
             :buttons="[
               {
                 button: {
@@ -87,7 +87,7 @@
             :image="item.image"
             :subheading="item.subheading"
             :heading="item.heading"
-            :border="props.border"
+            :border="normalizedBorder"
             :paragraph="item.paragraph"
             :buttons="[
               {
@@ -138,7 +138,7 @@
         <article
           class="article space-y-4"
           :class="{
-            'border-t-2 border-solid border-indigo-600 pt-1': props.border,
+            'border-t-2 border-solid border-indigo-600 pt-1': normalizedBorder,
           }"
         >
           <!-- Image -->
@@ -297,27 +297,6 @@
         </Transition>
       </div>
     </div>
-
-    <!-- passthrough slot when not API and not accordion -->
-    <div
-      :class="[
-        'article-grid mx-auto my-0 grid w-full max-w-screen-2xl gap-10',
-        gridColsClass,
-      ]"
-      v-if="!props.render_api && style !== 'accordion'"
-    >
-      <template>
-        <div
-          v-for="(item, i) in items"
-          :key="i"
-          v-if="item?.heading"
-          :class="['article-grid__item', itemColClass]"
-        >
-          <!-- replace the path if your component lives elsewhere -->
-          <Article v-bind="item" />
-        </div>
-      </template>
-    </div>
   </div>
 </template>
 
@@ -345,7 +324,7 @@ const props = defineProps({
   size: { type: String, default: "" },
   columns: { type: [Number, String], default: 3 },
   image_orientation: { type: String, default: "" },
-  border: { type: [Number, String], default: 0 },
+  border: { type: [Boolean, Number, String], default: false },
   render_posts_category: { type: Number, default: 1 },
   cta: { type: String, default: "Read Story" },
   style: { type: String, default: "" },
@@ -379,6 +358,18 @@ const itemColClass = computed(() => {
   if (props.columns === 3) return "md:col-span-3 col-span-9";
   return "col-span-4";
 });
+
+const normalizedBorder = computed(() => {
+  if (typeof props.border === "string") {
+    return props.border !== "" && props.border !== "0" && props.border !== "false";
+  }
+  return Boolean(props.border);
+});
+
+const toSummaryText = (value) => {
+  if (Array.isArray(value)) return value[0] || "";
+  return value || "";
+};
 
 const isMobileAccordion = computed(() => currentColumns.value === 1);
 
@@ -467,9 +458,9 @@ const fetchApiData = async (page = 1) => {
               "",
             ),
           },
-          summary: [
-            `${item.content.rendered.replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "").substring(0, 120)}...`,
-          ],
+          summary: `${item.content.rendered
+            .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "")
+            .substring(0, 120)}...`,
           url: item.external_url,
           image: { src: item.image, alt: item.taxonomy?.[0]?.name || "" },
         }))

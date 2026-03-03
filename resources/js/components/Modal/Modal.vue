@@ -2,6 +2,7 @@
   <vue-final-modal
     v-model="isOpen"
     :class="classes"
+    :focus-retain="focusRetain"
     :classes="{
       '!px-0': full,
       'modal__container flex justify-center items-center px-5': true,
@@ -51,6 +52,7 @@ import { VueFinalModal } from "vue-final-modal";
 const props = defineProps({
   full: { type: Boolean, default: false },
   classes: { type: String, default: "" },
+  focusRetain: { type: Boolean, default: true },
   modelValue: { type: Boolean, required: true },
 });
 

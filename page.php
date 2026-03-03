@@ -10,5 +10,6 @@ $blocks = prepare_data(parse_blocks($post->post_content));
 Inertia::render('Page/Show', [
   'id'     => $post->ID,
   'title'  => get_the_title($post->ID),
+  'layout' => 'default',
   'blocks' => $blocks,
 ]);

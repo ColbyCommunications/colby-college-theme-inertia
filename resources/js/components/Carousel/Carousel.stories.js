@@ -1,11 +1,21 @@
 import Carousel from "./Carousel.vue";
-import { expect, waitFor } from "storybook/test";
+import { expect, spyOn, waitFor } from "storybook/test";
+import axios from "axios";
+import { createMockWpPosts } from "../__test-utils__/mock-data";
 
-// The default export metadata for your component
 export default {
   title: "Core Components/Carousel",
   component: Carousel,
 };
+
+const LATEST_NEWS_ENDPOINT =
+  "https://news.colby.edu/wp-json/wp/v2/posts?per_page=5&tags=561&_embed=1";
+const ACADEMIC_NEWS_ENDPOINT =
+  "https://news.colby.edu/wp-json/wp/v2/posts?per_page=5&categories=8,12,14,15&_embed=1";
+const FACULTY_ENDPOINT =
+  "https://news.colby.edu/wp-json/wp/v2/external_post?story_type_slug=faculty-accomplishments&per_page=5&_embed=1";
+
+const sharedButtons = [{ url: "https://www.colby.edu", title: "All News" }];
 
 const mockItems = [
   {
@@ -23,9 +33,6 @@ const mockItems = [
     subheading: "Technology",
     paragraph: "AI is reshaping industries at an unprecedented pace.",
     url: "#",
-    // Structure required for Accordion style images
-    //
-
     buttons: [
       {
         button: {
@@ -76,7 +83,6 @@ const mockItems = [
     subheading: "Design",
     paragraph: "Exploring the intersection of function and aesthetics in 2024.",
     url: "#",
-
     buttons: [
       {
         button: {
@@ -89,28 +95,38 @@ const mockItems = [
   },
 ];
 
+const runBasicInteractions = async ({ canvas, canvasElement, userEvent }) => {
+  await waitFor(() => {
+    expect(
+      canvas.getByText("Future of Artificial Intelligence"),
+    ).toBeInTheDocument();
+  });
+
+  const main = canvasElement.querySelector(".carousel__main");
+  await expect(main).not.toBeNull();
+  await userEvent.hover(main);
+  await userEvent.unhover(main);
+
+  const nextButtons = canvas.getAllByRole("button", { name: "Next" });
+  const prevButtons = canvas.getAllByRole("button", { name: "Previous" });
+  await expect(nextButtons.length).toBeGreaterThan(0);
+  await expect(prevButtons.length).toBeGreaterThan(0);
+
+  await userEvent.click(nextButtons[0]);
+  await userEvent.click(prevButtons[0]);
+  await expect(
+    canvas.getByText("Future of Artificial Intelligence"),
+  ).toBeInTheDocument();
+};
+
 export const Primary = {
   name: "Primary",
   args: {
     render_api: false,
     items: mockItems,
-    buttons: [
-      {
-        button: {
-          size: "small",
-          title: "button1",
-          url: "https://www.colby.edu",
-        },
-      },
-    ],
+    buttons: sharedButtons,
   },
-  play: async ({ canvas }) => {
-    await waitFor(() => {
-      expect(
-        canvas.getByText("Future of Artificial Intelligence"),
-      ).toBeInTheDocument();
-    });
-  },
+  play: runBasicInteractions,
 };
 
 export const AutoplayFalse = {
@@ -119,23 +135,9 @@ export const AutoplayFalse = {
     render_api: false,
     items: mockItems,
     autoplay: false,
-    buttons: [
-      {
-        button: {
-          size: "small",
-          title: "button1",
-          url: "https://www.colby.edu",
-        },
-      },
-    ],
+    buttons: sharedButtons,
   },
-  play: async ({ canvas }) => {
-    await waitFor(() => {
-      expect(
-        canvas.getByText("Future of Artificial Intelligence"),
-      ).toBeInTheDocument();
-    });
-  },
+  play: runBasicInteractions,
 };
 
 export const WithHeadingAndParagraph = {
@@ -146,20 +148,12 @@ export const WithHeadingAndParagraph = {
     heading: "Latest Stories",
     subheading: "News",
     paragraph: "Stay up to date with the latest from Colby.",
-    buttons: [
-      {
-        button: {
-          size: "small",
-          title: "All News",
-          url: "https://www.colby.edu",
-        },
-      },
-    ],
+    buttons: [{ url: "https://www.colby.edu", title: "All News" }],
   },
-  play: async ({ canvas }) => {
-    await waitFor(() => {
-      expect(canvas.getByText("Latest Stories")).toBeInTheDocument();
-    });
+  play: async (ctx) => {
+    await runBasicInteractions(ctx);
+    const { canvas } = ctx;
+    await expect(canvas.getByText("Latest Stories")).toBeInTheDocument();
   },
 };
 
@@ -169,24 +163,10 @@ export const CustomInterval = {
     render_api: false,
     items: mockItems,
     autoplay: true,
-    interval: 3000,
-    buttons: [
-      {
-        button: {
-          size: "small",
-          title: "All News",
-          url: "https://www.colby.edu",
-        },
-      },
-    ],
+    interval: 300,
+    buttons: [{ url: "https://www.colby.edu", title: "All News" }],
   },
-  play: async ({ canvas }) => {
-    await waitFor(() => {
-      expect(
-        canvas.getByText("Future of Artificial Intelligence"),
-      ).toBeInTheDocument();
-    });
-  },
+  play: runBasicInteractions,
 };
 
 export const SingleSlide = {
@@ -195,46 +175,196 @@ export const SingleSlide = {
     render_api: false,
     items: [mockItems[0]],
     autoplay: true,
-    buttons: [
-      {
-        button: {
-          size: "small",
-          title: "Read More",
-          url: "https://www.colby.edu",
-        },
-      },
-    ],
+    buttons: [{ url: "https://www.colby.edu", title: "Read More" }],
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, canvasElement, userEvent }) => {
     await waitFor(() => {
       expect(
         canvas.getByText("Future of Artificial Intelligence"),
       ).toBeInTheDocument();
     });
+
+    const main = canvasElement.querySelector(".carousel__main");
+    await expect(main).not.toBeNull();
+    await userEvent.hover(main);
+    await userEvent.unhover(main);
+
+    const nextButtons = canvas.getAllByRole("button", { name: "Next" });
+    await expect(nextButtons.length).toBeGreaterThan(0);
+    await userEvent.click(nextButtons[0]);
+
+    await expect(
+      canvas.getByText("Future of Artificial Intelligence"),
+    ).toBeInTheDocument();
   },
 };
 
 export const LightType = {
   name: "Light Type",
   args: {
-    render_api: false,
-    items: mockItems,
-    type: "light",
-    buttons: [
+    render_api: true,
+    api: "Unexpected Feed",
+    heading: "Unexpected",
+    paragraph: "Fallback mode check.",
+    cta: "Read Story",
+    autoplay: false,
+    buttons: [{ url: "https://news.colby.edu/", title: "All News" }],
+  },
+  beforeEach: () => {
+    const spy = spyOn(axios, "get").mockResolvedValue({
+      data: createMockWpPosts(5),
+    });
+    return () => spy.mockRestore();
+  },
+  play: async ({ canvas, userEvent }) => {
+    await waitFor(() => {
+      expect(canvas.getByText("Unexpected")).toBeInTheDocument();
+    });
+    await expect(axios.get).toHaveBeenCalledWith(LATEST_NEWS_ENDPOINT);
+
+    await expect(
+      canvas.getByText("Innovative Research in Marine Biology"),
+    ).toBeInTheDocument();
+
+    const nextButtons = canvas.getAllByRole("button", { name: "Next" });
+    await userEvent.click(nextButtons[0]);
+  },
+};
+
+export const LatestNewsApi = {
+  name: "Latest News (API Mocked)",
+  args: {
+    render_api: true,
+    api: "Latest News",
+    heading: "News",
+    paragraph: "Latest from Colby.",
+    cta: "Read Story",
+    autoplay: false,
+    buttons: [{ url: "https://news.colby.edu/", title: "All News" }],
+  },
+  beforeEach: () => {
+    const spy = spyOn(axios, "get").mockResolvedValue({
+      data: createMockWpPosts(5),
+    });
+    return () => spy.mockRestore();
+  },
+  play: async ({ canvas, userEvent }) => {
+    await waitFor(() => {
+      expect(
+        canvas.getByText("Innovative Research in Marine Biology"),
+      ).toBeInTheDocument();
+    });
+    await expect(axios.get).toHaveBeenCalledWith(LATEST_NEWS_ENDPOINT);
+
+    await expect(canvas.getByText("News")).toBeInTheDocument();
+
+    const ctaButtons = canvas.getAllByText("Read Story");
+    await expect(ctaButtons.length).toBeGreaterThanOrEqual(1);
+
+    const nextButtons = canvas.getAllByRole("button", { name: "Next" });
+    const prevButtons = canvas.getAllByRole("button", { name: "Previous" });
+    await userEvent.click(nextButtons[0]);
+    await userEvent.click(prevButtons[0]);
+  },
+};
+
+export const AcademicNewsApi = {
+  name: "Academic News (API Mocked)",
+  args: {
+    render_api: true,
+    api: "Academic News",
+    heading: "Academic Highlights",
+    paragraph: "Research and scholarship from Colby faculty and students.",
+    cta: "Read Story",
+    autoplay: false,
+    buttons: [{ url: "https://news.colby.edu/", title: "All Academic News" }],
+  },
+  beforeEach: () => {
+    const spy = spyOn(axios, "get").mockResolvedValue({
+      data: createMockWpPosts(5),
+    });
+    return () => spy.mockRestore();
+  },
+  play: async ({ canvas, userEvent }) => {
+    await waitFor(() => {
+      expect(canvas.getByText("Academic Highlights")).toBeInTheDocument();
+    });
+    await expect(axios.get).toHaveBeenCalledWith(ACADEMIC_NEWS_ENDPOINT);
+
+    await expect(canvas.getByText("Academic News")).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Innovative Research in Marine Biology"),
+    ).toBeInTheDocument();
+
+    const nextButtons = canvas.getAllByRole("button", { name: "Next" });
+    const prevButtons = canvas.getAllByRole("button", { name: "Previous" });
+    await userEvent.click(nextButtons[0]);
+    await userEvent.click(prevButtons[0]);
+  },
+};
+
+export const FacultyAccomplishmentsApi = {
+  name: "Faculty Accomplishments (API Mocked)",
+  args: {
+    render_api: true,
+    api: "Faculty Accomplishments",
+    heading: "Faculty News",
+    paragraph: "Recent faculty accomplishments.",
+    cta: "Read Story",
+    autoplay: false,
+    FAbuttons: [
       {
-        button: {
-          size: "small",
-          title: "All News",
-          url: "https://www.colby.edu",
-        },
+        url: "https://news.colby.edu/external/faculty-accomplishments/",
+        title: "All Faculty News",
       },
     ],
   },
-  play: async ({ canvas }) => {
-    await waitFor(() => {
-      expect(
-        canvas.getByText("Future of Artificial Intelligence"),
-      ).toBeInTheDocument();
+  beforeEach: () => {
+    const mockFacultyPosts = [
+      {
+        title: { rendered: "Faculty Achievement in Quantum Computing" },
+        content: {
+          rendered:
+            "<p>Professor Smith published a groundbreaking paper on quantum computing that challenges existing theoretical frameworks.</p>",
+        },
+        external_url: "https://example.com/faculty-1",
+      },
+      {
+        title: { rendered: "National Teaching Award Recipient" },
+        content: {
+          rendered:
+            "<p>Professor Jones has been recognized with a national teaching award for excellence in undergraduate education.</p>",
+        },
+        external_url: "https://example.com/faculty-2",
+      },
+      {
+        title: { rendered: "Climate Research Breakthrough" },
+        content: {
+          rendered:
+            "<p>A Colby research team has made a significant discovery in understanding local climate patterns and their global implications.</p>",
+        },
+        external_url: "https://example.com/faculty-3",
+      },
+    ];
+    const spy = spyOn(axios, "get").mockResolvedValue({
+      data: mockFacultyPosts,
     });
+    return () => spy.mockRestore();
+  },
+  play: async ({ canvas, userEvent }) => {
+    await waitFor(() => {
+      expect(canvas.getByText("Faculty News")).toBeInTheDocument();
+    });
+    await expect(axios.get).toHaveBeenCalledWith(FACULTY_ENDPOINT);
+
+    await expect(
+      canvas.getByText("Faculty Achievement in Quantum Computing"),
+    ).toBeInTheDocument();
+    await expect(canvas.getByText("Faculty Accomplishments")).toBeInTheDocument();
+
+    const nextButtons = canvas.getAllByRole("button", { name: "Next" });
+    const prevButtons = canvas.getAllByRole("button", { name: "Previous" });
+    await userEvent.click(nextButtons[0]);
+    await userEvent.click(prevButtons[0]);
   },
 };

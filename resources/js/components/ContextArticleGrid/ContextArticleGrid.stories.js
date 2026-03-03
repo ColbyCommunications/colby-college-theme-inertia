@@ -1,18 +1,23 @@
-import { expect } from "storybook/test";
-import ContextArticleGrid from "./ContextArticleGrid.vue"; // Adjust path as needed
+import { expect, spyOn, waitFor } from "storybook/test";
+import axios from "axios";
+import ContextArticleGrid from "./ContextArticleGrid.vue";
+import { createMockWpPosts } from "../__test-utils__/mock-data";
+
+const GENERAL_ENDPOINT =
+  "https://news.colby.edu/wp-json/wp/v2/posts?per_page=6&tags=569&_embed=1";
+const ARTS_ENDPOINT =
+  "https://news.colby.edu/wp-json/wp/v2/posts?per_page=3&categories=8&_embed=1";
+const ALUMNI_ENDPOINT =
+  "https://news.colby.edu/wp-json/wp/v2/posts?per_page=3&categories=6&_embed=1";
 
 export default {
   title: "Core Components/Context Article Grid",
   component: ContextArticleGrid,
-  // Define controls for the inputs
   argTypes: {
-    // Content Strings
     heading: { control: "text" },
     subheading: { control: "text" },
     paragraph: { control: "text" },
     cta: { control: "text" },
-
-    // Logic Switches
     renderApi: {
       control: "boolean",
       description:
@@ -22,11 +27,9 @@ export default {
       control: "select",
       options: ["", "Arts", "Alumni"],
       description: "Changes the WP API endpoint filter",
-      if: { arg: "renderApi", eq: true }, // Only show if renderApi is true
+      if: { arg: "renderApi", eq: true },
     },
     perPage: { control: { type: "number", min: 1, max: 6 } },
-
-    // Data Object
     items: { control: "object" },
   },
   parameters: {
@@ -85,7 +88,7 @@ const mockItems = [
     heading: "Alumni Weekend 2024",
     paragraph:
       "Join us for a weekend of celebration, networking, and reconnecting with old friends.",
-    buttons: [], // Fallback to global CTA
+    buttons: [],
   },
 ];
 
@@ -115,23 +118,41 @@ export const ManualData = {
 };
 
 // --- Story 2: API Mode (Default / General) ---
-// Note: This relies on the live API endpoint defined in your component.
-// If CORS is blocked in your local environment, this might show an error.
 export const ApiGeneral = {
   render,
   args: {
     renderApi: true,
-    api: "", // Default endpoint
+    api: "",
     perPage: 3,
     subheading: "From the Feed",
-    heading: "Latest News (Live API)",
-    paragraph: "These items are fetched directly from news.colby.edu.",
+    heading: "Latest News",
+    paragraph: "These items are fetched from a mocked API.",
     cta: "Read Full Story",
   },
+  beforeEach: () => {
+    const spy = spyOn(axios, "get").mockResolvedValue({
+      data: createMockWpPosts(3),
+    });
+    return () => spy.mockRestore();
+  },
   play: async ({ canvas }) => {
-    // API variant: just assert the heading renders (skip API interaction)
-    const heading = await canvas.findByText("Latest News (Live API)");
+    // Assert section heading renders
+    const heading = await canvas.findByText("Latest News");
     await expect(heading).toBeVisible();
+
+    // Assert mocked article content renders (from normalizedApiItems computed)
+    const article1 = await canvas.findByText("Innovative Research in Marine Biology");
+    await expect(article1).toBeVisible();
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalledWith(GENERAL_ENDPOINT);
+    });
+
+    const article2 = await canvas.findByText("New Gallery Exhibition Opens This Fall");
+    await expect(article2).toBeVisible();
+
+    // Assert CTA buttons render
+    const ctaButtons = canvas.getAllByText("Read Full Story");
+    await expect(ctaButtons.length).toBe(3);
   },
 };
 
@@ -143,14 +164,30 @@ export const ApiArts = {
     api: "Arts",
     perPage: 3,
     subheading: "From the Feed",
-    heading: "Arts & Culture (Live API)",
+    heading: "Arts & Culture",
     paragraph: "Fetching posts with the Arts category tag.",
     cta: "Read Full Story",
   },
+  beforeEach: () => {
+    const spy = spyOn(axios, "get").mockResolvedValue({
+      data: createMockWpPosts(3),
+    });
+    return () => spy.mockRestore();
+  },
   play: async ({ canvas }) => {
-    // API variant: just assert the heading renders (skip API interaction)
-    const heading = await canvas.findByText("Arts & Culture (Live API)");
+    const heading = await canvas.findByText("Arts & Culture");
     await expect(heading).toBeVisible();
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalledWith(ARTS_ENDPOINT);
+    });
+
+    // Assert article from mock data renders
+    const article = await canvas.findByText("Innovative Research in Marine Biology");
+    await expect(article).toBeVisible();
+
+    // Assert category subheading from post-meta-fields renders
+    const category = await canvas.findByText("Academics");
+    await expect(category).toBeVisible();
   },
 };
 
@@ -162,13 +199,28 @@ export const ApiAlumni = {
     api: "Alumni",
     perPage: 3,
     subheading: "From the Feed",
-    heading: "Alumni News (Live API)",
+    heading: "Alumni News",
     paragraph: "Fetching posts with the Alumni category tag.",
     cta: "Read Full Story",
   },
+  beforeEach: () => {
+    const spy = spyOn(axios, "get").mockResolvedValue({
+      data: createMockWpPosts(3),
+    });
+    return () => spy.mockRestore();
+  },
   play: async ({ canvas }) => {
-    // API variant: just assert the heading renders (skip API interaction)
-    const heading = await canvas.findByText("Alumni News (Live API)");
+    const heading = await canvas.findByText("Alumni News");
     await expect(heading).toBeVisible();
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalledWith(ALUMNI_ENDPOINT);
+    });
+
+    // Assert article content renders from mock
+    const article = await canvas.findByText("Innovative Research in Marine Biology");
+    await expect(article).toBeVisible();
+
+    const ctaButtons = canvas.getAllByText("Read Full Story");
+    await expect(ctaButtons.length).toBe(3);
   },
 };

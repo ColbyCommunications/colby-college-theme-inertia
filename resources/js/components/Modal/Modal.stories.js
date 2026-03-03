@@ -6,6 +6,10 @@ export default {
   component: Modal,
   argTypes: {
     full: { control: "boolean", description: "Toggle full-screen mode" },
+    focusRetain: {
+      control: "boolean",
+      description: "Retain/focus modal container on open",
+    },
     modelValue: {
       control: "boolean",
       description: "Controls visibility (v-model)",
@@ -32,8 +36,10 @@ const render = (args) => ({
   template: `
     <div class="p-10 flex justify-center">
       <Modal
-        v-bind="args"
         v-model="args.modelValue"
+        :full="args.full"
+        :focus-retain="args.focusRetain"
+        :classes="args.classes"
       >
         <template #button>
           <span class="px-6 py-3 bg-indigo-600 text-white font-bold rounded hover:bg-indigo-700 transition">
@@ -67,6 +73,7 @@ export const Default = {
   args: {
     modelValue: false,
     full: false,
+    focusRetain: false,
     slotButton: "Open Modal",
     slotContent:
       "This is a standard modal dialog. It has a fixed max-width and rounded corners.",
@@ -92,6 +99,7 @@ export const FullScreen = {
   args: {
     modelValue: false,
     full: true,
+    focusRetain: false,
     slotButton: "Open Full Screen",
     slotContent:
       "This modal covers the entire viewport because the 'full' prop is set to true.",
@@ -110,6 +118,7 @@ export const OpenByDefault = {
   args: {
     modelValue: true,
     full: false,
+    focusRetain: false,
     slotButton: "I am already open",
     slotContent:
       "This is a standard modal dialog. It has a fixed max-width and rounded corners.",

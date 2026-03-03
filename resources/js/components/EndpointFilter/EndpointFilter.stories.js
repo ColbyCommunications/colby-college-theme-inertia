@@ -1,5 +1,7 @@
-import { expect } from "storybook/test";
+import { expect, spyOn, waitFor, userEvent } from "storybook/test";
+import axios from "axios";
 import EndpointFilter from "./EndpointFilter.vue";
+import { createMockEvents } from "../__test-utils__/mock-data";
 
 export default {
   title: "Core Components/Endpoint Filter",
@@ -31,6 +33,12 @@ export default {
   parameters: {
     layout: "fullscreen",
   },
+  beforeEach: () => {
+    const spy = spyOn(axios, "get").mockResolvedValue({
+      data: createMockEvents(6),
+    });
+    return () => spy.mockRestore();
+  },
 };
 
 const render = (args) => ({
@@ -47,17 +55,29 @@ export const Default = {
   args: {
     type: "light",
     limit: 6,
-    // Rely on default props for filters and endpoint
   },
   play: async ({ canvas }) => {
-    // This story uses a live API on mount; just assert the container renders
-    const container = await canvas.findByText("Event types:");
-    await expect(container).toBeVisible();
+    // Assert the filter bar renders
+    const filterHeading = await canvas.findByText("Event types:");
+    await expect(filterHeading).toBeVisible();
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalled();
+    });
+
+    // Assert mock event titles render
+    const event1 = await canvas.findByText("Spring Concert Series");
+    await expect(event1).toBeVisible();
+
+    const event2 = await canvas.findByText("Faculty Lecture: Climate Change");
+    await expect(event2).toBeVisible();
+
+    // Assert "Learn More" buttons render for each event
+    const learnMoreButtons = canvas.getAllByText("Learn More");
+    await expect(learnMoreButtons.length).toBe(6);
   },
 };
 
 // --- Story 2: Dark Mode ---
-// We wrap this in a dark container so the "dark" mode text (white/canary) is visible
 export const DarkMode = {
   render: (args) => ({
     components: { EndpointFilter },
@@ -75,34 +95,51 @@ export const DarkMode = {
     limit: 6,
   },
   play: async ({ canvas }) => {
-    // This story uses a live API on mount; just assert the container renders
-    const container = await canvas.findByText("Event types:");
-    await expect(container).toBeVisible();
+    const filterHeading = await canvas.findByText("Event types:");
+    await expect(filterHeading).toBeVisible();
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalled();
+    });
+
+    // Assert mock events render in dark mode
+    const event1 = await canvas.findByText("Spring Concert Series");
+    await expect(event1).toBeVisible();
+
+    const learnMoreButtons = canvas.getAllByText("Learn More");
+    await expect(learnMoreButtons.length).toBe(6);
   },
 };
 
 // --- Story 3: No Filter Menu ---
-// Useful if you just want to show a specific feed without letting the user switch
 export const NoFilters = {
   render,
   args: {
     type: "light",
     limit: 3,
-    filters: false, // Hides the navigation bar
-    initialEndpoint: "https://events.colby.edu/live/json/events/group/Athletics", // Specific feed
+    filters: false,
+    initialEndpoint: "https://events.colby.edu/live/json/events/group/Athletics",
   },
   play: async ({ canvas, canvasElement }) => {
-    // The filter bar is hidden (filters=false); verify no "Event types:" heading appears
+    // The filter bar is hidden (filters=false)
     const headings = canvas.queryAllByText("Event types:");
     await expect(headings.length).toBe(0);
-    // Verify the endpoint-filter container rendered
-    const container = canvasElement.querySelector(".endpoint-filter");
-    await expect(container).not.toBeNull();
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalledWith(
+        "https://events.colby.edu/live/json/events/group/Athletics",
+      );
+    });
+
+    // Verify mock events still render
+    const event1 = await canvas.findByText("Spring Concert Series");
+    await expect(event1).toBeVisible();
+
+    // Assert limit=3 is respected
+    const learnMoreButtons = canvas.getAllByText("Learn More");
+    await expect(learnMoreButtons.length).toBe(3);
   },
 };
 
 // --- Story 4: Custom Filters ---
-// Overriding the default filter list with a smaller subset
 export const CustomFilterList = {
   render,
   args: {
@@ -120,7 +157,7 @@ export const CustomFilterList = {
     ],
     initialEndpoint: "https://events.colby.edu/live/json/events",
   },
-  play: async ({ canvas, userEvent }) => {
+  play: async ({ canvas }) => {
     // Assert the custom filter buttons render
     const allEventsButton = await canvas.findByText("All Events");
     await expect(allEventsButton).toBeVisible();
@@ -128,7 +165,43 @@ export const CustomFilterList = {
     const athleticsButton = await canvas.findByText("Just Athletics");
     await expect(athleticsButton).toBeVisible();
 
-    // Click a filter button
+    // Assert events rendered from initial load
+    const event1 = await canvas.findByText("Spring Concert Series");
+    await expect(event1).toBeVisible();
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalledWith(
+        "https://events.colby.edu/live/json/events",
+      );
+    });
+
+    // Click a filter button and verify axios is called with the new URL
     await userEvent.click(athleticsButton);
+    await expect(axios.get).toHaveBeenCalledWith(
+      "https://events.colby.edu/live/json/events/group/Athletics",
+    );
+  },
+};
+
+// --- Story 5: Limit Controls ---
+export const WithLimit = {
+  render,
+  args: {
+    type: "light",
+    limit: 2,
+    filters: false,
+    initialEndpoint: "https://events.colby.edu/live/json/events",
+  },
+  play: async ({ canvas }) => {
+    // Assert only 2 events render despite 6 being returned
+    const event1 = await canvas.findByText("Spring Concert Series");
+    await expect(event1).toBeVisible();
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalledWith(
+        "https://events.colby.edu/live/json/events",
+      );
+    });
+
+    const learnMoreButtons = canvas.getAllByText("Learn More");
+    await expect(learnMoreButtons.length).toBe(2);
   },
 };

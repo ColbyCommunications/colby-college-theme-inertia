@@ -6,11 +6,11 @@
       >Skip to Main Content</a
     >
 
-    <Alert v-if="global_alert && global_alert.active" v-bind="global_alert" />
+    <Alert v-if="globalAlert && globalAlert.active" v-bind="globalAlert" />
 
     <SiteHeader
-      :url="siteData.url"
-      :menus="{ main: menus.main, utility: menus.utility }"
+      :url="resolvedSiteData.url"
+      :menus="{ main: resolvedMenus.main, utility: resolvedMenus.utility }"
     />
 
     <main
@@ -23,27 +23,60 @@
       </slot>
     </main>
     <SiteFooter
-      :url="siteData.url"
-      :address="siteData.address"
-      :phone="siteData.phone"
+      :url="resolvedSiteData.url"
+      :address="resolvedSiteData.address"
+      :phone="resolvedSiteData.phone"
       :menus="{
-        action: menus.action,
-        footer: menus.footer,
-        social: menus.social,
+        action: resolvedMenus.action,
+        footer: resolvedMenus.footer,
+        social: resolvedMenus.social,
       }"
     />
   </div>
 </template>
 <script setup>
+import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 
 import Alert from "../../components/Alert/Alert.vue";
 import SiteHeader from "../../components/SiteHeader/SiteHeader.vue";
 import SiteFooter from "../../components/SiteFooter/SiteFooter.vue";
 
+const props = defineProps({
+  siteData: {
+    type: Object,
+    default: null,
+  },
+  menus: {
+    type: Object,
+    default: null,
+  },
+});
+
 const page = usePage();
-const siteData = page.props.site_data;
-const menus = page.props.menus;
+const pageSiteData = computed(() => page.props?.site_data || {});
+const pageMenus = computed(() => page.props?.menus || {});
+
+const resolvedSiteData = computed(() => ({
+  url: "",
+  address: {},
+  phone: "",
+  alert: null,
+  ...(pageSiteData.value || {}),
+  ...(props.siteData || {}),
+}));
+
+const resolvedMenus = computed(() => ({
+  main: [],
+  utility: [],
+  action: [],
+  footer: [],
+  social: [],
+  ...(pageMenus.value || {}),
+  ...(props.menus || {}),
+}));
+
+const globalAlert = computed(() => resolvedSiteData.value.alert || null);
 </script>
 
 <style scoped></style>

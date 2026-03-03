@@ -1,5 +1,7 @@
-import { expect } from "storybook/test";
+import { expect, spyOn, waitFor } from "storybook/test";
+import axios from "axios";
 import FeaturedEvents from "./FeaturedEvents.vue";
+import { createMockEvents } from "../__test-utils__/mock-data";
 
 // --- Mock Data for Carousel ---
 const mockItems = [
@@ -88,6 +90,13 @@ export default {
     paragraph: { control: "text" },
     items: { control: "object" },
   },
+  // Mock the EndpointFilter's axios call (fires on mount)
+  beforeEach: () => {
+    const spy = spyOn(axios, "get").mockResolvedValue({
+      data: createMockEvents(3),
+    });
+    return () => spy.mockRestore();
+  },
 };
 
 const render = (args) => ({
@@ -107,8 +116,23 @@ export const Default = {
     items: mockItems,
   },
   play: async ({ canvas }) => {
+    // Assert carousel heading renders
     const heading = await canvas.findByText("Featured Events");
     await expect(heading).toBeInTheDocument();
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalled();
+    });
+
+    // Assert mock events from EndpointFilter render
+    const event1 = await canvas.findByText("Spring Concert Series");
+    await expect(event1).toBeVisible();
+
+    const event2 = await canvas.findByText("Faculty Lecture: Climate Change");
+    await expect(event2).toBeVisible();
+
+    // Assert "Learn More" buttons from EndpointFilter render
+    const learnMoreButtons = canvas.getAllByText("Learn More");
+    await expect(learnMoreButtons.length).toBe(3);
   },
 };
 
@@ -117,11 +141,18 @@ export const WithoutCarouselItems = {
   args: {
     heading: "Upcoming Schedule",
     paragraph: "Check below for the full list of events from our live calendar.",
-    items: [], // Tests how the carousel behaves when empty
+    items: [],
   },
   play: async ({ canvas }) => {
     const heading = await canvas.findByText("Upcoming Schedule");
     await expect(heading).toBeInTheDocument();
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalled();
+    });
+
+    // Events from EndpointFilter should still render even with empty carousel
+    const event1 = await canvas.findByText("Spring Concert Series");
+    await expect(event1).toBeVisible();
   },
 };
 
@@ -129,10 +160,17 @@ export const Minimal = {
   render,
   args: {
     heading: "Events",
-    items: [mockItems[0]], // Single item test
+    items: [mockItems[0]],
   },
   play: async ({ canvas }) => {
     const heading = await canvas.findByText("Events");
     await expect(heading).toBeInTheDocument();
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalled();
+    });
+
+    // Assert events from EndpointFilter render
+    const event1 = await canvas.findByText("Spring Concert Series");
+    await expect(event1).toBeVisible();
   },
 };
