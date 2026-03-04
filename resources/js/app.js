@@ -2,6 +2,7 @@ import { createApp, h } from "vue";
 import { createInertiaApp, Head, Link, router } from "@inertiajs/vue3";
 import { InertiaProgress } from "@inertiajs/progress";
 import InstantSearch from "vue-instantsearch/vue3/es";
+import './plugins/axios'; 
 import "../css/app.css";
 
 InertiaProgress.init();

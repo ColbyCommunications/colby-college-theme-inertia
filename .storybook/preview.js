@@ -6,6 +6,10 @@ import "../resources/css/app.css";
 import { setup } from "@storybook/vue3";
 import InstantSearch from "vue-instantsearch/vue3/es";
 
+
+import { useGlobalLoader } from '../resources/js/composables/useGlobalLoader.js';
+import { ref } from 'vue';
+
 setup((app) => {
   app.use(InstantSearch);
 });
@@ -28,5 +32,24 @@ const preview = {
     },
   },
 };
+
+
+// create a dummy ref and grab reset()
+const dummy = ref(false)
+const { reset } = useGlobalLoader(dummy, {
+  className: 'loader',
+  hiddenClassName: 'hidden',
+})
+
+export const decorators = [
+  (story) => {
+    reset()
+    return story()
+  },
+]
+
+export const parameters = {
+  controls: { expanded: true },
+}
 
 export default preview;
