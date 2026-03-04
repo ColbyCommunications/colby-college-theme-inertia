@@ -18,19 +18,13 @@
             </h3>
 
             <div
-              class="flex h-9 w-11 shrink-0 items-center justify-center rounded-sm border border-gray-300 bg-gray-100"
+              class="flex shrink-0 items-center justify-center w-11 h-9 bg-gray-100 border border-gray-300 rounded-sm"
             >
               <div
-                class="-rotate-90 transition-all duration-200 ease-in-out"
-                :class="{ '!rotate-90': isActive(index) }"
+                class="icon-container transition-all duration-200 ease-in-out"
+                :class="isOpen ? 'rotate-90' : '-rotate-90'"
               >
-                <svg
-                  class="w-1.5 fill-azure"
-                  viewBox="0 0 10.5 6.4"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M5.2 6.4L0 1.1 1.1 0l4.2 4.2L9.4 0l1.1 1.1z" />
-                </svg>
+                <Icon name="chevron" class="fill-azure w-1.5" />
               </div>
             </div>
           </button>
@@ -55,6 +49,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import Icon from "@/js/components/Icon/Icon.vue";
 
 const props = defineProps({
   panels: {
