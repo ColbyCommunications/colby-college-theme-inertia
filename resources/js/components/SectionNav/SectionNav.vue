@@ -1,5 +1,8 @@
 <template>
-  <div class="section-nav full-bleed py-6 bg-gray-100 overflow-x-auto !mt-0">
+  <div 
+    class="section-nav full-bleed py-6 bg-gray-100 overflow-x-auto !mt-0"
+    :class="{ 'is-bot-visitor': isBot }"
+  >
     <div ref="container" class="section-nav__inner flex px-5 space-x-10 lg:justify-center">
       <h2
         class="section-nav__heading font-extended font-bold text-14 md:text-12 tracking-8 text-azure uppercase whitespace-nowrap"
@@ -16,11 +19,7 @@
             class="text-indigo-800 hover:text-indigo hover:underline transition-all duration-200 ease-in-out"
             :href="item.link.url"
           >
-            <Icon
-              v-if="item.icon_class"
-              :name="item.icon_class"
-              class="inline-block text-14 align-bottom mr-1"
-            />
+            <span class="material-icons-sharp !text-14 align-bottom mr-1">{{item.icon_class}}</span>
             {{ item.link.title }}
           </a>
         </li>
@@ -32,7 +31,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { gsap } from "gsap";
-import Icon from "@/js/components/Icon/Icon.vue";
+
 
 defineProps({
   title: { type: String, default: "" },
@@ -40,18 +39,26 @@ defineProps({
 });
 
 const container = ref(null);
+const isBot = ref(false);
 
 onMounted(() => {
+  // 1. Check for bot traffic
+  isBot.value = window?.colby?.DISABLE_ANIMATIONS === true;
+
   if (!container.value) return;
-  const targets = container.value.querySelectorAll("li");
-  gsap.to(targets, {
-    delay: 0.6,
-    duration: 0.4,
-    stagger: 0.1,
-    opacity: 1,
-    x: 0,
-    ease: "power3.easeIn",
-  });
+
+  // 2. Only execute GSAP if not a bot
+  if (!isBot.value) {
+    const targets = container.value.querySelectorAll("li");
+    gsap.to(targets, {
+      delay: 0.6,
+      duration: 0.4,
+      stagger: 0.1,
+      opacity: 1,
+      x: 0,
+      ease: "power3.easeIn",
+    });
+  }
 });
 </script>
 
@@ -59,5 +66,13 @@ onMounted(() => {
 .section-nav__item {
   opacity: 0;
   transform: translate(20px, 0);
+}
+
+// 3. Override for bots/crawlers
+.is-bot-visitor {
+  .section-nav__item {
+    opacity: 1 !important;
+    transform: translate(0, 0) !important;
+  }
 }
 </style>

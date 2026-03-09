@@ -1,7 +1,10 @@
 <template>
     <div
         class="dark-interstitial py-24 bg-indigo [&+.dark-interstitial]:mt-0 !max-w-full"
-        :class="icon ? 'md:pt-12 relative' : ''"
+        :class="[
+            icon ? 'md:pt-12 relative' : '',
+            { 'is-bot-visitor': isBot }
+        ]"
     >
         <template v-if="icon">
             <div class="relative hidden md:flex justify-end max-w-screen-2xl w-full px-5 my-0 mx-auto mb-16">
@@ -89,13 +92,13 @@ const props = defineProps({
     images: { type: Array, default: () => [] },
 });
 
-// UPDATED: Initialize as an array to handle the v-for refs
 const factContainers = ref([]);
-let waypoints = []; // Store array of waypoints to clean up later
+const isBot = ref(false);
+let waypoints = [];
 
-// UPDATED: Function now accepts the specific DOM element to animate
 const animateFact = (element) => {
-    if (!element) return;
+    // Failsafe: if bot detection is active, don't let GSAP touch the styles
+    if (!element || isBot.value) return;
 
     const heading = element.querySelector('h3');
     const paragraph = element.querySelector('p');
@@ -116,17 +119,19 @@ const animateFact = (element) => {
 };
 
 onMounted(async () => {
+    // 1. Sync reactivity with the global window variable
+    isBot.value = window?.colby?.DISABLE_ANIMATIONS === true;
+
     await nextTick();
 
-    // UPDATED: Iterate through the array of elements
-    if (factContainers.value && factContainers.value.length) {
+    // 2. Only setup Waypoints if this is a standard user session
+    if (factContainers.value && factContainers.value.length && !isBot.value) {
         factContainers.value.forEach((el) => {
-            // Create a unique waypoint for each fact block
-            const wp = new Waypoint({
+            const wp = new window.Waypoint({
                 element: el,
-                handler: () => {
-                    animateFact(el); // Pass the specific element
-                    wp.destroy(); // Optional: destroy after triggering if you only want it to run once
+                handler: function() {
+                    animateFact(el);
+                    this.destroy(); 
                 },
                 offset: 'bottom-in-view',
             });
@@ -136,7 +141,6 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
-    // UPDATED: Clean up all waypoint instances
     waypoints.forEach((wp) => wp.destroy());
     waypoints = [];
 });
@@ -152,6 +156,16 @@ onBeforeUnmount(() => {
 
     p {
         opacity: 0;
+    }
+}
+
+// 3. Forced visibility state for crawlers / bot traffic
+.is-bot-visitor {
+    .dark-interstitial__fact--animated {
+        h3, p {
+            opacity: 1 !important;
+            transform: scale(1) !important;
+        }
     }
 }
 </style>

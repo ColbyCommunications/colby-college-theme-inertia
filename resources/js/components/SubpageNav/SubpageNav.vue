@@ -1,6 +1,7 @@
 <template>
   <div
     class="subpage-nav md:space-y-5 bg-white md:bg-transparent border md:border-0 border-solid border-indigo-300 rounded-md"
+    :class="{ 'is-bot-visitor': isBot }"
     @click.self="toggleMenu"
   >
     <div ref="container" class="subpage-nav--animated">
@@ -34,7 +35,7 @@
       </h2>
       <ul
         class="subpage-nav__items md:block py-4 md:py-0 border-t md:border-t-0 border-solid border-indigo-200 mt-0 md:mt-6"
-        :class="{ hidden: !menuOpen }"
+        :class="{ hidden: !menuOpen && !isBot }"
       >
         <li
           v-for="(item, index) in items"
@@ -70,22 +71,30 @@ defineProps({
 
 const menuOpen = ref(false);
 const container = ref(null);
+const isBot = ref(false);
 
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value;
 };
 
 onMounted(() => {
+  // Check global bot detection variable
+  isBot.value = window?.colby?.DISABLE_ANIMATIONS === true;
+
   if (!container.value) return;
-  const targets = container.value.querySelectorAll("li");
-  gsap.to(targets, {
-    delay: 0.6,
-    duration: 0.4,
-    stagger: 0.1,
-    opacity: 1,
-    y: 0,
-    ease: "power3.easeIn",
-  });
+
+  // Only run animations if not a bot
+  if (!isBot.value) {
+    const targets = container.value.querySelectorAll("li");
+    gsap.to(targets, {
+      delay: 0.6,
+      duration: 0.4,
+      stagger: 0.1,
+      opacity: 1,
+      y: 0,
+      ease: "power3.easeIn",
+    });
+  }
 });
 </script>
 
@@ -93,5 +102,13 @@ onMounted(() => {
 .subpage-nav__item {
   opacity: 0;
   transform: translate(0, 20px);
+}
+
+// Global override for bots
+.is-bot-visitor {
+  .subpage-nav__item {
+    opacity: 1 !important;
+    transform: translate(0, 0) !important;
+  }
 }
 </style>

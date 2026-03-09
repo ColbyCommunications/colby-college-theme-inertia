@@ -35,6 +35,17 @@ export const Default = {
     await userEvent.click(toggle);
     await expect(menu).not.toHaveClass("hidden");
   },
+  decorators: [
+    () => ({
+      setup() {
+        // Set the global mock before the story renders
+        window.colby = window.colby || {};
+        window.colby.DISABLE_ANIMATIONS = false;
+      },
+      // Use the 'story' component provided by Storybook
+      template: '<story />',
+    }),
+  ],
 };
 
 export const AllInactive = {
@@ -62,4 +73,56 @@ export const AllInactive = {
     await userEvent.click(toggle);
     await expect(menu).toHaveClass("hidden");
   },
+  decorators: [
+    () => ({
+      setup() {
+        // Set the global mock before the story renders
+        window.colby = window.colby || {};
+        window.colby.DISABLE_ANIMATIONS = false;
+      },
+      // Use the 'story' component provided by Storybook
+      template: '<story />',
+    }),
+  ],
+};
+
+export const NoAnimation = {
+  name: "No Animation",
+  args: {
+    heading: "Academics",
+    parentPermalink: "#",
+    items: [
+      { title: "Majors & Minors", url: "#", active: true },
+      { title: "Departments & Programs", url: "#" },
+      { title: "Areas of Distinction", url: "#" },
+      { title: "Course Catalog", url: "#" },
+      { title: "Research", url: "#" },
+      { title: "Registrar", url: "#" },
+      { title: "Academic Calendar", url: "#" },
+    ],
+  },
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    await expect(canvas.getByText("Academics")).toBeInTheDocument();
+    await expect(canvas.getByText("Majors & Minors")).toBeInTheDocument();
+    await expect(canvas.getByText("Registrar")).toBeInTheDocument();
+
+    const menu = canvasElement.querySelector(".subpage-nav__items");
+    const toggle = canvasElement.querySelector(".subpage-nav h2 > div");
+
+    await expect(menu).toHaveClass("hidden");
+    await expect(toggle).not.toBeNull();
+    await userEvent.click(toggle);
+    await expect(menu).not.toHaveClass("hidden");
+  },
+  decorators: [
+    () => ({
+      setup() {
+        // Set the global mock before the story renders
+        window.colby = window.colby || {};
+        window.colby.DISABLE_ANIMATIONS = true;
+      },
+      // Use the 'story' component provided by Storybook
+      template: '<story />',
+    }),
+  ],
 };

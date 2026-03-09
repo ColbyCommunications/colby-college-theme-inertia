@@ -31,7 +31,6 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
 
 // Import child components (assuming standard directory structure)
 import Carousel from "../Carousel/Carousel.vue";

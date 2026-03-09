@@ -27,6 +27,17 @@ export const Default = {
     await expect(canvas.getByText("Course Catalog")).toBeInTheDocument();
     await expect(canvas.getByText("Academic Calendar")).toBeInTheDocument();
   },
+  decorators: [
+    () => ({
+      setup() {
+        // Set the global mock before the story renders
+        window.colby = window.colby || {};
+        window.colby.DISABLE_ANIMATIONS = false;
+      },
+      // Use the 'story' component provided by Storybook
+      template: '<story />',
+    }),
+  ],
 };
 
 export const WithIcons = {
@@ -37,7 +48,7 @@ export const WithIcons = {
       { link: { title: "Library", url: "#" }, icon_class: "book" },
       { link: { title: "IT Support", url: "#" }, icon_class: "computer" },
       { link: { title: "Contact", url: "#" }, icon_class: "phone" },
-      { link: { title: "FAQ", url: "#" } },
+      { link: { title: "FAQ", url: "#" }, icon_class: "question_mark" },
     ],
   },
   play: async ({ canvas }) => {
@@ -45,4 +56,48 @@ export const WithIcons = {
     await expect(canvas.getByText("Library")).toBeInTheDocument();
     await expect(canvas.getByText("FAQ")).toBeInTheDocument();
   },
+  decorators: [
+    () => ({
+      setup() {
+        // Set the global mock before the story renders
+        window.colby = window.colby || {};
+        window.colby.DISABLE_ANIMATIONS = false;
+      },
+      // Use the 'story' component provided by Storybook
+      template: '<story />',
+    }),
+  ],
+};
+
+export const NoAnimation = {
+  name: "No Animation",
+  args: {
+    title: "Academics",
+    items: [
+      { link: { title: "Majors & Minors", url: "#" } },
+      { link: { title: "Departments & Programs", url: "#" } },
+      { link: { title: "Areas of Distinction", url: "#" } },
+      { link: { title: "Course Catalog", url: "#" } },
+      { link: { title: "Research", url: "#" } },
+      { link: { title: "Registrar", url: "#" } },
+      { link: { title: "Academic Calendar", url: "#" } },
+    ],
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Academics")).toBeInTheDocument();
+    await expect(canvas.getByText("Majors & Minors")).toBeInTheDocument();
+    await expect(canvas.getByText("Course Catalog")).toBeInTheDocument();
+    await expect(canvas.getByText("Academic Calendar")).toBeInTheDocument();
+  },
+  decorators: [
+    () => ({
+      setup() {
+        // Set the global mock before the story renders
+        window.colby = window.colby || {};
+        window.colby.DISABLE_ANIMATIONS = true;
+      },
+      // Use the 'story' component provided by Storybook
+      template: '<story />',
+    }),
+  ],
 };

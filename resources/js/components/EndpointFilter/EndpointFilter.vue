@@ -61,7 +61,7 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted, defineProps } from "vue";
+import { ref, onMounted} from "vue";
 import axios from "axios";
 import TextGroup from "../TextGroup/TextGroup.vue";
 import ButtonGroup from "../ButtonGroup/ButtonGroup.vue";

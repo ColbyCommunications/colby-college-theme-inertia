@@ -6,7 +6,6 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
 
 const props = defineProps({
   // The class to apply to the <img> element

@@ -92,7 +92,7 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from "vue";
+import { computed } from "vue";
 import Context from "@/js/components/Context/Context.vue";
 import Picture from "@/js/components/Picture/Picture.vue";
 

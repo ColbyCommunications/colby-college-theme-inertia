@@ -1,5 +1,5 @@
 <template>
-  <div class="border--animated" ref="container" />
+  <div ref="container" class="border--animated block col-span-12 h-px" :class="[colorClass, widthClass]" />
 </template>
 
 <script setup>
@@ -9,6 +9,11 @@ import "waypoints/lib/noframework.waypoints"; // attaches window.Waypoint
 
 const container = ref(null);
 let waypoint = null;
+const widthClass = ref('w-0');
+
+defineProps({
+  colorClass: { type: String, default: 'bg-azure' },
+});
 
 const animateBorder = () => {
   if (!container.value) return;
@@ -20,20 +25,26 @@ const animateBorder = () => {
 };
 
 onMounted(() => {
-  console.log(container);
+  
   if (typeof window !== "undefined" && container.value) {
-    waypoint = new window.Waypoint({
-      element: container.value,
-      handler: () => {
-        animateBorder();
-        // Run once
-        if (waypoint && waypoint.destroy) {
-          waypoint.destroy();
-          waypoint = null;
-        }
-      },
-      offset: "bottom-in-view",
-    });
+
+    if (window.colby.DISABLE_ANIMATIONS === false) {
+      console.log(window.colby.DISABLE_ANIMATIONS);
+      waypoint = new window.Waypoint({
+        element: container.value,
+        handler: () => {
+          animateBorder();
+          // Run once
+          if (waypoint && waypoint.destroy) {
+            waypoint.destroy();
+            waypoint = null;
+          }
+        },
+        offset: "bottom-in-view",
+      });
+    } else {
+      widthClass.value = 'w-full';
+    }
   }
 });
 
