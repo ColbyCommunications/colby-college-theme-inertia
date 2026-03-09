@@ -22,7 +22,7 @@
         />
       </div>
 
-      <div v-if="image" class="hero__secondary md:col-span-4">
+      <div v-if="image" class="hero__secondary md:col-span-4 mt-6">
         <div
           :class="[
             'hero__image relative',
@@ -35,7 +35,7 @@
             :srcset="image.srcset"
             :src="image.src"
             :size-desktop="image.sizes.Square"
-            :size-mobile="image.sizes.Square"
+            :size-mobile="image.sizes.Square_mobile"
             :alt="image.alt"
           />
         </div>
@@ -50,7 +50,7 @@
 
     <div
       v-if="images && align === 'center'"
-      class="hero__inner mx-auto my-0 grid w-full max-w-screen-2xl gap-x-10 px-5 md:grid-cols-12 md:items-center"
+      class="hero__inner mx-auto my-0 grid w-full max-w-screen-2xl gap-x-10 px-5 md:grid-cols-12 md:items-center mt-6"
     >
       <div
         v-for="(secondaryImage, index) in images"
@@ -71,8 +71,8 @@
             class="absolute top-0 left-0 h-full w-full object-cover"
             :srcset="secondaryImage.srcset"
             :src="secondaryImage.src"
-            :size-desktop="secondaryImage.image?.sizes?.Square"
-            :size-mobile="secondaryImage.image?.sizes?.Square"
+            :size-desktop="secondaryImage.sizes?.Square"
+            :size-mobile="secondaryImage.sizes?.Square"
             :alt="secondaryImage.alt"
           />
         </div>
