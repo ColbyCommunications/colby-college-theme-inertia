@@ -6,10 +6,14 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static && touch storybook-static/.nojekyll",
-    "test:storybook": "vitest --project storybook --no-file-parallelism"
+    "test:storybook": "vitest --project storybook --no-file-parallelism",
+    "percy:storybook": "percy storybook ./storybook-static --include \"^Templates/Page Show/.*\"",
+    "percy:storybook:dry": "percy storybook ./storybook-static --include \"^Templates/Page Show/.*\" --dry-run"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.0",
+    "@percy/cli": "^1.31.9",
+    "@percy/storybook": "^10.0.0",
     "@storybook/addon-a11y": "^10.2.0",
     "@storybook/addon-docs": "^10.2.0",
     "@storybook/addon-viewport": "^9.0.8",
