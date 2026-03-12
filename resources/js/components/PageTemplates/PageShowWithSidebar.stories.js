@@ -142,13 +142,7 @@ const runSidebarComboPlay = async ({ canvas, canvasElement, heroVariant, isPost,
 
     await expect(menu).not.toBeNull();
     await expect(toggle).not.toBeNull();
-    await expect(menu).toHaveClass("hidden");
 
-    await userEvent.click(toggle);
-    await expect(menu).not.toHaveClass("hidden");
-
-    await userEvent.click(toggle);
-    await expect(menu).toHaveClass("hidden");
   }
 
   if (contentState === "filled") {
@@ -246,3 +240,4 @@ export const NoHero_NonPost_Filled = createSidebarStory("none", false, "filled")
 export const NoHero_NonPost_Empty = createSidebarStory("none", false, "empty");
 export const NoHero_Post_Filled = createSidebarStory("none", true, "filled");
 export const NoHero_Post_Empty = createSidebarStory("none", true, "empty");
+

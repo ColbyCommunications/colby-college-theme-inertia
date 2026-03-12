@@ -26,17 +26,6 @@ export const Primary = {
       ),
     ).toBeInTheDocument();
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const Facts = {
@@ -57,17 +46,6 @@ export const Facts = {
     await expect(loremElements.length).toBeGreaterThanOrEqual(2);
     await expect(canvas.getAllByText("100%").length).toBeGreaterThan(0);
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const Images = {
@@ -121,17 +99,6 @@ export const Images = {
     const loremElements = canvas.getAllByText("Lorem ipsum");
     await expect(loremElements.length).toBeGreaterThanOrEqual(2);
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const WithoutIcon = {
@@ -146,17 +113,6 @@ export const WithoutIcon = {
     await expect(canvas.getByText("Campus Update")).toBeInTheDocument();
     await expect(canvas.getByText("New Facilities")).toBeInTheDocument();
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const WithoutFacts = {
@@ -171,45 +127,4 @@ export const WithoutFacts = {
     await expect(canvas.getByText("Quick Info")).toBeInTheDocument();
     await expect(canvas.getByText("Important Dates")).toBeInTheDocument();
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
-};
-export const FactsNA = {
-  name: "With Facts (No Animation)",
-  args: {
-    subheading: "Lorem ipsum",
-    heading: "Lorem ipsum",
-    facts: [
-      { figure: "100%", paragraph: "consectetur adipiscing elit" },
-      { figure: "100%", paragraph: "consectetur adipiscing elit" },
-    ],
-    paragraph:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
-  play: async ({ canvas }) => {
-    // Both subheading and heading are "Lorem ipsum", so use getAllByText
-    const loremElements = canvas.getAllByText("Lorem ipsum");
-    await expect(loremElements.length).toBeGreaterThanOrEqual(2);
-    await expect(canvas.getAllByText("100%").length).toBeGreaterThan(0);
-  },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = true;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };

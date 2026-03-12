@@ -129,7 +129,7 @@ const animateParagraph = () => {
 
 // --- Lifecycle Hooks ---
 onMounted(() => {
-    isBot.value = window?.colby?.DISABLE_ANIMATIONS === true;
+    isBot.value = window.colby.DISABLE_ANIMATIONS === true;
 
     if (!container.value) return;
 

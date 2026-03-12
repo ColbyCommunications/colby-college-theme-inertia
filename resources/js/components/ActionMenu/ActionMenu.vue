@@ -1,12 +1,14 @@
 <template>
   <ul
     class="mb-12 flex w-full justify-start md:col-span-4 md:mb-0 md:grid md:w-64 md:grid-cols-2"
+    role="list"
   >
     <li
       v-for="item in menu"
       :key="item.id || item.url || item.title"
       class="w-48 font-body text-18 leading-140 font-bold text-indigo-200 md:col-span-1 md:px-4 md:text-10"
-    >
+      role="listitem"
+      >
       <a
         :href="item.url"
         class="mr-10 flex text-indigo-200 transition-all duration-200 ease-in-out hover:text-white hover:underline md:items-center"

@@ -25,11 +25,9 @@ const animateBorder = () => {
 };
 
 onMounted(() => {
-  
-  if (typeof window !== "undefined" && container.value) {
 
+  if (typeof window !== "undefined" && container.value) {
     if (window.colby.DISABLE_ANIMATIONS === false) {
-      console.log(window.colby.DISABLE_ANIMATIONS);
       waypoint = new window.Waypoint({
         element: container.value,
         handler: () => {
