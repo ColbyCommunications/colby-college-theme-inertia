@@ -1,0 +1,31 @@
+import{c as u,a as n,n as l,e as m,h as g,q as p,s as h,d as i}from"./iframe-7hMrkyzV.js";import{_ as f}from"./Context-SwHlVN13.js";import{_ as y}from"./ButtonGroup-CsAcoAIN.js";import"./preload-helper-PPVm8Dsz.js";import"./TextGroup-xv_V1Og-.js";import"./index-DDlvirwQ.js";import"./noframework.waypoints-DVP5Ss7z.js";import"./Button-BdYe4hLK.js";const x={class:"intro-context"},v={class:"intro-context__inner md:grid md:grid-cols-12 gap-10 max-w-screen-2xl w-full px-5 mx-auto"},b=["innerHTML"],o={__name:"IntroContext",props:{size:{type:String,default:"medium"},inset:{type:Boolean,default:!1},subheading:{type:String,default:""},heading:{type:String,default:""},text:{type:String,default:""},buttons:{type:Array,default:()=>[]}},setup(e){const c=e,d=h(()=>c.buttons.map(a=>({button:{url:a.url,title:a.title,target:a.target||""}})));return(a,w)=>(i(),u("div",x,[n("div",v,[n("div",{class:l(["intro-context__main pt-5 border-t border-azure",e.inset?"md:col-start-2 md:col-span-5":"md:col-span-6"])},[m(f,{size:e.size,subheading:e.subheading,heading:e.heading},null,8,["size","subheading","heading"])],2),n("div",{class:l(["intro-context__secondary mt-2 md:mt-0 grid gap-4",e.inset?"md:col-span-5":"md:col-span-6"])},[n("div",{class:"font-body font-normal text-18 leading-130 text-indigo-800",innerHTML:e.text},null,8,b),e.buttons&&e.buttons.length?(i(),g(y,{key:0,size:"large",items:d.value},null,8,["items"])):p("",!0)],2)])]))}};o.__docgenInfo=Object.assign({displayName:o.name??o.__name},{exportName:"default",displayName:"IntroContext",description:"",tags:{},props:[{name:"size",type:{name:"string"},defaultValue:{func:!1,value:'"medium"'}},{name:"inset",type:{name:"boolean"},defaultValue:{func:!1,value:"false"}},{name:"subheading",type:{name:"string"},defaultValue:{func:!1,value:'""'}},{name:"heading",type:{name:"string"},defaultValue:{func:!1,value:'""'}},{name:"text",type:{name:"string"},defaultValue:{func:!1,value:'""'}},{name:"buttons",type:{name:"array"},defaultValue:{func:!1,value:"[]"}}],sourceFiles:["/home/runner/work/colby-college-theme-inertia/colby-college-theme-inertia/resources/js/components/IntroContext/IntroContext.vue"]});const{expect:s}=__STORYBOOK_MODULE_TEST__,O={title:"Core Components/Intro Context",component:o,tags:["autodocs"]},t={name:"Default",args:{size:"medium",subheading:"Dare Northward Overview",heading:"We are taking an integrated, values-led approach to this campaign to reflect the realities of the world we're trying to better.",text:"<p>In 1818, Colby's early faculty and students sailed up the Kennebec on the sloop Hero to start a college, far north of the established centers of higher learning. Many daring moves followed as Colby grew, struggled, and prospered.</p><p>Dare Northward leverages our existing strengths to enhance our student's experiences, improve their outcomes, and produce generations of leaders to tackle the world's greatest challenges.</p>",buttons:[{url:"#",title:"Colby Impact"}]},play:async({canvas:e})=>{await s(e.getByText("Dare Northward Overview")).toBeInTheDocument(),await s(e.getByText("Colby Impact")).toBeInTheDocument()}},r={name:"Inset",args:{...t.args,inset:!0,size:"large"},play:async({canvas:e})=>{await s(e.getByText("Dare Northward Overview")).toBeInTheDocument()}};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
+  name: "Default",
+  args: {
+    size: "medium",
+    subheading: "Dare Northward Overview",
+    heading: "We are taking an integrated, values-led approach to this campaign to reflect the realities of the world we're trying to better.",
+    text: "<p>In 1818, Colby's early faculty and students sailed up the Kennebec on the sloop Hero to start a college, far north of the established centers of higher learning. Many daring moves followed as Colby grew, struggled, and prospered.</p><p>Dare Northward leverages our existing strengths to enhance our student's experiences, improve their outcomes, and produce generations of leaders to tackle the world's greatest challenges.</p>",
+    buttons: [{
+      url: "#",
+      title: "Colby Impact"
+    }]
+  },
+  play: async ({
+    canvas
+  }) => {
+    await expect(canvas.getByText("Dare Northward Overview")).toBeInTheDocument();
+    await expect(canvas.getByText("Colby Impact")).toBeInTheDocument();
+  }
+}`,...t.parameters?.docs?.source}}};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:`{
+  name: "Inset",
+  args: {
+    ...Default.args,
+    inset: true,
+    size: "large"
+  },
+  play: async ({
+    canvas
+  }) => {
+    await expect(canvas.getByText("Dare Northward Overview")).toBeInTheDocument();
+  }
+}`,...r.parameters?.docs?.source}}};const k=["Default","Inset"];export{t as Default,r as Inset,k as __namedExportsOrder,O as default};
