@@ -295,7 +295,6 @@ export const AcademicNewsApi = {
     await waitFor(() => {
       const first = canvasElement.querySelectorAll('.carousel__context')[0];
       const firstHeading = first.querySelectorAll('.text-group__heading')[0];
-      
       expect(firstHeading.textContent.slice(0, -1)).toBe('Academic Highlights');
       expect(firstHeading).toBeVisible();
     });
@@ -368,16 +367,25 @@ export const FacultyAccomplishmentsApi = {
     });
     return () => spy.mockRestore();
   },
-  play: async ({ canvas, userEvent }) => {
+  play: async ({ canvas, userEvent, canvasElement }) => {
     await waitFor(() => {
-      expect(canvas.getByText("Faculty News")).toBeInTheDocument();
+      const first = canvasElement.querySelectorAll('.carousel__context')[0];
+      const firstHeading = first.querySelectorAll('.text-group__heading')[0];
+      expect(firstHeading.textContent.slice(0, -1)).toBe('Faculty News');
+      expect(firstHeading).toBeVisible();
     });
     await expect(axios.get).toHaveBeenCalledWith(FACULTY_ENDPOINT);
+    
+    const first = canvasElement.querySelectorAll('.carousel__context')[0];
+    const firstSubHeading = first.querySelectorAll('.text-group__subheading')[0];
 
-    await expect(
-      canvas.getByText("Faculty Achievement in Quantum Computing"),
-    ).toBeInTheDocument();
-    await expect(canvas.getByText("Faculty Accomplishments")).toBeInTheDocument();
+    expect(firstSubHeading.textContent.slice(0, -1)).toBe('Faculty Accomplishments');
+    expect(firstSubHeading).toBeVisible();
+
+    const firstSlide = canvasElement.querySelectorAll('.carousel__main .carousel__slides-context .carousel__slides-context-wrap:first-child')[0];
+    const firstSlideHeading = firstSlide.querySelectorAll('.text-group__heading')[0];
+    expect(firstSlideHeading.textContent.slice(0, -1)).toBe('Faculty Achievement in Quantum Computing');
+    expect(firstSlideHeading).toBeVisible();
 
     const nextButtons = canvas.getAllByRole("button", { name: "Next" });
     const prevButtons = canvas.getAllByRole("button", { name: "Previous" });
