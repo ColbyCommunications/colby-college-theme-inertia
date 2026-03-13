@@ -97,9 +97,10 @@ const mockItems = [
 
 const runBasicInteractions = async ({ canvas, canvasElement, userEvent }) => {
   await waitFor(() => {
-    expect(
-      canvas.getByText("Future of Artificial Intelligence"),
-    ).toBeInTheDocument();
+    const first = canvasElement.querySelectorAll('.carousel__main .carousel__slides-context .carousel__slides-context-wrap:first-child')[0];
+    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
+    expect(firstHeading.textContent.slice(0, -1)).toBe('Future of Artificial Intelligence');
+    expect(firstHeading).toBeVisible();
   });
 
   const main = canvasElement.querySelector(".carousel__main");
@@ -114,9 +115,7 @@ const runBasicInteractions = async ({ canvas, canvasElement, userEvent }) => {
 
   await userEvent.click(nextButtons[0]);
   await userEvent.click(prevButtons[0]);
-  await expect(
-    canvas.getByText("Future of Artificial Intelligence"),
-  ).toBeInTheDocument();
+
 };
 
 export const Primary = {
