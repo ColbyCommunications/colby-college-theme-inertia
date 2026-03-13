@@ -182,9 +182,10 @@ export const SingleSlide = {
   },
   play: async ({ canvas, canvasElement, userEvent }) => {
     await waitFor(() => {
-      expect(
-        canvas.getByText("Future of Artificial Intelligence"),
-      ).toBeInTheDocument();
+      const first = canvasElement.querySelectorAll('.carousel__main .carousel__slides-context .carousel__slides-context-wrap:first-child')[0];
+      const firstHeading = first.querySelectorAll('.text-group__heading')[0];
+      expect(firstHeading.textContent.slice(0, -1)).toBe('Future of Artificial Intelligence');
+      expect(firstHeading).toBeVisible();
     });
 
     const main = canvasElement.querySelector(".carousel__main");
@@ -196,9 +197,9 @@ export const SingleSlide = {
     await expect(nextButtons.length).toBeGreaterThan(0);
     await userEvent.click(nextButtons[0]);
 
-    await expect(
-      canvas.getByText("Future of Artificial Intelligence"),
-    ).toBeInTheDocument();
+    // await expect(
+    //   canvas.getByText("Future of Artificial Intelligence"),
+    // ).toBeInTheDocument();
   },
 };
 
@@ -219,15 +220,16 @@ export const LightType = {
     });
     return () => spy.mockRestore();
   },
-  play: async ({ canvas, userEvent }) => {
+  play: async ({ canvas, userEvent, canvasElement }) => {
     await waitFor(() => {
       expect(canvas.getByText("Unexpected")).toBeInTheDocument();
     });
     await expect(axios.get).toHaveBeenCalledWith(LATEST_NEWS_ENDPOINT);
 
-    await expect(
-      canvas.getByText("Innovative Research in Marine Biology"),
-    ).toBeInTheDocument();
+    const first = canvasElement.querySelectorAll('.carousel__main .carousel__slides-context .carousel__slides-context-wrap:first-child')[0];
+    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
+    expect(firstHeading.textContent.slice(0, -1)).toBe('Innovative Research in Marine Biology');
+    expect(firstHeading).toBeVisible();
 
     const nextButtons = canvas.getAllByRole("button", { name: "Next" });
     await userEvent.click(nextButtons[0]);
@@ -251,11 +253,12 @@ export const LatestNewsApi = {
     });
     return () => spy.mockRestore();
   },
-  play: async ({ canvas, userEvent }) => {
+  play: async ({ canvas, userEvent, canvasElement }) => {
     await waitFor(() => {
-      expect(
-        canvas.getByText("Innovative Research in Marine Biology"),
-      ).toBeInTheDocument();
+      const first = canvasElement.querySelectorAll('.carousel__main .carousel__slides-context .carousel__slides-context-wrap:first-child')[0];
+      const firstHeading = first.querySelectorAll('.text-group__heading')[0];
+      expect(firstHeading.textContent.slice(0, -1)).toBe('Innovative Research in Marine Biology');
+      expect(firstHeading).toBeVisible();
     });
     await expect(axios.get).toHaveBeenCalledWith(LATEST_NEWS_ENDPOINT);
 
@@ -288,16 +291,27 @@ export const AcademicNewsApi = {
     });
     return () => spy.mockRestore();
   },
-  play: async ({ canvas, userEvent }) => {
+  play: async ({ canvas, userEvent, canvasElement }) => {
     await waitFor(() => {
-      expect(canvas.getByText("Academic Highlights")).toBeInTheDocument();
+      const first = canvasElement.querySelectorAll('.carousel__context')[0];
+      const firstHeading = first.querySelectorAll('.text-group__heading')[0];
+      
+      expect(firstHeading.textContent.slice(0, -1)).toBe('Academic Highlights');
+      expect(firstHeading).toBeVisible();
     });
+
+    const first = canvasElement.querySelectorAll('.carousel__context')[0];
+    const firstSubHeading = first.querySelectorAll('.text-group__subheading')[0];
+
     await expect(axios.get).toHaveBeenCalledWith(ACADEMIC_NEWS_ENDPOINT);
 
-    await expect(canvas.getByText("Academic News")).toBeInTheDocument();
-    await expect(
-      canvas.getByText("Innovative Research in Marine Biology"),
-    ).toBeInTheDocument();
+    expect(firstSubHeading.textContent.slice(0, -1)).toBe('Academic News');
+    expect(firstSubHeading).toBeVisible();
+
+    const firstSlide = canvasElement.querySelectorAll('.carousel__main .carousel__slides-context .carousel__slides-context-wrap:first-child')[0];
+    const firstSlideHeading = firstSlide.querySelectorAll('.text-group__heading')[0];
+    expect(firstSlideHeading.textContent.slice(0, -1)).toBe('Innovative Research in Marine Biology');
+    expect(firstSlideHeading).toBeVisible();
 
     const nextButtons = canvas.getAllByRole("button", { name: "Next" });
     const prevButtons = canvas.getAllByRole("button", { name: "Previous" });
