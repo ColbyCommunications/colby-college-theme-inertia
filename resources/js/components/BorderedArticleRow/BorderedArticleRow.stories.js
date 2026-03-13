@@ -65,15 +65,21 @@ export const Primary = {
   args: {
     items: mockItems,
   },
-  play: async ({ canvas }) => {
-    await expect(
-      canvas.getByText("Future of Artificial Intelligence"),
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByText("Sustainable Energy Solutions"),
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByText("Modern Architecture Trends"),
-    ).toBeInTheDocument();
+  play: async ({ canvas, canvasElement }) => {
+    const first = canvasElement.querySelectorAll('.bordered-article-row  .article-grid__item:first-child')[0];
+    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
+    await expect(firstHeading.textContent.slice(0, -1)).toBe('Future of Artificial Intelligence');
+    await expect(firstHeading).toBeVisible();
+    
+    const second = canvasElement.querySelectorAll('.bordered-article-row .article-grid__item:nth-child(2)')[0];
+    const secondHeading = second.querySelectorAll('.text-group__heading')[0];
+    await expect(secondHeading.textContent.slice(0, -1)).toBe('Sustainable Energy Solutions');
+    await expect(secondHeading).toBeVisible();
+    
+    const third = canvasElement.querySelectorAll('.bordered-article-row .article-grid__item:nth-child(3)')[0];
+    const thirdHeading = third.querySelectorAll('.text-group__heading')[0];
+    await expect(thirdHeading.textContent.slice(0, -1)).toBe('Modern Architecture Trends');
+    await expect(thirdHeading).toBeVisible();
+
   },
 };
