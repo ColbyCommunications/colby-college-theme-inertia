@@ -49,18 +49,8 @@ const { reset } = useGlobalLoader(dummy, {
 export const decorators = [
   (story, context) => {
     window.colby = window.colby || {};
-
-    // 1. Check if the story has a specific parameter set.
-    // 2. If not, default to the global value (true for Vitest, etc.)
-    const storyOverride = context.parameters.disableAnimations;
-
-    if (typeof storyOverride !== 'undefined') {
-      window.colby.DISABLE_ANIMATIONS = storyOverride;
-    } else {
-      // Your global default logic
-      window.colby.DISABLE_ANIMATIONS = true; 
-    }
-
+    window.colby.DISABLE_ANIMATIONS = false; 
+    
     return {
       components: { story },
       template: '<main id="main-content"><story /></main>',

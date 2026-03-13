@@ -1,10 +1,5 @@
 import ArticleGrid from "./ArticleGrid.vue";
-import { Meta, Markdown } from '@storybook/blocks';
-import ReadMe from './ReadMe.md?raw';
 
-<Meta title="Button Component/ReadMe" />
-
-<Markdown>{ReadMe}</Markdown>
 
 const mockItems = [
   {
