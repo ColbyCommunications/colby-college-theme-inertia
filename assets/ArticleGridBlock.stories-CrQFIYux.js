@@ -1,0 +1,11 @@
+import{_ as e}from"./ArticleGrid-D9ZfhZGh.js";import"./iframe-DMklC8cl.js";import"./preload-helper-PPVm8Dsz.js";import"./index-42ANG6Sg.js";import"./TextGroup-khIptu3O.js";import"./index-DDlvirwQ.js";import"./noframework.waypoints-DVP5Ss7z.js";import"./Article-C3OezhLW.js";import"./ButtonGroup-D9uDztKu.js";import"./Button-c_Wd58ef.js";import"./Picture-CD-gIuCw.js";const s=[{image:{src:"https://placeholdit.com/600x400/dddddd/999999",srcset:"https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",alt:"this is an alt tag"},heading:"Future of Artificial Intelligence",subheading:"Technology",paragraph:"AI is reshaping industries at an unprecedented pace.",url:"#",sizes:{desktop:"https://placehold.co/600x400",mobile:"https://placehold.co/300x200"}},{image:{src:"https://placeholdit.com/600x400/dddddd/999999",srcset:"https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",alt:"this is an alt tag"},heading:"Sustainable Energy Solutions",subheading:"Environment",paragraph:"Solar and wind energy are becoming more accessible than ever.",url:"#",sizes:{desktop:"https://placehold.co/600x400",mobile:"https://placehold.co/300x200"}},{image:{src:"https://placeholdit.com/600x400/dddddd/999999",srcset:"https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",alt:"this is an alt tag"},heading:"Modern Architecture Trends",subheading:"Design",paragraph:"Exploring the intersection of function and aesthetics in 2024.",url:"#",sizes:{desktop:"https://placehold.co/600x400",mobile:"https://placehold.co/300x200"}}],x={title:"Blocks/Article Grid",component:e,parameters:{disableAnimations:!1}},a=d=>({components:{ArticleGrid:e},setup(){return{args:d}},template:'<ArticleGrid v-bind="args" />'}),t={render:a,args:{display_posts_method:"manual",columns:3,cta:"Read Story",items:s,border:!1},tags:["!autodocs"]};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
+  render,
+  args: {
+    display_posts_method: "manual",
+    columns: 3,
+    cta: "Read Story",
+    items: mockItems,
+    border: false
+  },
+  tags: ['!autodocs']
+}`,...t.parameters?.docs?.source}}};const b=["ManualGrid"];export{t as ManualGrid,b as __namedExportsOrder,x as default};
