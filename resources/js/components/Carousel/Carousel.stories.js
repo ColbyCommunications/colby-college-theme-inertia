@@ -151,8 +151,12 @@ export const WithHeadingAndParagraph = {
   },
   play: async (ctx) => {
     await runBasicInteractions(ctx);
-    const { canvas } = ctx;
-    await expect(canvas.getByText("Latest Stories")).toBeInTheDocument();
+    const { canvas, canvasElement } = ctx;
+
+    const first = canvasElement.querySelectorAll('.carousel__context')[0];
+    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
+    await expect(firstHeading.textContent.slice(0, -1)).toBe('Latest Stories');
+    await expect(firstHeading).toBeVisible();
   },
 };
 
