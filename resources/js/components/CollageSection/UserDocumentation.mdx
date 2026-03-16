@@ -1,0 +1,40 @@
+import { Meta, Canvas, Story, Markdown } from '@storybook/addon-docs/blocks';
+import * as CollageStories from './CollageSection.stories';
+
+<Meta title="Blocks/Collage Section/Documentation" />
+
+# Collage Section
+The Collage Section is an editorial block that pairs a text-heavy intro (Context) with a masonry-style or overlapping image gallery. It is best used for "Our Story," "Impact Reports," or high-level landing pages where a single image isn't enough to capture the vibe.
+
+## Field Configuration
+The setup for this block is split into two main sections: **Text (Context)** and **Visuals (Images)**.
+<Markdown>
+{`
+| Field Group | Content Type | Purpose |
+| :--- | :--- | :--- |
+| **Subheading** | Text | A small, often all-caps label that sits above the main title. Used for "Category" or "Series" titles. |
+| **Heading** | Text | The main H2-level title for the section. |
+| **Paragraph** | WYSIWYG | A brief description. The toolbar is limited to keep styles consistent (bold, italic, and links only). |
+| **Buttons** | Repeater | A set of Call-to-Action buttons that appear at the bottom of the text block. |
+| **Images** | Repeater | A collection of images that will form the collage layout. |
+`}
+</Markdown>
+
+### Configuration Steps:
+1. **Fill out the Context:** This provides the "hook" for the section. It will typically appear to the left or top of the collage.
+2. **Add Images:** Click **"Add Row"** to upload images. 
+3. **Layout Logic:** Depending on the design, the collage may change its appearance based on whether you upload 2, 3, or 4+ images.
+
+## Best Practices
+
+* **Image Variety:** For a dynamic collage, try to mix "busy" images (people, action) with "calm" images (architecture, textures).
+* **Focal Points:** Ensure the most important part of each image is centered, as the collage might crop images to fit the mosaic grid.
+* **Quantity:** This block usually looks best with **3 to 5 images**. Adding too many rows in the repeater can make the section overly long.
+* **Aspect Ratios:** Don't worry about cropping your images perfectly; the block is designed to handle various sizes and fit them into the "collage" style automatically.
+
+## Troubleshooting
+**The text is too long:**
+If your paragraph in the **Context** group is very long, it may push the images down or create excessive white space. Try to keep the text concise to let the images shine.
+
+**Images are blurry:**
+Ensure you are selecting high-resolution images from the Media Library. The block will serve the appropriate size, but the source file should be at least 1200px wide for the best results.

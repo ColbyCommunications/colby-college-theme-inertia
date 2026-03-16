@@ -256,6 +256,7 @@ export const InternalFetch = {
     columns: 3,
     post_limit: -1,
     cta: "Read Story",
+    image_orientation: "rectangle",
   },
   beforeEach: () => {
     const pageOne = buildInternalPageOne();

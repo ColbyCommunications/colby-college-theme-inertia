@@ -1,0 +1,59 @@
+import { Meta, Canvas, Story, Markdown } from '@storybook/addon-docs/blocks';
+import * as ArticleGridStories from './ArticleGrid.stories';
+
+
+<Meta title="Blocks/Article Grid/Documentation" />
+
+# Article Grid
+The Article Grid is a versatile block used to display collections of news, blog posts, or custom highlights. It supports automatic syncing with WordPress categories or manual "hand-picked" article selections.
+
+
+
+## Choosing Your Data Source
+The first setting, **Display Posts Method**, determines where the content comes from.  
+
+<Markdown>
+{`
+| Method | Best Used For... |
+| :--- | :--- |
+| **Internal Posts** | Automatically showing the latest news from a specific category. |
+| **External API** | Pulling in "Media Coverage" or news from external university sources. |
+| **Add Posts Manually** | Hand-picking specific stories for a landing page (highly curated). |
+`}
+</Markdown>
+
+---
+
+## Configuration Modes
+
+### Internal Posts (Automatic)
+Use this to keep a page updated without manual intervention.
+* **Render Posts Category:** Select the WordPress category you want to pull from.
+* **Post Limit:** Control how many items appear (set to `-1` to show all).
+* **Exclude Posts:** If a specific "Sticky" post is already on the page, use this to prevent it from appearing twice in the grid.
+
+### External API
+This pulls content from the central Media Coverage feed.
+* **Media Coverage Type:** Filter the feed by "Highlights," "President's Office," or "All."
+* **Number of Posts:** Drag the slider to set a limit between 3 and 25 items.
+
+### Manual (Hand-Picked Articles)
+The most flexible option for custom layouts.
+* **Items:** Add individual rows for each card.
+* **Post:** Search for an existing site post to auto-fill the title and link.
+* **Custom Override:** You can upload a unique **Image** or change the **Context** (subheading) to differ from the original post's data.
+
+
+## Visual Styling
+Regardless of the data source, you can control the look of the grid using these "Global" settings found at the bottom of the block:
+
+* **Columns:** Choose between **2, 3, or 4** columns. 
+    > **Tip:** Use 3 columns for standard blog feeds and 4 for small resource links.
+* **Image Orientation:** * **Rectangle (3:2):** Standard photography.
+    * **Square (1:1):** Great for a modern, clean look.
+    * **Portrait (2:3):** Best for book covers or vertical posters.
+* **Border:** Toggle this on to add a subtle card outline to each item.
+
+### Editorial Best Practices
+1. **Consistency is Key:** Do not mix "Square" and "Rectangle" orientations in the same row; the grid works best when all images match.
+2. **Character Counts:** Try to keep headings across a single row to a similar length to ensure the "Read More" buttons align horizontally.
