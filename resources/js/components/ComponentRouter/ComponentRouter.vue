@@ -41,6 +41,8 @@ const blockRegistry = {
   "acf/hero": () => import("../Hero/Hero.vue"),
   "acf/home-hero": () => import("../HomeHero/HomeHero.vue"),
   "acf/overlay-hero": () => import("../OverlayHero/OverlayHero.vue"),
+  "acf/section-nav": () => import("../SectionNav/SectionNav.vue"),
+  "acf/featured-post": () => import("../FeaturedPost/FeaturedPost.vue"),
 };
 
 function getLoader(blockName) {
@@ -65,7 +67,7 @@ function getRootMargin(item, index) {
     return "0px";
   }
 
-  return "100px 0px";
+  return "50px 0px";
 }
 
 /**

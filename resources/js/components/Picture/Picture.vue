@@ -4,17 +4,17 @@
       'https://colby.edu/cdn-cgi/image/width=320,quality=60/' +
       sizeDesktop +
       ' 320w,' +
-      'https://colby.edu/cdn-cgi/image/width=640,quality=65/' +
+      'https://colby.edu/cdn-cgi/image/width=640,quality=60/' +
       sizeDesktop +
       ' 640w,' +
-      'https://colby.edu/cdn-cgi/image/width=960,quality=70/' +
+      'https://colby.edu/cdn-cgi/image/width=960,quality=60/' +
       sizeDesktop +
       ' 960w,' +
-      'https://colby.edu/cdn-cgi/image/width=1280,quality=70/' +
+      'https://colby.edu/cdn-cgi/image/width=1280,quality=60/' +
       sizeDesktop +
       ' 1280w,'
     "/>
-    <img :class="class" :src="'https://colby.edu/cdn-cgi/image/width=320,quality=60/' +
+    <img :class="class" :src="'https://colby.edu/cdn-cgi/image/width=320,quality=50/' +
       sizeDesktop" :alt="alt" :loading="loading" :sizes="'(max-width: 767px) 100vw, 50vw'" :fetchpriority="loading === 'eager' ? 'high' : 'low'" />
   </picture>
 </template>
