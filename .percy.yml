@@ -1,0 +1,4 @@
+version: 2
+
+storybook:
+  waitForTimeout: 5000
