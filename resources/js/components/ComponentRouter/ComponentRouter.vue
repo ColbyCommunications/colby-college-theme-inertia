@@ -40,6 +40,7 @@ const blockRegistry = {
   "acf/facts-figures": () => import("../FactsFigures/FactsFigures.vue"),
   "acf/hero": () => import("../Hero/Hero.vue"),
   "acf/home-hero": () => import("../HomeHero/HomeHero.vue"),
+  "acf/overlay-hero": () => import("../OverlayHero/OverlayHero.vue"),
 };
 
 function getLoader(blockName) {
@@ -80,6 +81,7 @@ function getPlaceholderHeight(item) {
     "acf/facts-figures": 300,
     "acf/hero": 0,
     "acf/home-hero": 0,
+    "acf/overlay-hero": 0,
   };
 
   return heights[item.blockName] ?? 0;

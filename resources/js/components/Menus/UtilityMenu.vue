@@ -26,7 +26,7 @@
     >
       <!-- myColby -->
       <li
-        class="group inline-block items-center font-body text-14 leading-110 font-normal md:text-12"
+        class="group inline-block items-center font-body text-14 leading-110 font-normal md:text-10"
       >
         <a
           class="flex py-2 text-indigo-800 transition-all duration-200 ease-in-out group-hover:text-indigo-1000 group-hover:underline"
@@ -41,7 +41,7 @@
 
       <!-- Search (opens in modal) -->
       <li
-        class="group inline-block font-body text-14 leading-110 font-normal md:text-12"
+        class="group inline-block font-body text-14 leading-110 font-normal md:text-10"
       >
         <Modal
           :full="true"
