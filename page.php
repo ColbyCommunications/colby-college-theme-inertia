@@ -5,7 +5,11 @@ require_once('helpers/prepare_data.php');
 
 global $post;
 
-$blocks = prepare_data(parse_blocks($post->post_content));
+$filtered_blocks = array_filter( parse_blocks($post->post_content), function( $block ) {
+    return ! is_null( $block['blockName'] );
+});
+
+$blocks = prepare_data($filtered_blocks);
 
 Inertia::render('Page/Show', [
   'id'     => $post->ID,

@@ -15,7 +15,7 @@
 
     <main
       id="main"
-      class="colby-page pb-20 md:pb-[100px] [&>div+div]:mt-20 md:[&>div+div]:mt-[100px]"
+      class="colby-page pb-20 md:pb-[100px] [&>div+div]:mt-20 md:[&>div>section:not(:first-child)]:mt-[100px]"
     >
       <slot>
         <!-- default fallback -->

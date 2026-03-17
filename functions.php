@@ -1,7 +1,7 @@
 <?php
 use BoxyBird\Inertia\Inertia;
 
-include __DIR__ . '/acf_fields.php';
+// include __DIR__ . '/acf_fields.php';
 
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
   require_once __DIR__ . '/vendor/autoload.php';
@@ -249,5 +249,5 @@ add_action('wp_head', function() {
   }
 
   // Output a small script to the head
-  echo '<script type="text/javascript">window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';</script>';
+  echo '<script type="text/javascript">window.colby = window.colby || {}; window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';</script>';
 }, 1);

@@ -258,11 +258,17 @@ watch(
   { immediate: true },
 );
 
-const apiLeftButtonItems = computed(() =>
-  (mode.value === "faculty" ? props.FAbuttons : props.buttons).map((btn) => ({
-    button: { url: btn.url, title: btn.title, target: "_blank" },
-  })),
-);
+const apiLeftButtonItems = computed(() => {
+  if(mode.value === "faculty"){
+    props.FAbuttons.map((btn) => ({
+      button: { url: btn.url, title: btn.title, target: "_blank" },
+    }));
+  } else if (props.buttons) {
+    props.buttons.map((btn) => ({
+      button: { url: btn.url, title: btn.title, target: "_blank" },
+    }));
+  }
+});
 
 const basicButtonItems = computed(() =>
   props.buttons.map((btn) => ({

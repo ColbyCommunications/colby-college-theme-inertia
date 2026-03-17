@@ -1,7 +1,21 @@
 <template>
   <picture>
-    <source media="(min-width:768px)" :srcset="sizeDesktop" />
-    <img :class="class" :src="sizeMobile" :alt="alt" :loading="loading" />
+    <source media="(min-width:768px)" :srcset="
+      'https://colby.edu/cdn-cgi/image/width=320,quality=60/' +
+      sizeDesktop +
+      ' 320w,' +
+      'https://colby.edu/cdn-cgi/image/width=640,quality=65/' +
+      sizeDesktop +
+      ' 640w,' +
+      'https://colby.edu/cdn-cgi/image/width=960,quality=70/' +
+      sizeDesktop +
+      ' 960w,' +
+      'https://colby.edu/cdn-cgi/image/width=1280,quality=70/' +
+      sizeDesktop +
+      ' 1280w,'
+    "/>
+    <img :class="class" :src="'https://colby.edu/cdn-cgi/image/width=320,quality=60/' +
+      sizeDesktop" :alt="alt" :loading="loading" :sizes="'(max-width: 767px) 100vw, 50vw'" />
   </picture>
 </template>
 
