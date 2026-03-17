@@ -54,6 +54,7 @@
             :size-desktop="image.src"
             :size-mobile="image.src"
             :alt="image?.alt || ''"
+            loading="eager"
           />
        
     </div>
