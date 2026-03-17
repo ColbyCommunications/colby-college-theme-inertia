@@ -1,0 +1,46 @@
+import { Meta, Canvas, Story, Markdown } from '@storybook/addon-docs/blocks';
+import * as CarouselStories from './Carousel.stories';
+
+<Meta title="Blocks/Carousel/Documentation" />
+
+# Carousel
+The Carousel block is a high-visibility component used to showcase featured stories or news. It provides a horizontal sliding interface that allows users to browse through multiple items while keeping the page layout compact.
+
+## Choosing Your Content Source
+The **Display Posts Method** determines how the slides are populated.
+<Markdown>
+{`
+| Method | Best Used For... |
+| :--- | :--- |
+| **External API** | Pulling the latest automated feed from the site's "Latest News" source. |
+| **Add Posts Manually** | Hand-picking specific stories with custom imagery for a curated marketing message. |
+`}
+</Markdown>
+
+
+## Configuration Modes
+
+### External API (Automated)
+When selected, the block will automatically fetch the most recent content from an external website.
+* **API Choice:** Currently defaults to "Latest News," which feeds in data from news.colby.edu
+* **Global Content:** You still need to provide a **Heading** and **Paragraph** which will appear alongside the carousel as the introductory text.
+
+### Manual Mode (Curated)
+Use this when you want full control over the specific order and content of the slides.
+* **Items:** Add individual manual slides here.
+* **Context fields:** Allows you to add the title, subheading, and link for each slide.
+* **Image:** Upload a high-resolution image. 
+    > **Note:** For the best visual experience, ensure all images in a single carousel share the same aspect ratio (Recommended: **Rectangle**).
+
+## Global Content Settings
+These fields appear regardless of which data source you choose:
+
+* **Heading:** The main title for the carousel section.
+* **Paragraph:** A short description or lead-in text for the slides.
+* **Buttons:** Add one or more Call-to-Action (CTA) buttons that appear below the introductory text.
+
+## Editorial Best Practices
+
+* **Slide Count:** Aim for **3 to 5 slides**. Research shows that users rarely click past the 5th slide, and too many items can slow down page performance.
+* **Image Clarity:** Avoid using images with text embedded in them, as the carousel overlay might obscure it or make it unreadable on mobile devices.
+* **CTA Strategy:** Use the **Buttons** section to provide a primary link to the full News or Archive page, while using individual slide links for specific stories.

@@ -1,15 +1,15 @@
 <?php
 use BoxyBird\Inertia\Inertia;
 
-include __DIR__ . '/acf_fields.php';
+// include __DIR__ . '/acf_fields.php';
 
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
   require_once __DIR__ . '/vendor/autoload.php';
 }
 
 add_action('wp_enqueue_scripts', function() {
-    wp_enqueue_style('google-font-libre-franklin', 'https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap', [], null);
-    wp_enqueue_style('typekit', 'https://use.typekit.net/ven5cit.css', [], null);
+//     wp_enqueue_style('google-font-libre-franklin', 'https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap', [], null);
+//     wp_enqueue_style('typekit', 'https://use.typekit.net/ven5cit.css', [], null);
     wp_enqueue_style('material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons+Sharp', [], null);
 });
 
@@ -249,5 +249,5 @@ add_action('wp_head', function() {
   }
 
   // Output a small script to the head
-  echo '<script type="text/javascript">window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';</script>';
+  echo '<script type="text/javascript">window.colby = window.colby || {}; window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';</script>';
 }, 1);

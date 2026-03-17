@@ -1,0 +1,45 @@
+import { Meta, Canvas, Story, Markdown } from '@storybook/addon-docs/blocks';
+import * as ContextArticleGridStories from './ContextArticleGrid.stories';
+
+<Meta title="Blocks/Context Article Grid/Documentation" />
+
+# Context Article Grid
+The **Context Article Grid** is a comprehensive section block. It is designed to provide narrative context (via the Context pattern) followed by a structured grid of articles or people. 
+
+This block is ideal for "Department News," "Meet the Faculty," or "Alumni Spotlights" where an introductory paragraph is needed before the data grid.
+
+## Data Sourcing (API vs. Manual)
+You can choose to let the block pull data automatically or hand-select the items.
+
+<Markdown>
+{`
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| **Render API** | Toggle | If enabled (True), the block pulls from an automated source. If disabled (False), you must add items manually. |
+| **API** | Radio | Choose the data source: **Manual**, **People**, or **Alumni**. (Only visible if Render API is True). |
+| **Per Page** | Number | Determines how many items load initially. Defaults to 6. |
+`}
+</Markdown>
+
+
+## Component Composition
+This block is built by "cloning" two other major patterns. Changes made to those patterns will reflect here.
+
+### A. Context (Intro Text)
+Allows you to set the **Subheading**, **Heading**, **Paragraph**, and **Buttons** that introduce the grid. 
+
+### B. Grid (Layout & Items)
+Allows you to configure the grid's visual style:
+* **Columns:** 2, 3, or 4 columns.
+* **Image Orientation:** Square, Rectangle, or Portrait.
+* **Manual Items:** If "Render API" is off, you add your stories/images here.
+
+## Best Practices
+
+* **Intro vs. Grid Balance:** Ensure the **Context** paragraph isn't so long that the reader has to scroll multiple times just to reach the first row of the grid.
+* **API Selection:** Use the **People** or **Alumni** API for directory-style pages. Use **Manual** mode for highly curated landing pages where the order of stories is critical.
+* **Grid Consistency:** When using the manual grid, try to ensure all images use the same **Image Orientation** for a clean, aligned look.
+
+## 5. Troubleshooting
+**The Grid is empty:**
+If "Render API" is on, ensure the selected API (e.g., Alumni) actually has published content. If "Render API" is off, ensure you have added rows to the "Items" repeater inside the Grid section.

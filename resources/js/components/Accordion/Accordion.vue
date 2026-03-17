@@ -1,10 +1,11 @@
 <template>
-  <div class="accordion mx-auto w-full max-w-screen-2xl">
+  <div class="accordion mx-auto w-full max-w-screen-2xl" role="accordion">
     <div class="colby-accordion-block border-b border-gray-300">
       <div
         v-for="(panel, index) in panels"
         :key="index"
         class="accordion__panel border-t border-solid border-gray-300"
+        role="region"
       >
         <div class="accordion__header">
           <button

@@ -201,7 +201,7 @@
         >
           <div
             v-if="expandedIndex === i"
-            class="mt-4 flex w-full flex-col border-[1px] border-indigo-500 bg-indigo-200 text-14 text-indigo-800"
+            class="accordion__flyout mt-4 flex w-full flex-col border-[1px] border-indigo-500 bg-indigo-200 text-14 text-indigo-800"
             :style="{ maxHeight: '80vh' }"
           >
             <div class="flex w-full justify-end pt-4 pr-4 pl-4">
@@ -243,7 +243,7 @@
         >
           <div
             v-if="expandedIndex === i"
-            class="absolute top-0 flex flex-col border-[1px] border-indigo-500 bg-indigo-200 text-14 text-indigo-800"
+            class="accordion__flyout absolute top-0 flex flex-col border-[1px] border-indigo-500 bg-indigo-200 text-14 text-indigo-800"
             :class="
               accordionDirection(i) === 'right'
                 ? 'left-full ml-4'
@@ -309,7 +309,7 @@ import {
   onBeforeUnmount,
   nextTick,
 } from "vue";
-import axios from "axios";
+import axios from '../../plugins/axios';
 import TextGroup from "../TextGroup/TextGroup.vue";
 import Article from "../Article/Article.vue";
 import Picture from "../Picture/Picture.vue";

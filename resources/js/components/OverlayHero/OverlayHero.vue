@@ -73,10 +73,10 @@
       <Picture
         v-if="image"
         class="absolute top-0 left-0 z-[-10] h-full w-full object-cover"
-        :srcset="image.srcset"
+        :srcset="image.src"
         :src="image.src"
-        :size-desktop="image.sizes ? image.sizes.Hero : ''"
-        :size-mobile="image.sizes ? image.sizes.Hero : ''"
+        :size-desktop="image.src"
+        :size-mobile="image.src"
         :alt="image.alt || ''"
       />
     </template>

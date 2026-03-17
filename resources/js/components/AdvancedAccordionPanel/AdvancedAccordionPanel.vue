@@ -24,6 +24,7 @@
       ref="windowEl"
       class="advanced-accordion__window overflow-hidden transition-all duration-250 ease-in-out"
       :style="{ height: windowHeight, visibility: isOpen ? 'visible' : 'hidden' }"
+      role="region"
     >
       <div
         ref="contentEl"

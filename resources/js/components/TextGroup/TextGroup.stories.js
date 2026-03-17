@@ -51,17 +51,6 @@ export const Medium = {
     const heading = canvas.getByText("Explore Our Programs");
     await expect(heading.className).toMatch(/text-indigo/);
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const XLarge = {
@@ -84,17 +73,6 @@ export const XLarge = {
     const heading = canvas.getByText("Colby College");
     await expect(heading.className).toMatch(/text-48/);
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const Large = {
@@ -112,17 +90,6 @@ export const Large = {
     await expect(canvas.getByText("Featured")).toBeInTheDocument();
     await expect(canvas.getByText("Student Research")).toBeInTheDocument();
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const Small = {
@@ -140,17 +107,6 @@ export const Small = {
     await expect(canvas.getByText("News")).toBeInTheDocument();
     await expect(canvas.getByText("Campus Update")).toBeInTheDocument();
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const XSmall = {
@@ -171,17 +127,6 @@ export const XSmall = {
     await expect(heading.className).toMatch(/font-bold/);
     await expect(heading.className).toMatch(/text-18/);
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const Centered = {
@@ -205,17 +150,6 @@ export const Centered = {
     const heading = canvas.getByText("Our Purpose");
     await expect(heading.className).toMatch(/text-center/);
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const LightType = {
@@ -239,17 +173,6 @@ export const LightType = {
     const heading = canvas.getByText("Faculty Achievements");
     await expect(heading.className).toMatch(/text-white/);
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const SmallStatic = {
@@ -267,17 +190,6 @@ export const SmallStatic = {
   play: async ({ canvas }) => {
     await expect(canvas.getByText("Static Heading")).toBeInTheDocument();
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const HeroWithDate = {
@@ -297,17 +209,6 @@ export const HeroWithDate = {
     await expect(canvas.getByText("Campus Event")).toBeInTheDocument();
     await expect(canvas.getByText("January 15, 2025")).toBeInTheDocument();
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const HeroNoDate = {
@@ -326,17 +227,6 @@ export const HeroNoDate = {
   play: async ({ canvas }) => {
     await expect(canvas.getByText("Colby College")).toBeInTheDocument();
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const HeadingOnly = {
@@ -351,17 +241,6 @@ export const HeadingOnly = {
   play: async ({ canvas }) => {
     await expect(canvas.getByText("Just a Heading")).toBeInTheDocument();
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
 export const WithHtmlParagraph = {
@@ -379,51 +258,5 @@ export const WithHtmlParagraph = {
     await expect(canvas.getByText("Helpful Links")).toBeInTheDocument();
     await expect(canvas.getByText("Library")).toBeInTheDocument();
   },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = false;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
 };
 
-
-export const NoAnimation = {
-  name: "Medium (No Animations)",
-  render,
-  args: {
-    size: "medium",
-    align: "left",
-    type: "dark",
-    subheading: "Academics",
-    heading: "Explore Our Programs",
-    paragraph: "Colby offers more than 60 majors and minors across the liberal arts and sciences.",
-  },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText("Academics")).toBeInTheDocument();
-    await expect(canvas.getByText("Explore Our Programs")).toBeInTheDocument();
-
-    const subheading = canvas.getByText("Academics");
-    await expect(subheading.className).toMatch(/text-azure/);
-    await expect(subheading.className).toMatch(/uppercase/);
-
-    const heading = canvas.getByText("Explore Our Programs");
-    await expect(heading.className).toMatch(/text-indigo/);
-  },
-  decorators: [
-    () => ({
-      setup() {
-        // Set the global mock before the story renders
-        window.colby = window.colby || {};
-        window.colby.DISABLE_ANIMATIONS = true;
-      },
-      // Use the 'story' component provided by Storybook
-      template: '<story />',
-    }),
-  ],
-};

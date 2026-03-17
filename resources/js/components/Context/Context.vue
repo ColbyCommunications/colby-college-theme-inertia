@@ -13,7 +13,7 @@
         />
 
         <ButtonGroup
-            v-if="buttons.items.length"
+            v-if="buttons?.items?.length"
             :type="btnType"
             :size="btnSize"
             :align="align"

@@ -1,5 +1,5 @@
 <template>
-    <div class="alert py-7" :class="bgClass">
+    <div class="alert py-7" :class="bgClass" role="alert">
         <div
             class="alert__inner grid md:items-center gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto"
         >

@@ -31,6 +31,30 @@
   }
 }
 
+@font-face {
+  font-family: "Libre Franklin";
+  src: url("/resources/fonts/libre-franklin/LibreFranklin-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Libre Franklin";
+  src: url("/resources/fonts/libre-franklin/LibreFranklin-SemiBold.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Libre Franklin";
+  src: url("/resources/fonts/libre-franklin/LibreFranklin-Bold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Theme tokens */
 @theme {
  /* --- Colors --- */
@@ -40,7 +64,7 @@
  --color-indigo: #012169;
  --color-canary: #ffb500;
  --color-azure: #366bcf;
- --color-notification-red: #dd3c27;
+ --color-notification-red: #dc3924;
  
  --color-indigo-100: #f9fbff;
  --color-indigo-200: #eef4ff;

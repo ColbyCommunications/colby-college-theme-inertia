@@ -43,37 +43,26 @@
             autoplay
             muted
             loop
-            :poster="poster || undefined"
+            :poster="poster"
         >
-            <source :src="video" type="video/mp4" />
+            <source src="https://www.colby.edu/wp-content/uploads/2025/12/Untitled.mp4" type="video/mp4" />
         </video>
 
-        <picture v-else class="z-[-10] absolute top-0 left-0 w-full h-full">
-            <!-- If you're passing a single srcset, prefer it for ≥ md -->
-            <source
-                v-if="inComponentLibrary && image?.srcset"
-                media="(min-width:768px)"
-                :srcset="image.srcset"
-            />
-            <!-- Otherwise use explicit desktop/mobile sources -->
-            <source
-                v-else-if="!inComponentLibrary && image?.sizeDesktop"
-                media="(min-width:768px)"
-                :srcset="image.sizeDesktop"
-            />
-            <img
-                class="w-full h-full object-cover"
-                :src="inComponentLibrary ? image?.src : image?.sizeMobile || image?.src"
-                :alt="image?.alt || ''"
-                loading="eager"
-                decoding="async"
-            />
-        </picture>
+        <Picture
+            v-else
+            class="z-[-10] absolute top-0 left-0 w-full h-full"
+            :size-desktop="image.src"
+            :size-mobile="image.src"
+            :alt="image?.alt || ''"
+            loading="eager"
+          />
+       
     </div>
 </template>
 
 <script setup>
     import Context from '../Context/Context.vue';
+    import Picture from '../Picture/Picture.vue';
 
     // Props mirror the Twig variables you used
     const props = defineProps({
@@ -82,8 +71,6 @@
         caption: { type: String, default: '' },
         video: { type: String, default: '' },
         poster: { type: String, default: '' },
-        // When true, use { srcset, src } like your macro’s `in_component_library` branch.
-        inComponentLibrary: { type: Boolean, default: false },
         // For images:
         // - inComponentLibrary === true: { srcset, src, alt }
         // - otherwise: { sizeDesktop, sizeMobile, src, alt }

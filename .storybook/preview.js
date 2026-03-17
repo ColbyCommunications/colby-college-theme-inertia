@@ -1,5 +1,6 @@
 /** @type { import('@storybook/vue3-vite').Preview } */
 
+
 import "../resources/css/app.css";
 
 // .storybook/preview.js
@@ -25,10 +26,14 @@ const preview = {
     },
 
     a11y: {
+      
       // 'todo' - show a11y violations in the test UI only
       // 'error' - fail CI on a11y violations
       // 'off' - skip a11y checks entirely
       test: "todo",
+      options: {
+        runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice', 'wcag2aaa'],
+      },
     },
   },
 };
@@ -42,11 +47,16 @@ const { reset } = useGlobalLoader(dummy, {
 })
 
 export const decorators = [
-  (story) => {
-    reset()
-    return story()
+  (story, context) => {
+    window.colby = window.colby || {};
+    window.colby.DISABLE_ANIMATIONS = false; 
+    
+    return {
+      components: { story },
+      template: '<main id="main-content"><story /></main>',
+    };
   },
-]
+];
 
 export const parameters = {
   controls: { expanded: true },

@@ -60,8 +60,8 @@
                     <div class="dark-interstitial__image relative pb-[119.44444444444444%]">
                         <Picture
                             class="absolute w-full h-full object-cover"
-                            :size-desktop="img?.image?.sizes?.Square"
-                            :size-mobile="img?.image?.sizes?.Square"
+                            :size-desktop="img?.image?.src"
+                            :size-mobile="img?.image?.src"
                             :alt="img.alt || ''"
                             loading="lazy"
                         />

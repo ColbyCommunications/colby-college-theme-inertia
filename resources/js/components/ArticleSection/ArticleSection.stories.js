@@ -109,13 +109,15 @@ export const Manual = {
     buttons: [{ button: { url: "#", title: "View All" } }],
     gridProps: { items: mockItems },
   },
-  play: async ({ canvas }) => {
-    await expect(
-      canvas.getByText("Article Section Title"),
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByText("Article Section subheading"),
-    ).toBeInTheDocument();
+  play: async ({ canvas, canvasElement }) => {
+    const first = canvasElement.querySelectorAll('.article-section__intro')[0];
+    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
+    const firstSubHeading = first.querySelectorAll('.text-group__subheading')[0];
+    await expect(firstHeading.textContent.slice(0, -1)).toBe('Article Section Title');
+    await expect(firstHeading).toBeVisible();
+   
+    await expect(firstSubHeading.textContent.slice(0, -1)).toBe('Article Section subheading');
+    await expect(firstSubHeading).toBeVisible();
   },
 };
 
@@ -127,7 +129,10 @@ export const ManualWithControls = {
     showCarouselControls: true,
     gridProps: { items: mockItems },
   },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText("Featured Stories")).toBeInTheDocument();
+  play: async ({ canvas, canvasElement }) => {
+    const first = canvasElement.querySelectorAll('.article-section__intro')[0];
+    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
+    await expect(firstHeading.textContent.slice(0, -1)).toBe('Featured Stories');
+    await expect(firstHeading).toBeVisible();
   },
 };

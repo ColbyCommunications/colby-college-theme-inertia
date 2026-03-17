@@ -2,7 +2,7 @@
 import tailwindcss from "@tailwindcss/vite";
 const config = {
   stories: [
-    "../resources/js/components/**/*.stories.mdx",
+    "../resources/js/components/**/*.mdx",
     "../resources/js/components/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
   addons: [

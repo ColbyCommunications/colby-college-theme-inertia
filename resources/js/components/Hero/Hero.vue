@@ -32,10 +32,10 @@
         >
           <Picture
             class="absolute top-0 left-0 h-full w-full object-cover"
-            :srcset="image.srcset"
-            :src="image.src"
-            :size-desktop="image.sizes.Square"
-            :size-mobile="image.sizes.Square_mobile"
+            :srcset="image.image.src"
+            :src="image.image.src"
+            :size-desktop="image.image.src"
+            :size-mobile="image.image.src"
             :alt="image.alt"
           />
         </div>
@@ -69,10 +69,10 @@
         >
           <Picture
             class="absolute top-0 left-0 h-full w-full object-cover"
-            :srcset="secondaryImage.srcset"
-            :src="secondaryImage.src"
-            :size-desktop="secondaryImage.sizes?.Square"
-            :size-mobile="secondaryImage.sizes?.Square"
+            :srcset="secondaryImage.image.src"
+            :src="secondaryImage.image.src"
+            :size-desktop="secondaryImage.image.src"
+            :size-mobile="secondaryImage.image.src"
             :alt="secondaryImage.alt"
           />
         </div>

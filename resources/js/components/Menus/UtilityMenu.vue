@@ -10,7 +10,7 @@
       <li
         v-for="item in menu"
         :key="item.id || item.url || item.title"
-        class="flex list-none items-center font-body text-16 leading-110 font-normal md:text-10"
+        class="flex list-none items-center font-body text-16 leading-110 font-normal md:text-12"
       >
         <a
           class="block py-2 text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"

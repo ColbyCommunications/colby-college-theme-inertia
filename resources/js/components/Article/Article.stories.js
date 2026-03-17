@@ -31,9 +31,16 @@ export const Primary = {
       },
     ],
   },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
-    await expect(canvas.getByText("adipisci amet")).toBeInTheDocument();
+  play: async ({ canvas, canvasElement }) => {
+    const first = canvasElement.querySelectorAll('.article')[0];
+    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
+    await expect(firstHeading.textContent.slice(0, -1)).toBe('Lorem Ipsum');
+    await expect(firstHeading).toBeVisible();
+
+    const firstSubHeading = canvasElement.querySelectorAll('.article .text-group__subheading')[0];
+    await expect(firstSubHeading.textContent.slice(0, -1)).toBe('adipisci amet');
+    await expect(firstSubHeading).toBeVisible();
+
     await expect(canvas.getByText("button1")).toBeInTheDocument();
     await expect(canvas.getByAltText("this is an alt tag")).toBeInTheDocument();
   },
