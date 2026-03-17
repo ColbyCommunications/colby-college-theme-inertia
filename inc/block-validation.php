@@ -12,6 +12,109 @@ function colby_block_validation_is_truthy($value): bool {
     return in_array($value, [true, 1, '1', 'true', 'yes', 'on'], true);
 }
 
+function colby_block_validation_has_value($value): bool {
+    if (is_array($value)) {
+        foreach ($value as $item) {
+            if (colby_block_validation_has_value($item)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    if (is_string($value)) {
+        return trim(wp_strip_all_tags($value)) !== '';
+    }
+
+    return $value !== null && $value !== false && $value !== '';
+}
+
+function colby_normalize_block_validation_key(string $key): string {
+    if (!function_exists('acf_get_field')) {
+        return $key;
+    }
+
+    $normalized = preg_replace_callback('/field_[A-Za-z0-9]+/', function (array $matches): string {
+        $field = acf_get_field($matches[0]);
+
+        return $field['name'] ?? $matches[0];
+    }, $key);
+
+    if (!is_string($normalized)) {
+        return $key;
+    }
+
+    return preg_replace('/(^|_)row-(\d+)(?=_|$)/', '$1$2', $normalized);
+}
+
+function colby_block_validation_is_row_collection(array $value): bool {
+    if ($value === []) {
+        return false;
+    }
+
+    foreach (array_keys($value) as $key) {
+        if (!is_string($key) || !preg_match('/^(?:row-)?\d+$/', $key)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function colby_merge_normalized_block_validation_data(array $target, array $source): array {
+    foreach ($source as $key => $value) {
+        if (
+            !array_key_exists($key, $target)
+            || !colby_block_validation_has_value($target[$key])
+        ) {
+            $target[$key] = $value;
+        }
+    }
+
+    return $target;
+}
+
+function colby_normalize_block_validation_data(array $data, string $prefix = ''): array {
+    $normalized = [];
+
+    foreach ($data as $key => $value) {
+        if (!is_string($key)) {
+            continue;
+        }
+
+        if ($key === '' || $key[0] === '_') {
+            continue;
+        }
+
+        if (strpos($key, 'acfcloneindex') !== false) {
+            continue;
+        }
+
+        $normalized_key = colby_normalize_block_validation_key($key);
+        $full_key = $prefix !== '' ? "{$prefix}_{$normalized_key}" : $normalized_key;
+
+        if (!is_array($value)) {
+            $normalized[$full_key] = $value;
+            continue;
+        }
+
+        $normalized = colby_merge_normalized_block_validation_data(
+            $normalized,
+            colby_normalize_block_validation_data($value, $full_key)
+        );
+
+        if (colby_block_validation_is_row_collection($value)) {
+            $normalized[$full_key] = count($value);
+            continue;
+        }
+
+        $normalized[$full_key] = $value;
+    }
+
+    return $normalized;
+}
+
 function colby_validate_blocks(array $blocks): array {
     static $validators = [];
     $errors = [];
@@ -27,7 +130,7 @@ function colby_validate_blocks(array $blocks): array {
             }
 
             if (is_callable($validators[$folder])) {
-                $data = $block['attrs']['data'] ?? [];
+                $data = colby_normalize_block_validation_data($block['attrs']['data'] ?? []);
                 $result = $validators[$folder]($data, $block);
                 if (is_wp_error($result)) {
                     $errors[] = $result;
