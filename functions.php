@@ -2,6 +2,7 @@
 use BoxyBird\Inertia\Inertia;
 
 // include __DIR__ . '/acf_fields.php';
+include __DIR__ . '/inc/block-validation.php';
 
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
   require_once __DIR__ . '/vendor/autoload.php';
