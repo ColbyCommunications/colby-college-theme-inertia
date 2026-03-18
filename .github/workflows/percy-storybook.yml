@@ -39,9 +39,6 @@ jobs:
         run: |
           # Install dependencies for the custom script
           npm install puppeteer @percy/puppeteer wait-on http-server
-
-          # Verify the build exists before starting
-          ls -R ./storybook-static | grep .json
           
           # Start the server
           npx http-server ./storybook-static -p 6006 -c-1 &
