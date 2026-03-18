@@ -36,6 +36,17 @@ jobs:
         run: npm run build-storybook
 
       - name: Run Percy Storybook snapshots
-        run: npx percy storybook ./storybook-static -v
+        run: |
+          # 1. Install a simple static server
+          npm install -g serve
+          
+          # 2. Start the server in the background and wait for it
+          serve -l 6006 storybook-static &
+          
+          # 3. Give it a few seconds to boot up
+          sleep 5
+          
+          # 4. Use 'percy storybook' but point to the live URL
+          npx percy storybook http://localhost:6006 --include "^Templates/Page Show/.*" -v
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
