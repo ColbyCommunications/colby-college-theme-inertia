@@ -37,18 +37,16 @@ jobs:
 
       - name: Run Percy Storybook snapshots
         run: |
-          # 1. Install http-server (lighter and more standard for this)
-          npm install -g http-server
+          # Install dependencies for the custom script
+          npm install puppeteer @percy/puppeteer wait-on http-server
           
-          # 2. Start the server on port 6006
-          # -c-1 disables caching so Percy always gets the fresh build
+          # Start the server
           npx http-server ./storybook-static -p 6006 -c-1 &
           
-          # 3. Wait for the server to actually be alive
-          npx wait-on http://127.0.0.1:6006/iframe.html -t 30000
+          # Wait for the index file to be reachable
+          npx wait-on http://127.0.0.1:6006/index.json -t 30000
           
-          # 4. Run Percy against the local IP to avoid localhost IPv6 issues
-          npx percy storybook http://127.0.0.1:6006 --include "^Templates/Page Show/.*" -v
+          # Run the script wrapped in percy exec
+          npx percy exec -- node scripts/percy-storybook.js
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-          PERCY_BROWSER_EXECUTABLE: /usr/bin/google-chrome

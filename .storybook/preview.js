@@ -1,11 +1,5 @@
 /** @type { import('@storybook/vue3-vite').Preview } */
 
-if (typeof window !== 'undefined') {
-  window.__STORYBOOK_STORY_STORE__ = window.__STORYBOOK_STORY_STORE__ || {
-    extract: () => ({}) // Fake extract function to satisfy older Percy versions
-  };
-}
-
 import "../resources/css/app.css";
 
 // .storybook/preview.js
