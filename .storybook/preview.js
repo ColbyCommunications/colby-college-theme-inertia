@@ -1,5 +1,6 @@
 /** @type { import('@storybook/vue3-vite').Preview } */
 
+window.__STORYBOOK_STORY_STORE__ = window.__STORYBOOK_STORY_STORE__ || {};
 
 import "../resources/css/app.css";
 
