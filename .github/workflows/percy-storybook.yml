@@ -36,6 +36,6 @@ jobs:
         run: npm run build-storybook
 
       - name: Run Percy Storybook snapshots
-        run: npx percy storybook ./storybook-static --include "^Templates/Page Show/.*" --skip-discovery -v
+        run: npx percy storybook ./storybook-static --include "Templates" --skip-discovery -v
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
