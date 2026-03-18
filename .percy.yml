@@ -1,9 +1,4 @@
 version: 2
 
 storybook:
-  # This is the secret sauce for Storybook 10
-  # It tells Percy to wait for the new SB10 'preview' object
-  previewUrl: "http://127.0.0.1:6006/iframe.html"
-  waitForTimeout: 10000 
-  include:
-    - "^Templates/Page Show/.*"
+  waitForTimeout: 5000 
