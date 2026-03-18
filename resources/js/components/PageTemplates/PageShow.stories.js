@@ -508,6 +508,7 @@ const createFullPageStory = (carouselMode, gridMode, sectionMode) => ({
     siteData,
     menus,
   },
+  tags: ["!autodocs"],
   beforeEach: () => createAxiosMock(),
   play: async ({ canvas }) => {
     await runComboPlay({ canvas, carouselMode, gridMode, sectionMode });
@@ -517,6 +518,7 @@ const createFullPageStory = (carouselMode, gridMode, sectionMode) => ({
 export default {
   title: "Templates/Page Show/Full Page",
   component: PageShow,
+  tags: ["!autodocs"],
   parameters: {
     layout: "fullscreen",
   },

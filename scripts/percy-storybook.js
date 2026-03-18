@@ -60,7 +60,7 @@ const path = require('path');
     });
 
     // Give Vue components a second to mount and stabilize
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 5000));
 
     await percySnapshot(page, `${story.title}: ${story.name}`, {
       widths: [375, 1280]

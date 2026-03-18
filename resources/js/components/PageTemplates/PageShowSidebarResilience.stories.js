@@ -82,6 +82,7 @@ const render = (args) => ({
 export default {
   title: "Templates/Page Show/Full Page w Sidebar/Resilience",
   component: PageShow,
+  tags: ["!autodocs"],
   parameters: {
     layout: "fullscreen",
   },

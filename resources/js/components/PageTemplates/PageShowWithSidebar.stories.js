@@ -181,6 +181,7 @@ const createSidebarStory = (heroVariant, isPost, contentState) => ({
 export default {
   title: "Templates/Page Show/Full Page w Sidebar",
   component: PageShow,
+  tags: ["!autodocs"],
   parameters: {
     layout: "fullscreen",
   },

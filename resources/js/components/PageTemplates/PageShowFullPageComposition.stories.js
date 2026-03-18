@@ -184,6 +184,7 @@ const render = (args) => ({
 export default {
   title: "Templates/Page Show/Full Page/Composition",
   component: PageShow,
+  tags: ["!autodocs"],
   parameters: {
     layout: "fullscreen",
   },
