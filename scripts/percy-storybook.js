@@ -8,6 +8,11 @@ const path = require('path');
   const buildDir = path.resolve(__dirname, '../storybook-static');
   const indexFile = path.join(buildDir, 'index.json');
   const storiesFile = path.join(buildDir, 'stories.json');
+
+    const scrollOptions = {
+        frequency: 100,
+        timing: 200, // milliseconds
+    };
   
   let metadataPath = fs.existsSync(indexFile) ? indexFile : storiesFile;
 
@@ -60,7 +65,9 @@ const path = require('path');
     });
 
     // Give Vue components a second to mount and stabilize
-    await new Promise(r => setTimeout(r, 5000));
+    await new Promise(r => setTimeout(r, 1000));
+
+    page.evaluate(scrollToBottom, scrollOptions)
 
     await percySnapshot(page, `${story.title}: ${story.name}`, {
       widths: [375, 1280]
