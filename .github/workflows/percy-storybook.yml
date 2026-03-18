@@ -37,16 +37,17 @@ jobs:
 
       - name: Run Percy Storybook snapshots
         run: |
-          # 1. Install a simple static server
+          # 1. Install serve
           npm install -g serve
           
-          # 2. Start the server in the background and wait for it
-          serve -l 6006 storybook-static &
+          # 2. Start the server (using -s to handle SPA-like routing if needed)
+          # We use 0.0.0.0 to ensure it listens on all interfaces
+          npx serve -l 6006 ./storybook-static &
           
-          # 3. Give it a few seconds to boot up
-          sleep 5
+          # 3. Wait for the server to be ready
+          npx wait-on http://localhost:6006/iframe.html -t 30000
           
-          # 4. Use 'percy storybook' but point to the live URL
-          npx percy storybook http://localhost:6006 --include "^Templates/Page Show/.*" -v
+          # 4. Point Percy to the EXACT URL with the trailing slash
+          npx percy storybook http://localhost:6006/ --include "^Templates/Page Show/.*" -v
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
