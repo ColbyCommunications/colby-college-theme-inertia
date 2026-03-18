@@ -51,3 +51,4 @@ jobs:
           npx percy storybook http://127.0.0.1:6006 --include "^Templates/Page Show/.*" -v
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+          PERCY_BROWSER_EXECUTABLE: /usr/bin/google-chrome
