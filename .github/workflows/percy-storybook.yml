@@ -36,6 +36,6 @@ jobs:
         run: npm run build-storybook
 
       - name: Run Percy Storybook snapshots
-        run: npx run percy:storybook
+        run: npx percy:storybook
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
