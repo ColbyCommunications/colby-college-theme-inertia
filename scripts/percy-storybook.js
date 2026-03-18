@@ -68,7 +68,7 @@ const scrollToBottom = require('scroll-to-bottomjs');
     // Give Vue components a second to mount and stabilize
     await new Promise(r => setTimeout(r, 1000));
 
-    page.evaluate(scrollToBottom, scrollOptions)
+    await page.evaluate(scrollToBottom, scrollOptions)
 
     await percySnapshot(page, `${story.title}: ${story.name}`, {
       widths: [375, 1280]
