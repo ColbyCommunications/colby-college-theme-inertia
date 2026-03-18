@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const percySnapshot = require('@percy/puppeteer');
 const fs = require('fs');
 const path = require('path');
+const scrollToBottom = require('scroll-to-bottomjs');
 
 (async () => {
   // Go up one level from /scripts/ to find the root, then into /storybook-static/
