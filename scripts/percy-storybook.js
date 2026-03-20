@@ -69,12 +69,26 @@ const scrollToBottom = require('scroll-to-bottomjs');
     });
 
     // Give Vue components a second to mount and stabilize
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 2000));
 
-    await page.evaluate(scrollToBottom, scrollOptions)
+    await page.evaluate(async () => {
+      const selectors = Array.from(document.querySelectorAll('img'));
+      await Promise.all(selectors.map(img => {
+        if (img.complete) return;
+        return new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = resolve; // Don't hang the test if one image 404s
+        });
+      }));
+    });
+
+    await page.evaluate(scrollToBottom, scrollOptions);
+    
+    await new Promise(r => setTimeout(r, 2000));
 
     await percySnapshot(page, `${story.title}: ${story.name}`, {
-      widths: [375, 1280]
+      widths: [375, 1280],
+      enableJavaScript: true
     });
   }
 
