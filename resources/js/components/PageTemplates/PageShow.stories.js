@@ -40,12 +40,12 @@ const menus = {
 };
 
 const heroImage = {
-  src: "/mock-assets/hero-placeholder.jpg",
+  src: import.meta.env.VITE_PERCY ? "/mock-assets/hero-placeholder.jpg" : 'https://colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg',
   alt: "Students on campus",
 };
 
 const gridImage = {
-  src: "/mock-assets/hero-placeholder.jpg",
+  src: import.meta.env.VITE_PERCY ? "/mock-assets/hero-placeholder.jpg" : 'https://colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg',
   alt: "Story card",
 };
 

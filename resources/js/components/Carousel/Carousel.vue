@@ -85,8 +85,8 @@
             >
               <Picture
                 class="h-full w-full object-cover"
-                :size-desktop="item.image?.sizes?.Rectangle"
-                :size-mobile="item.image?.sizes?.Rectangle_mobile"
+                :size-desktop="item.image.src"
+                :size-mobile="item.image.src"
                 :alt="item.image?.alt || ''"
               />
             </div>

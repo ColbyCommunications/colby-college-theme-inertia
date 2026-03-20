@@ -18,16 +18,6 @@
       sizeDesktop" :alt="alt" :loading="loading" :sizes="'(max-width: 767px) 100vw, 50vw'" :fetchpriority="loading === 'eager' ? 'high' : 'low'" />
   </picture>
   <picture v-else>
-    <source media="(min-width:768px)" :srcset="
-      sizeDesktop +
-      ' 320w,' +
-      sizeDesktop +
-      ' 640w,' +
-      sizeDesktop +
-      ' 960w,' +
-      sizeDesktop +
-      ' 1280w,'
-    "/>
     <img :class="class" :src="sizeDesktop" :alt="alt" :loading="loading" :sizes="'(max-width: 767px) 100vw, 50vw'" :fetchpriority="loading === 'eager' ? 'high' : 'low'" />
   </picture>
 </template>
@@ -36,6 +26,8 @@
 
 // 1. Define the constant here
 const isPercy = import.meta.env.VITE_PERCY === 'true';
+
+console.log(isPercy);
 
 const props = defineProps({
   // The class to apply to the <img> element
