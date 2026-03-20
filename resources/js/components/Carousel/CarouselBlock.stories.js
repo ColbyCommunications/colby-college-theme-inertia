@@ -3,14 +3,8 @@ import Carousel from "./Carousel.vue";
 const mockItems = [
     {
       image: {
-        src: "https://placeholdit.com/600x400/dddddd/999999",
-        srcset:
-          "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+        src: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
         alt: "this is an alt tag",
-        sizes: {
-          Rectangle: "https://placehold.co/600x400",
-          Rectangle_mobile: "https://placehold.co/300x200",
-        },
       },
       heading: "Future of Artificial Intelligence",
       subheading: "Technology",
@@ -28,14 +22,8 @@ const mockItems = [
     },
     {
       image: {
-        src: "https://placeholdit.com/600x400/dddddd/999999",
-        srcset:
-          "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+        src: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
         alt: "this is an alt tag",
-        sizes: {
-          Rectangle: "https://placehold.co/600x400",
-          Rectangle_mobile: "https://placehold.co/300x200",
-        },
       },
       heading: "Sustainable Energy Solutions",
       subheading: "Environment",
@@ -53,14 +41,8 @@ const mockItems = [
     },
     {
       image: {
-        src: "https://placeholdit.com/600x400/dddddd/999999",
-        srcset:
-          "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+        src: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
         alt: "this is an alt tag",
-        sizes: {
-          Rectangle: "https://placehold.co/600x400",
-          Rectangle_mobile: "https://placehold.co/300x200",
-        },
       },
       heading: "Modern Architecture Trends",
       subheading: "Design",

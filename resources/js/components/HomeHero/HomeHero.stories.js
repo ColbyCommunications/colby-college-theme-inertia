@@ -15,15 +15,7 @@ export const Primary = {
     caption: "waterville maine",
     image: {
       src: "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
       alt: "this is an alt tag",
-      sizes: {
-        Square:
-          "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-        Square_mobile:
-          "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-      },
     },
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -41,16 +33,8 @@ export const Video = {
     heading: "Lorem ipsum",
     caption: "waterville maine",
     image: {
-      src: "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+      src: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
       alt: "this is an alt tag",
-      sizes: {
-        Square:
-          "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-        Square_mobile:
-          "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-      },
     },
     video: "https://www.colby.edu/wp-content/uploads/2025/12/Untitled.mp4",
     paragraph:
@@ -69,16 +53,8 @@ export const WithoutCaption = {
     heading: "Colby College",
     caption: "",
     image: {
-      src: "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+      src: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
       alt: "campus view",
-      sizes: {
-        Square:
-          "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-        Square_mobile:
-          "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-      },
     },
     paragraph: "A top liberal arts college in Waterville, Maine.",
   },
@@ -87,29 +63,3 @@ export const WithoutCaption = {
   },
 };
 
-export const InComponentLibrary = {
-  name: "In Component Library",
-  args: {
-    subheading: "Discover",
-    heading: "Campus Life",
-    caption: "waterville maine",
-    inComponentLibrary: true,
-    image: {
-      src: "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
-      alt: "campus life",
-      sizes: {
-        Square:
-          "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-        Square_mobile:
-          "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-      },
-    },
-    paragraph: "Experience everything Colby has to offer.",
-  },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText("Campus Life")).toBeInTheDocument();
-    await expect(canvas.getByText("waterville maine")).toBeInTheDocument();
-  },
-};

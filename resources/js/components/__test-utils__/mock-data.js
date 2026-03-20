@@ -18,11 +18,11 @@ export function createMockWpPost(overrides = {}) {
       rendered: "<p>Full content of the test post for display.</p>",
     },
     link: "https://news.colby.edu/story/test-post/",
-    featured_img: "https://placehold.co/600x400",
+    featured_img: import.meta.env.VITE_PERCY ? "/mock-assets/hero-placeholder.jpg" : 'https://colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg',
     guid: { rendered: "https://news.colby.edu/?p=1" },
     acf_blocks: [],
     yoast_head_json: {
-      og_image: [{ url: "https://placehold.co/1200x630" }],
+      og_image: [{ url: import.meta.env.VITE_PERCY ? "/mock-assets/hero-placeholder.jpg" : 'https://colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg' }],
       og_description: "OG description for test post",
     },
     "post-meta-fields": {
@@ -34,8 +34,8 @@ export function createMockWpPost(overrides = {}) {
         {
           media_details: {
             sizes: {
-              Rectangle: { source_url: "https://placehold.co/600x400" },
-              Rectangle_mobile: { source_url: "https://placehold.co/300x200" },
+              Rectangle: { source_url: import.meta.env.VITE_PERCY ? "/mock-assets/hero-placeholder.jpg" : 'https://colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg' },
+              Rectangle_mobile: { source_url: import.meta.env.VITE_PERCY ? "/mock-assets/hero-placeholder.jpg" : 'https://colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg' },
             },
           },
           alt_text: "Featured image alt text",
@@ -73,13 +73,13 @@ export function createMockWpPosts(count = 3) {
         rendered: `<p>${summaries[i % summaries.length]}</p>`,
       },
       guid: { rendered: `https://news.colby.edu/?p=${i + 1}` },
-      featured_img: `https://placehold.co/600x400?text=Post+${i + 1}`,
+      featured_img: import.meta.env.VITE_PERCY ? "/mock-assets/hero-placeholder.jpg" : 'https://colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg',
       "post-meta-fields": {
         primary_category: categories[i % categories.length],
         summary: [summaries[i % summaries.length]],
       },
       yoast_head_json: {
-        og_image: [{ url: `https://placehold.co/1200x630?text=Post+${i + 1}` }],
+        og_image: [{ url: import.meta.env.VITE_PERCY ? "/mock-assets/hero-placeholder.jpg" : 'https://colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg' }],
         og_description: summaries[i % summaries.length],
       },
     }),
@@ -153,7 +153,7 @@ export function createMockExternalPost(overrides = {}) {
         "<p>Professor Smith's groundbreaking research on renewable energy has been featured in a national publication highlighting academic innovation.</p>",
     },
     external_url: "https://example.com/article",
-    image: "https://placehold.co/600x400",
+    image: import.meta.env.VITE_PERCY ? "/mock-assets/hero-placeholder.jpg" : 'https://colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg',
     story_type: [{ slug: "media-coverage" }],
     tags: [{ name: "editors-pick" }],
     taxonomy: [{ name: "News" }],
@@ -178,7 +178,7 @@ export function createMockExternalPosts(count = 3) {
       title: { rendered: titles[i % titles.length] },
       content: { rendered: contents[i % contents.length] },
       external_url: `https://example.com/article-${i + 1}`,
-      image: `https://placehold.co/600x400?text=External+${i + 1}`,
+      image: import.meta.env.VITE_PERCY ? "/mock-assets/hero-placeholder.jpg" : 'https://colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg',
     }),
   );
 }

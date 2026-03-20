@@ -1,6 +1,5 @@
 /** @type { import('@storybook/vue3-vite').Preview } */
 
-
 import "../resources/css/app.css";
 
 // .storybook/preview.js

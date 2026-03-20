@@ -36,16 +36,8 @@ const menus = {
 };
 
 const heroImage = {
-  src: "https://placehold.co/1200x800",
-  srcset: "https://placehold.co/1200x800 1200w, https://placehold.co/800x533 800w",
+  src: import.meta.env.VITE_PERCY ? "/mock-assets/hero-placeholder.jpg" : 'https://colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg',
   alt: "Students on campus",
-  sizes: {
-    Square: "https://placehold.co/900x600",
-    Square_mobile: "https://placehold.co/500x333",
-    Hero: "https://placehold.co/1800x900",
-    Rectangle: "https://placehold.co/1280x720",
-    Rectangle_mobile: "https://placehold.co/800x450",
-  },
 };
 
 const createHeroBlock = () => ({
@@ -77,6 +69,7 @@ const render = (args) => ({
 export default {
   title: "Templates/Page Show/Full Page/Resilience",
   component: PageShow,
+  tags: ["!autodocs"],
   parameters: {
     layout: "fullscreen",
   },

@@ -35,9 +35,9 @@
                   <Picture
                     class="md:absolute w-full h-full object-cover"
                     :src="item.image?.src"
-                    :srcset="item.image?.srcset"
-                    :size-desktop="item.image?.sizes?.Landscape"
-                    :size-mobile="item.image?.sizes?.Square"
+                    :srcset="item.image?.src"
+                    :size-desktop="item.image?.src"
+                    :size-mobile="item.image?.src"
                     :alt="item.image?.alt"
                   />
                 </div>

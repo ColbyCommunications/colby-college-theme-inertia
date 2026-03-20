@@ -16,9 +16,9 @@
                   <Picture
                     class="w-full object-cover"
                     :src="item.image?.src"
-                    :srcset="item.image?.srcset"
-                    :size-desktop="item.image?.sizes?.Landscape"
-                    :size-mobile="item.image?.sizes?.Square"
+                    :srcset="item.image?.src"
+                    :size-desktop="item.image?.src"
+                    :size-mobile="item.image?.src"
                     :alt="item.image?.alt"
                   />
                   <p
@@ -39,9 +39,9 @@
             <Picture
               class="w-full object-cover"
               :src="image?.src"
-              :srcset="image?.srcset"
-              :size-desktop="image?.sizes?.Landscape"
-              :size-mobile="image?.sizes?.Square"
+              :srcset="image?.src"
+              :size-desktop="image?.src"
+              :size-mobile="image?.src"
               :alt="image?.alt"
             />
           </div>

@@ -29,8 +29,8 @@
         <div class="featured-post__image">
           <Picture
             class="w-full h-full object-cover"
-            :size-desktop="post.image?.sizes?.Rectangle || post.image?.srcset"
-            :size-mobile="post.image?.sizes?.Rectangle || post.image?.src"
+            :size-desktop="post.image?.src"
+            :size-mobile="post.image?.src"
             :alt="post.image?.alt || ''"
           />
         </div>

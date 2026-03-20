@@ -1,5 +1,5 @@
 <template>
-  <picture>
+  <picture v-if="!isPercy">
     <source media="(min-width:768px)" :srcset="
       'https://colby.edu/cdn-cgi/image/width=320,quality=60/' +
       sizeDesktop +
@@ -17,9 +17,17 @@
     <img :class="class" :src="'https://colby.edu/cdn-cgi/image/width=320,quality=50/' +
       sizeDesktop" :alt="alt" :loading="loading" :sizes="'(max-width: 767px) 100vw, 50vw'" :fetchpriority="loading === 'eager' ? 'high' : 'low'" />
   </picture>
+  <picture v-else>
+    <img :class="class" :src="sizeDesktop" :alt="alt" :loading="loading" :sizes="'(max-width: 767px) 100vw, 50vw'" :fetchpriority="loading === 'eager' ? 'high' : 'low'" />
+  </picture>
 </template>
 
 <script setup>
+
+// 1. Define the constant here
+const isPercy = import.meta.env.VITE_PERCY === 'true';
+
+console.log(isPercy);
 
 const props = defineProps({
   // The class to apply to the <img> element

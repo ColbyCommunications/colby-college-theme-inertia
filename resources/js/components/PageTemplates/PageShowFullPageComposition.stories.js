@@ -28,26 +28,13 @@ const menus = {
 };
 
 const heroImage = {
-  src: "https://placehold.co/1200x800",
-  srcset: "https://placehold.co/1200x800 1200w, https://placehold.co/800x533 800w",
+  src: import.meta.env.VITE_PERCY ? "/mock-assets/hero-placeholder.jpg" : 'https://colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg',
   alt: "Students on campus",
-  sizes: {
-    Square: "https://placehold.co/900x600",
-    Square_mobile: "https://placehold.co/500x333",
-    Hero: "https://placehold.co/1800x900",
-    Rectangle: "https://placehold.co/1280x720",
-    Rectangle_mobile: "https://placehold.co/800x450",
-  },
 };
 
 const gridImage = {
-  src: "https://placehold.co/600x400",
-  srcset: "https://placehold.co/600x400 600w, https://placehold.co/300x200 300w",
+  src: import.meta.env.VITE_PERCY ? "/mock-assets/hero-placeholder.jpg" : 'https://colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg',
   alt: "Story card",
-  sizes: {
-    desktop: "https://placehold.co/600x400",
-    mobile: "https://placehold.co/300x200",
-  },
 };
 
 const makeHeroBlock = (heading, subheading = "Composition") => ({
@@ -184,6 +171,7 @@ const render = (args) => ({
 export default {
   title: "Templates/Page Show/Full Page/Composition",
   component: PageShow,
+  tags: ["!autodocs"],
   parameters: {
     layout: "fullscreen",
   },

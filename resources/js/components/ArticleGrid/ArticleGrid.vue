@@ -150,8 +150,8 @@
           >
             <Picture
               class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
-              :size-desktop="item.image.sizes.desktop"
-              :size-mobile="item.image.sizes.mobile"
+              :size-desktop="item.image.src"
+              :size-mobile="item.image.src"
               :alt="item.title"
             />
           </a>

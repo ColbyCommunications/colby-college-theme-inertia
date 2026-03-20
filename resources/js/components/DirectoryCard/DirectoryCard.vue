@@ -4,10 +4,10 @@
       <div class="relative pb-[119.44444444444444%]">
         <Picture
           class="absolute h-full w-full object-cover"
-          :srcset="image.srcset"
+          :srcset="image.src"
           :src="image.src"
-          :sizeDesktop="desktopSrc"
-          :sizeMobile="mobileSrc"
+          :sizeDesktop="image.src"
+          :sizeMobile="image.src"
           :alt="imageAlt"
         />
       </div>
