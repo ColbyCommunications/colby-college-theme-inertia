@@ -71,17 +71,6 @@ const scrollToBottom = require('scroll-to-bottomjs');
     // Give Vue components a second to mount and stabilize
     await new Promise(r => setTimeout(r, 2000));
 
-    await page.evaluate(async () => {
-      const selectors = Array.from(document.querySelectorAll('img'));
-      await Promise.all(selectors.map(img => {
-        if (img.complete) return;
-        return new Promise((resolve, reject) => {
-          img.onload = resolve;
-          img.onerror = resolve; // Don't hang the test if one image 404s
-        });
-      }));
-    });
-
     await page.evaluate(scrollToBottom, scrollOptions);
     
     await new Promise(r => setTimeout(r, 2000));
