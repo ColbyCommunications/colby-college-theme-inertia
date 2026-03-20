@@ -37,7 +37,7 @@ const scrollToBottom = require('scroll-to-bottomjs');
   const storyIds = Object.keys(data).filter(id => {
     // We check the 'title' property which contains the folder path
     // return includePattern.test(data[name].title);
-    return id === 'templates-page-show-full-page--carousel-manual-grid-manual-section-manual';
+    return includePattern.test(data[id].title);
   });
 
   if (storyIds.length === 0) {
