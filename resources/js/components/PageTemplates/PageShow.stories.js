@@ -50,6 +50,9 @@ const heroImage = {
     Rectangle: "https://placehold.co/1280x720",
     Rectangle_mobile: "https://placehold.co/800x450",
   },
+  image: {
+    src: 'https://placehold.co/1200x800',
+  }
 };
 
 const gridImage = {
