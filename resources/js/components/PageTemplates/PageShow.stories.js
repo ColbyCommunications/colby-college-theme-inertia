@@ -25,11 +25,20 @@ const siteData = {
 const menus = {
   utility: [
     { title: "Directory", url: "#" },
-    { title: "News", url: "#" },
+    { title: "Libraries", url: "#" },
+    { title: "Resources", url: "#" },
+    { title: "Colby Arts", url: "#" },
+    { title: "Visit", url: "#" },
   ],
   main: [
-    { title: "Admissions & Aid", url: "#" },
+    { title: "Admissions", url: "#" },
     { title: "Academics", url: "#" },
+    { title: "People", url: "#" },
+    { title: "Student Life", url: "#" },
+    { title: "Athletics and Recreation", url: "#" },
+    { title: "Alumni and Families", url: "#" },
+    { title: "News", url: "#" },
+    { title: "Events", url: "#" },
   ],
   footer: [
     { title: "Academics", url: "#" },
