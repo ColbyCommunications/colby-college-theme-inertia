@@ -38,7 +38,10 @@ jobs:
       - name: Run Percy Storybook snapshots
         run: |
           node scripts/download-mocks.js
-          
+
+          echo "Checking for mock assets..."
+          ls -R ./storybook-static/mock-assets
+
           # Install dependencies for the custom script
           npm install puppeteer @percy/puppeteer wait-on http-server
           
