@@ -65,12 +65,13 @@ const scrollToBottom = require('scroll-to-bottomjs');
       timeout: 60000
     });
 
-    // 2. Slow down the scroll to ensure triggers fire
-    await page.evaluate(scrollToBottom, { frequency: 25, timing: 500 });
-    
-    // 3. Wait for the server to actually log the GET request for the images
-    await new Promise(r => setTimeout(r, 5000));
+    await page.evaluate(() => {
+      window.colby.DISABLE_ANIMATIONS = true;
+    });
 
+    // 2. Slow down the scroll to ensure triggers fire
+    await page.evaluate(scrollToBottom, { frequency: 50, timing: 500 });
+    
     // 4. Simplified Snapshot Call
     await percySnapshot(page, `${story.title}: ${story.name}`, {
       widths: [375, 1280],

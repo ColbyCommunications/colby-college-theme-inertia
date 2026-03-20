@@ -1,5 +1,5 @@
 import { expect, waitFor, spyOn, userEvent } from "storybook/test";
-import axios from "axios";
+import axios from "../../plugins/axios";
 import PageShow from "../../pages/Page/Show.vue";
 import {
   createMockExternalPosts,
