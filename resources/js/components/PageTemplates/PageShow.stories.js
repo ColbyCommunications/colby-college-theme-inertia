@@ -40,12 +40,12 @@ const menus = {
 };
 
 const heroImage = {
-  src: "./mock-assets/hero-placeholder.jpg",
+  src: "../../../../storybook-static/mock-assets/hero-placeholder.jpg",
   alt: "Students on campus",
 };
 
 const gridImage = {
-  src: "/mock-assets/hero-placeholder.jpg",
+  src: "../../../../storybook-static/mock-assets/hero-placeholder.jpg",
   alt: "Story card",
 };
 
