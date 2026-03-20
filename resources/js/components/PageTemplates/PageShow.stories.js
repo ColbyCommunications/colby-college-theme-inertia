@@ -45,7 +45,7 @@ const heroImage = {
 };
 
 const gridImage = {
-  src: "./mock-assets/hero-placeholder.jpg",
+  src: "/mock-assets/hero-placeholder.jpg",
   alt: "Story card",
 };
 

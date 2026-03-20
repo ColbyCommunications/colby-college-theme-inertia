@@ -58,43 +58,37 @@ const scrollToBottom = require('scroll-to-bottomjs');
 
   for (const id of storyIds) {
     const story = data[id];
-    console.log(`Snapshotting: ${story.title} > ${story.name}`);
-    
-    await page.setUserAgent('colby-github');
+    console.log(`Snapshotting: ${story.name}`);
 
-    // Standard Storybook URL format for the iframe
     await page.goto(`${baseUrl}?id=${id}&viewMode=story`, {
-      waitUntil: 'networkidle2',
+      waitUntil: 'networkidle0', 
       timeout: 60000
     });
 
-    // Give Vue components a second to mount and stabilize
-    await new Promise(r => setTimeout(r, 1000));
-
-    await page.evaluate(async () => {
-      const images = Array.from(document.querySelectorAll('img'));
-      
-      const imageLoadPromises = images.map(img => {
-        if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
-        return new Promise(resolve => {
-          img.onload = resolve;
-          img.onerror = resolve; // Continue even if image fails
-        });
+    // 1. Force the browser to recognize the local images
+    // This bypasses any lazy-loading logic that might be failing in headless mode
+    await page.evaluate(() => {
+      const images = document.querySelectorAll('img');
+      images.forEach(img => {
+        // If it's a relative path, force it to absolute so the browser fetches it
+        if (img.src.includes('./mock-assets')) {
+          img.src = img.src.replace('./', '/'); 
+        }
+        // Force loading if lazy-loading is present
+        img.loading = 'eager'; 
       });
-  
-      // Race the image loading against a 5s timer
-      const timeout = new Promise(resolve => setTimeout(resolve, 5000));
-      await Promise.race([Promise.all(imageLoadPromises), timeout]);
     });
 
-    await page.evaluate(scrollToBottom, scrollOptions);
+    // 2. Slow down the scroll to ensure triggers fire
+    await page.evaluate(scrollToBottom, { frequency: 50, timing: 500 });
     
+    // 3. Wait for the server to actually log the GET request for the images
+    await new Promise(r => setTimeout(r, 2000));
+
+    // 4. Simplified Snapshot Call
     await percySnapshot(page, `${story.title}: ${story.name}`, {
       widths: [375, 1280],
-      enableJavaScript: true,
-      assetLoaderOptions: {
-        buildDir: path.resolve(__dirname, '../storybook-static')
-      }
+      enableJavaScript: true
     });
   }
 
