@@ -16,7 +16,7 @@ const EXTERNAL_GRID_ENDPOINT =
 const siteData = {
   url: "https://www.colby.edu",
   address: {
-    text: "4000 Mayflower Hill<br>Waterville, ME 049011",
+    text: "4000 Mayflower Hill<br>Waterville, ME 04901",
   },
   phone: "207-859-4000",
   alert: null,
@@ -40,12 +40,12 @@ const menus = {
 };
 
 const heroImage = {
-  src: "storybook-static/mock-assets/hero-placeholder.jpg",
+  src: "/mock-assets/hero-placeholder.jpg",
   alt: "Students on campus",
 };
 
 const gridImage = {
-  src: "storybook-static/mock-assets/hero-placeholder.jpg",
+  src: "/mock-assets/hero-placeholder.jpg",
   alt: "Story card",
 };
 
