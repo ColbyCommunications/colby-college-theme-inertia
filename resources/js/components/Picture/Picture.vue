@@ -1,5 +1,5 @@
 <template>
-  <picture v-if="!process.env.PERCY">
+  <picture v-if="!import.meta.env.VITE_PERCY">
     <source media="(min-width:768px)" :srcset="
       'https://colby.edu/cdn-cgi/image/width=320,quality=60/' +
       sizeDesktop +
