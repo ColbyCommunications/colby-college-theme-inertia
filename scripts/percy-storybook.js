@@ -65,25 +65,11 @@ const scrollToBottom = require('scroll-to-bottomjs');
       timeout: 60000
     });
 
-    // 1. Force the browser to recognize the local images
-    // This bypasses any lazy-loading logic that might be failing in headless mode
-    await page.evaluate(() => {
-      const images = document.querySelectorAll('img');
-      images.forEach(img => {
-        // If it's a relative path, force it to absolute so the browser fetches it
-        if (img.src.includes('./mock-assets')) {
-          img.src = img.src.replace('./', '/'); 
-        }
-        // Force loading if lazy-loading is present
-        img.loading = 'eager'; 
-      });
-    });
-
     // 2. Slow down the scroll to ensure triggers fire
     await page.evaluate(scrollToBottom, { frequency: 25, timing: 500 });
     
     // 3. Wait for the server to actually log the GET request for the images
-    await new Promise(r => setTimeout(r, 2000));
+    await new Promise(r => setTimeout(r, 5000));
 
     // 4. Simplified Snapshot Call
     await percySnapshot(page, `${story.title}: ${story.name}`, {
