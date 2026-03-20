@@ -79,26 +79,8 @@ const scrollToBottom = require('scroll-to-bottomjs');
       });
     });
 
-    // 1. Force a slow scroll to trigger lazy loaders and waypoints
-    await page.evaluate(async () => {
-      await new Promise((resolve) => {
-        let totalHeight = 0;
-        const distance = 100; // scroll 100px at a time
-        const timer = setInterval(() => {
-          const scrollHeight = document.body.scrollHeight;
-          window.scrollBy(0, distance);
-          totalHeight += distance;
-
-          if (totalHeight >= scrollHeight) {
-            clearInterval(timer);
-            resolve();
-          }
-        }, 100); // 100ms delay between scrolls
-      });
-    });
-
-    // 2. Scroll back to the top (so the snapshot isn't stuck at the footer)
-    await page.evaluate(() => window.scrollTo(0, 0));
+    // 2. Slow down the scroll to ensure triggers fire
+    await page.evaluate(scrollToBottom, { frequency: 25, timing: 500 });
     
     // 3. Wait for the server to actually log the GET request for the images
     await new Promise(r => setTimeout(r, 2000));
