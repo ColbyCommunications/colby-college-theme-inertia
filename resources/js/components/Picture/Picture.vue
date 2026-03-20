@@ -1,5 +1,5 @@
 <template>
-  <picture v-if="!import.meta.env.VITE_PERCY">
+  <picture v-if="!isPercy">
     <source media="(min-width:768px)" :srcset="
       'https://colby.edu/cdn-cgi/image/width=320,quality=60/' +
       sizeDesktop +
@@ -33,6 +33,9 @@
 </template>
 
 <script setup>
+
+// 1. Define the constant here
+const isPercy = import.meta.env.VITE_PERCY === 'true';
 
 const props = defineProps({
   // The class to apply to the <img> element
