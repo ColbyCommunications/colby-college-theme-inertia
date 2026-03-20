@@ -40,20 +40,12 @@ const menus = {
 };
 
 const heroImage = {
-  src: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
-  srcset: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg 1200w, https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg 800w",
+  src: "./mock-assets/hero-placeholder.jpg",
   alt: "Students on campus",
-  sizes: {
-    Square: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
-    Square_mobile: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
-    Hero: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
-    Rectangle: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
-    Rectangle_mobile: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
-  },
 };
 
 const gridImage = {
-  src: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
+  src: "./mock-assets/hero-placeholder.jpg",
   alt: "Story card",
 };
 

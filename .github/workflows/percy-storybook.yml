@@ -37,6 +37,8 @@ jobs:
 
       - name: Run Percy Storybook snapshots
         run: |
+          node scripts/download-mocks.js
+          
           # Install dependencies for the custom script
           npm install puppeteer @percy/puppeteer wait-on http-server
           

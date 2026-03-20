@@ -91,7 +91,10 @@ const scrollToBottom = require('scroll-to-bottomjs');
     
     await percySnapshot(page, `${story.title}: ${story.name}`, {
       widths: [375, 1280],
-      enableJavaScript: true
+      enableJavaScript: true,
+      assetLoaderOptions: {
+        buildDir: path.resolve(__dirname, '../storybook-static')
+      }
     });
   }
 
