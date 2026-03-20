@@ -58,6 +58,8 @@ const scrollToBottom = require('scroll-to-bottomjs');
   for (const id of storyIds) {
     const story = data[id];
     console.log(`Snapshotting: ${story.title} > ${story.name}`);
+    
+    await page.setUserAgent('colby-github');
 
     // Standard Storybook URL format for the iframe
     await page.goto(`${baseUrl}?id=${id}&viewMode=story`, {
