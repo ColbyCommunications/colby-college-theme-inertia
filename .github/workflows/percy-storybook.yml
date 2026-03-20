@@ -1,6 +1,9 @@
 name: Percy Storybook
 
 on:
+  push:
+    branches:
+      - 'chore/percy-storybook-pr'
   pull_request:
     branches:
       - master
