@@ -16,9 +16,9 @@
       <Picture
         class="absolute top-0 left-0 md:top-auto md:left-auto w-full h-full object-cover"
         :src="image.src"
-        :srcset="image.srcset"
-        :size-desktop="image.sizes?.Landscape"
-        :size-mobile="image.sizes?.Landscape"
+        :srcset="image.src"
+        :size-desktop="image.src"
+        :size-mobile="image.src"
         :alt="image.alt"
       />
     </div>

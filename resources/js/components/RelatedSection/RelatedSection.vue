@@ -26,9 +26,9 @@
             <Picture
               class="absolute w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ease-in-out"
               :src="item.image.src"
-              :srcset="item.image.srcset"
-              :size-desktop="item.image.sizes?.Rectangle"
-              :size-mobile="item.image.sizes?.Rectangle"
+              :srcset="item.image.src"
+              :size-desktop="item.image.src"
+              :size-mobile="item.image.src"
               :alt="item.image.alt"
             />
           </div>

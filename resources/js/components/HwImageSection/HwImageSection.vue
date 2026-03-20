@@ -7,13 +7,9 @@
       <Picture
         class="w-full min-h-full object-cover"
         :src="image.src"
-        :srcset="image.srcset"
-        :size-desktop="
-          imageOrientation === 'Rectangle'
-            ? image.sizes?.Hero
-            : image.sizes?.Square
-        "
-        :size-mobile="image.sizes?.Square"
+        :srcset="image.src"
+        :size-desktop="image.src"
+        :size-mobile="image.src"
         :alt="image.alt"
       />
     </div>
