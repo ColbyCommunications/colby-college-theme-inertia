@@ -55,6 +55,6 @@ jobs:
           npx wait-on http://127.0.0.1:6006/index.json -t 30000
           
           # Run the script wrapped in percy exec
-          npx percy exec -- node scripts/percy-storybook.js
+          npx percy exec -- PERCY=true node scripts/percy-storybook.js
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}

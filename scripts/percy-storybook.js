@@ -85,14 +85,6 @@ const scrollToBottom = require('scroll-to-bottomjs');
     // 3. Wait for the server to actually log the GET request for the images
     await new Promise(r => setTimeout(r, 2000));
 
-    const heroHtml = await page.evaluate(() => {
-      const el = document.querySelector('.home-hero'); // or whatever your hero class is
-      return el ? el.outerHTML : 'Hero element not found';
-    });
-    console.log('--- DEBUG HERO HTML ---');
-    console.log(heroHtml);
-    console.log('-----------------------');
-
     // 4. Simplified Snapshot Call
     await percySnapshot(page, `${story.title}: ${story.name}`, {
       widths: [375, 1280],
