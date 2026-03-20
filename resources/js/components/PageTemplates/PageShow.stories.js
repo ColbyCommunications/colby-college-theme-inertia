@@ -16,7 +16,7 @@ const EXTERNAL_GRID_ENDPOINT =
 const siteData = {
   url: "https://www.colby.edu",
   address: {
-    text: "4000 Mayflower Hill<br>Waterville, ME 04901",
+    text: "4000 Mayflower Hill<br>Waterville, ME 049011",
   },
   phone: "207-859-4000",
   alert: null,
