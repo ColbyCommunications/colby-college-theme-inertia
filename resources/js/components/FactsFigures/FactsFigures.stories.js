@@ -17,14 +17,8 @@ export const Primary = {
       { figure: "100%", paragraph: "consectetur adipiscing elit" },
     ],
     image: {
-      src: "https://placeholdit.com/400x600/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+      src: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
       alt: "this is an alt tag",
-      sizes: {
-        Square: "https://placehold.co/600x400",
-        Square_mobile: "https://placehold.co/400x300",
-      },
     },
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",

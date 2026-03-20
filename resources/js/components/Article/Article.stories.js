@@ -16,9 +16,7 @@ export const Primary = {
     paragraph:
       "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
     image: {
-      src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+      src: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
       alt: "this is an alt tag",
     },
     buttons: [
