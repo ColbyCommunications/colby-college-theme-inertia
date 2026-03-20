@@ -53,13 +53,8 @@ const heroImage = {
 };
 
 const gridImage = {
-  src: "https://placehold.co/600x400",
-  srcset: "https://placehold.co/600x400 600w, https://placehold.co/300x200 300w",
+  src: "https://www.colby.edu/wp-content/uploads/2024/12/20220914_sunrise_0052-HDR-1.jpg",
   alt: "Story card",
-  sizes: {
-    desktop: "https://placehold.co/600x400",
-    mobile: "https://placehold.co/300x200",
-  },
 };
 
 const manualCarouselItems = [
