@@ -39,7 +39,7 @@
         >
           <div v-show="isActive(index)" class="accordion__window">
             <div class="accordion__content">
-              <div v-html="panel.content"></div>
+              <div v-html="panel.content" class="text-indigo-800"></div>
             </div>
           </div>
         </Transition>
