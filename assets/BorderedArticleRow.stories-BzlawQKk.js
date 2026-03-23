@@ -1,0 +1,23 @@
+import{c as a,F as m,j as h,o as d,b as g,m as u}from"./iframe-qn9ebuhk.js";import{_}from"./Article-CYfkw9nk.js";import"./preload-helper-PPVm8Dsz.js";import"./TextGroup-Jc2jy6rj.js";import"./index-DDlvirwQ.js";import"./noframework.waypoints-DVP5Ss7z.js";import"./ButtonGroup-CoN_pgMt.js";import"./Button-zNl_wLY1.js";import"./Picture-BukFCmKj.js";const x={class:"bordered-article-row w-full max-w-screen-2xl grid-cols-9 gap-10 space-y-16 md:grid md:space-y-0"},o={__name:"BorderedArticleRow",props:{items:{type:Array,default:()=>[]}},setup(n){return(r,p)=>(d(),a("div",x,[(d(!0),a(m,null,h(n.items,(t,c)=>(d(),a("div",{key:t.id||c,class:"article-grid__item border-t-2 border-solid border-indigo-600 pt-3 md:col-span-3"},[g(_,u({ref_for:!0},t,{align:"column"}),null,16)]))),128))]))}};o.__docgenInfo=Object.assign({displayName:o.name??o.__name},{exportName:"default",displayName:"BorderedArticleRow",description:"",tags:{},props:[{name:"items",type:{name:"array"},defaultValue:{func:!1,value:"[]"}}],sourceFiles:["/home/runner/work/colby-college-theme-inertia/colby-college-theme-inertia/resources/js/components/BorderedArticleRow/BorderedArticleRow.vue"]});const{expect:e}=__STORYBOOK_MODULE_TEST__,k={title:"Core Components/Bordered Article Row",component:o},w=[{image:{src:"https://placeholdit.com/600x400/dddddd/999999",srcset:"https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",alt:"this is an alt tag"},heading:"Future of Artificial Intelligence",subheading:"Technology",paragraph:"AI is reshaping industries at an unprecedented pace.",url:"#",sizes:{desktop:"https://placehold.co/600x400",mobile:"https://placehold.co/300x200"}},{image:{src:"https://placeholdit.com/600x400/dddddd/999999",srcset:"https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",alt:"this is an alt tag"},heading:"Sustainable Energy Solutions",subheading:"Environment",paragraph:"Solar and wind energy are becoming more accessible than ever.",url:"#",sizes:{desktop:"https://placehold.co/600x400",mobile:"https://placehold.co/300x200"}},{image:{src:"https://placeholdit.com/600x400/dddddd/999999",srcset:"https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",alt:"this is an alt tag"},heading:"Modern Architecture Trends",subheading:"Design",paragraph:"Exploring the intersection of function and aesthetics in 2024.",url:"#",sizes:{desktop:"https://placehold.co/600x400",mobile:"https://placehold.co/300x200"}}],i={name:"Default",args:{items:w},play:async({canvas:n,canvasElement:r})=>{const t=r.querySelectorAll(".bordered-article-row  .article-grid__item:first-child")[0].querySelectorAll(".text-group__heading")[0];await e(t.textContent.slice(0,-1)).toBe("Future of Artificial Intelligence"),await e(t).toBeVisible();const s=r.querySelectorAll(".bordered-article-row .article-grid__item:nth-child(2)")[0].querySelectorAll(".text-group__heading")[0];await e(s.textContent.slice(0,-1)).toBe("Sustainable Energy Solutions"),await e(s).toBeVisible();const l=r.querySelectorAll(".bordered-article-row .article-grid__item:nth-child(3)")[0].querySelectorAll(".text-group__heading")[0];await e(l.textContent.slice(0,-1)).toBe("Modern Architecture Trends"),await e(l).toBeVisible()}};i.parameters={...i.parameters,docs:{...i.parameters?.docs,source:{originalSource:`{
+  name: "Default",
+  args: {
+    items: mockItems
+  },
+  play: async ({
+    canvas,
+    canvasElement
+  }) => {
+    const first = canvasElement.querySelectorAll('.bordered-article-row  .article-grid__item:first-child')[0];
+    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
+    await expect(firstHeading.textContent.slice(0, -1)).toBe('Future of Artificial Intelligence');
+    await expect(firstHeading).toBeVisible();
+    const second = canvasElement.querySelectorAll('.bordered-article-row .article-grid__item:nth-child(2)')[0];
+    const secondHeading = second.querySelectorAll('.text-group__heading')[0];
+    await expect(secondHeading.textContent.slice(0, -1)).toBe('Sustainable Energy Solutions');
+    await expect(secondHeading).toBeVisible();
+    const third = canvasElement.querySelectorAll('.bordered-article-row .article-grid__item:nth-child(3)')[0];
+    const thirdHeading = third.querySelectorAll('.text-group__heading')[0];
+    await expect(thirdHeading.textContent.slice(0, -1)).toBe('Modern Architecture Trends');
+    await expect(thirdHeading).toBeVisible();
+  }
+}`,...i.parameters?.docs?.source}}};const C=["Primary"];export{i as Primary,C as __namedExportsOrder,k as default};
