@@ -9,7 +9,7 @@
     >
       <a
         :href="item.url"
-        class="mr-10 flex text-indigo-200 transition-all duration-200 ease-in-out hover:text-white hover:underline md:items-center"
+        class="mr-10 flex text-indigo-200 transition-all duration-200 ease-in-out hover:text-white hover:underline md:items-center min-w-[44px] min-h-[44px]"
       >
         <!-- Icon component -->
         <Icon

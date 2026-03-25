@@ -10,10 +10,11 @@ export default {
 };
 
 const sampleMenu = [
-  { title: "Directory", url: "#directory" },
-  { title: "News", url: "#news" },
-  { title: "Events", url: "#events" },
-  { title: "Offices", url: "#offices" },
+  { title: "Colby Arts", url: "#directory" },
+  { title: "Libraries", url: "#news" },
+  { title: "Visit", url: "#events" },
+  { title: "Resources", url: "#offices" },
+  { title: "ColbyNow", url: "#offices" },
 ];
 
 const render = (args) => ({

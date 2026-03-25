@@ -32,11 +32,11 @@
           <li
             v-for="(item, index) in menus.footer"
             :key="index"
-            class="mb-4 basis-1/2 list-none flex-col font-body text-16 leading-130 font-normal text-indigo-500 md:basis-1/2 md:text-14 lg:basis-1/4"
+            class="mb-4 basis-1/2 list-none flex-col font-body text-16 leading-130 font-normal text-indigo-500 md:basis-1/2 md:text-14 lg:basis-1/4 min-w-[44px] min-h-[44px] inline-flex items-center justify-center"
           >
             <a
               :href="item.url"
-              class="text-indigo-500 transition-all duration-200 ease-in-out hover:text-white hover:underline min-h-[44px]"
+              class="text-indigo-500 transition-all duration-200 ease-in-out hover:text-white hover:underline "
             >
               {{ item.title }}
             </a>
@@ -44,7 +44,7 @@
         </ul>
       </div>
     </div>
-    <div class="mx-auto my-0 w-full max-w-screen-2xl space-y-8 md:space-y-0">
+    <div class="mx-auto mt-6 w-full max-w-screen-2xl space-y-8 md:space-y-0">
       <div
         class="flex flex-col items-center justify-start px-5 md:grid md:grid-cols-12 md:px-0"
       >
@@ -55,7 +55,7 @@
         <div
           class="col-span-8 flex w-full items-center justify-start md:justify-end"
         >
-          <div class="flex w-72 items-center">
+          <div>
             <!-- Newsletter Button -->
             <Button
               size="small"
@@ -63,7 +63,8 @@
               url="https://news.colby.edu/newsletter/"
               title="Newsletter"
             />
-
+          </div>
+          <div class="flex w-72 items-center">
             <!-- Social Menu -->
             <SocialMenu :menu="menus.social" />
           </div>

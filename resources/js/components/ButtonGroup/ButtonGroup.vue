@@ -31,7 +31,7 @@
 <script setup>
 import Button from "@/js/components/Button/Button.vue";
 const props = defineProps({
-  align: { type: String, default: "center" },
+  align: { type: String, default: "left" },
   items: { type: Array, default: () => [] },
   size: { type: String, default: "medium" },
   type: { type: String, default: "light" },
@@ -39,4 +39,6 @@ const props = defineProps({
   transparentBg: { type: Boolean, default: false },
   reverse: { type: Boolean, default: false },
 });
+
+console.log(props.align);
 </script>

@@ -15,6 +15,7 @@ const mainMenuItems = [
   { id: 3, title: "Campus Life", url: "#", target: "" },
   { id: 4, title: "Research", url: "#", target: "" },
   { id: 5, title: "About", url: "#", target: "" },
+  { id: 6, title: "News", url: "#", target: "" },
 ];
 
 const utilityMenuItems = [

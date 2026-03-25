@@ -3,7 +3,7 @@
   <a
     :href="url"
     :target="target || undefined"
-    class="btn group inline-flex flex-row items-center rounded border border-solid font-body leading-130 font-normal !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-canary"
+    class="btn group inline-flex flex-row items-center rounded border border-solid font-body leading-130 font-normal !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-canary min-w-[44px] min-h-[44px]"
     :class="[
       space,
       textSize,
@@ -114,23 +114,23 @@ const space = computed(() => S.value.space);
 const isDark = computed(() => props.type === "dark");
 const textColor = computed(() => (isDark.value ? "text-white" : "text-indigo"));
 const backgroundColor = computed(() =>
-  isDark.value ? "bg-indigo/20" : "bg-indigo-100",
+  isDark.value ? "bg-indigo/20" : "bg-[#f9fbff]",
 );
 const borderColor = computed(() =>
   props.transparentBg
     ? "border-transparent"
     : isDark.value
-      ? "border-indigo-800"
-      : "border-indigo-300",
+      ? "border-[#5a6e94]"
+      : "border-[#dfecfe]",
 );
 const hoverBorderColor = computed(() =>
-  isDark.value ? "hover:border-indigo-800" : "hover:border-indigo-500",
+  isDark.value ? "hover:border-[#dfecfe]" : "hover:border-[#b7c2d5]",
 );
 const hoverBackgroundColor = computed(() =>
-  isDark.value ? "" : "hover:bg-indigo-200",
+  isDark.value ? "" : "hover:bg-[#eef4ff]",
 );
 const focusBackgroundColor = computed(() =>
-  isDark.value ? "" : "focus:bg-indigo-200",
+  isDark.value ? "" : "focus:bg-[#eef4ff]",
 );
 const borderBackground = computed(() =>
   isDark.value ? "bg-white" : "bg-indigo",

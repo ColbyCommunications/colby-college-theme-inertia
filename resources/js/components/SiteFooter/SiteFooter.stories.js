@@ -54,8 +54,9 @@ const sampleMenus = {
   ],
   social: [
     { title: "Facebook", url: "#", icon: "facebook" },
-    { title: "Twitter", url: "#", icon: "twitter" },
+    { title: "X", url: "#", icon: "x" },
     { title: "Instagram", url: "#", icon: "instagram" },
+    { title: "LinkedIn", url: "#", icon: "linkedin" },
   ],
 };
 
