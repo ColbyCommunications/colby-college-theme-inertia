@@ -9,7 +9,7 @@ $filtered_blocks = array_filter( parse_blocks($post->post_content), function( $b
     return ! is_null( $block['blockName'] );
 });
 
-dd($filtered_blocks);
+// dd($filtered_blocks);
 
 $blocks = prepare_data($filtered_blocks);
 
