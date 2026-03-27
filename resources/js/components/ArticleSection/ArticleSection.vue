@@ -1,54 +1,40 @@
 <template>
-  <div>
     <Carousel
-      v-if="renderApi"
+      v-if="render_api"
       class="article-section"
       :perView="perView"
       :gap="gap"
-      :render_api="renderApi"
+      :renderApi="render_api"
       :api="api"
-      v-slot="{ pauseCarousel, playCarousel }"
+      :heading="heading"
+      :subheading="subheading"
+      :paragraph="paragraph"
     />
-    <div
-      class="article-section__inner mx-auto my-0 w-full max-w-screen-2xl space-y-16 gap-x-10 px-5 md:grid md:grid-cols-12 md:space-y-0"
-      v-else
-    >
-      <!-- Intro / Context -->
-      <div
-        class="article-section__intro space-y-10 md:col-span-4 lg:col-span-3"
-      >
+    <div v-else class="article-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto space-y-16 md:space-y-0">
+      <div class="article-section__intro md:col-span-4 lg:col-span-3 space-y-10">
         <Context
           size="small"
-          :subheading="subheading"
+          :type="type"
+          :arrow="true"
+          :reverse="true"
           :heading="heading"
+          :subheading="subheading"
           :paragraph="paragraph"
-          :buttons="{ items: buttons }"
+          :buttons="{ items: buttons}"
         />
-        <ArrowControls
-          v-if="showCarouselControls"
-          size="large"
-          type="light"
-          @prev="onPrev"
-          @next="onNext"
-        />
+        <ArrowControls v-if="carousel" size="large" type="light" />
       </div>
-
-      <!-- Grid -->
       <div
-        class="article-section__grid md:col-span-8 md:col-start-5"
-        @mouseenter="pauseCarousel?.()"
-        @mouseleave="playCarousel?.()"
+        class="article-section__grid md:col-start-5 md:col-span-8"
       >
-        <ArticleGrid v-bind="gridProps" display_posts_method="manual" />
+        <ArticleGrid v-bind="props" :columns="perView" />
       </div>
     </div>
-  </div>
 </template>
 
 <script setup>
 import { computed } from "vue";
 
-// Child components (adjust import paths to your project)
 import Carousel from "../Carousel/Carousel.vue";
 import Context from "../Context/Context.vue";
 import ArrowControls from "../ArrowControls/ArrowControls.vue";
@@ -60,7 +46,7 @@ const props = defineProps({
   gap: { type: Number, default: 20 },
 
   // API / data flags
-  renderApi: { type: [Boolean, Number, String], default: false },
+  render_api: { type: [Boolean, Number, String], default: false },
   api: { type: String, default: "" },
 
   // Content
@@ -70,28 +56,15 @@ const props = defineProps({
   buttons: { type: Array, default: () => [] },
 
   // Show/Hide arrow controls area from the original `{% if carousel %}`
-  showCarouselControls: { type: Boolean, default: false },
+  carousel: { type: Boolean, default: false },
 
   // Anything the grid needs—pass through as a single object
   // (e.g. { renderApi, posts, api, range, border, cta, columns, style, size, items })
   gridProps: { type: Object, default: () => ({}) },
+
+  display_posts_method: { type: String, default: "" },
+  items: { type: Array, default: () => [] },
 });
 
-// Optional: events for ArrowControls; parent can listen or
-// you can forward to a provided Carousel API if you expose one.
-const onPrev = () => {
-  // Intentionally empty—wire to Carousel if you expose controls via provide/inject or events.
-  // Or emit to parent:
-  // emit('prev')
-};
-const onNext = () => {
-  // Same note as above
-  // emit('next')
-};
-
-// If you need a normalized boolean for renderApi internally:
-const renderApiBool = computed(() => {
-  const v = String(props.renderApi);
-  return v === "true" || v === "1" || v === "yes";
-});
+console.log(props);
 </script>

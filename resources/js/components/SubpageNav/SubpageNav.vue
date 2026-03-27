@@ -34,7 +34,7 @@
         </div>
       </h2>
       <ul
-        class="subpage-nav__items md:block py-4 md:py-0 border-t md:border-t-0 border-solid border-indigo-200 mt-0 md:mt-6"
+        class="subpage-nav__items md:block py-4 md:py-0 border-t md:border-t-0 border-solid border-[#eef4ff] mt-0 md:mt-6"
         :class="{ hidden: !menuOpen && !isBot }"
       >
         <li
@@ -43,7 +43,7 @@
           class="subpage-nav__item font-body text-14 md:text-10 font-normal md:font-medium leading-140 text-indigo-800 md:mt-2"
         >
           <a
-            class="block py-1.5 md:py-1 px-6 md:px-0 md:pl-2.5 hover:bg-indigo-200 md:border-l-2 border-solid transition-all duration-200 ease-in-out"
+            class="block py-1.5 md:py-1 px-6 md:px-0 md:pl-2.5 hover:bg-[#eef4ff] md:border-l-2 border-solid transition-all duration-200 ease-in-out"
             :class="{
               'text-gray-1000 border-indigo': item.active,
               'text-indigo-800 hover:text-indigo hover:underline border-transparent':

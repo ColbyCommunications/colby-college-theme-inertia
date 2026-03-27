@@ -9,20 +9,21 @@
       <!-- BASIC (non-API) uses the shared Context component -->
       <Context
         v-if="mode === 'basic'"
-        size="large"
+        size="small"
         :type="type"
         :arrow="true"
         :reverse="true"
         :heading="heading"
+        :subheading="subheading"
         :paragraph="paragraph"
-        :buttons="{ items: basicButtonItems }"
+        :buttons="{ items: buttons }"
       />
 
       <!-- API variants render a tiny, normalized context -->
       <div v-else class="context w-full space-y-5">
         <TextGroup
           size="small"
-          :subheading="mode !== 'latest' ? subheading : ''"
+          :subheading="currentSubheading"
           :heading="heading"
           :paragraph="paragraph"
         />
@@ -38,7 +39,7 @@
           class="arrow-controls space-x-4 pt-2"
         >
           <button
-            class="arrow-btn inline-flex h-12 w-12 items-center justify-center rounded border border-solid border-indigo-300 bg-indigo-100 transition-all duration-200 ease-in-out hover:bg-indigo-200 focus:bg-indigo-200"
+            class="arrow-btn inline-flex h-12 w-12 items-center justify-center rounded border border-solid border-indigo-300 bg-[#f9fbff] transition-all duration-200 ease-in-out hover:bg-[#eef4ff] focus:bg-[#eef4ff]"
             @click="changeSlide('prev')"
           >
             <span class="sr-only">Previous</span>
@@ -49,7 +50,7 @@
             </svg>
           </button>
           <button
-            class="arrow-btn inline-flex h-12 w-12 items-center justify-center rounded border border-solid border-indigo-300 bg-indigo-100 transition-all duration-200 ease-in-out hover:bg-indigo-200 focus:bg-indigo-200"
+            class="arrow-btn inline-flex h-12 w-12 items-center justify-center rounded border border-solid border-indigo-300 bg-[#f9fbff] transition-all duration-200 ease-in-out hover:bg-[#eef4ff] focus:bg-[#eef4ff]"
             @click="changeSlide('next')"
           >
             <span class="sr-only">Next</span>
@@ -85,8 +86,8 @@
             >
               <Picture
                 class="h-full w-full object-cover"
-                :size-desktop="item.image?.sizes?.Rectangle"
-                :size-mobile="item.image?.sizes?.Rectangle_mobile"
+                :size-desktop="item.image?.src"
+                :size-mobile="item.image?.src"
                 :alt="item.image?.alt || ''"
               />
             </div>
@@ -98,7 +99,7 @@
               :key="'api-' + idx"
               class="carousel__slide glide__slide"
             >
-              <div class="relative pb-[56.578947368421055%]">
+              <div class="relative pb-[56.578947368421055%]" v-if="mode !== 'faculty'">
                 <picture>
                   <source
                     media="(min-width:768px)"
@@ -106,7 +107,7 @@
                   />
                   <img
                     class="absolute top-0 left-0 h-full w-full object-cover"
-                    :srcset="buildSrcset(firstOg(it)?.url)"
+                    :srcset="buildSrcset(firstOg(it)?.src)"
                     :sizes="'(max-width: 767px) 100vw, 50vw'"
                     :alt="it.yoast_head_json?.og_description || ''"
                   />
@@ -208,6 +209,7 @@ const props = defineProps({
   // layout / content
   type: { type: String, default: "dark" },
   heading: { type: String, default: "News" },
+  subheading: { type: String, default: "" },
   paragraph: { type: String, default: "Latest from Colby." },
   cta: { type: String, default: "Read Story" },
 
@@ -237,38 +239,49 @@ const props = defineProps({
   interval: { type: [Number, String], default: 5000 },
 });
 
+const currentSubheading = ref(props.subheading)
+
+console.log(props);
+
 /* =========================
      Derived state
   ========================= */
 const isApi = computed(() => ["true", "1", 1, true].includes(props.render_api));
 const mode = computed(() => {
+  console.log(isApi);
   if (!isApi.value) return "basic";
-  if (props.api === "Latest News") return "latest";
-  if (props.api === "Academic News") return "academic";
-  if (props.api === "Faculty Accomplishments") return "faculty";
+
+  if (props.api === "Latest News") {
+    return "latest";
+  }
+
+  if (props.api === "Academic News"){ 
+    currentSubheading.value = props.api;
+    return "academic";
+  }
+  if (props.api === "Faculty Accomplishments"){
+    currentSubheading.value = props.api;
+    return "faculty";
+  }
   return "latest";
 });
 
-const subheading = ref(""); // only used for academic/faculty display
-watch(
-  mode,
-  (m) => {
-    subheading.value = m === "academic" || m === "faculty" ? props.api : "";
-  },
-  { immediate: true },
-);
-
 const apiLeftButtonItems = computed(() => {
-  if(mode.value === "faculty"){
-    props.FAbuttons.map((btn) => ({
+  if (mode.value === "faculty") {
+    // Added return here
+    return props.FAbuttons.map((btn) => ({
       button: { url: btn.url, title: btn.title, target: "_blank" },
     }));
   } else if (props.buttons) {
-    props.buttons.map((btn) => ({
+    // Added return here
+    return props.buttons.map((btn) => ({
       button: { url: btn.url, title: btn.title, target: "_blank" },
     }));
   }
+  // Optional: return an empty array if no conditions are met
+  return []; 
 });
+
 
 const basicButtonItems = computed(() =>
   props.buttons.map((btn) => ({
@@ -299,6 +312,7 @@ async function fetchApi() {
   if (!endpoint.value) return;
 
   const { data } = await axios.get(endpoint.value);
+  console.log(data);
   featuredNews.value =
     mode.value === "faculty"
       ? data.map((item) => ({
@@ -412,7 +426,7 @@ const decodeHtmlEntities = (input) => {
 };
 
 const firstOg = (it) => it?.yoast_head_json?.og_image?.[0] || null;
-const title = (it) => decodeHtmlEntities(it?.title?.rendered || "");
+const title = (it) => it?.title?.rendered;
 const summary = (it) =>
   decodeHtmlEntities(it?.["post-meta-fields"]?.summary?.[0] || "");
 const primaryCategory = (it) =>

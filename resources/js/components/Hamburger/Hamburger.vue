@@ -3,7 +3,7 @@
     <label class="font-body text-20 font-normal text-indigo-800">Menu</label>
 
     <button
-      class="flex h-[52px] w-[56px] cursor-pointer items-center justify-center rounded-sm border border-solid border-indigo-300 bg-indigo-100 text-[0px]"
+      class="flex h-[52px] w-[56px] cursor-pointer items-center justify-center rounded-sm border border-solid border-indigo-300 bg-[#f9fbff] text-[0px]"
       @click="toggleActive"
       aria-label="Toggle menu"
       :aria-expanded="active ? 'true' : 'false'"

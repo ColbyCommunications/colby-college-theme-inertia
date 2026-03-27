@@ -1,10 +1,10 @@
 <template>
     <div
-        class="home-hero relative h-[calc(100vh_-_145px)] md:h-[calc(100vh_-_100px)] overflow-hidden md:[&+.carousel]:mt-[-30px]"
+        class="home-hero relative h-[calc(100vh_-_145px)] md:h-[calc(100vh_-_100px)] overflow-hidden full-bleed"
     >
         <!-- Bottom overlay -->
         <div
-            class="home-hero__bottom absolute bottom-0 left-0 w-full pt-24 pb-[30px] space-y-12 md:space-y-20"
+            class="home-hero__bottom absolute bottom-0 left-0 w-full pt-24 pb-[50px]"
             :style="{
                 background:
                     'linear-gradient(180deg, rgba(1, 33, 105, 0) 0%, rgba(14, 20, 34, 0.4) 25%)',
@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <div v-if="caption" class="home-hero__inner max-w-screen-2xl w-full px-5 my-0 mx-auto">
+            <div v-if="caption" class="home-hero__inner max-w-screen-2xl w-full px-5 my-0 mx-auto mt-24">
                 <div
                     class="font-extended font-bold text-12 tracking-8 text-canary uppercase text-right md:text-left"
                 >
@@ -79,4 +79,6 @@
             default: () => ({ src: '', srcset: '', sizeDesktop: '', sizeMobile: '', alt: '' }),
         },
     });
+
+    console.log(props);
 </script>

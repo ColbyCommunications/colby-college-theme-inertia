@@ -13,7 +13,7 @@
             :key="item.objectID"
             :aria-label="item.query"
             @click="search(item.query)"
-            class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary"
+            class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-[#eef4ff] focus:bg-[#eef4ff] focus:outline focus:outline-2 focus:outline-canary"
           >
             <span class="btn__text">
               <ais-highlight :hit="item" attribute="query" />

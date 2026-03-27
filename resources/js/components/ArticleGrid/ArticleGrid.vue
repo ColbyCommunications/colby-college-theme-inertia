@@ -178,7 +178,7 @@
 
             <div class="button-group mt-4 flex flex-wrap gap-4">
               <a
-                class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary"
+                class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-[#eef4ff] focus:bg-[#eef4ff] focus:outline focus:outline-2 focus:outline-canary"
                 @click="toggleAccordion(i)"
               >
                 <button class="btn__text">
@@ -201,7 +201,7 @@
         >
           <div
             v-if="expandedIndex === i"
-            class="accordion__flyout mt-4 flex w-full flex-col border-[1px] border-indigo-500 bg-indigo-200 text-14 text-indigo-800"
+            class="accordion__flyout mt-4 flex w-full flex-col border-[1px] border-[#b7c2d5] bg-[#eef4ff] text-14 text-indigo-800"
             :style="{ maxHeight: '80vh' }"
           >
             <div class="flex w-full justify-end pt-4 pr-4 pl-4">
@@ -223,7 +223,7 @@
                 :key="buttonIndex"
                 :href="buttonObj.button.url"
                 :target="buttonObj.button.target || '_self'"
-                class="btn group ml-2 inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary"
+                class="btn group ml-2 inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-[#eef4ff] focus:bg-[#eef4ff] focus:outline focus:outline-2 focus:outline-canary"
               >
                 {{ buttonObj.button.title }}
               </a>
@@ -243,7 +243,7 @@
         >
           <div
             v-if="expandedIndex === i"
-            class="accordion__flyout absolute top-0 flex flex-col border-[1px] border-indigo-500 bg-indigo-200 text-14 text-indigo-800"
+            class="accordion__flyout absolute top-0 flex flex-col border-[1px] border-[#b7c2d5] bg-[#eef4ff] text-14 text-indigo-800"
             :class="
               accordionDirection(i) === 'right'
                 ? 'left-full ml-4'
@@ -286,7 +286,7 @@
                 :href="buttonObj.button.url"
                 :target="buttonObj.button.target || '_self'"
                 :class="[
-                  'btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary',
+                  'btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-[#eef4ff] focus:bg-[#eef4ff] focus:outline focus:outline-2 focus:outline-canary',
                   accordionDirection(i) === 'left' ? 'mr-2' : 'ml-2',
                 ]"
               >

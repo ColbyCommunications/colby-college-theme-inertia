@@ -9,16 +9,8 @@
       :root-margin="getRootMargin(item, index)"
       :placeholder-min-height="getPlaceholderHeight(item)"
       @loaded="preloadNext(index + 1)"
+      :blockName="item.blockName"
     />
-    <!-- <FactsFigures
-      v-if="item.blockName == 'acf/facts-figures'"
-      v-bind="item.attrs.data"
-    />
-    <Hero v-if="item.blockName == 'acf/hero'" v-bind="item.attrs.data" />
-    <HomeHero
-      v-if="item.blockName == 'acf/home-hero'"
-      v-bind="item.attrs.data"
-    /> -->
   </div>
 </template>
 
@@ -43,6 +35,11 @@ const blockRegistry = {
   "acf/overlay-hero": () => import("../OverlayHero/OverlayHero.vue"),
   "acf/section-nav": () => import("../SectionNav/SectionNav.vue"),
   "acf/featured-post": () => import("../FeaturedPost/FeaturedPost.vue"),
+  "acf/testimonial-carousel": () => import("../TestimonialCarousel/TestimonialCarousel.vue"),
+  "acf/full-bleed-image": () => import("../FullBleedImage/FullBleedImage.vue"),
+  "acf/related-content": () => import("../RelatedContent/RelatedContent.vue"),
+  "acf/hw-image-section": () => import("../HwImageSection/HwImageSection.vue"),
+  "acf/list-section": () => import("../ListSection/ListSection.vue"),
 };
 
 function getLoader(blockName) {
@@ -81,6 +78,12 @@ function getPlaceholderHeight(item) {
     "acf/carousel": 450,
     "acf/dark-interstitial": 250,
     "acf/facts-figures": 300,
+    "acf/featured-post": 250,
+    "acf/testimonial-carousel": 250,
+    "acf/full-bleed-image": 250,
+    "acf/hw-image-section": 250,
+    "acf/related-content": 250,
+    "acf/list-section": 250,
     "acf/hero": 0,
     "acf/home-hero": 0,
     "acf/overlay-hero": 0,

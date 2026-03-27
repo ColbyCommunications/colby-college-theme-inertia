@@ -13,7 +13,7 @@
           :reverse="true"
           :heading="heading"
           :paragraph="paragraph"
-          :buttons="{ items: buttonItems }"
+          :buttons="{ items: buttons }"
           btn-type="light"
         />
       </div>
@@ -29,9 +29,9 @@
         <div class="featured-post__image">
           <Picture
             class="w-full h-full object-cover"
-            :size-desktop="post.image?.sizes?.Rectangle || post.image?.srcset"
-            :size-mobile="post.image?.sizes?.Rectangle || post.image?.src"
-            :alt="post.image?.alt || ''"
+            :size-desktop="post_image?.src"
+            :size-mobile="post_image?.src"
+            :alt="post_image?.alt || ''"
           />
         </div>
         <div class="featured-post__post relative mt-6">
@@ -39,9 +39,9 @@
             size="small"
             type="dark"
             :subheading="post.date"
-            :heading="post.heading"
-            :paragraph="post.paragraph"
-            :buttons="{ items: postButtonItems }"
+            :heading="post_heading"
+            :paragraph="post_paragraph"
+            :buttons="{ items: post_buttons }"
           />
         </div>
       </div>
@@ -61,17 +61,13 @@ const props = defineProps({
   caption: { type: String, default: "" },
   buttons: { type: Array, default: () => [] },
   post: { type: Object, default: () => ({}) },
+  post_image: { type: Object, default: () => ({}) },
+  post_paragraph: { type: String, default: "" },
+  post_heading: { type: String, default: "" },
+  post_buttons: { type: Array, default: () => [] },
 });
 
-const buttonItems = computed(() =>
-  props.buttons.map((btn) => ({
-    button: { url: btn.url, title: btn.title, target: btn.target || "" },
-  })),
-);
+console.log(props);
 
-const postButtonItems = computed(() =>
-  (props.post.buttons || []).map((btn) => ({
-    button: { url: btn.url, title: btn.title, target: btn.target || "" },
-  })),
-);
+
 </script>

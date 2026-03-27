@@ -1,4 +1,7 @@
 <?php
+
+include_once __DIR__ . '/../inc/block-validation.php';
+
 // helpers/normalize_types.php content (acf_normalize_types function)
 function acf_normalize_types(array $data, $parent_key = null): array
 {
@@ -41,7 +44,8 @@ function acf_normalize_types(array $data, $parent_key = null): array
 
                 $data[$key] = [
                     'id'      => $id,
-                    'src'     => wp_get_attachment_url($id),
+                    // 'src'     => str_replace('colby.lndo.site', 'www.colby.edu', wp_get_attachment_url($id)),
+                    'src'     => 'ON' === getenv( 'LANDO' ) ? str_replace($_SERVER['HTTP_HOST'], PRIMARY_DOMAIN, wp_get_attachment_url($id)) : wp_get_attachment_url($id),
                     'alt'     => get_post_meta($id, '_wp_attachment_image_alt', true),
                     'caption' => $attachment ? $attachment->post_excerpt : '',
                     'description' => $attachment ? $attachment->post_content : '',
@@ -134,22 +138,54 @@ function acf_unflatten(array $data): array
 function prepare_data(array $blocks): array
 {
     foreach ($blocks as &$block) {
+        // dd($block);
+        // $folder = colby_block_name_to_folder($block['blockName']);
 
-        if (!empty($block['attrs']['data']) && is_array($block['attrs']['data'])) {
+        // if ($folder) {
+        //     $path = get_theme_file_path("resources/js/components/{$folder}/acf/prepare_data.php");
 
-            // Pass 1: normalize scalars + images
-            $block['attrs']['data'] = acf_normalize_types($block['attrs']['data']);
+        //     if (file_exists($path)) {
+        //         include $path;
+        //     }
+            
+        //     dd(is_callable($path));
 
-            // Unflatten repeaters
-            $block['attrs']['data'] = acf_unflatten($block['attrs']['data']);
+        //     if (is_callable($validators[$folder])) {
+        //         $result = $validators[$folder]($data, $block);
+        //         if (is_wp_error($result)) {
+        //             $errors[] = $result;
+        //         }
+        //     }
+        // }
 
-            // Pass 2: normalize nested values (safe now)
-            $block['attrs']['data'] = acf_normalize_types($block['attrs']['data']);
+        // escape on specific block handlers
+        switch ($block['blockName']) {
+            case 'acf/list-section':
+                
+
+                
+                break;
+            
+            default:
+                if (!empty($block['attrs']['data']) && is_array($block['attrs']['data'])) {
+
+                    // Pass 1: normalize scalars + images
+                    $block['attrs']['data'] = acf_normalize_types($block['attrs']['data']);
+        
+                    // Unflatten repeaters
+                    $block['attrs']['data'] = acf_unflatten($block['attrs']['data']);
+        
+                    // Pass 2: normalize nested values (safe now)
+                    $block['attrs']['data'] = acf_normalize_types($block['attrs']['data']);
+                }
+        
+                if (!empty($block['innerBlocks'])) {
+                    $block['innerBlocks'] = prepare_data($block['innerBlocks']);
+                }
+                break;
         }
 
-        if (!empty($block['innerBlocks'])) {
-            $block['innerBlocks'] = prepare_data($block['innerBlocks']);
-        }
+        
     }
 
     return $blocks;

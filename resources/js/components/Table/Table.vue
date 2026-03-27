@@ -158,7 +158,7 @@
           <th
             v-for="(heading_item, index) in headings"
             :key="index"
-            class="h-12 whitespace-nowrap bg-indigo-200 px-6 text-left font-body text-18 leading-120 font-semibold text-indigo md:h-11 md:text-14"
+            class="h-12 whitespace-nowrap bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold text-indigo md:h-11 md:text-14"
           >
             {{ heading_item }}
           </th>
@@ -211,7 +211,7 @@
             >
               <template #content>
                 <h3
-                  class="flex items-center bg-indigo-200 px-5 py-2 text-left font-body text-20 leading-120 font-semibold text-indigo md:text-14"
+                  class="flex items-center bg-[#eef4ff] px-5 py-2 text-left font-body text-20 leading-120 font-semibold text-indigo md:text-14"
                   v-text="item.title"
                 />
                 <p
@@ -262,7 +262,7 @@
       >
         <button
           v-if="currentPage !== 1"
-          class="block p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-indigo-200 hover:text-indigo hover:underline md:text-10"
+          class="block p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
           @click="navigatePages('prev')"
         >
           <svg
@@ -284,8 +284,8 @@
             class="pagination__item"
           >
             <button
-              class="block p-2 py-1 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-indigo-200 hover:text-indigo hover:underline md:text-10"
-              :class="{ 'bg-indigo-200': currentPage === pageIndex }"
+              class="block p-2 py-1 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
+              :class="{ 'bg-[#eef4ff]': currentPage === pageIndex }"
               @click="navigateFn(pageIndex)"
             >
               {{ pageIndex }}
@@ -294,7 +294,7 @@
         </ul>
         <button
           v-if="currentPage !== totalPages"
-          class="block p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-indigo-200 hover:text-indigo hover:underline md:text-10"
+          class="block p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
           @click="navigatePages('next')"
         >
           <svg

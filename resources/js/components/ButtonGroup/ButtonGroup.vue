@@ -39,6 +39,4 @@ const props = defineProps({
   transparentBg: { type: Boolean, default: false },
   reverse: { type: Boolean, default: false },
 });
-
-console.log(props.align);
 </script>

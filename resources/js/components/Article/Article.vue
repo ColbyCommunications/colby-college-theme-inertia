@@ -27,7 +27,7 @@
             v-if="useDesktopMobile"
             class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
             :size-desktop="image.src"
-            :size-mobile="image.src || image.src"
+            :size-mobile="image.sr"
             :alt="image?.alt || ''"
           />
           <Picture
@@ -50,14 +50,14 @@
           <Picture
             v-if="useDesktopMobile"
             class="w-full object-cover"
-            :size-desktop="image.sizes.desktop"
-            :size-mobile="image.sizes.mobile || image.src"
+            :size-desktop="image.src"
+            :size-mobile="image.src"
             :alt="image?.alt || ''"
           />
           <Picture
             v-else
             class="w-full object-cover"
-            :size-desktop="image.srcset"
+            :size-desktop="image.src"
             :size-mobile="image?.src"
             :alt="image.alt || ''"
           />

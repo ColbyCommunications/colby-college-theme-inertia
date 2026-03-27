@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="float-right block bg-indigo-100 px-5 pt-4 md:flex md:h-auto md:w-full md:justify-between md:pt-0"
+    class="float-right block bg-[#f9fbff] px-5 pt-4 md:flex md:h-auto md:w-full md:justify-between md:pt-0"
     aria-label="Utility menu"
   >
     <!-- Left side: Utility links -->
@@ -22,7 +22,7 @@
     </ul>
     <!-- Right side: Action links (myColby, Search) -->
     <ul
-      class="flex space-x-6 bg-indigo-100 px-5 md:static md:float-right md:block md:bg-transparent md:px-0"
+      class="flex space-x-6 bg-[#f9fbff] px-5 md:static md:float-right md:block md:bg-transparent md:px-0"
     >
       <!-- myColby -->
       <li
@@ -33,7 +33,7 @@
           href="https://my.colby.edu/"
         >
           <MyColbyIcon
-            class="mr-1.5 w-[16px] fill-indigo-500 transition-all duration-200 ease-in-out group-hover:fill-indigo-700 md:w-[10px]"
+            class="mr-1.5 w-[16px] fill-[#b7c2d5] transition-all duration-200 ease-in-out group-hover:fill-indigo-700 md:w-[10px]"
           />
           myColby
         </a>
@@ -57,7 +57,7 @@
               @click="showModal = true"
             >
               <SearchIcon
-                class="mr-1.5 w-[16px] fill-indigo-500 transition-all duration-200 ease-in-out group-hover:fill-indigo-700 md:w-[10px]"
+                class="mr-1.5 w-[16px] fill-[#b7c2d5] transition-all duration-200 ease-in-out group-hover:fill-indigo-700 md:w-[10px]"
               />
               Search
             </button>

@@ -21,7 +21,7 @@
         </li>
       </ul>
     </div>
-    <div class="w-full bg-indigo-100 p-5 pb-20">
+    <div class="w-full bg-[#f9fbff] p-5 pb-20">
       <ul
         class="grid w-full grid-cols-3 grid-rows-2 gap-2 md:inline-flex md:w-auto md:grid-cols-none md:grid-rows-none md:gap-0 md:space-x-6"
       >

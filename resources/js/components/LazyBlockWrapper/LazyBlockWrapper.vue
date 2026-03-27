@@ -2,7 +2,8 @@
     <component
       :is="tag"
       ref="root"
-      class="lazy-block"
+      :class="`lazy-block`"
+      :data-block-name="blockName"
     >
       <component
         v-if="resolvedComponent"
@@ -57,7 +58,12 @@
       type: [String, Number],
       default: 0,
     },
+    blockName: {
+      type: String,
+    },
   });
+
+
   
   const emit = defineEmits(["loaded"]);
   
@@ -96,6 +102,8 @@
       }
     }
   }
+
+  console.log(props);
   
   onMounted(() => {
     if (props.eager) {

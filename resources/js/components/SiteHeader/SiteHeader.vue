@@ -1,7 +1,7 @@
 <template>
-  <header class="flex justify-center">
+  <header class="header z-50 relative flex justify-center h-[145px] md:h-auto pt-7 md:pt-0">
     <div
-      class="header__inner flex w-full max-w-screen-2xl flex-col items-end justify-between gap-y-10 px-5 md:flex-row"
+      class="header__inner flex justify-between max-w-screen-2xl w-full gap-y-10 px-5"
     >
       <!-- Header Left -->
       <div

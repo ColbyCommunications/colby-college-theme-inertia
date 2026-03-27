@@ -45,7 +45,7 @@
                         <h3 class="font-extended font-normal text-36 text-canary leading-100">
                             {{ fact.figure }}
                         </h3>
-                        <p class="font-body font-normal text-14 text-indigo-200 leading-130">
+                        <p class="font-body font-normal text-14 text-[#eef4ff] leading-130">
                             {{ fact.paragraph }}
                         </p>
                     </div>
@@ -66,7 +66,7 @@
                             loading="lazy"
                         />
                     </div>
-                    <p v-if="img.caption" class="font-body font-normal text-12 text-indigo-200 leading-140 mt-2">
+                    <p v-if="img.caption" class="font-body font-normal text-12 text-[#eef4ff] leading-140 mt-2">
                         {{ img.caption }}
                     </p>
                 </div>

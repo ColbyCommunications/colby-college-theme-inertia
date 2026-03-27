@@ -1,19 +1,15 @@
 <template>
   <div
     class="hw-image-section full-bleed md:flex [&+.hw-image-section]:mt-0"
-    :class="type === 'light' ? 'bg-indigo' : 'bg-indigo-100'"
+    :class="type === 'light' ? 'bg-indigo' : 'bg-[#f9fbff]'"
   >
     <div class="hw-image-section__image relative md:w-1/2">
       <Picture
         class="w-full min-h-full object-cover"
         :src="image.src"
-        :srcset="image.srcset"
-        :size-desktop="
-          imageOrientation === 'Rectangle'
-            ? image.sizes?.Hero
-            : image.sizes?.Square
-        "
-        :size-mobile="image.sizes?.Square"
+        :srcset="image.src"
+        :size-desktop="image.src"
+        :size-mobile="image.src"
         :alt="image.alt"
       />
     </div>
@@ -28,7 +24,7 @@
         :subheading="subheading"
         :heading="heading"
         :paragraph="paragraph"
-        :buttons="{ items: buttonItems }"
+        :buttons="{ items: buttons }"
       />
     </div>
   </div>
@@ -52,9 +48,4 @@ const props = defineProps({
   image: { type: Object, default: () => ({}) },
 });
 
-const buttonItems = computed(() =>
-  props.buttons.map((btn) => ({
-    button: { url: btn.url, title: btn.title, target: btn.target || "" },
-  })),
-);
 </script>

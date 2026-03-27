@@ -2,14 +2,14 @@
   <div class="facts-figures">
     <!-- top rule -->
     <div
-      class="facts-figures__inner relative mx-auto my-0 w-full max-w-screen-2xl gap-x-10 px-5 md:grid md:grid-cols-12"
+      class="facts-figures__inner relative mx-auto my-0 w-full max-w-screen-2xl gap-x-10 md:grid md:grid-cols-12"
     >
       <AnimatedBorder class="col-span-12 block h-px w-0 bg-azure" />
     </div>
 
     <!-- main row -->
     <div
-      class="facts-figures__inner mx-auto my-0 w-full max-w-screen-2xl gap-x-10 px-5 md:grid md:grid-cols-12"
+      class="facts-figures__inner mx-auto my-0 w-full max-w-screen-2xl gap-x-10 md:grid md:grid-cols-12"
     >
       <div
         class="facts-figures__main mt-4 md:col-span-7 md:col-start-6 lg:col-span-6 lg:col-start-7"

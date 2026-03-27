@@ -13,11 +13,13 @@
         />
 
         <ButtonGroup
-            v-if="buttons?.items?.length"
+            v-if="buttons.items.length > 0"
             :type="btnType"
             :size="btnSize"
             :align="align"
             :items="buttons.items"
+            :arrow="arrow"
+            :reverse="reverse"
         />
     </div>
 </template>
@@ -43,7 +45,29 @@
             type: Object,
             default: () => ({ items: [] }),
         },
-        btnType: { type: String, default: 'light' },
-        btnSize: { type: String, default: 'medium' },
+        arrow: { type: Boolean, default: false },
+        reverse: { type: Boolean, default: false },
     });
+
+    
+    let btnType;
+    if (props.type == 'light') {
+        btnType = 'dark';
+    } else {
+        btnType = 'light';
+    }
+
+    let btnSize;
+    if (props.size == 'xlarge') {
+        btnSize = 'large';
+    } else if (props.size == 'large') {
+        btnSize = 'medium';
+    } else if (props.size == 'medium') {
+        btnSize = 'medium';
+    } else if (props.size == 'small') {
+        btnSize = 'small';
+    } else if (props.size == 'xsmall') {
+        btnSize = 'small';
+    }
+
 </script>

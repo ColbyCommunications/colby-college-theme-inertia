@@ -40,20 +40,6 @@ add_action('init', function () {
     }
 });
 
-add_action('after_setup_theme', function () {
-  add_theme_support('title-tag');
-  add_theme_support('post-thumbnails');
-  add_theme_support('html5', ['script', 'style', 'search-form', 'gallery', 'caption']);
-  register_nav_menus([
-    'main' => __('Main Menu', 'colby'),
-    'footer'  => __('Footer Menu', 'colby'),
-    'utility'  => __('Utility Menu', 'colby'),
-    'action'  => __('Action Menu', 'colby'),
-    'people'  => __('People Menu', 'colby'),
-    'social'  => __('Social Menu', 'colby'),
-  ]);
-});
-
 add_action('init', function () {
   Inertia::setRootView('app.php');
 });
@@ -186,18 +172,6 @@ function theme_supports() {
 		*
 		* See: https://codex.wordpress.org/Post_Formats
 		*/
-		add_theme_support(
-			'post-formats',
-			array(
-				'aside',
-				'image',
-				'video',
-				'quote',
-				'link',
-				'gallery',
-				'audio',
-			)
-		);
 
 		add_theme_support( 'menus' );
 
@@ -222,6 +196,16 @@ function theme_supports() {
 				)
 			);
 		}
+
+    add_theme_support('html5', ['script', 'style', 'search-form', 'gallery', 'caption']);
+    register_nav_menus([
+      'main' => __('Main Menu', 'colby'),
+      'footer'  => __('Footer Menu', 'colby'),
+      'utility'  => __('Utility Menu', 'colby'),
+      'action'  => __('Action Menu', 'colby'),
+      'people'  => __('People Menu', 'colby'),
+      'social'  => __('Social Menu', 'colby'),
+    ]);
 	}
 
   add_filter('acf/fields/wysiwyg/toolbars', function( $toolbars ) {
@@ -252,3 +236,18 @@ add_action('wp_head', function() {
   // Output a small script to the head
   echo '<script type="text/javascript">window.colby = window.colby || {}; window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';</script>';
 }, 1);
+
+if (!function_exists('dump')) {
+  function dump(...$args) {
+      foreach ($args as $arg) {
+          VarDumper\VarDumper::dump($arg);
+      }
+  }
+}
+
+if (!function_exists('dd')) {
+  function dd(...$args) {
+      dump(...$args);
+      die();
+  }
+}

@@ -1,19 +1,19 @@
 <template>
-  <div class="full-bleed-image relative !max-w-full">
+  <div class="full-bleed full-bleed-image relative !max-w-full">
     <div
       class="relative full-bleed-image__image lg:h-[calc(100vh_-_100px)] overflow-hidden"
     >
       <Picture
         class="w-full h-full object-cover"
         :src="image.src"
-        :srcset="image.srcset"
-        :size-desktop="image.sizes?.Hero"
-        :size-mobile="image.sizes?.Square"
+        :srcset="image.src"
+        :size-desktop="image.src"
+        :size-mobile="image.src"
         :alt="image.alt"
       />
     </div>
     <div
-      class="full-bleed-image__context md:absolute right-0 bottom-0 md:w-[520px] md:max-w-[50%] py-8 px-10 bg-indigo-200 space-y-4"
+      class="full-bleed-image__context md:absolute right-0 bottom-0 md:w-[520px] md:max-w-[50%] py-8 px-10 bg-[#eef4ff] space-y-4"
     >
       <h2
         class="font-extended font-bold text-14 leading-130 text-azure tracking-8 uppercase"
@@ -26,7 +26,7 @@
       <ButtonGroup
         v-if="buttons && buttons.length"
         size="medium"
-        :items="buttonItems"
+        :items="buttons"
       />
     </div>
   </div>

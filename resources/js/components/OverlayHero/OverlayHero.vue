@@ -1,7 +1,7 @@
 <template>
   <div
     ref="overlayHeroRef"
-    class="overlay-hero relative overflow-hidden"
+    class="overlay-hero relative overflow-hidden full-bleed"
     :class="[
       !video
         ? [

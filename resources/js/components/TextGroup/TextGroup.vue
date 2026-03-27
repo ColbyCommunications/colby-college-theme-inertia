@@ -62,6 +62,8 @@ const props = defineProps({
   date: { type: Boolean, default: false },
 });
 
+console.log(props);
+
 /* ... All computed properties (sizes, textAlign, colors, tags, paragraphWithClasses) remain identical ... */
 /* (Keeping them exactly as they were in your snippet) */
 const sizes = computed(() => {
@@ -78,7 +80,7 @@ const sizes = computed(() => {
 const textAlign = computed(() => props.align === "center" ? "text-center" : "text-left");
 const subheadingColor = computed(() => props.type === "light" ? "text-canary" : "text-azure");
 const headingColor = computed(() => props.type === "light" ? "text-white" : "text-indigo");
-const paragraphColor = computed(() => props.type === "light" ? "text-indigo-200" : "text-indigo-800");
+const paragraphColor = computed(() => props.type === "light" ? "text-[#eef4ff]" : "text-indigo-800");
 const subheadingTag = computed(() => { if (props.hero) return props.date ? "div" : "h1"; if (props.heading) return "div"; return "h2"; });
 const headingTag = computed(() => (props.date ? "h1" : "h2"));
 const subheadingSize = computed(() => sizes.value.sub);

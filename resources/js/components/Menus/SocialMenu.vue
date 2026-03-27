@@ -4,7 +4,7 @@
       <a :href="item.url" class="inline-flex items-center justify-center w-8 min-w-[44px] min-h-[44px]">
         <Icon
           :name="item.title"
-          class="max-h-4 w-full max-w-5 fill-indigo-100 transition-all duration-200 ease-in-out hover:fill-indigo-500 md:max-h-3.5 md:max-w-4 "
+          class="max-h-4 w-full max-w-5 fill-[#f9fbff] transition-all duration-200 ease-in-out hover:fill-[#b7c2d5] md:max-h-3.5 md:max-w-4 "
         />
         <span class="sr-only">{{ item.title }}</span>
       </a>

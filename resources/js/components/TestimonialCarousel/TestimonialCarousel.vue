@@ -11,7 +11,7 @@
           :reverse="true"
           :heading="heading"
           :paragraph="paragraph"
-          :buttons="{ items: buttonItems }"
+          :buttons="{ items: buttons }"
         />
       </div>
     </div>
@@ -35,9 +35,9 @@
                   <Picture
                     class="md:absolute w-full h-full object-cover"
                     :src="item.image?.src"
-                    :srcset="item.image?.srcset"
-                    :size-desktop="item.image?.sizes?.Landscape"
-                    :size-mobile="item.image?.sizes?.Square"
+                    :srcset="item.image?.src"
+                    :size-desktop="item.image?.src"
+                    :size-mobile="item.image?.src"
                     :alt="item.image?.alt"
                   />
                 </div>
@@ -67,12 +67,12 @@
             <p
               class="font-extended font-normal text-20 leading-110 -tracking-[0.01em] text-indigo"
             >
-              {{ item.testimonial?.quote }}
+              {{ item.testimonial_quote }}
             </p>
             <div
               class="font-body font-normal text-14 leading-130 text-indigo-800"
             >
-              {{ item.testimonial?.name }}
+              {{ item.testimonial_name }}
             </div>
           </div>
         </div>
@@ -100,11 +100,7 @@ const props = defineProps({
   items: { type: Array, default: () => [] },
 });
 
-const buttonItems = computed(() =>
-  props.buttons.map((btn) => ({
-    button: { url: btn.url, title: btn.title, target: btn.target || "" },
-  })),
-);
+console.log(props);
 
 const rootEl = ref(null);
 const activeSlide = ref(0);

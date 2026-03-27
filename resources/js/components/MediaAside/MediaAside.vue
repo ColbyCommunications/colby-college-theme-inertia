@@ -92,14 +92,14 @@
           </div>
           <div class="inline-flex self-end gap-4 md:pb-6">
             <button
-              class="inline-flex items-center justify-center w-10 h-8 bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
+              class="inline-flex items-center justify-center w-10 h-8 bg-indigo-100 hover:bg-[#eef4ff] focus:bg-[#eef4ff] rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
               @click="changeSlide('prev')"
             >
               <span class="sr-only">Previous</span>
               <Icon name="chevron" class="fill-azure w-1.5" />
             </button>
             <button
-              class="inline-flex items-center justify-center w-10 h-8 bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
+              class="inline-flex items-center justify-center w-10 h-8 bg-indigo-100 hover:bg-[#eef4ff] focus:bg-[#eef4ff] rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
               @click="changeSlide('next')"
             >
               <span class="sr-only">Next</span>

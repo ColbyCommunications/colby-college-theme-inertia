@@ -12,7 +12,7 @@
       <a
         v-if="prevUrl"
         :href="prevUrl"
-        class="block p-2 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
+        class="block p-2 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-[#eef4ff] transition-all duration-200 ease-in-out"
       >
         <Icon name="small-arrow" class="w-1 fill-indigo-800" />
       </a>
@@ -24,8 +24,8 @@
           class="pagination__item"
         >
           <a
-            class="block p-2 py-1 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
-            :class="{ 'bg-indigo-200 text-indigo font-medium': page.active }"
+            class="block p-2 py-1 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-[#eef4ff] transition-all duration-200 ease-in-out"
+            :class="{ 'bg-[#eef4ff] text-indigo font-medium': page.active }"
             :href="page.url"
           >
             {{ page.label }}
@@ -36,7 +36,7 @@
       <a
         v-if="nextUrl"
         :href="nextUrl"
-        class="block p-2 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
+        class="block p-2 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-[#eef4ff] transition-all duration-200 ease-in-out"
       >
         <Icon name="small-arrow" class="w-1 fill-indigo-800 rotate-180" />
       </a>
