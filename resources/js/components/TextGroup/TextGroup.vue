@@ -105,7 +105,7 @@ const paragraphWithClasses = computed(() => {
   let html = String(props.paragraph || "");
   const startsWithBlockTag = /^\s*<(p|ul|ol)\b/i.test(html.trim());
   if (!startsWithBlockTag) html = `<p>${html}</p>`;
-  const pCls = `text-group__p font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${textAlign.value} ${paragraphColor.value} mt-2`;
+  const pCls = `text-group__p font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-[1.75] ${textAlign.value} ${paragraphColor.value} mt-2`;
   const ulCls = `list-disc font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2`;
   const olCls = `list-decimal font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2`;
   const liCls = `${paragraphColor.value}`;
@@ -136,7 +136,7 @@ const animateHeading = async () => {
     gsap.to(target, { duration: 0.2, stagger: 0.1, opacity: 1, y: 0, ease: 'power3.easeInOut' });
 };
 
-const animateParagraph = async () => {
+const animateParagraph = async() => {
     if (!container.value || isBot.value) return;
     const gsap = await getGsap();
     const target = container.value.querySelectorAll('.text-group__p');
