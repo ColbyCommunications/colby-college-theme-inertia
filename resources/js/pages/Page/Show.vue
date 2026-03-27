@@ -1,4 +1,15 @@
 <template>
+  <Head>
+    <link
+      v-if="props.head?.preloadImage?.href"
+      rel="preload"
+      as="image"
+      :href="props.head.preloadImage.href"
+      :imagesrcset="props.head.preloadImage.imagesrcset"
+      :imagesizes="props.head.preloadImage.imagesizes"
+      :fetchpriority="props.head.preloadImage.fetchpriority || 'high'"
+    />
+  </Head>
   <AppLayout :site-data="resolvedSiteData" :menus="resolvedMenus">
     <template v-if="resolvedLayout === 'with-sidebar'">
       <Hero
@@ -51,7 +62,7 @@
 </template>
 <script setup>
 import { computed } from "vue";
-import { usePage } from "@inertiajs/vue3";
+import { usePage, Head } from "@inertiajs/vue3";
 import AppLayout from "../Layouts/App.vue";
 import ComponentRouter from "../../components/ComponentRouter/ComponentRouter.vue";
 import Hero from "../../components/Hero/Hero.vue";
@@ -93,6 +104,10 @@ const props = defineProps({
   menus: {
     type: Object,
     default: null,
+  },
+  head: {
+    type: Object,
+    default: () => ({}),
   },
 });
 

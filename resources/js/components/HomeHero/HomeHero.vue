@@ -43,6 +43,7 @@
             autoplay
             muted
             loop
+            preload="metadata"
             :poster="poster"
         >
             <source src="https://www.colby.edu/wp-content/uploads/2025/12/Untitled.mp4" type="video/mp4" />

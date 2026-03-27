@@ -16,7 +16,7 @@
         :heading="heading"
         :subheading="subheading"
         :paragraph="paragraph"
-        :buttons="{ items: buttons }"
+        :buttons="{ items: basicButtonItems }"
       />
 
       <!-- API variants render a tiny, normalized context -->

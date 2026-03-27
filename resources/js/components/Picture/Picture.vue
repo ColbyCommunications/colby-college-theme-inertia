@@ -15,7 +15,7 @@
       ' 1280w,'
     "/>
     <img :class="class" :src="'https://colby.edu/cdn-cgi/image/width=320,quality=50/' +
-      sizeDesktop" :alt="alt" :loading="loading" :sizes="'(max-width: 767px) 100vw, 50vw'" :fetchpriority="loading === 'eager' ? 'high' : 'low'" />
+      sizeDesktop" :alt="alt" :loading="loading" :sizes="'(max-width: 767px) 100vw, 50vw'" :fetchpriority="loading === 'eager' ? 'high' : 'auto'" />
   </picture>
 </template>
 
