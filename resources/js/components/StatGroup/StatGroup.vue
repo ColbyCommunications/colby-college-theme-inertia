@@ -10,7 +10,7 @@
           :subheading="subheading"
           :heading="heading"
           :paragraph="paragraph"
-          :buttons="{ items: buttonItems }"
+          :buttons="{ items: buttons }"
         />
       </div>
       <div class="stat-group__main col-span-12 lg:col-start-2 lg:col-span-10">

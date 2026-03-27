@@ -3,10 +3,10 @@
 include_once __DIR__ . '/../inc/block-validation.php';
 
 // helpers/normalize_types.php content (acf_normalize_types function)
-function acf_normalize_types(array $data, $parent_key = null): array
+function acf_normalize_types(array $data, $parent_key = null, $block_name): array
 {
     foreach ($data as $key => $value) {
-
+        // var_dump($data);
 
         /**
          * -------------------------------------------------
@@ -27,7 +27,7 @@ function acf_normalize_types(array $data, $parent_key = null): array
          * -------------------------------------------------
          */
         if (is_array($value)) {
-            $data[$key] = acf_normalize_types($value, $key);
+            $data[$key] = acf_normalize_types($value, $key, $block_name);
             continue;
         }
 
@@ -39,19 +39,21 @@ function acf_normalize_types(array $data, $parent_key = null): array
         if (is_numeric($value)) {
             $id = (int) $value;
 
-            if (wp_attachment_is_image($id)) {
-                $attachment = get_post($id);
+            if ($block_name !== 'acf/stat-group') {
+                if (wp_attachment_is_image($id)) {
+                    $attachment = get_post($id);
 
-                $data[$key] = [
-                    'id'      => $id,
-                    // 'src'     => str_replace('colby.lndo.site', 'www.colby.edu', wp_get_attachment_url($id)),
-                    'src'     => 'ON' === getenv( 'LANDO' ) ? str_replace($_SERVER['HTTP_HOST'], PRIMARY_DOMAIN, wp_get_attachment_url($id)) : wp_get_attachment_url($id),
-                    'alt'     => get_post_meta($id, '_wp_attachment_image_alt', true),
-                    'caption' => $attachment ? $attachment->post_excerpt : '',
-                    'description' => $attachment ? $attachment->post_content : '',
-                ];
+                    $data[$key] = [
+                        'id'      => $id,
+                        // 'src'     => str_replace('colby.lndo.site', 'www.colby.edu', wp_get_attachment_url($id)),
+                        'src'     => 'ON' === getenv( 'LANDO' ) ? str_replace($_SERVER['HTTP_HOST'], PRIMARY_DOMAIN, wp_get_attachment_url($id)) : wp_get_attachment_url($id),
+                        'alt'     => get_post_meta($id, '_wp_attachment_image_alt', true),
+                        'caption' => $attachment ? $attachment->post_excerpt : '',
+                        'description' => $attachment ? $attachment->post_content : '',
+                    ];
 
-                continue;
+                    continue;
+                }
             }
         }
 
@@ -170,13 +172,13 @@ function prepare_data(array $blocks): array
                 if (!empty($block['attrs']['data']) && is_array($block['attrs']['data'])) {
 
                     // Pass 1: normalize scalars + images
-                    $block['attrs']['data'] = acf_normalize_types($block['attrs']['data']);
+                    $block['attrs']['data'] = acf_normalize_types($block['attrs']['data'], null, $block['blockName']);
         
                     // Unflatten repeaters
                     $block['attrs']['data'] = acf_unflatten($block['attrs']['data']);
         
                     // Pass 2: normalize nested values (safe now)
-                    $block['attrs']['data'] = acf_normalize_types($block['attrs']['data']);
+                    $block['attrs']['data'] = acf_normalize_types($block['attrs']['data'], null, $block['blockName']);
                 }
         
                 if (!empty($block['innerBlocks'])) {
