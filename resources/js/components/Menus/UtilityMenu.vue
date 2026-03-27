@@ -69,7 +69,7 @@
               class="mx-auto my-0 mt-16 w-full max-w-screen-2xl px-5 md:mt-20 md:grid md:grid-cols-12"
             >
               <div class="md:col-span-12">
-                <Search ref="searchRef" />
+                search
               </div>
             </div>
           </template>
@@ -81,7 +81,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import Modal from "../Modal/Modal.vue";
-import Search from "../Search/Search.vue";
+// import Search from "../Search/Search.vue";
 import SearchIcon from "@/images/svg/icons/search.svg?component";
 import MyColbyIcon from "@/images/svg/icons/mycolby.svg?component";
 
@@ -96,9 +96,9 @@ const props = defineProps({
 const showModal = ref(false);
 const searchRef = ref(null);
 
-watch(showModal, (val) => {
-  if (!val) {
-    searchRef.value?.clearSearch();
-  }
-});
+// watch(showModal, (val) => {
+//   if (!val) {
+//     searchRef.value?.clearSearch();
+//   }
+// });
 </script>

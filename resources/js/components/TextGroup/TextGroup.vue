@@ -43,7 +43,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
-import { gsap } from 'gsap';
+// import { gsap } from 'gsap';
 import 'waypoints/lib/noframework.waypoints';
 
 const container = ref(null);
@@ -63,6 +63,17 @@ const props = defineProps({
 });
 
 console.log(props);
+
+
+let gsapInstance = null;
+
+async function getGsap() {
+  if (gsapInstance) return gsapInstance;
+  const mod = await import('gsap');
+  gsapInstance = mod.gsap;
+  return gsapInstance;
+}
+
 
 /* ... All computed properties (sizes, textAlign, colors, tags, paragraphWithClasses) remain identical ... */
 /* (Keeping them exactly as they were in your snippet) */
@@ -102,8 +113,9 @@ const paragraphWithClasses = computed(() => {
 });
 
 // --- Animation Methods ---
-const animateSubheading = () => {
+const animateSubheading = async () => {
     if (!container.value || isBot.value) return;
+    const gsap = await getGsap();
     const target = container.value.querySelectorAll('.text-group__subheading > .word-wrap');
     gsap.to(target, {
         duration: 0.7,
@@ -117,14 +129,16 @@ const animateSubheading = () => {
     });
 };
 
-const animateHeading = () => {
+const animateHeading = async () => {
     if (!container.value || isBot.value) return;
+    const gsap = await getGsap();
     const target = container.value.querySelectorAll('.text-group__heading span');
     gsap.to(target, { duration: 0.2, stagger: 0.1, opacity: 1, y: 0, ease: 'power3.easeInOut' });
 };
 
-const animateParagraph = () => {
+const animateParagraph = async () => {
     if (!container.value || isBot.value) return;
+    const gsap = await getGsap();
     const target = container.value.querySelectorAll('.text-group__p');
     gsap.to(target, { delay: 0.4, duration: 0.4, stagger: 0.08, opacity: 1, ease: 'Circ.easeIn' });
 };

@@ -50,15 +50,15 @@
   </AppLayout>
 </template>
 <script setup>
-import { computed } from "vue";
+import { computed, defineAsyncComponent } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import AppLayout from "../Layouts/App.vue";
 import ComponentRouter from "../../components/ComponentRouter/ComponentRouter.vue";
-import Hero from "../../components/Hero/Hero.vue";
-import OverlayHero from "../../components/OverlayHero/OverlayHero.vue";
-import SubpageNav from "../../components/SubpageNav/SubpageNav.vue";
-import Widget from "../../components/Widget/Widget.vue";
-import Wysiwyg from "../../components/Wysiwyg/Wysiwyg.vue";
+const Hero = defineAsyncComponent(() => import("../../components/Hero/Hero.vue"));
+const OverlayHero = defineAsyncComponent(() => import("../../components/OverlayHero/OverlayHero.vue"));
+const SubpageNav = defineAsyncComponent(() => import("../../components/SubpageNav/SubpageNav.vue"));
+const Widget = defineAsyncComponent(() => import("../../components/Widget/Widget.vue"));
+const Wysiwyg = defineAsyncComponent(() => import("../../components/Wysiwyg/Wysiwyg.vue"));
 
 const props = defineProps({
   title: String,
