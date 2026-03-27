@@ -40,6 +40,8 @@ const blockRegistry = {
   "acf/related-content": () => import("../RelatedContent/RelatedContent.vue"),
   "acf/hw-image-section": () => import("../HwImageSection/HwImageSection.vue"),
   "acf/list-section": () => import("../ListSection/ListSection.vue"),
+  "acf/stat-group": () => import("../StatGroup/StatGroup.vue"),
+  "acf/media-context": () => import("../MediaContext/MediaContext.vue"),
 };
 
 function getLoader(blockName) {
@@ -84,6 +86,8 @@ function getPlaceholderHeight(item) {
     "acf/hw-image-section": 250,
     "acf/related-content": 250,
     "acf/list-section": 250,
+    "acf/stat-group": 250,
+    "acf/media-context": 250,
     "acf/hero": 0,
     "acf/home-hero": 0,
     "acf/overlay-hero": 0,
