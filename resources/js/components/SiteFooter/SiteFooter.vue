@@ -36,7 +36,7 @@
           >
             <a
               :href="item.url"
-              class="text-[#b7c2d5] transition-all duration-200 ease-in-out hover:text-white hover:underline "
+              class="text-[#b7c2d5] transition-all duration-200 ease-in-out hover:text-white hover:underline h-full"
             >
               {{ item.title }}
             </a>
