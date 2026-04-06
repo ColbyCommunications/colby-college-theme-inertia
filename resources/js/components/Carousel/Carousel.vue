@@ -22,15 +22,15 @@
       <!-- API variants render a tiny, normalized context -->
       <div v-else class="context w-full space-y-5">
         <TextGroup
-          size="small"
+          :size="currentSize"
           :subheading="currentSubheading"
           :heading="heading"
           :paragraph="paragraph"
         />
 
         <ButtonGroup
-          :items="apiLeftButtonItems"
-          size="small"
+          :items="buttons"
+          :size="currentSize"
         />
 
         <!-- Inline controls (for grid modes) -->
@@ -203,7 +203,7 @@ import Picture from "../Picture/Picture.vue";
      Props (normalized)
   ========================= */
 const props = defineProps({
-  render_api: { type: [Boolean, Number, String], default: false },
+  render_api: { type: Boolean, default: false },
   api: { type: String, default: "" },
 
   // layout / content
@@ -240,8 +240,9 @@ const props = defineProps({
 });
 
 const currentSubheading = ref(props.subheading)
+const currentSize = ref(props.size)
 
-console.log(props);
+console.log(props.buttons);
 
 /* =========================
      Derived state
@@ -252,6 +253,7 @@ const mode = computed(() => {
   if (!isApi.value) return "basic";
 
   if (props.api === "Latest News") {
+    currentSize.value = 'large';
     return "latest";
   }
 
@@ -266,21 +268,21 @@ const mode = computed(() => {
   return "latest";
 });
 
-const apiLeftButtonItems = computed(() => {
-  if (mode.value === "faculty") {
-    // Added return here
-    return props.FAbuttons.map((btn) => ({
-      button: { url: btn.url, title: btn.title, target: "_blank" },
-    }));
-  } else if (props.buttons) {
-    // Added return here
-    return props.buttons.map((btn) => ({
-      button: { url: btn.url, title: btn.title, target: "_blank" },
-    }));
-  }
-  // Optional: return an empty array if no conditions are met
-  return []; 
-});
+// const apiLeftButtonItems = computed(() => {
+//   if (mode.value === "faculty") {
+//     // Added return here
+//     return props.FAbuttons.map((btn) => ({
+//       button: { url: btn.url, title: btn.title, target: "_blank" },
+//     }));
+//   } else if (props.buttons) {
+//     // Added return here
+//     return props.buttons.map((btn) => ({
+//       button: { url: btn.url, title: btn.title, target: "_blank" },
+//     }));
+//   }
+//   // Optional: return an empty array if no conditions are met
+//   return []; 
+// });
 
 
 const basicButtonItems = computed(() =>

@@ -31,8 +31,8 @@
       >
         <Picture
           class="h-full w-full object-cover"
-          :size-desktop="image?.src"
-          :size-mobile="image?.src"
+          :size-desktop="image?.url"
+          :size-mobile="image?.url"
           :alt="image?.alt || ''"
         />
       </div>
