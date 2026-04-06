@@ -37,6 +37,8 @@
   },
   "dependencies": {
     "@embedpdf/vue-pdf-viewer": "^2.7.0",
+    "@fontsource-variable/libre-franklin": "^5.2.8",
+    "@fontsource/material-symbols-sharp": "^5.2.40",
     "@glidejs/glide": "3.6.0",
     "@inertiajs/progress": "^0.2.7",
     "@inertiajs/vue3": "^1.0.0",

@@ -206,7 +206,9 @@
           >
             <div class="flex w-full justify-end pt-4 pr-4 pl-4">
               <button @click="toggleAccordion(i)">
-                <span class="material-icons-sharp text-indigo-800">close</span>
+                <span class="material-symbols-sharp text-indigo-800"
+                  >close</span
+                >
               </button>
             </div>
 
@@ -263,7 +265,9 @@
               ]"
             >
               <button @click="toggleAccordion(i)">
-                <span class="material-icons-sharp text-indigo-800">close</span>
+                <span class="material-symbols-sharp text-indigo-800"
+                  >close</span
+                >
               </button>
             </div>
 
@@ -309,7 +313,7 @@ import {
   onBeforeUnmount,
   nextTick,
 } from "vue";
-import axios from '../../plugins/axios';
+import axios from "../../plugins/axios";
 import TextGroup from "../TextGroup/TextGroup.vue";
 import Article from "../Article/Article.vue";
 import Picture from "../Picture/Picture.vue";
@@ -361,7 +365,9 @@ const itemColClass = computed(() => {
 
 const normalizedBorder = computed(() => {
   if (typeof props.border === "string") {
-    return props.border !== "" && props.border !== "0" && props.border !== "false";
+    return (
+      props.border !== "" && props.border !== "0" && props.border !== "false"
+    );
   }
   return Boolean(props.border);
 });

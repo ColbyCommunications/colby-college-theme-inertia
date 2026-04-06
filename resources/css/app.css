@@ -31,99 +31,117 @@
   }
 }
 
+/* libre-franklin-latin-wght-normal */
 @font-face {
-  font-family: "Libre Franklin";
-  src: url("/resources/fonts/libre-franklin/LibreFranklin-Regular.woff2") format("woff2");
-  font-weight: 400;
+  font-family: "Libre Franklin Variable";
   font-style: normal;
   font-display: swap;
+  font-weight: 100 900;
+  src: url(@fontsource-variable/libre-franklin/files/libre-franklin-latin-wght-normal.woff2)
+    format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
 }
 
+/* libre-franklin-latin-wght-italic */
 @font-face {
-  font-family: "Libre Franklin";
-  src: url("/resources/fonts/libre-franklin/LibreFranklin-SemiBold.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
+  font-family: "Libre Franklin Variable";
+  font-style: italic;
   font-display: swap;
+  font-weight: 100 900;
+  src: url(@fontsource-variable/libre-franklin/files/libre-franklin-latin-wght-italic.woff2)
+    format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
 }
 
-@font-face {
-  font-family: "Libre Franklin";
-  src: url("/resources/fonts/libre-franklin/LibreFranklin-Bold.woff2") format("woff2");
-  font-weight: 600;
+.material-symbols-sharp {
+  font-family: "Material Symbols Sharp";
+  font-weight: normal;
   font-style: normal;
-  font-display: swap;
+  font-size: 24px; /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
 }
 
 /* Theme tokens */
 @theme {
- /* --- Colors --- */
- --color-transparent: transparent;
- --color-white: #ffffff;
- 
- --color-indigo: #012169;
- --color-canary: #ffb500;
- --color-azure: #1f4da4;
- --color-notification-red: #dc3924;
- 
- --color-indigo-100: #595959;
- --color-indigo-200: #575E75;
- --color-indigo-300: #525D7D;
- --color-indigo-400: #4C5A8A;
- --color-indigo-500: #455582;
- --color-indigo-600: #3D4D75;
- --color-indigo-700: #364569;
- --color-indigo-800: #2B3754;
- --color-indigo-900: #1C2436;
- --color-indigo-1000: #012169;
- 
- --color-gray-100: #f9fbff;
- --color-gray-200: #f2f3f8;
- --color-gray-300: #e4e8f0;
- --color-gray-400: #d8dce3;
- --color-gray-500: #c3c8d0;
- --color-gray-600: #aaafB8;
- --color-gray-700: #8d929b;
- --color-gray-800: #707682;
- --color-gray-900: #4d535f;
- --color-gray-1000: #232b3b;
+  /* --- Colors --- */
+  --color-transparent: transparent;
+  --color-white: #ffffff;
 
- /* --- Typography --- */
- --font-display: "nimbus-sans", sans-serif;
- --font-extended: "nimbus-sans-extended", sans-serif;
- --font-body: "Libre Franklin", sans-serif;
+  --color-indigo: #012169;
+  --color-canary: #ffb500;
+  --color-azure: #1f4da4;
+  --color-notification-red: #dc3924;
 
- --text-8: 0.5rem;
- --text-10: 0.625rem;
- --text-12: 0.75rem;
- --text-14: 0.875rem;
- --text-16: 1rem;
- --text-18: 1.125rem;
- --text-20: 1.25rem;
- --text-24: 1.5rem;
- --text-28: 1.75rem;
- --text-30: 1.875rem;
- --text-36: 2.25rem;
- --text-48: 3rem;
- --text-60: 3.75rem;
+  --color-indigo-100: #595959;
+  --color-indigo-200: #575e75;
+  --color-indigo-300: #525d7d;
+  --color-indigo-400: #4c5a8a;
+  --color-indigo-500: #455582;
+  --color-indigo-600: #3d4d75;
+  --color-indigo-700: #364569;
+  --color-indigo-800: #2b3754;
+  --color-indigo-900: #1c2436;
+  --color-indigo-1000: #012169;
 
- --font-weight-normal: 400;
- --font-weight-medium: 500;
- --font-weight-semibold: 600;
- --font-weight-bold: 700;
+  --color-gray-100: #f9fbff;
+  --color-gray-200: #f2f3f8;
+  --color-gray-300: #e4e8f0;
+  --color-gray-400: #d8dce3;
+  --color-gray-500: #c3c8d0;
+  --color-gray-600: #aaafb8;
+  --color-gray-700: #8d929b;
+  --color-gray-800: #707682;
+  --color-gray-900: #4d535f;
+  --color-gray-1000: #232b3b;
 
- --leading-100: 100%;
- --leading-110: 110%;
- --leading-115: 115%;
- --leading-120: 120%;
- --leading-130: 130%;
- --leading-140: 140%;
- --leading-150: 150%;
- --leading-160: 160%;
- --leading-170: 170%;
+  /* --- Typography --- */
+  --font-display: "nimbus-sans", sans-serif;
+  --font-extended: "nimbus-sans-extended", sans-serif;
+  --font-body: "Libre Franklin Variable", sans-serif;
 
- --tracking-8: 0.08em;
- --tracking--3: -0.03em; /* This maps directly to your tracking--3 class */
+  --text-8: 0.5rem;
+  --text-10: 0.625rem;
+  --text-12: 0.75rem;
+  --text-14: 0.875rem;
+  --text-16: 1rem;
+  --text-18: 1.125rem;
+  --text-20: 1.25rem;
+  --text-24: 1.5rem;
+  --text-28: 1.75rem;
+  --text-30: 1.875rem;
+  --text-36: 2.25rem;
+  --text-48: 3rem;
+  --text-60: 3.75rem;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --leading-100: 100%;
+  --leading-110: 110%;
+  --leading-115: 115%;
+  --leading-120: 120%;
+  --leading-130: 130%;
+  --leading-140: 140%;
+  --leading-150: 150%;
+  --leading-160: 160%;
+  --leading-170: 170%;
+
+  --tracking-8: 0.08em;
+  --tracking--3: -0.03em; /* This maps directly to your tracking--3 class */
 
   /* Background images (use bg-hero__pattern, etc.) */
   /* Adjust paths to where these images live relative to this CSS file */
@@ -132,7 +150,7 @@
   --bg-darkinterstitial__pattern: url("/resources/images/Background-3.jpg");
   --bg-marble__pattern: url("/resources/images/mountain.jpg");
   --bg-bluemarble__pattern: url("/resources/images/Treatment-36.jpg");
-  
+
   /* --- List Styles --- */
   --list-style-none: none;
   --list-style-disc: disc;
@@ -150,7 +168,6 @@
   --background-image-darkinterstitial__pattern: url("../images/Background-3.jpg");
   --background-image-marble__pattern: url("../images/mountain.jpg");
   --background-image-bluemarble__pattern: url("../images/Treatment-36.jpg");
-
 }
 
 /* --- Gap Extension --- */
@@ -161,4 +178,3 @@
 @utility gap-10 {
   gap: 1.25rem;
 }
-  

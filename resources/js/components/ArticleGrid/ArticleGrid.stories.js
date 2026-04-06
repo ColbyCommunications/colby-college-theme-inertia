@@ -1,5 +1,5 @@
 import { expect, spyOn, waitFor, within } from "storybook/test";
-import axios from '../../plugins/axios';
+import axios from "../../plugins/axios";
 import ArticleGrid from "./ArticleGrid.vue";
 import {
   createMockExternalPosts,
@@ -141,21 +141,32 @@ export const ManualGrid = {
     border: false,
   },
   play: async ({ canvasElement }) => {
-    const first = canvasElement.querySelectorAll('.grid .article-grid__item:first-child')[0];
-    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
-    await expect(firstHeading.textContent.slice(0, -1)).toBe('Future of Artificial Intelligence');
+    const first = canvasElement.querySelectorAll(
+      ".grid .article-grid__item:first-child",
+    )[0];
+    const firstHeading = first.querySelectorAll(".text-group__heading")[0];
+    await expect(firstHeading.textContent.slice(0, -1)).toBe(
+      "Future of Artificial Intelligence",
+    );
     await expect(firstHeading).toBeVisible();
-    
-    const second = canvasElement.querySelectorAll('.grid .article-grid__item:nth-child(2)')[0];
-    const secondHeading = second.querySelectorAll('.text-group__heading')[0];
-    await expect(secondHeading.textContent.slice(0, -1)).toBe('Sustainable Energy Solutions');
+
+    const second = canvasElement.querySelectorAll(
+      ".grid .article-grid__item:nth-child(2)",
+    )[0];
+    const secondHeading = second.querySelectorAll(".text-group__heading")[0];
+    await expect(secondHeading.textContent.slice(0, -1)).toBe(
+      "Sustainable Energy Solutions",
+    );
     await expect(secondHeading).toBeVisible();
 
-    const third = canvasElement.querySelectorAll('.grid .article-grid__item:nth-child(3)')[0];
-    const thirdHeading = third.querySelectorAll('.text-group__heading')[0];
-    await expect(thirdHeading.textContent.slice(0, -1)).toBe('Modern Architecture Trends');
+    const third = canvasElement.querySelectorAll(
+      ".grid .article-grid__item:nth-child(3)",
+    )[0];
+    const thirdHeading = third.querySelectorAll(".text-group__heading")[0];
+    await expect(thirdHeading.textContent.slice(0, -1)).toBe(
+      "Modern Architecture Trends",
+    );
     await expect(thirdHeading).toBeVisible();
-  
   },
 };
 
@@ -169,9 +180,13 @@ export const Accordion = {
     items: mockItems,
   },
   play: async ({ canvas, canvasElement, userEvent }) => {
-    const first = canvasElement.querySelectorAll('.grid .article-grid__item:first-child')[0];
-    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
-    await expect(firstHeading.textContent.slice(0, -1)).toBe('Future of Artificial Intelligence');
+    const first = canvasElement.querySelectorAll(
+      ".grid .article-grid__item:first-child",
+    )[0];
+    const firstHeading = first.querySelectorAll(".text-group__heading")[0];
+    await expect(firstHeading.textContent.slice(0, -1)).toBe(
+      "Future of Artificial Intelligence",
+    );
     await expect(firstHeading).toBeVisible();
 
     const grid = canvasElement.querySelector(".article-grid");
@@ -208,7 +223,9 @@ export const Accordion = {
     window.dispatchEvent(new Event("resize"));
     await userEvent.click(readMoreButtons[0]);
 
-    const closeIcons = canvasElement.querySelectorAll(".material-icons-sharp");
+    const closeIcons = canvasElement.querySelectorAll(
+      ".material-symbols-sharp",
+    );
     if (closeIcons.length > 0) {
       await userEvent.click(closeIcons[0].closest("button"));
     }
@@ -279,9 +296,13 @@ export const InternalFetch = {
     return () => spy.mockRestore();
   },
   play: async ({ canvas, canvasElement, userEvent }) => {
-    const first = canvasElement.querySelectorAll('.grid .article-grid__item:first-child')[0];
-    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
-    await expect(firstHeading.textContent.slice(0, -1)).toBe('Internal Story With ACF Summary');
+    const first = canvasElement.querySelectorAll(
+      ".grid .article-grid__item:first-child",
+    )[0];
+    const firstHeading = first.querySelectorAll(".text-group__heading")[0];
+    await expect(firstHeading.textContent.slice(0, -1)).toBe(
+      "Internal Story With ACF Summary",
+    );
     await expect(firstHeading).toBeVisible();
 
     await waitFor(() => {
@@ -292,8 +313,10 @@ export const InternalFetch = {
     await userEvent.click(seeMore);
 
     await waitFor(() => {
-      const forth = canvasElement.querySelectorAll('.grid .article-grid__item:nth-child(4)')[0];
-      const forthHeading = forth.querySelectorAll('.text-group__heading')[0];
+      const forth = canvasElement.querySelectorAll(
+        ".grid .article-grid__item:nth-child(4)",
+      )[0];
+      const forthHeading = forth.querySelectorAll(".text-group__heading")[0];
       expect(forthHeading).toBeInTheDocument();
     });
     // await waitFor(() => {
@@ -328,21 +351,32 @@ export const ApiFetch = {
         "https://news.colby.edu/wp-json/custom/v1/external-posts",
       );
     });
-    const first = canvasElement.querySelectorAll('.grid .article-grid__item:first-child')[0];
-    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
-    await expect(firstHeading.textContent.slice(0, -1)).toBe('President Interview in National Press');
+    const first = canvasElement.querySelectorAll(
+      ".grid .article-grid__item:first-child",
+    )[0];
+    const firstHeading = first.querySelectorAll(".text-group__heading")[0];
+    await expect(firstHeading.textContent.slice(0, -1)).toBe(
+      "President Interview in National Press",
+    );
     await expect(firstHeading).toBeVisible();
-    
-    const second = canvasElement.querySelectorAll('.grid .article-grid__item:nth-child(2)')[0];
-    const secondHeading = second.querySelectorAll('.text-group__heading')[0];
-    await expect(secondHeading.textContent.slice(0, -1)).toBe('Editor Pick: Colby Climate Story');
-    await expect(secondHeading).toBeVisible();
-    
-    const third = canvasElement.querySelectorAll('.grid .article-grid__item:nth-child(3)')[0];
-    const thirdHeading = third.querySelectorAll('.text-group__heading')[0];
-    await expect(thirdHeading.textContent.slice(0, -1)).toBe('General Media Mention');
-    await expect(thirdHeading).toBeVisible();
 
+    const second = canvasElement.querySelectorAll(
+      ".grid .article-grid__item:nth-child(2)",
+    )[0];
+    const secondHeading = second.querySelectorAll(".text-group__heading")[0];
+    await expect(secondHeading.textContent.slice(0, -1)).toBe(
+      "Editor Pick: Colby Climate Story",
+    );
+    await expect(secondHeading).toBeVisible();
+
+    const third = canvasElement.querySelectorAll(
+      ".grid .article-grid__item:nth-child(3)",
+    )[0];
+    const thirdHeading = third.querySelectorAll(".text-group__heading")[0];
+    await expect(thirdHeading.textContent.slice(0, -1)).toBe(
+      "General Media Mention",
+    );
+    await expect(thirdHeading).toBeVisible();
   },
 };
 
@@ -368,9 +402,13 @@ export const TwoColumnGrid = {
         "https://news.colby.edu/wp-json/custom/v1/external-posts",
       );
     });
-    const first = canvasElement.querySelectorAll('.grid .article-grid__item:first-child')[0];
-    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
-    await expect(firstHeading.textContent.slice(0, -1)).toBe('President Interview in National Press');
+    const first = canvasElement.querySelectorAll(
+      ".grid .article-grid__item:first-child",
+    )[0];
+    const firstHeading = first.querySelectorAll(".text-group__heading")[0];
+    await expect(firstHeading.textContent.slice(0, -1)).toBe(
+      "President Interview in National Press",
+    );
     await expect(firstHeading).toBeVisible();
 
     await expect(
@@ -401,9 +439,13 @@ export const FourColumnGrid = {
         "https://news.colby.edu/wp-json/custom/v1/external-posts",
       );
     });
-    const first = canvasElement.querySelectorAll('.grid .article-grid__item:first-child')[0];
-    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
-    await expect(firstHeading.textContent.slice(0, -1)).toBe('Editor Pick: Colby Climate Story');
+    const first = canvasElement.querySelectorAll(
+      ".grid .article-grid__item:first-child",
+    )[0];
+    const firstHeading = first.querySelectorAll(".text-group__heading")[0];
+    await expect(firstHeading.textContent.slice(0, -1)).toBe(
+      "Editor Pick: Colby Climate Story",
+    );
     await expect(firstHeading).toBeVisible();
     await expect(
       canvas.queryByText("President Interview in National Press"),
@@ -448,9 +490,13 @@ export const AccordionNoButtons = {
     items: mockItems.map(({ buttons, ...item }) => item),
   },
   play: async ({ canvas, canvasElement, userEvent }) => {
-    const first = canvasElement.querySelectorAll('.grid .article-grid__item:first-child')[0];
-    const firstHeading = first.querySelectorAll('.text-group__heading')[0];
-    await expect(firstHeading.textContent.slice(0, -1)).toBe('Future of Artificial Intelligence');
+    const first = canvasElement.querySelectorAll(
+      ".grid .article-grid__item:first-child",
+    )[0];
+    const firstHeading = first.querySelectorAll(".text-group__heading")[0];
+    await expect(firstHeading.textContent.slice(0, -1)).toBe(
+      "Future of Artificial Intelligence",
+    );
     await expect(firstHeading).toBeVisible();
 
     const grid = canvasElement.querySelector(".article-grid");
@@ -466,7 +512,7 @@ export const AccordionNoButtons = {
     const readMoreButtons = await canvas.findAllByText("Read More");
     await userEvent.click(readMoreButtons[0]);
 
-    const flyout = canvasElement.querySelectorAll('.accordion__flyout')[0];
+    const flyout = canvasElement.querySelectorAll(".accordion__flyout")[0];
     const aiSummary = await within(flyout).findAllByText(
       "AI is reshaping industries at an unprecedented pace.",
     );
