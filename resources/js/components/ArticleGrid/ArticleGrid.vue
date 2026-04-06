@@ -42,9 +42,9 @@
           :key="index"
           class="article-grid__item glide__slide"
           :class="{
-            'col-span-12 md:col-span-6': props.columns === 2,
-            'col-span-12 md:col-span-6 lg:col-span-4': props.columns === 3,
-            'col-span-12 md:col-span-6 lg:col-span-3': props.columns === 4,
+            'col-span-12 md:col-span-6': currentColumns === 2,
+            'col-span-12 md:col-span-6 lg:col-span-4': currentColumns === 3,
+            'col-span-12 md:col-span-6 lg:col-span-3': currentColumns === 4,
           }"
         >
           <Article
@@ -77,9 +77,9 @@
           :key="index"
           class="article-grid__item glide__slide"
           :class="{
-            'col-span-12 md:col-span-6': props.columns === 2,
-            'col-span-12 md:col-span-6 lg:col-span-4': props.columns === 3,
-            'col-span-12 md:col-span-6 lg:col-span-3': props.columns === 4,
+            'col-span-12 md:col-span-6': currentColumns === 2,
+            'col-span-12 md:col-span-6 lg:col-span-4': currentColumns === 3,
+            'col-span-12 md:col-span-6 lg:col-span-3': currentColumns === 4,
           }"
         >
           <Article
@@ -170,7 +170,7 @@
                 </div>
                 <h2
                   class="text-group__heading -tracking-3 text-left font-extended text-20 leading-110 font-normal text-indigo"
-                  :class="{ 'lg:text-16': props.columns === 4 }"
+                  :class="{ 'lg:text-16': currentColumns === 4 }"
                   v-html="item.heading"
                 />
               </div>
@@ -322,7 +322,7 @@ const props = defineProps({
   range: { type: [Number, String], default: 6 },
   post_limit: { type: [Number, String], default: -1 },
   size: { type: String, default: "" },
-  columns: { type: [Number, String], default: 3 },
+  columns: { type: Number, default: 3 },
   image_orientation: { type: String, default: "" },
   border: { type: [Boolean, Number, String], default: false },
   render_posts_category: { type: Number, default: 1 },
@@ -336,7 +336,7 @@ const expandedIndex = ref(null);
 const itemRefs = reactive([]);
 const contextRefs = reactive([]);
 const accordionWidth = ref("auto");
-const currentColumns = ref(props.columns);
+const currentColumns = ref(parseInt(props.columns, 10));
 
 const gridContainer = ref(null);
 
@@ -347,17 +347,17 @@ const postsPerPage = 12;
 
 /* Helpers */
 const gridColsClass = computed(() => {
-  if (props.columns === 4)
+  if (currentColumns === 4)
     return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
-  if (props.columns === 3) return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+  if (currentColumns === 3) return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
   return "grid-cols-1 sm:grid-cols-2";
 });
 
-const itemColClass = computed(() => {
-  if (props.columns === 4) return "md:col-span-2 col-span-4";
-  if (props.columns === 3) return "md:col-span-3 col-span-9";
-  return "col-span-4";
-});
+// const itemColClass = computed(() => {
+//   if (props.columns === 4) return "md:col-span-2 col-span-4";
+//   if (props.columns === 3) return "md:col-span-3 col-span-9";
+//   return "col-span-4";
+// });
 
 const normalizedBorder = computed(() => {
   if (typeof props.border === "string") {

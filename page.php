@@ -9,17 +9,19 @@ $filtered_blocks = array_filter( parse_blocks($post->post_content), function( $b
     return ! is_null( $block['blockName'] );
 });
 
-function get_structured_block_data($block) {
-  // 1. Setup temporary metadata so ACF functions work
-  acf_setup_meta($block['attrs']['data'], $block['attrs']['id'] ?? 'block_temp', true);
-  
-  // 2. Use get_fields() to get the fully hydrated, nested tree
-  $fields = get_fields(); // This now returns repeaters as proper arrays of objects
-  
-  // 3. Clean up
-  acf_reset_meta($block['attrs']['id'] ?? 'block_temp');
-  
-  return $fields;
+function get_structured_block_data($block, $index = 0) {
+
+  $meta_id = !empty($block['attrs']['id'])
+  ? 'block_' . $block['attrs']['id']
+  : 'block_' . $index . '_' . md5(wp_json_encode($block['attrs']['data'] ?? []));
+
+  acf_setup_meta($block['attrs']['data'] ?? [], $meta_id, true);
+
+  $fields = get_fields($meta_id);
+
+  acf_reset_meta($meta_id);
+
+  return $fields ?: [];
 }
 
 foreach ($filtered_blocks as &$block) {
