@@ -10,10 +10,22 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 
 function custom_preload_fonts() {
   // Keep for now
-
-  // echo '<link rel="preconnect" href="https://use.typekit.net/ven5cit.css" crossorigin="anonymous">';
-  // echo '<link rel="preconnect" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" crossorigin="anonymous">';
-  // echo '<link rel="preload" href="/fonts/myfont.woff2" as="font" type="font/woff2" crossorigin>'
+  echo '<link rel="preload" as="image" href="https://www.colby.edu/cdn-cgi/image/width=320,quality=50/https://www.colby.edu/wp-content/uploads/2025/09/Untitled-2025-09-09T120218.701.jpeg" imagesrcset="https://www.colby.edu/cdn-cgi/image/width=320,quality=60/https://www.colby.edu/wp-content/uploads/2025/09/Untitled-2025-09-09T120218.701.jpeg 320w,https://www.colby.edu/cdn-cgi/image/width=640,quality=60/https://www.colby.edu/wp-content/uploads/2025/09/Untitled-2025-09-09T120218.701.jpeg 640w,https://www.colby.edu/cdn-cgi/image/width=960,quality=60/https://www.colby.edu/wp-content/uploads/2025/09/Untitled-2025-09-09T120218.701.jpeg 960w,https://www.colby.edu/cdn-cgi/image/width=1280,quality=60/https://www.colby.edu/wp-content/uploads/2025/09/Untitled-2025-09-09T120218.701.jpeg 1280w" fetchpriority="high" media="(max-width: 767px)" imagesizes="100vw, 50vw">';
+//   echo '<link rel="preconnect" href="https://use.typekit.net/ven5cit.css" crossorigin="anonymous">';
+//   echo '<link rel="preconnect" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" crossorigin="anonymous">';
+//   echo '<link rel="preload" href="'.get_stylesheet_directory() . '/resources/fonts/LibreFranklin-Regular.woff2" as="font" type="font/woff2" crossorigin >';
+//   echo '<link rel="preload" href="'.get_stylesheet_directory() . '/resources/fonts/LibreFranklin-SemiBold.woff2" as="font" type="font/woff2" crossorigin >';
+//   echo '<link rel="preload" href="'.get_stylesheet_directory() . '/resources/fonts/LibreFranklin-Bold.woff2" as="font" type="font/woff2" crossorigin >';
+//   // echo '<link rel="preload" href="/fonts/myfont.woff2" as="font" type="font/woff2" crossorigin>'
+//   echo "<script> let cls = 0;
+// new PerformanceObserver((entryList) => {
+//   for (const entry of entryList.getEntries()) {
+//     if (!entry.hadRecentInput) {
+//       cls += entry.value;
+//       console.log('Current CLS value:', cls, entry);
+//     }
+//   }
+// }).observe({type: 'layout-shift', buffered: true});</script>";
 }
 add_action('wp_head', 'custom_preload_fonts', 1);
 
