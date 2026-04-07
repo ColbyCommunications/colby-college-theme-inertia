@@ -8,6 +8,15 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
   require_once __DIR__ . '/vendor/autoload.php';
 }
 
+function custom_preload_fonts() {
+  // Keep for now
+
+  // echo '<link rel="preconnect" href="https://use.typekit.net/ven5cit.css" crossorigin="anonymous">';
+  // echo '<link rel="preconnect" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" crossorigin="anonymous">';
+  // echo '<link rel="preload" href="/fonts/myfont.woff2" as="font" type="font/woff2" crossorigin>'
+}
+add_action('wp_head', 'custom_preload_fonts', 1);
+
 // Register all ACF blocks in component folders from ACF directories
 add_action('init', function () {
 
@@ -228,7 +237,7 @@ add_action('wp_head', function() {
   }
 
   // Output a small script to the head
-  echo '<script type="text/javascript">window.colby = window.colby || {}; window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';</script>';
+  echo '<script type="text/javascript">window.colby = window.colby || {}; window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';window.colby.PRIMARY_DOMAIN = "' . PRIMARY_DOMAIN . '";window.colby.isLocal = ' . ('ON' === getenv( 'LANDO' ) ? 'true' : 'false') .'</script>';
 }, 1);
 
 if (!function_exists('dump')) {

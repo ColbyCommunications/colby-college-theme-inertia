@@ -52,8 +52,7 @@
         <Picture
             v-else
             class="z-[-10] absolute top-0 left-0 w-full h-full"
-            :size-desktop="image.src"
-            :size-mobile="image.src"
+            :src="image?.url"
             :alt="image?.alt || ''"
             loading="eager"
           />
