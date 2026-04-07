@@ -8,12 +8,6 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
   require_once __DIR__ . '/vendor/autoload.php';
 }
 
-add_action('wp_enqueue_scripts', function() {
-//     wp_enqueue_style('google-font-libre-franklin', 'https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap', [], null);
-//     wp_enqueue_style('typekit', 'https://use.typekit.net/ven5cit.css', [], null);
-    // wp_enqueue_style('material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons+Sharp', [], null);
-});
-
 // Register all ACF blocks in component folders from ACF directories
 add_action('init', function () {
 

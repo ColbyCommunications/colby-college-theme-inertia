@@ -1,11 +1,14 @@
 <template>
-  <div 
-    class="section-nav full-bleed py-6 bg-gray-100 overflow-x-auto !mt-0"
+  <div
+    class="section-nav full-bleed !mt-0 overflow-x-auto bg-gray-100 py-6"
     :class="{ 'is-bot-visitor': isBot }"
   >
-    <div ref="container" class="section-nav__inner flex px-5 space-x-10 lg:justify-center">
+    <div
+      ref="container"
+      class="section-nav__inner flex space-x-10 px-5 lg:justify-center"
+    >
       <h2
-        class="section-nav__heading font-extended font-bold text-14 md:text-12 tracking-8 text-azure uppercase whitespace-nowrap"
+        class="section-nav__heading font-extended text-14 font-bold tracking-8 whitespace-nowrap text-azure uppercase md:text-12"
       >
         {{ title }}
       </h2>
@@ -13,13 +16,15 @@
         <li
           v-for="(item, index) in items"
           :key="index"
-          class="section-nav__item font-body font-medium text-14 md:text-10 text-indigo-800 leading-130 whitespace-nowrap"
+          class="section-nav__item font-body text-14 leading-130 font-medium whitespace-nowrap text-indigo-800 md:text-10"
         >
           <a
-            class="text-indigo-800 hover:text-indigo hover:underline transition-all duration-200 ease-in-out"
+            class="text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
             :href="item.link.url"
           >
-            <span class="material-icons-sharp !text-14 align-bottom mr-1">{{item.icon_class}}</span>
+            <span class="material-symbols-sharp mr-1 align-bottom !text-14">{{
+              item.icon_class
+            }}</span>
             {{ item.link.title }}
           </a>
         </li>
@@ -31,7 +36,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { gsap } from "gsap";
-
 
 defineProps({
   title: { type: String, default: "" },
