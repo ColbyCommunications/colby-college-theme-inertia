@@ -58,6 +58,9 @@ function isEager(item, index) {
   return [
     "acf/hero",
     "acf/home-hero",
+    "acf/overlay-hero",
+    "acf/section-nav",
+    "acf/subpage-nav",
   ].includes(item.blockName);
 }
 
@@ -79,7 +82,7 @@ function getPlaceholderHeight(item) {
     "acf/article-section": 300,
     "acf/carousel": 450,
     "acf/dark-interstitial": 250,
-    "acf/facts-figures": 300,
+    "acf/facts-figures": 400,
     "acf/featured-post": 250,
     "acf/testimonial-carousel": 250,
     "acf/full-bleed-image": 250,
