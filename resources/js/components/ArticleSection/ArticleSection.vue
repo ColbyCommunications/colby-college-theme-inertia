@@ -27,7 +27,7 @@
       <div
         class="article-section__grid md:col-start-5 md:col-span-8"
       >
-        <ArticleGrid v-bind="props" :columns="perView" />
+        <ArticleGrid v-bind="props" :columns="perView" :api_source="api" />
       </div>
     </div>
 </template>
@@ -65,6 +65,4 @@ const props = defineProps({
   display_posts_method: { type: String, default: "" },
   items: { type: Array, default: () => [] },
 });
-
-console.log(props);
 </script>

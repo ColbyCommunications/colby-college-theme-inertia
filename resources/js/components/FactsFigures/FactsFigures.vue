@@ -31,8 +31,7 @@
       >
         <Picture
           class="h-full w-full object-cover"
-          :size-desktop="image?.url"
-          :size-mobile="image?.url"
+          :src="image?.url"
           :alt="image?.alt || ''"
         />
       </div>
@@ -66,10 +65,6 @@
           </div>
         </div>
       </div>
-
-      <!-- If you ever need the bottom rule again:
-        <AnimatedBorder class="block col-span-12 w-0 h-px bg-azure" />
-        -->
     </div>
   </div>
 </template>
@@ -85,7 +80,7 @@ const props = defineProps({
   buttons: { type: Array, default: () => [] },
   image: {
     type: Object,
-    default: null, // { srcset, src, sizes: { Square }, alt }
+    default: null, 
     required: true
   },
   facts: {

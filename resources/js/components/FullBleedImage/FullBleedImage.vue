@@ -5,10 +5,7 @@
     >
       <Picture
         class="w-full h-full object-cover"
-        :src="image.src"
-        :srcset="image.src"
-        :size-desktop="image.src"
-        :size-mobile="image.src"
+        :src="image.url"
         :alt="image.alt"
       />
     </div>

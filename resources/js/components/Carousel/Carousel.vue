@@ -242,14 +242,12 @@ const props = defineProps({
 const currentSubheading = ref(props.subheading)
 const currentSize = ref(props.size)
 
-console.log(props.buttons);
 
 /* =========================
      Derived state
   ========================= */
 const isApi = computed(() => ["true", "1", 1, true].includes(props.render_api));
 const mode = computed(() => {
-  console.log(isApi);
   if (!isApi.value) return "basic";
 
   if (props.api === "Latest News") {
@@ -314,7 +312,6 @@ async function fetchApi() {
   if (!endpoint.value) return;
 
   const { data } = await axios.get(endpoint.value);
-  console.log(data);
   featuredNews.value =
     mode.value === "faculty"
       ? data.map((item) => ({

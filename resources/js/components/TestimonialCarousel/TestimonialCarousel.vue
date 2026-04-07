@@ -34,10 +34,7 @@
                 >
                   <Picture
                     class="md:absolute w-full h-full object-cover"
-                    :src="item.image?.src"
-                    :srcset="item.image?.src"
-                    :size-desktop="item.image?.src"
-                    :size-mobile="item.image?.src"
+                    :src="item.image?.url"
                     :alt="item.image?.alt"
                   />
                 </div>
@@ -67,12 +64,12 @@
             <p
               class="font-extended font-normal text-20 leading-110 -tracking-[0.01em] text-indigo"
             >
-              {{ item.testimonial_quote }}
+              {{ item.testimonial.quote }}
             </p>
             <div
               class="font-body font-normal text-14 leading-130 text-indigo-800"
             >
-              {{ item.testimonial_name }}
+              {{ item.testimonial.name }}
             </div>
           </div>
         </div>
@@ -100,7 +97,6 @@ const props = defineProps({
   items: { type: Array, default: () => [] },
 });
 
-console.log(props);
 
 const rootEl = ref(null);
 const activeSlide = ref(0);

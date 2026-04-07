@@ -62,7 +62,6 @@ const props = defineProps({
   date: { type: Boolean, default: false },
 });
 
-console.log(props);
 
 
 let gsapInstance = null;

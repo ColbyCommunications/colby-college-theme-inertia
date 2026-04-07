@@ -81,5 +81,4 @@
         },
     });
 
-    console.log(props);
 </script>

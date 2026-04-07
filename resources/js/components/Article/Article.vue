@@ -26,16 +26,16 @@
           <Picture
             v-if="useDesktopMobile"
             class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
-            :size-desktop="image.src"
-            :size-mobile="image.sr"
+            :src="image.src"
             :alt="image?.alt || ''"
+            :fromApi="true"
           />
           <Picture
             v-else
             class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
-            :size-desktop="image.src"
-            :size-mobile="image.src"
+            :src="image.src"
             :alt="image?.alt || ''"
+            :fromApi="true"
           />
         </a>
         <div
@@ -50,15 +50,13 @@
           <Picture
             v-if="useDesktopMobile"
             class="w-full object-cover"
-            :size-desktop="image.src"
-            :size-mobile="image.src"
+            :src="image.url"
             :alt="image?.alt || ''"
           />
           <Picture
             v-else
             class="w-full object-cover"
-            :size-desktop="image.src"
-            :size-mobile="image?.src"
+            :src="image.url"
             :alt="image.alt || ''"
           />
         </div>

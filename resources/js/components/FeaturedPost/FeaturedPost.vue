@@ -29,9 +29,8 @@
         <div class="featured-post__image">
           <Picture
             class="w-full h-full object-cover"
-            :size-desktop="post_image?.src"
-            :size-mobile="post_image?.src"
-            :alt="post_image?.alt || ''"
+            :src="post.image?.url"
+            :alt="post.image?.alt || ''"
           />
         </div>
         <div class="featured-post__post relative mt-6">
@@ -50,7 +49,6 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
 import Context from "@/js/components/Context/Context.vue";
 import AnimatedBorder from "@/js/components/AnimatedBorder/AnimatedBorder.vue";
 import Picture from "@/js/components/Picture/Picture.vue";
@@ -66,8 +64,4 @@ const props = defineProps({
   post_heading: { type: String, default: "" },
   post_buttons: { type: Array, default: () => [] },
 });
-
-console.log(props);
-
-
 </script>

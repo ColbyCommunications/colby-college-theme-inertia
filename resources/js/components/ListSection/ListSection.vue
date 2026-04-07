@@ -44,5 +44,4 @@ const props = defineProps({
   lists: { type: Array, default: () => [] },
 });
 
-console.log(props);
 </script>

@@ -7,9 +7,9 @@
           :key="index"
           class="article-grid__item glide__slide"
           :class="{
-            'col-span-12 md:col-span-6': props.columns === 2,
-            'col-span-12 md:col-span-6 lg:col-span-4': props.columns === 3,
-            'col-span-12 md:col-span-6 lg:col-span-3': props.columns === 4,
+            'col-span-12 md:col-span-6': currentColumns === 2,
+            'col-span-12 md:col-span-6 lg:col-span-4': currentColumns === 3,
+            'col-span-12 md:col-span-6 lg:col-span-3': currentColumns === 4,
           }"
         >
           <Article
@@ -143,15 +143,14 @@
         >
           <!-- Image -->
           <a
-            v-if="item.image?.sizes?.desktop && item.image?.sizes?.mobile"
+            v-if="item.image?.url"
             class="article__image relative block overflow-hidden"
             :href="item.url"
             :aria-label="item.heading"
           >
             <Picture
               class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
-              :size-desktop="item.image.sizes.desktop"
-              :size-mobile="item.image.sizes.mobile"
+              :src="item.image.url"
               :alt="item.title"
             />
           </a>
@@ -331,6 +330,8 @@ const props = defineProps({
   items: { type: Array, default: () => [] },
 });
 
+console.log(props.items);
+
 const data = ref([]);
 const expandedIndex = ref(null);
 const itemRefs = reactive([]);
@@ -425,15 +426,17 @@ const fetchApiData = async (page = 1) => {
       // Logic for external API remains the same (assuming no pagination needed here)
       const newsPostsEndpoint =
         "https://news.colby.edu/wp-json/custom/v1/external-posts";
+      
+      
       const { data: output } = await axios.get(newsPostsEndpoint);
-      // ... (your existing external API filtering/mapping logic) ...
 
       const filtered = output.filter((item) => {
-        if (props.api_source !== "media_coverage") return false;
+
         const isMedia =
           item.story_type?.[0]?.slug === "media-coverage" &&
           item.content?.rendered;
-        if (!isMedia) return false;
+
+
         switch (props.external_media_api) {
           case "all_media":
             return true;
@@ -545,6 +548,7 @@ const fetchApiData = async (page = 1) => {
   }
 };
 
+console.log(data);
 function formatWpDate(dateString) {
   const date = new Date(dateString);
   return new Intl.DateTimeFormat("en-US", {
