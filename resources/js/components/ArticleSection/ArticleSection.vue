@@ -4,7 +4,7 @@
       class="article-section"
       :perView="perView"
       :gap="gap"
-      :renderApi="render_api"
+      :render_api="render_api"
       :api="api"
       :heading="heading"
       :subheading="subheading"

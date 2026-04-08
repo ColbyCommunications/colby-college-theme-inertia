@@ -16,9 +16,8 @@
           textAlign,
           subheadingColor,
         ]"
-      >
-        {{ subheading }}
-      </component>
+         v-html="subheading"
+      />
 
       <component
         v-if="heading"
@@ -63,7 +62,6 @@ const props = defineProps({
 });
 
 
-
 let gsapInstance = null;
 
 async function getGsap() {
@@ -99,7 +97,7 @@ const headingSizeMobile = computed(() => sizes.value.headMobile || "");
 const headingWeight = computed(() => sizes.value.weight);
 const paragraphSize = computed(() => sizes.value.p);
 const paragraphSizeMobile = computed(() => sizes.value.pMobile || "");
-const strippedHeading = computed(() => (props.heading || "").replace(/<[^>]*>/g, ""));
+const strippedHeading = computed(() => (props.heading || ""));
 const paragraphWithClasses = computed(() => {
   let html = String(props.paragraph || "");
   const startsWithBlockTag = /^\s*<(p|ul|ol)\b/i.test(html.trim());
