@@ -32,6 +32,7 @@
               :heading="item.heading"
               :paragraph="item.paragraph"
               :buttons="item.buttons"
+              :fromApi="true"
             />
           </div>
         </template>
@@ -93,7 +94,7 @@ const normalizedApiItems = computed(() =>
     return {
       id: item.id,
       image: ogImage
-        ? { sizes: { desktop: ogImage, mobile: ogImage }, alt: item.yoast_head_json?.og_description || "" }
+        ? { src: ogImage, alt: item.yoast_head_json?.og_description || "" }
         : null,
       subheading: item["post-meta-fields"]?.primary_category || "",
       heading: decodeHtmlEntities(item.title?.rendered),
