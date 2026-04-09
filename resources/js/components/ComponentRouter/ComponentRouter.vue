@@ -42,6 +42,7 @@ const blockRegistry = {
   "acf/list-section": () => import("../ListSection/ListSection.vue"),
   "acf/stat-group": () => import("../StatGroup/StatGroup.vue"),
   "acf/media-context": () => import("../MediaContext/MediaContext.vue"),
+  "acf/context-article-grid": () => import("../ContextArticleGrid/ContextArticleGrid.vue"),
 };
 
 function getLoader(blockName) {
@@ -94,6 +95,7 @@ function getPlaceholderHeight(item) {
     "acf/hero": 0,
     "acf/home-hero": 0,
     "acf/overlay-hero": 0,
+    "acf/context-article-grid": 300,
   };
 
   return heights[item.blockName] ?? 0;

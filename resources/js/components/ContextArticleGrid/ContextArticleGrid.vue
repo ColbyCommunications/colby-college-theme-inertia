@@ -19,7 +19,7 @@
       class="context-article-grid__inner mx-auto mt-10 w-full max-w-screen-2xl gap-x-10 px-5"
     >
       <div class="article-grid grid w-full max-w-screen-2xl grid-cols-9 gap-10">
-        <template v-if="renderApi && normalizedApiItems.length">
+        <template v-if="render_api && normalizedApiItems.length">
           <div
             v-for="(item, index) in normalizedApiItems"
             :key="item.id || index"
@@ -36,7 +36,7 @@
           </div>
         </template>
 
-        <template v-else-if="!renderApi && items.length">
+        <template v-else-if="!render_api && items.length">
           <div
             v-for="(item, index) in items"
             :key="index"
@@ -68,7 +68,7 @@ const props = defineProps({
   heading: { type: String, default: "" },
   paragraph: { type: String, default: "" },
   cta: { type: String, default: "Read Story" },
-  renderApi: { type: Boolean, default: false },
+  render_api: { type: Boolean, default: false },
   api: { type: String, default: "" },
   perPage: { type: Number, default: 3 },
   items: {
@@ -114,7 +114,7 @@ const normalizedApiItems = computed(() =>
 );
 
 onMounted(async () => {
-  if (props.renderApi) {
+  if (props.render_api) {
     let endpoint =
       "https://news.colby.edu/wp-json/wp/v2/posts?per_page=6&tags=569&_embed=1";
 
