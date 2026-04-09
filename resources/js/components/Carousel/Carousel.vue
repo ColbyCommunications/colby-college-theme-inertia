@@ -201,9 +201,9 @@
                       >
                           <article class="article space-y-4">
                               <a
-                                  v-if="item.yoast_head_json.og_image[0].url"
+                                  v-if="it.yoast_head_json.og_image[0].url"
                                   class="article__image relative block overflow-hidden"
-                                  :href="item.guid.rendered"
+                                  :href="it.guid.rendered"
                               >
                                   <picture>
                                       <source
@@ -328,7 +328,6 @@ import {
   watch,
   defineExpose,
 } from "vue";
-import axios from "axios";
 import Glide from "@glidejs/glide";
 import Context from "../Context/Context.vue";
 import ArrowControls from "../ArrowControls/ArrowControls.vue";
@@ -336,14 +335,10 @@ import TextGroup from "../TextGroup/TextGroup.vue";
 import ButtonGroup from "../ButtonGroup/ButtonGroup.vue";
 import Picture from "../Picture/Picture.vue";
 
-/* =========================
-     Props (normalized)
-  ========================= */
 const props = defineProps({
   render_api: { type: Boolean, default: false },
   api: { type: String, default: "" },
 
-  // layout / content
   type: { type: String, default: "dark" },
   heading: { type: String, default: "News" },
   subheading: { type: String, default: "" },
@@ -364,66 +359,57 @@ const props = defineProps({
     ],
   },
 
-  items: { type: Array, default: () => [] }, // non-API slides
+  items: { type: Array, default: () => [] },
   size: { type: String, default: "small" },
 
-  // glide
   perView: { type: Number, default: 1 },
   gap: { type: Number, default: 0 },
 
-  // autoplay
   autoplay: { type: Boolean, default: true },
   interval: { type: [Number, String], default: 5000 },
 
-  // NEW: server-hydrated data contract
   initial_items: { type: Array, default: () => [] },
   hydrated_from_server: { type: Boolean, default: false },
   should_client_refresh: { type: Boolean, default: false },
 });
 
-const currentSubheading = ref(props.subheading)
-const currentSize = ref(props.size)
+const currentSubheading = ref(props.subheading);
+const currentSize = ref(props.size);
 
-
-/* =========================
-     Derived state
-  ========================= */
 const isApi = computed(() => ["true", "1", 1, true].includes(props.render_api));
+
 const mode = computed(() => {
   if (!isApi.value) return "basic";
 
   if (props.api === "Latest News") {
-    currentSize.value = 'large';
+    currentSize.value = "large";
     return "latest";
   }
 
-  if (props.api === "Academic News"){ 
+  if (props.api === "Academic News") {
     currentSubheading.value = props.api;
     return "academic";
   }
-  if (props.api === "Faculty Accomplishments"){
+
+  if (props.api === "Faculty Accomplishments") {
     currentSubheading.value = props.api;
     return "faculty";
   }
+
   return "latest";
 });
 
 const apiLeftButtonItems = computed(() => {
   if (mode.value === "faculty") {
-    // Added return here
     return props.FAbuttons.map((btn) => ({
       button: { url: btn.url, title: btn.title, target: "_blank" },
     }));
-  } else if (props.buttons) {
-    // Added return here
-    return props.buttons.map((btn) => ({
-      button: { url: btn.url, title: btn.title, target: "_blank" },
-    }));
   }
-  // Optional: return an empty array if no conditions are met
-  return []; 
-});
 
+  return props.buttons.map((btn) => ({
+    button: { url: btn.url, title: btn.title, target: "_blank" },
+  }));
+});
 
 const basicButtonItems = computed(() =>
   props.buttons.map((btn) => ({
@@ -431,86 +417,40 @@ const basicButtonItems = computed(() =>
   })),
 );
 
-/* =========================
-     Data (API)
-  ========================= */
-const endpoint = computed(() => {
-  if (!isApi.value) return undefined;
-  switch (mode.value) {
-    case "latest":
-      return "https://news.colby.edu/wp-json/wp/v2/posts?per_page=5&tags=561&_embed=1";
-    case "academic":
-      return "https://news.colby.edu/wp-json/wp/v2/posts?per_page=5&categories=8,12,14,15&_embed=1";
-    case "faculty":
-      return "https://news.colby.edu/wp-json/wp/v2/external_post?story_type_slug=faculty-accomplishments&per_page=5&_embed=1";
-    default:
-      return undefined;
-  }
-});
-
-const featuredNews = ref([]);
-
-function decodeEntities(html) {
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-  return doc.documentElement.textContent;
-}
-
-async function fetchApi() {
-  console.log(endpoint.value);
-  if (!endpoint.value) return;
-
-  const data = props.initial_items;
-  
-  featuredNews.value =
-    mode.value === "faculty"
-      ? data.map((item) => {
-        console.log(item);
-      return {
-          yoast_head_json: { og_image: [{ url: "" }] },
-          title: {
-            rendered: decodeEntities(item.title.rendered),
-          },
-          "post-meta-fields": {
-            primary_category: "",
-            summary: [
-              `${decodeEntities(item["post-meta-fields"].summary[0].substring(0, 120))}...`,
-            ],
-          },
-          guid: { rendered: item.guid.rendered },
-        };
-      }
-      )
-    
-      : data;
-}
-
+// Simplified: slides come directly from props
 const slides = computed(() =>
-  mode.value === "basic" ? props.items : featuredNews.value,
+  mode.value === "basic" ? props.items : props.initial_items
 );
 
-/* =========================
-     Glide + autoplay
-  ========================= */
 const rootEl = ref(null);
 const activeSlide = ref(0);
 const glide = ref(null);
 
+function destroyGlide() {
+  if (glide.value) {
+    glide.value.destroy();
+    glide.value = null;
+  }
+}
+
 function buildGlide() {
   const win = rootEl.value?.querySelector("[data-glide-window]");
-  if (!win) return;
+  if (!win || slides.value.length === 0) return;
+
+  destroyGlide();
+
   glide.value = new Glide(win, {
     type: "carousel",
     gap: props.gap,
     animationDuration: 600,
-    // CHANGE THIS LINE:
-    // Old: autoplay: 4000,
-    // New: set to false so it doesn't conflict with your startAutoplay function
     autoplay: false,
     perView: props.perView,
   });
+
   glide.value.on("run", () => {
     activeSlide.value = glide.value.index;
   });
+
   glide.value.mount();
 }
 
@@ -523,16 +463,19 @@ function startAutoplay() {
   if (!isPlaying.value || slides.value.length <= 1) return;
   timer = setInterval(next, intervalMs.value);
 }
+
 function stopAutoplay() {
   if (timer) {
     clearInterval(timer);
     timer = null;
   }
 }
+
 function pauseCarousel() {
   isPlaying.value = false;
   stopAutoplay();
 }
+
 function playCarousel() {
   if (!isPlaying.value) {
     isPlaying.value = true;
@@ -544,33 +487,43 @@ function next() {
   if (!glide.value) return;
   glide.value.go(">");
 }
+
 function prev() {
   if (!glide.value) return;
   glide.value.go("<");
 }
+
 function changeSlide(dir) {
   dir === "next" ? next() : prev();
 }
 
-onMounted(async () => {
- 
-  if (isApi.value) {
-    fetchApi();
-  }
+async function initializeCarousel() {
   await nextTick();
-  // brief delay to ensure slides exist
+
   setTimeout(() => {
     buildGlide();
     startAutoplay();
   }, 80);
+}
+
+onMounted(async () => {
+  await initializeCarousel();
 });
 
-onBeforeUnmount(stopAutoplay);
-watch([slides, intervalMs], startAutoplay, { deep: true });
+onBeforeUnmount(() => {
+  stopAutoplay();
+  destroyGlide();
+});
 
-/* =========================
-     Tiny helpers (display)
-  ========================= */
+watch(
+  () => slides.value.length,
+  async () => {
+    await initializeCarousel();
+  }
+);
+
+watch([intervalMs], startAutoplay);
+
 const decodeHtmlEntities = (input) => {
   const doc = new DOMParser().parseFromString(input || "", "text/html");
   return doc.documentElement.textContent || "";

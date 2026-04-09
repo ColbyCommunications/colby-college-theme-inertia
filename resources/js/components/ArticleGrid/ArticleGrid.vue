@@ -3,7 +3,7 @@
     <div v-if="props.display_posts_method === 'internal'">
       <div class="grid grid-cols-12 gap-10">
         <div
-          v-for="(item, index) in data"
+          v-for="(item, index) in displayItems"
           :key="index"
           class="article-grid__item glide__slide"
           :class="{
@@ -18,7 +18,7 @@
             :subheading="item.date"
             :heading="item.title.rendered"
             :border="normalizedBorder"
-            :paragraph="toSummaryText(item['post-meta-fields'].summary)"
+            :paragraph="toSummaryText(item['post-meta-fields']?.summary)"
             :buttons="[
               {
                 button: {
@@ -38,7 +38,7 @@
     <div v-if="props.display_posts_method === 'api'">
       <div class="grid grid-cols-12 gap-10">
         <div
-          v-for="(item, index) in data"
+          v-for="(item, index) in displayItems"
           :key="index"
           class="article-grid__item glide__slide"
           :class="{
@@ -65,6 +65,7 @@
               },
             ]"
             class="pt-4"
+            :fromApi="true"
           />
         </div>
       </div>
@@ -108,12 +109,9 @@
     <div v-if="showLoadMore" class="mt-10 flex justify-center">
       <button
         @click="loadMore"
-        :disabled="isLoadingMore"
-        class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-indigo-600 bg-indigo-600 px-6 py-3 font-body text-14 leading-130 font-bold text-white !no-underline transition-all duration-200 ease-in-out hover:bg-indigo-700 disabled:opacity-50"
+        class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-indigo-600 bg-indigo-600 px-6 py-3 font-body text-14 leading-130 font-bold text-white !no-underline transition-all duration-200 ease-in-out hover:bg-indigo-700"
       >
-        <span class="btn__text">
-          {{ isLoadingMore ? "Loading..." : "See More" }}
-        </span>
+        <span class="btn__text">See More</span>
       </button>
     </div>
 
@@ -141,7 +139,6 @@
             'border-t-2 border-solid border-indigo-600 pt-1': normalizedBorder,
           }"
         >
-          <!-- Image -->
           <a
             v-if="item.image?.url"
             class="article__image relative block overflow-hidden"
@@ -188,7 +185,6 @@
           </div>
         </article>
 
-        <!-- MOBILE: inline accordion -->
         <Transition
           v-if="isMobileAccordion"
           enter-active-class="transition-all duration-300 ease-out"
@@ -205,9 +201,7 @@
           >
             <div class="flex w-full justify-end pt-4 pr-4 pl-4">
               <button @click="toggleAccordion(i)">
-                <span class="material-symbols-sharp text-indigo-800"
-                  >close</span
-                >
+                <span class="material-symbols-sharp text-indigo-800">close</span>
               </button>
             </div>
 
@@ -232,7 +226,6 @@
           </div>
         </Transition>
 
-        <!-- DESKTOP: side flyout -->
         <Transition
           v-else
           enter-active-class="transition-opacity duration-300"
@@ -264,9 +257,7 @@
               ]"
             >
               <button @click="toggleAccordion(i)">
-                <span class="material-symbols-sharp text-indigo-800"
-                  >close</span
-                >
+                <span class="material-symbols-sharp text-indigo-800">close</span>
               </button>
             </div>
 
@@ -312,7 +303,6 @@ import {
   onBeforeUnmount,
   nextTick,
 } from "vue";
-import axios from "../../plugins/axios";
 import TextGroup from "../TextGroup/TextGroup.vue";
 import Article from "../Article/Article.vue";
 import Picture from "../Picture/Picture.vue";
@@ -332,42 +322,37 @@ const props = defineProps({
   cta: { type: String, default: "Read Story" },
   style: { type: String, default: "" },
   items: { type: Array, default: () => [] },
+
+  initial_items: { type: Array, default: () => [] },
+  initial_visible_count: { type: [Number, String], default: 12 },
+  hydrated_from_server: { type: Boolean, default: false },
+  should_client_refresh: { type: Boolean, default: false },
 });
 
-console.log(props.items);
-
-const data = ref([]);
 const expandedIndex = ref(null);
 const itemRefs = reactive([]);
 const contextRefs = reactive([]);
 const accordionWidth = ref("auto");
 const currentColumns = ref(parseInt(props.columns, 10));
-
 const gridContainer = ref(null);
+const visibleCount = ref(Number(props.initial_visible_count) || 12);
 
-const currentPage = ref(1);
-const totalPages = ref(1);
-const isLoadingMore = ref(false);
-const postsPerPage = 12;
-
-/* Helpers */
 const gridColsClass = computed(() => {
-  if (currentColumns === 4)
+  if (currentColumns.value === 4) {
     return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
-  if (currentColumns === 3) return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+  }
+  if (currentColumns.value === 3) {
+    return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+  }
   return "grid-cols-1 sm:grid-cols-2";
 });
-
-// const itemColClass = computed(() => {
-//   if (props.columns === 4) return "md:col-span-2 col-span-4";
-//   if (props.columns === 3) return "md:col-span-3 col-span-9";
-//   return "col-span-4";
-// });
 
 const normalizedBorder = computed(() => {
   if (typeof props.border === "string") {
     return (
-      props.border !== "" && props.border !== "0" && props.border !== "false"
+      props.border !== "" &&
+      props.border !== "0" &&
+      props.border !== "false"
     );
   }
   return Boolean(props.border);
@@ -380,198 +365,31 @@ const toSummaryText = (value) => {
 
 const isMobileAccordion = computed(() => currentColumns.value === 1);
 
-const showLoadMore = computed(() => {
-  // Only show if we are internally fetching and haven't loaded all pages
-  if (props.display_posts_method !== "internal") return false;
-
-  // If post_limit is -1, pagination is based on totalPages
-  if (props.post_limit === -1) {
-    return currentPage.value < totalPages.value;
+const allItems = computed(() => {
+  if (props.display_posts_method === "manual") {
+    return props.items || [];
   }
 
-  // If post_limit is set, pagination stops when we reach the limit
-  // We check if the next page would exceed the limit
-  const totalLoaded = data.value.length;
-  return totalLoaded < props.post_limit;
+  return props.initial_items || [];
 });
 
-const fetchApiData = async (page = 1) => {
-  isLoadingMore.value = true;
-
-  // Set the posts per page based on the requirement
-  let postsPerRequest = postsPerPage;
-
-  // If a post_limit is set, we calculate how many to fetch on the current page
-  // so we don't fetch more than the limit.
-  if (props.post_limit !== -1) {
-    const remaining = props.post_limit - data.value.length;
-    postsPerRequest = Math.min(postsPerRequest, remaining);
-
-    // If we've already hit the limit, stop fetching
-    if (remaining <= 0) {
-      isLoadingMore.value = false;
-      return;
-    }
+const displayItems = computed(() => {
+  if (props.display_posts_method === "manual") {
+    return allItems.value;
   }
 
-  // Build the internal endpoint dynamically
-  const internalPostsEndpoint =
-    "/wp-json/wp/v2/posts?categories=" +
-    props.render_posts_category +
-    "&per_page=" +
-    postsPerRequest +
-    "&page=" +
-    page +
-    "&status=publish" +
-    "&_embed";
+  return allItems.value.slice(0, visibleCount.value);
+});
 
-  let finalData = [];
-
-  try {
-    if (props.display_posts_method === "api") {
-      // Logic for external API remains the same (assuming no pagination needed here)
-      const newsPostsEndpoint =
-        "https://news.colby.edu/wp-json/custom/v1/external-posts";
-      
-      
-      const { data: output } = await axios.get(newsPostsEndpoint);
-
-      const filtered = output.filter((item) => {
-
-        const isMedia =
-          item.story_type?.[0]?.slug === "media-coverage" &&
-          item.content?.rendered;
-
-
-        switch (props.external_media_api) {
-          case "all_media":
-            return true;
-          case "president":
-            return (
-              item.tags && item.tags.some((tag) => tag.name === "president")
-            );
-          case "highlight":
-            return (
-              item.tags && item.tags.some((tag) => tag.name === "editors-pick")
-            );
-          default:
-            return false;
-        }
-      });
-
-      finalData = filtered
-        .map((item) => ({
-          title: {
-            rendered: item.title.rendered.replace(
-              /<(?!\/?(i|em)\b)[^>]+>/gi,
-              "",
-            ),
-          },
-          summary: `${item.content.rendered
-            .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "")
-            .substring(0, 120)}...`,
-          url: item.external_url,
-          image: { src: item.image, alt: item.taxonomy?.[0]?.name || "" },
-        }))
-        .slice(0, props.range);
-    } else if (props.display_posts_method === "internal") {
-      // Fetch data for the current page
-      const response = await axios.get(internalPostsEndpoint);
-      const output = response.data;
-
-      // Read pagination headers on the first page load
-      if (page === 1) {
-        // ⚠️ NOTE: This relies on your WordPress API sending the headers
-        // X-WP-TotalPages and X-WP-Total. The default REST API does.
-        const totalPagesHeader = response.headers["x-wp-totalpages"];
-        if (totalPagesHeader) {
-          totalPages.value = Number(totalPagesHeader);
-        }
-      }
-
-      // Map and format the posts from the current page
-      const newPosts = output.map((item) => ({
-        title: item.title,
-        date: formatWpDate(item.date),
-        "post-meta-fields": {
-          summary: (function () {
-            const potentialSummary =
-              item.excerpt.rendered
-                .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "")
-                .trim()
-                .substring(0, 120) +
-              (item.excerpt.rendered.length > 120 &&
-              item.excerpt.rendered.trim().length > 0
-                ? "..."
-                : "");
-
-            if (potentialSummary.length === 0) {
-              const paragraphBlock = item.acf_blocks?.find(
-                (b) => b.name?.includes("paragraph") && b.fields,
-              );
-
-              const acfContent = paragraphBlock?.fields?.paragraph_text;
-
-              if (acfContent) {
-                const cleaned = acfContent
-                  .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, "")
-                  .trim();
-
-                return (
-                  cleaned.substring(0, 120) +
-                  (cleaned.length > 120 ? "..." : "")
-                );
-              }
-
-              return "";
-            }
-
-            return potentialSummary;
-          })(),
-        },
-        url: item.link,
-        image: {
-          src: item.featured_img,
-          alt: item._embedded?.["wp:featuredmedia"]?.[0]?.alt_text || "",
-        },
-      }));
-
-      // Append new posts to the existing data array
-      finalData = [...data.value, ...newPosts];
-
-      // Apply post_limit if it is not -1
-      if (props.post_limit !== -1) {
-        finalData = finalData.slice(0, props.post_limit);
-      }
-    }
-
-    // Update the reactive data reference
-    data.value = finalData;
-  } catch (e) {
-    console.error("Error fetching API data:", e);
-  } finally {
-    isLoadingMore.value = false;
-  }
-};
-
-console.log(data);
-function formatWpDate(dateString) {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-  }).format(date);
-}
+const showLoadMore = computed(() => {
+  if (props.display_posts_method !== "internal") return false;
+  return displayItems.value.length < allItems.value.length;
+});
 
 const loadMore = () => {
-  if (showLoadMore.value && !isLoadingMore.value) {
-    currentPage.value++;
-    fetchApiData(currentPage.value);
-  }
+  visibleCount.value += 12;
 };
 
-/* Layout / accordion logic */
 const updateColumns = () => {
   const container = gridContainer.value;
   if (!container || !container.children.length) return;
@@ -616,8 +434,11 @@ const pickedUpStyle = (index) => {
   if (isMobileAccordion.value) return {};
   const positionInRow = index % currentColumns.value;
   const gap = "1.25rem";
-  if (positionInRow === 0 || positionInRow === currentColumns.value - 1)
+
+  if (positionInRow === 0 || positionInRow === currentColumns.value - 1) {
     return {};
+  }
+
   return accordionDirection(index) === "right"
     ? { transform: `translateX(calc(-100% + -${gap}))`, zIndex: 10 }
     : { transform: `translateX(calc(100% + ${gap}))`, zIndex: 10 };
@@ -633,7 +454,7 @@ const printWidths = (index) => {
 
   const containerWidth = container.clientWidth;
   const remainingWidth = containerWidth - currentWidth;
-  const adjustedWidth = remainingWidth - 16; // Tailwind m-4 (approx) spacing
+  const adjustedWidth = remainingWidth - 16;
   accordionWidth.value = `${adjustedWidth}px`;
 };
 
@@ -644,9 +465,7 @@ const calculateAccordionHeight = (index) => {
   return `${itemEl.offsetHeight}px`;
 };
 
-/* Lifecycle */
-onMounted(async () => {
-  await fetchApiData();
+onMounted(() => {
   updateColumns();
   window.addEventListener("resize", updateColumns);
 });
