@@ -6,10 +6,7 @@
     <div class="hw-image-section__image relative md:w-1/2">
       <Picture
         class="w-full min-h-full object-cover"
-        :src="image.src"
-        :srcset="image.src"
-        :size-desktop="image.src"
-        :size-mobile="image.src"
+        :src="image.url"
         :alt="image.alt"
       />
     </div>
