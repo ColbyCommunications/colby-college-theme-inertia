@@ -147,7 +147,6 @@
                   />
 
                   <ButtonGroup
-                    v-if="mode === 'latest'"
                     :items="[{ button: { url: it.guid?.rendered || '#', title: cta, target: '_blank' } }]"
                     size="small"
                   />
@@ -162,69 +161,31 @@
       </div>
   </div>
   <div
-      v-if="render_api && api == 'Academic News'"
+      v-if="render_api && mode == 'academic'"
       class="article-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto space-y-16 md:space-y-0"
   >
       <div class="article-section__intro md:col-span-4 lg:col-span-3 space-y-10">
           <div class="context w-full space-y-5">
-              <div class="text-group">
-                  <div
-                      class="text-group__subheading font-extended font-bold text-12 leading-130 tracking-8 text-left text-azure uppercase"
-                      v-text="subheading"
-                  />
-                  <h2
-                      class="text-group__heading font-extended font-normal text-28 md:text-20 leading-110 -tracking-3 text-left text-indigo mt-2"
-                      v-text="heading"
-                  />
-                  <p
-                      class="text-group__p font-body font-normal text-18 md:text-14 leading-130 text-left text-indigo-800 mt-2"
-                      v-text="paragraph"
-                  />
-              </div>
-              <div class="button-group flex flex-wrap gap-4">
-                  <a
-                      v-for="(button, index) in buttons"
-                      class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 font-body font-normal text-10 leading-130 text-indigo bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1 px-3 transition-all duration-200 ease-in-out"
-                      :href="button.url"
-                  >
-                      <span class="btn__text"
-                          >{{ button.title }}
-                          <div
-                              class="btn__border block bg-indigo h-px w-0 group-hover:w-full transition-all duration-200 ease-in-out"
-                          ></div
-                      ></span>
-                  </a>
-              </div>
+              <TextGroup
+                :size="currentSize"
+                :subheading="currentSubheading"
+                :heading="heading"
+                :paragraph="paragraph"
+              />
+              <ButtonGroup
+                :items="buttons"
+                :size="currentSize"
+              />
           </div>
-          <div class="arrow-controls space-x-4">
-              <button
-                  class="arrow-btn inline-flex items-center justify-center w-12 h-12 bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
-                  @click="changeSlide('prev')"
-              >
-                  <span class="sr-only">Previous</span>
-                  <svg class="arrow-btn__arrow w-5 h-5" viewBox="0 0 26.9 26.5">
-                      <path
-                          d="M26.9 12.7h-25L14 .7l-.8-.7L0 13.2l13.2 13.3.8-.7L1.9 13.7h25z"
-                      ></path>
-                  </svg>
-              </button>
-              <button
-                  class="arrow-btn inline-flex items-center justify-center w-12 h-12 bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
-                  @click="changeSlide('next')"
-              >
-                  <span class="sr-only">Next</span>
-                  <svg class="arrow-btn__arrow w-5 h-5 rotate-180" viewBox="0 0 26.9 26.5">
-                      <path
-                          d="M26.9 12.7h-25L14 .7l-.8-.7L0 13.2l13.2 13.3.8-.7L1.9 13.7h25z"
-                      ></path>
-                  </svg>
-              </button>
+          <div class="carousel__controls">
+                <ArrowControls size="large" type="light" @prev="prev" @next="next" />
           </div>
       </div>
       <div
           class="article-section__grid md:col-start-5 md:col-span-8"
-          @mouseEnter="pauseCarousel()"
-          @mouseOut="playCarousel()"
+          @mouseenter="pauseCarousel"
+          @mouseleave="playCarousel"
+          ref="rootEl"
       >
           <div
               class="article-grid max-w-screen-2xl my-0 mx-auto"
@@ -234,7 +195,8 @@
               <div class="glide__track" data-glide-el="track">
                   <div class="glide__slides">
                       <div
-                          v-for="(item, index) in featuredNews"
+                          v-for="(it, idx) in slides"
+                          :key="'ctx-api-' + idx"
                           class="article-grid__item glide__slide"
                       >
                           <article class="article space-y-4">
@@ -246,52 +208,28 @@
                                   <picture>
                                       <source
                                           media="(min-width:768px)"
-                                          :srcset="item.yoast_head_json.og_image[0].url"
+                                          :srcset="it.yoast_head_json.og_image[0].url"
                                       />
                                       <img
                                           class="w-full object-cover hover:scale-105 transition-all duration-500 ease-in-out"
-                                          :src="item.yoast_head_json.og_image[0].url"
-                                          :alt="item.yoast_head_json.og_description"
+                                          :src="it.yoast_head_json.og_image[0].url"
+                                          :alt="it.yoast_head_json.og_description"
                                       />
                                   </picture>
                               </a>
                               <div class="context w-full space-y-5">
-                                  <div class="text-group">
-                                      <div
-                                          v-if="item['post-meta-fields'].primary_category"
-                                          class="text-group__subheading font-extended font-bold text-12 leading-130 tracking-8 text-left text-azure uppercase"
-                                          v-text="item['post-meta-fields'].primary_category"
-                                      />
-                                      <h2
-                                          class="text-group__heading font-extended font-normal text-20 leading-110 -tracking-3 text-left text-indigo"
-                                          :class="{
-                                              'mt-2': item['post-meta-fields']
-                                                  .primary_category,
-                                          }"
-                                          v-text="decodeHtmlEntities(item.title.rendered)"
-                                      />
-                                      <p
-                                          class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
-                                          v-text="
-                                              decodeHtmlEntities(
-                                                  item['post-meta-fields'].summary[0]
-                                              )
-                                          "
-                                      />
-                                  </div>
-                                  <div class="button-group flex flex-wrap gap-4">
-                                      <a
-                                          class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 font-body font-normal text-10 leading-130 text-indigo bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1 px-3 transition-all duration-200 ease-in-out"
-                                          :href="item.guid.rendered"
-                                      >
-                                          <span class="btn__text">
-                                              {{ cta }}
-                                              <div
-                                                  class="btn__border block bg-indigo h-px w-0 group-hover:w-full transition-all duration-200 ease-in-out"
-                                              ></div>
-                                          </span>
-                                      </a>
-                                  </div>
+                                <TextGroup
+                                  size="small"
+                                  :static="true"
+                                  :subheading="primaryCategory(it)"
+                                  :heading="title(it)"
+                                  :paragraph="summary(it)"
+                                />
+
+                                <ButtonGroup
+                                  :items="[{ button: { url: it.guid?.rendered || '#', title: cta, target: '_blank' } }]"
+                                  size="small"
+                                />
                               </div>
                           </article>
                       </div>
@@ -301,69 +239,31 @@
       </div>
   </div>
   <div
-      v-else-if="render_api && api == 'Faculty Accomplishments'"
+      v-else-if="render_api && mode == 'faculty'"
       class="article-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto space-y-16 md:space-y-0"
   >
       <div class="article-section__intro md:col-span-4 lg:col-span-3 space-y-10">
           <div class="context w-full space-y-5">
-              <div class="text-group">
-                  <div
-                      class="text-group__subheading font-extended font-bold text-12 leading-130 tracking-8 text-left text-azure uppercase"
-                      v-text="subheading"
-                  />
-                  <h2
-                      class="text-group__heading font-extended font-normal text-28 md:text-20 leading-110 -tracking-3 text-left text-indigo mt-2"
-                      v-text="heading"
-                  />
-                  <p
-                      class="text-group__p font-body font-normal text-18 md:text-14 leading-130 text-left text-indigo-800 mt-2"
-                      v-text="paragraph"
-                  />
-              </div>
-              <div class="button-group flex flex-wrap gap-4">
-                  <a
-                      v-for="(button, index) in FAbuttons"
-                      class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 font-body font-normal text-10 leading-130 text-indigo bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1 px-3 transition-all duration-200 ease-in-out"
-                      :href="button.url"
-                  >
-                      <span class="btn__text"
-                          >{{ button.title }}
-                          <div
-                              class="btn__border block bg-indigo h-px w-0 group-hover:w-full transition-all duration-200 ease-in-out"
-                          ></div
-                      ></span>
-                  </a>
-              </div>
+            <TextGroup
+                :size="currentSize"
+                :subheading="currentSubheading"
+                :heading="heading"
+                :paragraph="paragraph"
+              />
+              <ButtonGroup
+                :items="apiLeftButtonItems"
+                :size="currentSize"
+              />
           </div>
-          <div class="arrow-controls space-x-4">
-              <button
-                  class="arrow-btn inline-flex items-center justify-center w-12 h-12 bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
-                  @click="changeSlide('prev')"
-              >
-                  <span class="sr-only">Previous</span>
-                  <svg class="arrow-btn__arrow w-5 h-5" viewBox="0 0 26.9 26.5">
-                      <path
-                          d="M26.9 12.7h-25L14 .7l-.8-.7L0 13.2l13.2 13.3.8-.7L1.9 13.7h25z"
-                      ></path>
-                  </svg>
-              </button>
-              <button
-                  class="arrow-btn inline-flex items-center justify-center w-12 h-12 bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
-                  @click="changeSlide('next')"
-              >
-                  <span class="sr-only">Next</span>
-                  <svg class="arrow-btn__arrow w-5 h-5 rotate-180" viewBox="0 0 26.9 26.5">
-                      <path
-                          d="M26.9 12.7h-25L14 .7l-.8-.7L0 13.2l13.2 13.3.8-.7L1.9 13.7h25z"
-                      ></path>
-                  </svg>
-              </button>
+          <div class="carousel__controls">
+                <ArrowControls size="large" type="light" @prev="prev" @next="next" />
           </div>
       </div>
       <div
           class="article-section__grid md:col-start-5 md:col-span-8"
-          @mouseEnter="pauseCarousel()"
-          @mouseOut="playCarousel()"
+          @mouseenter="pauseCarousel"
+          @mouseleave="playCarousel"
+          ref="rootEl"
       >
           <div
               class="article-grid max-w-screen-2xl my-0 mx-auto"
@@ -373,60 +273,41 @@
               <div class="glide__track" data-glide-el="track">
                   <div class="glide__slides">
                       <div
-                          v-for="(item, index) in featuredNews"
+                          v-for="(it, idx) in slides"
+                          :key="'ctx-api-' + idx"
                           class="article-grid__item glide__slide"
                       >
                           <article class="article space-y-4">
                               <a
-                                  v-if="item.yoast_head_json.og_image[0].url"
+                                  v-if="it.yoast_head_json.og_image[0].url"
                                   class="article__image relative block overflow-hidden"
                                   :href="item.guid.rendered"
                               >
                                   <picture>
                                       <source
                                           media="(min-width:768px)"
-                                          :srcset="item.yoast_head_json.og_image[0].url"
+                                          :srcset="it.yoast_head_json.og_image[0].url"
                                       />
                                       <img
                                           class="w-full object-cover hover:scale-105 transition-all duration-500 ease-in-out"
-                                          :src="item.yoast_head_json.og_image[0].url"
-                                          :alt="item.yoast_head_json.og_description"
+                                          :src="it.yoast_head_json.og_image[0].url"
+                                          :alt="it.yoast_head_json.og_description"
                                       />
                                   </picture>
                               </a>
                               <div class="context w-full space-y-5">
-                                  <div class="text-group">
-                                      <div
-                                          v-if="item['post-meta-fields'].primary_category"
-                                          class="text-group__subheading font-extended font-bold text-12 leading-130 tracking-8 text-left text-azure uppercase"
-                                          v-text="item['post-meta-fields'].primary_category"
-                                      />
-                                      <h2
-                                          class="text-group__heading font-extended font-normal text-20 leading-110 -tracking-3 text-left text-indigo"
-                                          :class="{
-                                              'mt-2': item['post-meta-fields']
-                                                  .primary_category,
-                                          }"
-                                          v-html="item.title.rendered"
-                                      />
-                                      <p
-                                          class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
-                                          v-html="item['post-meta-fields'].summary[0]"
-                                      />
-                                  </div>
-                                  <div class="button-group flex flex-wrap gap-4">
-                                      <a
-                                          class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 font-body font-normal text-10 leading-130 text-indigo bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1 px-3 transition-all duration-200 ease-in-out"
-                                          :href="item.guid.rendered"
-                                      >
-                                          <span class="btn__text">
-                                              {{ cta }}
-                                              <div
-                                                  class="btn__border block bg-indigo h-px w-0 group-hover:w-full transition-all duration-200 ease-in-out"
-                                              ></div>
-                                          </span>
-                                      </a>
-                                  </div>
+                                <TextGroup
+                                  size="small"
+                                  :static="true"
+                                  :subheading="primaryCategory(it)"
+                                  :heading="title(it)"
+                                  :paragraph="summary(it)"
+                                />
+
+                                <ButtonGroup
+                                  :items="[{ button: { url: it.guid?.rendered || '#', title: cta, target: '_blank' } }]"
+                                  size="small"
+                                />
                               </div>
                           </article>
                       </div>
