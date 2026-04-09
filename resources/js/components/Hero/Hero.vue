@@ -32,10 +32,7 @@
         >
           <Picture
             class="absolute top-0 left-0 h-full w-full object-cover"
-            :srcset="image.image.src"
-            :src="image.image.src"
-            :size-desktop="image.image.src"
-            :size-mobile="image.image.src"
+            :src="image.image.url"
             :alt="image.alt"
           />
         </div>
@@ -57,8 +54,8 @@
         :key="index"
         :class="[
           'mb-10',
-          { 'md:col-span-3': columns === 4 },
-          { 'md:col-span-4': columns !== 4 },
+          { 'md:col-span-3': currentColumns === 4 },
+          { 'md:col-span-4': currentColumns !== 4 },
         ]"
       >
         <div
@@ -69,10 +66,7 @@
         >
           <Picture
             class="absolute top-0 left-0 h-full w-full object-cover"
-            :srcset="secondaryImage.image.src"
-            :src="secondaryImage.image.src"
-            :size-desktop="secondaryImage.image.src"
-            :size-mobile="secondaryImage.image.src"
+            :src="secondaryImage.image.url"
             :alt="secondaryImage.alt"
           />
         </div>
@@ -92,7 +86,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import Context from "@/js/components/Context/Context.vue";
 import Picture from "@/js/components/Picture/Picture.vue";
 
@@ -135,4 +129,6 @@ const secondaryImageClass = computed(() => {
     ? "pb-[165.3846153846154%]"
     : "md:pb-[80.55555555555556%]";
 });
+
+const currentColumns = ref(parseInt(props.columns, 10));
 </script>

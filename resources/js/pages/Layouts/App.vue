@@ -20,7 +20,8 @@
         pb-20 
         md:pb-[100px] 
         [&>div+div]:mt-20
-        md:[&>div>section:not(section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel'])>div:not(.section-nav):not(.hero):not(.home-hero):not(.overlay-hero)]:mt-[100px] 
+        md:[&>div>section:not(section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel'])>div:not(.section-nav):not(.hero):not(.home-hero):not(.overlay-hero)]:mt-[100px]
+        md:[&>div>section[data-block-name='acf/context-article-grid']+section[data-block-name='acf/hero']>div]:mt-[100px]
         md:[&>div>section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel']]:mt-[-50px]
         [&>div>section>div.full-bleed]:w-full 
         [&>div>section>div:not(.full-bleed)]:px-[10px]
