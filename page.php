@@ -27,12 +27,12 @@ function get_structured_block_data($block, $index = 0) {
 function should_server_hydrate_carousel(array $data, int $index): bool {
 
   
-  // $render_api = $data['render_api'] ?? false;
-  // $is_api = in_array($render_api, [true, 1, '1', 'true'], true);
+  $render_api = $data['render_api'] ?? false;
+  $is_api = in_array($render_api, [true, 1, '1', 'true'], true);
   // dd( $index <= 1);
-  // if (!$is_api) {
-  //     return false;
-  // }
+  if (!$is_api) {
+      return false;
+  }
 
   return $data['render_api'];
 }
