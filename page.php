@@ -92,6 +92,11 @@ foreach ($filtered_blocks as $index => &$block) {
 }
 unset($block);
 
+// dd($filtered_blocks);
+
+// last block on the HP
+// dd($filtered_blocks[10]['innerBlocks'][0]['innerBlocks']);
+
 Inertia::render('Page/Show', [
     'id'     => $post->ID,
     'title'  => get_the_title($post->ID),
