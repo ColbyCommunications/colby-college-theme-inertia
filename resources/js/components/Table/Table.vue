@@ -1,9 +1,9 @@
 <template>
   <div class="colby-table-block">
-    <slot v-if="!renderApi && !externalItems" />
+    <slot v-if="!render_api && !externalItems" />
 
     <div
-      v-if="renderApi || externalItems"
+      v-if="render_api || externalItems"
       class="!mb-10 justify-between md:flex"
     >
       <h2
@@ -13,7 +13,7 @@
     </div>
 
     <div
-      v-if="renderApi || externalItems"
+      v-if="render_api || externalItems"
       class="!mb-8 mt-6 flex flex-wrap justify-between md:mt-0 md:flex-nowrap md:space-x-12"
     >
       <!-- Search input -->
@@ -150,7 +150,7 @@
 
     <!-- Data table -->
     <table
-      v-if="renderApi || externalItems"
+      v-if="render_api || externalItems"
       class="colby-table-block block w-full overflow-scroll md:table md:overflow-auto"
     >
       <tbody>
@@ -324,7 +324,7 @@ import Modal from "@/js/components/Modal/Modal.vue";
 // Props
 // ---------------------------------------------------------------------------
 const props = defineProps({
-  renderApi: {
+  render_api: {
     type: Boolean,
     default: false,
   },
@@ -345,6 +345,8 @@ const props = defineProps({
     default: null,
   },
 });
+
+console.log(props);
 
 // ---------------------------------------------------------------------------
 // Reactive state
@@ -889,9 +891,9 @@ onMounted(async () => {
   if (params.has("pag")) {
     currentPage.value = Number(params.get("pag"));
   }
-
+  console.log(props.render_api);
   // API-driven data
-  if (props.renderApi) {
+  if (props.render_api) {
     switch (props.api) {
       case "Department Courses":
         endpoint.value = "https://www.colby.edu/endpoints/v1/courses/";
@@ -910,7 +912,7 @@ onMounted(async () => {
 
     try {
       const response = await axios.get(endpoint.value);
-
+      console.log(response);
       switch (props.api) {
         case "Department Courses": {
           const deptItems = response.data.courses.filter(
