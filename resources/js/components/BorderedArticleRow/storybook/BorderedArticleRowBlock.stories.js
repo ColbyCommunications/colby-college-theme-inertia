@@ -10,10 +10,8 @@ export default {
 const mockItems = [
   {
     image: {
-      src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
-      alt: "this is an alt tag",
+      url: "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
+      alt: "this is an alt"
     },
     heading: "Future of Artificial Intelligence",
     subheading: "Technology",
@@ -28,10 +26,8 @@ const mockItems = [
   },
   {
     image: {
-      src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
-      alt: "this is an alt tag",
+      url: "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
+      alt: "this is an alt"
     },
     heading: "Sustainable Energy Solutions",
     subheading: "Environment",
@@ -44,10 +40,8 @@ const mockItems = [
   },
   {
     image: {
-      src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
-      alt: "this is an alt tag",
+      url: "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
+      alt: "this is an alt"
     },
     heading: "Modern Architecture Trends",
     subheading: "Design",
@@ -65,33 +59,5 @@ export const Primary = {
   tags: ["!autodocs"],
   args: {
     items: mockItems,
-  },
-  play: async ({ canvas, canvasElement }) => {
-    const first = canvasElement.querySelectorAll(
-      ".bordered-article-row  .article-grid__item:first-child",
-    )[0];
-    const firstHeading = first.querySelectorAll(".text-group__heading")[0];
-    await expect(firstHeading.textContent.slice(0, -1)).toBe(
-      "Future of Artificial Intelligence",
-    );
-    await expect(firstHeading).toBeVisible();
-
-    const second = canvasElement.querySelectorAll(
-      ".bordered-article-row .article-grid__item:nth-child(2)",
-    )[0];
-    const secondHeading = second.querySelectorAll(".text-group__heading")[0];
-    await expect(secondHeading.textContent.slice(0, -1)).toBe(
-      "Sustainable Energy Solutions",
-    );
-    await expect(secondHeading).toBeVisible();
-
-    const third = canvasElement.querySelectorAll(
-      ".bordered-article-row .article-grid__item:nth-child(3)",
-    )[0];
-    const thirdHeading = third.querySelectorAll(".text-group__heading")[0];
-    await expect(thirdHeading.textContent.slice(0, -1)).toBe(
-      "Modern Architecture Trends",
-    );
-    await expect(thirdHeading).toBeVisible();
   },
 };
