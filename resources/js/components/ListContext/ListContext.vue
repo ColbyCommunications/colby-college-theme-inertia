@@ -53,9 +53,14 @@ const props = defineProps({
   items: { type: Array, default: () => [] },
 });
 
-const buttonItems = computed(() =>
-  props.buttons.map((btn) => ({
-    button: { url: btn.url, title: btn.title, target: btn.target || "" },
-  })),
-);
+const buttonItems = computed(() => {
+  if (props.buttons) {
+   return props.buttons.map((btn) => ({
+      button: { url: btn.url, title: btn.title, target: btn.target || "" },
+    }));
+  } else {
+    return [];
+  }
+
+});
 </script>

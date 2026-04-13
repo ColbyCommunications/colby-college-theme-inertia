@@ -40,9 +40,12 @@ const blockRegistry = {
   "acf/related-content": () => import("../RelatedContent/RelatedContent.vue"),
   "acf/hw-image-section": () => import("../HwImageSection/HwImageSection.vue"),
   "acf/list-section": () => import("../ListSection/ListSection.vue"),
+  "acf/list-context": () => import("../ListContext/ListContext.vue"),
   "acf/stat-group": () => import("../StatGroup/StatGroup.vue"),
   "acf/media-context": () => import("../MediaContext/MediaContext.vue"),
   "acf/context-article-grid": () => import("../ContextArticleGrid/ContextArticleGrid.vue"),
+  "core/heading": () => import("../Heading/Heading.vue"),
+  "acf/table": () => import("../Table/Table.vue"),
 };
 
 function getLoader(blockName) {
@@ -96,6 +99,8 @@ function getPlaceholderHeight(item) {
     "acf/home-hero": 0,
     "acf/overlay-hero": 0,
     "acf/context-article-grid": 300,
+    "core/heading": 0,
+    "acf/table": 350,
   };
 
   return heights[item.blockName] ?? 0;

@@ -9,6 +9,38 @@ require_once __DIR__ . '/helpers/sidebar_data.php';
 
 global $post;
 
+
+$filtered_blocks = array_values(array_filter(
+    parse_blocks($post->post_content),
+    function ($block) {
+        return !is_null($block['blockName'] ?? null);
+    }
+));
+
+function get_structured_block_data($block, $index = 0) {
+
+  if ($block['blockName'] === 'core/heading' ) {
+    return ['heading' => str_replace(array("\r", "\n"), '', $block['innerHTML'])];
+  }
+
+  $meta_id = !empty($block['attrs']['id'])
+      ? 'block_' . $block['attrs']['id']
+      : 'block_' . $index . '_' . md5(wp_json_encode($block['attrs']['data'] ?? []));
+  
+
+  acf_setup_meta($block['attrs']['data'] ?? [], $meta_id, true);
+  $fields = get_fields($meta_id);
+  acf_reset_meta($meta_id);
+
+  return $fields ?: [];
+}
+
+foreach ($filtered_blocks as $index => &$block) {
+  $block['attrs']['data'] = get_structured_block_data($block, $index);
+  // $block = enrich_block_data($block, $index);
+}
+unset($block);
+
 $is_post = get_post_type($post) === 'post';
 
 if ($is_post) {
@@ -60,14 +92,16 @@ if ($hero_type === 'overlay') {
 }
 
 $sidebar = $is_post ? null : colby_sidebar_build_data($post);
-$content = apply_filters('the_content', get_the_content(null, false, $post->ID));
+// $content = apply_filters('the_content', get_the_content(null, false, $post->ID));
 
-Inertia::render('Page/Show', [
+
+// dd($filtered_blocks);
+Inertia::render('PageWithSidebar/Show', [
   'id' => $post->ID,
   'title' => get_the_title($post->ID),
   'layout' => 'with-sidebar',
-  'hero' => $hero,
   'sidebar' => $sidebar,
-  'content' => $content,
   'isPost' => $is_post,
+  'blocks' => $filtered_blocks,
+  'hero' => $hero
 ]);
