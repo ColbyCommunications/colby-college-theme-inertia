@@ -1,9 +1,10 @@
 <template>
-  <div class="colby-paragraph-block" v-html="text"></div>
+  <div class="colby-paragraph-block"><TextGroup :paragraph="paragraph_text" /></div>
 </template>
 
 <script setup>
+import TextGroup from '../TextGroup/TextGroup.vue';
 defineProps({
-  text: { type: String, default: "" },
+  paragraph_text: { type: String, default: "" },
 });
 </script>

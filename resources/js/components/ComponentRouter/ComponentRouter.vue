@@ -46,6 +46,8 @@ const blockRegistry = {
   "acf/context-article-grid": () => import("../ContextArticleGrid/ContextArticleGrid.vue"),
   "core/heading": () => import("../Heading/Heading.vue"),
   "acf/table": () => import("../Table/Table.vue"),
+  "core/group": () => import("../Group/Group.vue"),
+  "acf/paragraph": () => import("../Paragraph/Paragraph.vue"),
 };
 
 function getLoader(blockName) {
@@ -101,6 +103,8 @@ function getPlaceholderHeight(item) {
     "acf/context-article-grid": 300,
     "core/heading": 0,
     "acf/table": 350,
+    "core/group": 350,
+    "acf/paragraph": 350,
   };
 
   return heights[item.blockName] ?? 0;
