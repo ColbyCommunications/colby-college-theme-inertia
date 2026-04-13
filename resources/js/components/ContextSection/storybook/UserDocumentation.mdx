@@ -1,0 +1,132 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as ContextSectionStories from "./ContextSection.stories";
+
+<Meta title="Blocks/Context Section/Documentation" />
+
+# Context Section
+
+The **Context Section** block is used to present structured content such as headings, paragraphs, and optional calls to action in a constrained layout container.
+
+It is commonly used for editorial content blocks that need consistent spacing and alignment across pages.
+
+---
+
+## When to Use This Block
+
+Use the Context Section when:
+
+- You need a focused text section with controlled layout width
+- You want to present editorial or marketing content cleanly
+- You need optional hero-style spacing for emphasis
+
+### Example uses:
+
+- Page introductions
+- Editorial content blocks
+- Marketing messaging sections
+
+---
+
+## Preview
+
+<Canvas of={ContextSectionStories.Default} />
+
+---
+
+## Hero
+
+If enabled, the section is styled as a **hero variant** with increased vertical spacing.
+
+Use this when:
+
+- The section is the first or most important content on a page
+- You want more visual emphasis and breathing room
+
+---
+
+## Align
+
+Controls horizontal positioning of the content inside the section.
+
+### Left
+
+Content is aligned to the left within the grid.
+
+### Center
+
+Content is centered by shifting it into the middle columns of the grid.
+
+Use this when:
+
+- You want a more focused reading experience
+- You want to emphasize a central message
+
+---
+
+## Size
+
+Controls the visual density of the content.
+
+### Medium
+
+Default reading width for standard content sections.
+
+### Large
+
+Wider layout for more expansive content.
+
+Use larger sizing when:
+
+- Content includes longer paragraphs
+- You want a more open, less constrained layout
+
+---
+
+## Content
+
+The Context Section renders structured content through the **Context component**.
+
+This includes:
+
+- Subheading
+- Heading
+- Paragraph text
+- Optional buttons (calls to action)
+
+---
+
+## Buttons
+
+Buttons are passed as an array and rendered as call-to-action elements within the Context component.
+
+Use buttons when:
+
+- You want users to navigate to another page
+- You want to highlight a primary or secondary action
+
+---
+
+## Layout Behavior
+
+### Grid Structure
+
+The section is built on a 12-column grid:
+
+- Content spans 8 columns by default
+- Content shifts to center when Align is set to Center
+
+---
+
+### Spacing
+
+- Default padding is applied horizontally
+- Hero mode increases vertical spacing significantly
+
+---
+
+## Tips for Best Results
+
+- Use **Hero mode sparingly** for high-impact sections only
+- Prefer **Center alignment** for short, focused messaging
+- Keep paragraphs concise for better readability
+- Limit buttons to 1–2 actions per section

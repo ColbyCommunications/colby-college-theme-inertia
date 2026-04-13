@@ -1,0 +1,99 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as BorderedArticleRowStories from "./BorderedArticleRow.stories";
+
+<Meta title="Blocks/Bordered Article Row/Documentation" />
+
+# Bordered Article Row
+
+The **Bordered Article Row** block displays a horizontal list of articles with a bordered, row-based layout.
+
+Each item in the row is separated visually with a top border to create clear division between entries.
+
+---
+
+## When to Use This Block
+
+Use the Bordered Article Row when:
+
+- You want to display a small set of related articles in a compact horizontal layout
+- You need a simple, scannable list of article links or summaries
+- You want stronger visual separation between items than a standard grid
+
+### Example uses:
+
+- News highlights
+- Related articles sections
+- Editorial link lists
+
+---
+
+## Preview
+
+<Canvas of={BorderedArticleRowStories.Primary} />
+
+---
+
+## Items
+
+Each item represents a single article entry in the row.
+
+You can add as many items as needed.
+
+Each item includes:
+
+### Context
+
+Shared content fields that define the article content, such as:
+
+- Title
+- Text
+- Links
+- Metadata
+
+This block does not require images, keeping the layout minimal and text-focused.
+
+---
+
+## Layout Behavior
+
+### Grid Structure
+
+The block displays items in a responsive grid:
+
+- 1 column on small screens
+- 3 columns on medium screens and up
+
+Each item is visually separated using a **top border**.
+
+---
+
+### Item Styling
+
+Each item includes:
+
+- Top border divider
+- Padding above content
+- Column-based article layout
+
+This ensures consistent spacing and separation between entries.
+
+---
+
+## Article Component
+
+Each item is rendered using the **Article component** in column layout mode.
+
+This provides:
+
+- Consistent typography
+- Standardized spacing
+- Unified link behavior
+
+---
+
+## Tips for Best Results
+
+- Keep the number of items small (3–6 works best)
+- Use for tightly related content only
+- Avoid mixing unrelated topics in the same row
+- Prefer this block over grids when you want stronger visual separation between items

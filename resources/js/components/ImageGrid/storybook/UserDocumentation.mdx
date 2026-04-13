@@ -1,0 +1,100 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as ImageGridStories from "./ImageGrid.stories";
+
+<Meta title="Blocks/Image Grid/Documentation" />
+
+# Image Grid
+
+The **Image Grid** block displays a collection of images in a responsive grid layout.
+
+Each image can optionally include a caption, making this block useful for showcasing photography, documenting events, or presenting visual collections that support the surrounding content.
+
+---
+
+## When to Use This Block
+
+Use the Image Grid when:
+
+- You want to display multiple related images
+- You need a clean and organized visual gallery
+- Images contribute to storytelling or documentation
+
+### Example uses:
+
+- Event photo highlights
+- Campus or program photography
+- Visual storytelling sections
+- Image collections supporting editorial content
+
+---
+
+## Preview
+
+<Canvas of={ImageGridStories.Square} />
+
+---
+
+## Image Orientation
+
+The **Image Orientation** setting determines the aspect ratio used for all images in the grid.
+
+Available options include:
+
+- **Square**
+- **Rectangle**
+- **Portrait**
+- **Landscape**
+
+Choosing the correct orientation ensures images display consistently and maintain a balanced grid layout.
+
+---
+
+## Images
+
+The **Images** field allows editors to add multiple images to the grid.
+
+Each image entry includes:
+
+- **Image** – The image file displayed in the grid
+- **Caption (optional)** – Short descriptive text displayed below the image
+
+Images are added using a repeater field, allowing editors to include as many images as needed.
+
+---
+
+## Layout Behavior
+
+### Responsive Grid
+
+The grid adapts to screen size:
+
+- **Desktop:** Images display in a multi-column layout
+- **Tablet and Mobile:** Images stack vertically or adjust to fewer columns
+
+---
+
+### Aspect Ratio Control
+
+The selected orientation maintains consistent aspect ratios across all images, ensuring visual alignment and preventing uneven rows.
+
+---
+
+## Captions
+
+If a caption is added, it appears directly below the image.
+
+Captions are useful for:
+
+- Photo descriptions
+- Photographer credit
+- Contextual details about the image
+
+---
+
+## Tips for Best Results
+
+- Use images with consistent orientation for a balanced layout
+- Keep captions concise and descriptive
+- Choose high-quality images that remain clear at large sizes
+- Avoid mixing very different image crops within the same grid
+- Use captions sparingly when the images are self-explanatory

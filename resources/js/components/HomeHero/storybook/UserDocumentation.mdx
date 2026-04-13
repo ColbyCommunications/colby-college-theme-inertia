@@ -1,0 +1,139 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as HomeHeroStories from "./HomeHero.stories";
+
+<Meta title="Blocks/Home Hero/Documentation" />
+
+# Home Hero
+
+The **Home Hero** block creates a large, immersive header designed specifically for the homepage.  
+It fills most of the screen and combines a **background image or video with prominent headline content and optional calls to action**.
+
+This block is intended to create a strong first impression when visitors arrive on the site.
+
+---
+
+## When to Use This Block
+
+Use the Home Hero block when:
+
+- You want a visually impactful introduction on the homepage
+- You want to highlight a key message or campaign
+- You want to feature a background image or video with supporting content
+
+### Example uses:
+
+- Homepage introductions
+- Campaign or initiative highlights
+- Major announcements
+- Seasonal or promotional messaging
+
+---
+
+## Preview
+
+<Canvas of={HomeHeroStories.Primary} />
+
+---
+
+## Heading
+
+The **Heading** field contains the main message displayed in the hero.
+
+This text appears prominently over the background media and is typically the first thing visitors see.
+
+Use short, impactful language that clearly communicates the primary message of the page.
+
+---
+
+## Caption
+
+The **Caption** field allows you to add a small line of text that appears near the bottom of the hero.
+
+This can be used to:
+
+- Credit a photographer or source
+- Provide context about the image or video
+- Add a short descriptive note
+
+---
+
+## Video
+
+The **Video** field allows you to upload a background video for the hero.
+
+When a video is added:
+
+- It plays automatically
+- It loops continuously
+- It displays without sound
+
+Use video when you want to create a more dynamic visual experience.
+
+If no video is added, the block will display the background image instead.
+
+---
+
+## Image
+
+The **Image** field provides the fallback background image for the hero.
+
+This image is required and will appear when:
+
+- No video is provided
+- The browser cannot play the video
+
+Choose images that:
+
+- Work well at very large sizes
+- Have strong visual impact
+- Maintain readability for the overlay text
+
+---
+
+## Buttons
+
+Optional **buttons** can be added to create calls to action within the hero.
+
+These buttons may link to:
+
+- Key pages
+- Featured programs
+- Event information
+- Campaign landing pages
+
+Limit the number of buttons to maintain a clear and focused message.
+
+---
+
+## Layout Behavior
+
+### Full Screen Hero
+
+The Home Hero fills most of the visible screen when the page loads, creating a large visual introduction.
+
+---
+
+### Background Media
+
+The background displays either:
+
+- A looping **video**, or
+- A full-width **image**
+
+Text content is layered over the media with a subtle gradient to improve readability.
+
+---
+
+### Content Placement
+
+The main heading and buttons appear near the lower portion of the hero to maintain visibility against the background media.
+
+---
+
+## Tips for Best Results
+
+- Use **short, powerful headlines** for maximum impact
+- Choose **high-quality images or videos** that work at large sizes
+- Ensure background media does not make text difficult to read
+- Limit calls to action to **one or two buttons**
+- Use captions when credit or context is needed

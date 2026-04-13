@@ -1,0 +1,187 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as MediaAsideStories from "./MediaAside.stories";
+
+<Meta title="Blocks/Media Aside/Documentation" />
+
+# Media Aside
+
+The **Media Aside** block combines media content with supporting text and optional call-to-action buttons.
+
+It supports both a single static layout and an optional carousel mode, making it ideal for storytelling layouts where visual content is paired with contextual information.
+
+---
+
+## When to Use This Block
+
+Use the Media Aside when:
+
+- You want to pair images with supporting content
+- You need a side-by-side media and text layout
+- You want to present a featured visual with context
+- You need a lightweight carousel with descriptive slides
+
+### Example uses:
+
+- Editorial feature sections
+- Product or campaign highlights
+- Image-led storytelling blocks
+- Case study or testimonial visuals with context
+
+---
+
+## Preview
+
+<Canvas of={MediaAsideStories.Static} />
+
+---
+
+## Carousel Mode
+
+The **Carousel Mode** toggle enables a slideshow experience.
+
+When enabled:
+
+- Multiple images are displayed as slides
+- Users can navigate using next/previous controls
+- Each slide can include its own heading, paragraph, and buttons
+- Contextual content updates dynamically per slide
+
+When disabled:
+
+- A single static image is displayed
+- One shared heading, paragraph, and button group is shown
+
+---
+
+## Media Content
+
+### Static Image Mode
+
+When Carousel Mode is disabled, the block displays:
+
+- **Image** – A single featured image
+- Optional caption (if available)
+
+The image is displayed as the primary visual element of the block.
+
+---
+
+### Carousel Mode
+
+When Carousel Mode is enabled, the block displays multiple slides.
+
+Each slide includes:
+
+- **Image** – Main visual for the slide
+- **Heading (optional)** – Title for the slide context
+- **Paragraph (optional)** – Supporting description text
+- **Buttons (optional)** – Call-to-action links
+
+Each slide functions as an independent content unit within the carousel.
+
+---
+
+## Aside Content
+
+The aside section provides supporting context alongside the media.
+
+### Static Mode Aside
+
+When Carousel Mode is disabled, the aside includes:
+
+- **Heading (optional)** – Title for the section
+- **Paragraph (optional)** – Supporting description text
+- **Buttons (optional)** – Call-to-action links
+
+This content remains fixed and applies to the single image.
+
+---
+
+### Carousel Mode Aside
+
+When Carousel Mode is enabled, the aside dynamically updates based on the active slide.
+
+Each slide can include:
+
+- Heading
+- Paragraph
+- Buttons
+
+Navigation controls allow users to move between slides:
+
+- Previous button
+- Next button
+
+The aside content transitions smoothly to match the active slide.
+
+---
+
+## Buttons
+
+Buttons are optional and can appear in both static and carousel modes.
+
+Each button includes:
+
+- **Link** – URL and label
+- Optional target (same tab or new tab)
+
+Buttons are grouped visually and displayed as call-to-action elements.
+
+Common uses include:
+
+- Learn more links
+- External references
+- Registration or sign-up actions
+
+---
+
+## Layout Behavior
+
+### Grid Structure
+
+The Media Aside is built on a 12-column grid:
+
+- **Main media area:** spans 9 columns
+- **Aside content:** spans 3 columns
+
+This creates a balanced visual hierarchy between media and supporting content.
+
+---
+
+### Responsive Behavior
+
+- **Desktop:** Two-column layout (media + aside)
+- **Tablet:** Columns stack or compress based on available width
+- **Mobile:** Media and aside stack vertically for readability
+
+---
+
+## Carousel Behavior
+
+When Carousel Mode is active:
+
+- Slides transition with smooth animation
+- Only one slide is visible at a time
+- Aside content updates in sync with the active slide
+- Navigation controls allow manual slide progression
+
+---
+
+## Accessibility
+
+The Media Aside block is designed with accessibility in mind:
+
+- Images include alt text for screen readers
+- Buttons are keyboard accessible
+- Carousel navigation includes labeled controls
+- Content hierarchy uses semantic headings
+
+---
+
+## Tips for Best Results
+
+- Use high-quality images with consistent visual style
+- Keep slide text concise to maintain readability
+- Limit the number of carousel slides to avoid cognitive overload
+- Use buttons sparingly and with clear intent
+- Ensure captions add meaningful context rather than repeating visible content

@@ -5,8 +5,7 @@
   "category": "layout",
   "keywords": ["accordion", "panels"],
   "acf": {
-    "mode": "preview",
-    "renderTemplate": "template.php"
+    "mode": "edit"
   },
   "supports": {
     "align": false,

@@ -1,0 +1,117 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as InsetWidgetStories from "./InsetWidget.stories";
+
+<Meta title="Blocks/Inset Widget/Documentation" />
+
+# Inset Widget
+
+The **Inset Widget** block displays a highlighted content panel that can include text and optional call-to-action buttons.
+
+It is commonly used to draw attention to an important message while keeping the content visually contained within the page layout.
+
+---
+
+## When to Use This Block
+
+Use the Inset Widget when:
+
+- You want to highlight an important message or announcement
+- You need a visually distinct callout within a page
+- You want to include supporting text and a clear action
+
+### Example uses:
+
+- Important announcements
+- Featured calls to action
+- Alerts or informational highlights
+- Promotional or informational prompts
+
+---
+
+## Preview
+
+<Canvas of={InsetWidgetStories.Default} />
+
+---
+
+## Inset
+
+The **Inset** option controls the horizontal width of the widget within the page layout.
+
+### Enabled
+
+The widget is centered and constrained within the page grid, creating a more focused and contained appearance.
+
+Use this when:
+
+- You want to emphasize the content
+- You want a more refined, editorial layout
+
+### Disabled
+
+The widget spans the full width of the content area.
+
+Use this when:
+
+- You want a stronger visual presence
+- You need the message to feel more prominent across the page
+
+---
+
+## Context
+
+The **Context** section contains the main content of the widget.
+
+This includes:
+
+- Subheading
+- Heading
+- Paragraph text
+
+This content communicates the primary message of the widget.
+
+---
+
+## Buttons
+
+Optional **buttons** can be added to encourage user interaction.
+
+Buttons are commonly used for:
+
+- Navigating to another page
+- Learning more about a topic
+- Completing a specific action
+
+Use buttons when there is a clear next step for the user.
+
+---
+
+## Layout Behavior
+
+### Centered Container
+
+When Inset is enabled, the widget is constrained to a narrower centered column, improving readability and focus.
+
+---
+
+### Full Width Container
+
+When Inset is disabled, the widget expands to the full width of the content area.
+
+This creates a stronger visual block within the page.
+
+---
+
+### Button Alignment
+
+Buttons appear alongside the text on larger screens and stack below the content on smaller devices.
+
+---
+
+## Tips for Best Results
+
+- Use concise messaging to maintain clarity
+- Include a button only when there is a clear action
+- Prefer inset mode for editorial or informational content
+- Use full-width mode for higher emphasis or urgency
+- Keep the widget focused on a single message

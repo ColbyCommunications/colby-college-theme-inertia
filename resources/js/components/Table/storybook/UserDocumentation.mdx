@@ -1,0 +1,334 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as TableStories from "./Table.stories";
+
+<Meta title="Blocks/Table/Documentation" />
+
+# Table
+
+The **Table** block is a flexible data display component used to present structured information in rows and columns.
+
+It supports both manually entered content and API-driven data, along with filtering, searching, pagination, and modal-based content display.
+
+---
+
+## When to Use This Block
+
+Use the Table block when:
+
+- You need to display structured datasets
+- You are working with directory-style content (people, offices, departments)
+- You want users to search or filter data
+- You need paginated or API-driven results
+
+### Example uses:
+
+- Course catalogues
+- Staff or people directories
+- Department listings
+- Office listings
+- Academic or institutional datasets
+
+---
+
+## Preview
+
+<Canvas of={TableStories.Static} />
+
+---
+
+## Data Modes
+
+The Table block supports two primary modes:
+
+### 1. Static Mode
+
+Used when:
+
+- Content is manually defined via ACF
+- No external API is required
+- You need full editorial control
+
+In this mode, the table renders custom headings and items.
+
+---
+
+### 2. API Mode
+
+Enabled when:
+
+- **Render API** is turned on
+- Data is fetched dynamically from an external endpoint
+
+Supported APIs include:
+
+- Majors and Minors
+- Department Courses
+- Course Catalogue
+- Departments
+- Offices
+
+API mode enables advanced features such as:
+
+- Filtering
+- Search
+- Pagination
+- Dynamic headings
+- Department/term filtering
+
+---
+
+## Render API
+
+The **Render API** toggle determines whether the table loads data dynamically.
+
+When enabled:
+
+- Data is fetched from external endpoints
+- Search, filters, and pagination become active
+- Table structure is generated automatically
+
+When disabled:
+
+- The table uses manually defined content
+- API features are not available
+
+---
+
+## API Selection
+
+When using API mode, the **API field** determines the dataset source.
+
+Each option controls:
+
+- Data structure
+- Available filters
+- Column layout
+- Heading configuration
+
+### Common API types:
+
+- **Course Catalogue** – full course listings
+- **Department Courses** – courses filtered by department
+- **Majors and Minors** – academic programs
+- **Departments** – department directory
+- **Offices** – administrative listings
+
+---
+
+## Department Code
+
+Used when the API is set to **Department Courses**.
+
+This field:
+
+- Filters courses by selected department
+- Limits results to a specific academic area
+- Is required in Department Courses mode
+
+---
+
+## Items Per Page
+
+Controls pagination behavior in API mode.
+
+It defines:
+
+- How many items appear per page
+- Default pagination size for results
+
+---
+
+## Headings (Static Mode)
+
+The **Headings** field defines table column headers when not using API mode.
+
+Each heading:
+
+- Represents a column label
+- Is displayed in the table header row
+- Should match the structure of the item columns
+
+Example:
+
+- Name
+- Course Number
+- Description
+
+---
+
+## Items (Static Mode)
+
+The **Items** repeater defines table rows when not using API mode.
+
+Each item can include:
+
+- Image (optional)
+- Title
+- Link
+- Columns (data cells)
+
+Items are rendered as structured rows in the table.
+
+---
+
+## Columns
+
+Each item can contain multiple **columns**, which define:
+
+- Table cell content
+- Text or linked values (depending on configuration)
+- Row-based structured data
+
+In API mode, columns are generated automatically based on dataset type.
+
+---
+
+## Search Functionality
+
+The Table block includes full-text search powered by Fuse.js.
+
+Search behavior:
+
+- Matches across title, description, and faculty fields
+- Updates results in real time
+- Resets pagination when active
+
+Search is only available in API or external data modes.
+
+---
+
+## Filtering
+
+The Table block supports multiple filter types depending on dataset:
+
+### Term Filter
+
+- Filters by academic term (Fall, Spring, January)
+- Available in course-related APIs
+
+### Department Filter
+
+- Filters results by department code
+- Used in course catalogue and department views
+
+### Division Filter
+
+- Groups departments into broader academic divisions
+- Examples: Humanities, Natural Sciences, Social Sciences
+
+Filters update results dynamically and reset pagination.
+
+---
+
+## Pagination
+
+Pagination is automatically enabled when using API or external data.
+
+It includes:
+
+- Page navigation controls
+- Next / Previous buttons
+- Page number selection
+- Result count summary
+
+Example behavior:
+
+- “Showing 10 of 120 results”
+- Navigation between pages without reload
+
+---
+
+## Table Layout Behavior
+
+### Responsive Design
+
+The table adapts to screen size:
+
+- **Desktop:** Full table layout
+- **Tablet:** Horizontal scroll if needed
+- **Mobile:** Scrollable table container
+
+---
+
+### Row Structure
+
+Each row includes:
+
+- Primary content cell (title, image, or modal trigger)
+- Additional columns for structured data
+- Alternating row background for readability
+
+---
+
+## Images and People Display
+
+When image data is present:
+
+- A circular avatar is shown
+- Name is displayed alongside the image
+- Clicking navigates to profile or detail page
+
+Used primarily in:
+
+- People directory
+- Staff listings
+
+---
+
+## Modal Content
+
+Some table items include expandable modal content.
+
+This is used for:
+
+- Course descriptions
+- Detailed academic information
+
+Behavior:
+
+- Clicking a link opens a modal
+- Modal displays structured content (title + description)
+- Content is formatted with HTML where needed
+
+---
+
+## External Data Support
+
+The Table block can accept externally passed items for:
+
+- People
+- Offices
+- Departments
+
+Each type maps to a specific structure and URL format.
+
+---
+
+## Accessibility
+
+The Table block is built with accessibility in mind:
+
+- Semantic `<table>` structure
+- Keyboard navigable controls
+- Search and filters are form-label accessible
+- Pagination buttons are screen-reader friendly
+- Images include alt text where applicable
+
+---
+
+## Performance Notes
+
+- API data is loaded asynchronously
+- Fuse.js search is initialized after data load
+- Pagination is computed client-side
+- URL parameters are used to preserve state
+
+---
+
+## Tips for Best Results
+
+- Use API mode for large or dynamic datasets
+- Keep static tables small and highly curated
+- Ensure column headings match content structure
+- Avoid overloading with too many filters
+- Use clear, consistent naming for items and columns

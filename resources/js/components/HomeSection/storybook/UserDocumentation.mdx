@@ -1,0 +1,110 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as HomeSectionStories from "./HomeSection.stories";
+
+<Meta title="Blocks/Home Section/Documentation" />
+
+# Home Section
+
+The **Home Section** block is a composite layout used on the homepage to present a combination of **news, events, and a featured call-to-action** within a single section.
+
+This block groups several content elements together to create a structured homepage segment with editorial content and supporting imagery.
+
+---
+
+## When to Use This Block
+
+Use the Home Section block when:
+
+- You want to highlight recent news or stories
+- You want to display upcoming events
+- You want to include a promotional call-to-action within the same section
+
+### Example uses:
+
+- Homepage news and events sections
+- Featured editorial highlights
+- Alumni updates or announcements
+- Calls to action connected to current activity
+
+---
+
+## Preview
+
+<Canvas of={HomeSectionStories.Default} />
+
+---
+
+## News Section
+
+The **News section** displays a set of recent stories within the section.
+
+This typically includes:
+
+- A subheading
+- A heading
+- Optional descriptive text
+- A grid of articles
+
+Content can be automatically pulled from a news source or manually selected depending on how the block is configured.
+
+---
+
+## Events Section
+
+The **Events section** introduces a list of upcoming events.
+
+This section typically includes:
+
+- Subheading
+- Heading
+- Supporting paragraph
+- Optional button linking to a full events page
+
+Below the introduction, a grid displays several event items with links to more information.
+
+---
+
+## Call to Action
+
+The **Call to Action** area highlights an important message or initiative within the section.
+
+This component typically includes:
+
+- Subheading
+- Heading
+- Paragraph text
+- Optional buttons
+- A supporting image
+
+Use this area to direct visitors toward key programs, initiatives, or featured content.
+
+---
+
+## Layout Behavior
+
+### Background Section
+
+The entire block sits within a styled background section that visually separates it from surrounding page content.
+
+---
+
+### Content Stacking
+
+Content appears in a vertical sequence:
+
+1. News content
+2. Events introduction
+3. Event grid
+4. Featured call-to-action
+
+This structure allows visitors to scan multiple types of content within a single section.
+
+---
+
+## Tips for Best Results
+
+- Use **clear headings** to distinguish between news and events
+- Limit the number of items shown in each grid for readability
+- Use concise descriptions to maintain visual balance
+- Choose a call-to-action that complements the news or events being displayed
+- Update featured content regularly to keep the section fresh

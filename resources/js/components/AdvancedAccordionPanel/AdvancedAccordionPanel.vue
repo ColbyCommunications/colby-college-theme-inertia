@@ -2,20 +2,20 @@
   <article class="advanced-accordion__panel border-t border-gray-300">
     <div class="advanced-accordion__header">
       <button
-        class="advanced-accordion__button flex items-center justify-between !py-6 !px-0 gap-x-3 w-full text-left"
+        class="advanced-accordion__button flex w-full items-center justify-between gap-x-3 !px-0 !py-6 text-left"
         @click="toggle"
       >
         <h3 class="!text-18 leading-120 text-indigo">
           {{ heading }}
         </h3>
         <div
-          class="flex shrink-0 items-center justify-center w-11 h-9 bg-gray-100 border border-gray-300 rounded-sm"
+          class="flex h-9 w-11 shrink-0 items-center justify-center rounded-sm border border-gray-300 bg-gray-100"
         >
           <div
             class="icon-container transition-all duration-200 ease-in-out"
             :class="isOpen ? 'rotate-90' : '-rotate-90'"
           >
-            <Icon name="chevron" class="fill-azure w-1.5" />
+            <Icon name="chevron" class="w-1.5 fill-azure" />
           </div>
         </div>
       </button>
@@ -23,12 +23,15 @@
     <div
       ref="windowEl"
       class="advanced-accordion__window overflow-hidden transition-all duration-250 ease-in-out"
-      :style="{ height: windowHeight, visibility: isOpen ? 'visible' : 'hidden' }"
+      :style="{
+        height: windowHeight,
+        visibility: isOpen ? 'visible' : 'hidden',
+      }"
       role="region"
     >
       <div
         ref="contentEl"
-        class="font-body text-indigo-900 advanced-accordion__content pb-6"
+        class="advanced-accordion__content pb-6 font-body text-indigo-900"
         v-html="content"
       ></div>
     </div>

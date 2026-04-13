@@ -1,0 +1,191 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as OverlayHeroStories from "./OverlayHero.stories";
+
+<Meta title="Blocks/Overlay Hero/Documentation" />
+
+# Overlay Hero
+
+The **Overlay Hero** block is a full-width, high-impact hero section that combines immersive media with layered contextual content.
+
+It supports images, video loops, and embedded video playback, with an overlay-based layout designed for strong visual storytelling.
+
+---
+
+## When to Use This Block
+
+Use the Overlay Hero when:
+
+- You need a visually dominant hero section
+- You want to combine media with overlay text and CTAs
+- You are building landing pages or campaign introductions
+- You want immersive storytelling with video or motion backgrounds
+
+### Example uses:
+
+- Homepage hero sections
+- Campaign or product launches
+- Event or promotional landing pages
+- High-impact editorial intros
+
+---
+
+## Preview
+
+<Canvas of={OverlayHeroStories.WithImage} />
+
+---
+
+## Media Modes
+
+The Overlay Hero supports three media rendering modes depending on available content.
+
+---
+
+### Video Mode (YouTube / Embedded Video)
+
+When a video ID is provided:
+
+- A video component is rendered in the background
+- A “Watch” button is displayed in the overlay
+- Clicking the button activates the video playback state
+- Overlay content remains visible until playback is triggered
+
+This mode is ideal for:
+
+- Promotional videos
+- Brand storytelling
+- Featured campaign content
+
+---
+
+### Static Image Mode
+
+When no video is provided:
+
+- A full-screen background image is displayed
+- The image scales responsively to fill the viewport
+- Overlay content sits on top of the image
+
+This mode is ideal for:
+
+- Static hero banners
+- Photography-led campaigns
+- Brand or editorial visuals without motion
+
+---
+
+### Video Loop Mode (Background Motion)
+
+When a video loop file is provided:
+
+- A muted, autoplaying, looping background video is rendered
+- The video plays continuously without user interaction
+- A fallback image is used if the video is unavailable
+
+This mode is ideal for:
+
+- Subtle motion backgrounds
+- Atmospheric storytelling
+- Lifestyle or brand ambiance visuals
+
+---
+
+## Context Overlay
+
+The **Context** section sits over the media and provides the main messaging layer.
+
+It includes:
+
+- **Subheading (optional)** – Introductory label
+- **Heading** – Primary hero message
+- **Paragraph** – Supporting description
+- **Buttons** – Call-to-action links
+
+The overlay is positioned at the bottom of the hero with a gradient background to ensure readability.
+
+---
+
+## Call-to-Action Button (Video Mode)
+
+When a video is present, an additional **Watch** button appears.
+
+This button:
+
+- Triggers video activation state
+- Indicates interactive media availability
+- Uses a play icon for clarity
+
+It enhances engagement by encouraging users to interact with video content.
+
+---
+
+## Layout Behavior
+
+### Full Bleed Layout
+
+The Overlay Hero is designed as a full-bleed section:
+
+- Spans full viewport width
+- Extends across full screen height (or adjusted height when needed)
+- Removes container constraints for immersive presentation
+
+---
+
+### Height Behavior
+
+The hero height adapts based on content:
+
+- **Default:** Full viewport height minus header offset
+- **Medium size (optional):** Reduced height on desktop for balanced layouts
+- **Video mode:** Allows natural height adjustment based on media
+
+---
+
+## Overlay Behavior
+
+The content overlay includes:
+
+- A gradient background for readability
+- Bottom-aligned contextual content
+- Smooth visibility transitions when video is activated
+
+When video playback is triggered:
+
+- Overlay fades out
+- Media layer becomes fully visible
+- Focus shifts to video content
+
+---
+
+## Media Priority
+
+The rendering logic follows this priority:
+
+1. **Video (YouTube / embedded)**
+2. **Static image (page-driven or fallback)**
+3. **Video loop background**
+4. **Fallback image**
+
+This ensures the most engaging media type is always prioritized.
+
+---
+
+## Accessibility
+
+The Overlay Hero is built with accessibility considerations:
+
+- Images include alt text for screen readers
+- Video playback is user-initiated when required
+- Buttons are keyboard accessible and clearly labeled
+- Overlay contrast ensures text readability over media
+
+---
+
+## Tips for Best Results
+
+- Use high-resolution imagery or video for maximum impact
+- Keep overlay text concise and focused
+- Avoid overcrowding with too many buttons
+- Use video loops sparingly to avoid visual fatigue
+- Ensure strong contrast between text and background media
+- Prioritize a single clear message in the hero content

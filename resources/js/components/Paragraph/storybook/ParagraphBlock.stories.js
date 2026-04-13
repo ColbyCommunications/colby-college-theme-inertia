@@ -1,0 +1,22 @@
+import { expect } from "storybook/test";
+import Paragraph from "../Paragraph.vue";
+
+export default {
+  title: "Blocks/Paragraph",
+  component: Paragraph,
+  tags: ["!autodocs"],
+};
+
+export const Default = {
+  name: "Default",
+  args: {
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed leo odio, ultrices quis auctor eu, fermentum at dolor. Vivamus cursus lorem ut ultrices iaculis.",
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText(
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed leo odio, ultrices quis auctor eu, fermentum at dolor. Vivamus cursus lorem ut ultrices iaculis.",
+      ),
+    ).toBeInTheDocument();
+  },
+};

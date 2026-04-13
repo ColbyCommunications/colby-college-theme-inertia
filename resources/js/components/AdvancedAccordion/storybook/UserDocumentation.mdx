@@ -1,0 +1,98 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as AdvancedAccordionStories from "./AdvancedAccordion.stories";
+
+<Meta title="Blocks/Advanced Accordion/Documentation" />
+
+# Advanced Accordion
+
+The **Advanced Accordion** block displays expandable sections that visitors can open and close, similar to the standard **Accordion** block.
+
+Each section contains a **heading** and a **content area that supports nested blocks**. This allows you to add more complex layouts inside each panel.
+
+---
+
+## When to Use This Block
+
+Use the Advanced Accordion when:
+
+- You need more complex content inside accordion panels
+- You want to include other blocks such as images, buttons, or layouts
+- The standard Accordion content field is too limited
+
+### Example uses:
+
+- FAQs that include images or links
+- Program details with buttons or callouts
+- Policy sections with formatted content
+- Expandable content with multiple blocks
+
+---
+
+## Preview
+
+<Canvas of={AdvancedAccordionStories.Default} />
+
+---
+
+## Block Settings
+
+### Single
+
+If enabled, **only one accordion panel can be open at a time**.
+
+- Opening a new panel will automatically close the currently open one.
+- This is commonly used for **FAQ sections**.
+
+If disabled, visitors can open **multiple panels at once**.
+
+---
+
+## Panels
+
+Panels are added as **nested blocks inside the Advanced Accordion**.
+
+Each panel represents one expandable section.
+
+To add a panel:
+
+1. Insert the **Advanced Accordion** block.
+2. Click the **Add Block (+)** button inside the accordion.
+3. Select **Advanced Accordion Panel**.
+
+You can add as many panels as needed.
+
+---
+
+## Panel Fields
+
+Each **Advanced Accordion Panel** includes the following field:
+
+### Heading
+
+The **title of the accordion section**.
+
+This is what visitors click to open the panel.
+
+---
+
+## Panel Content
+
+Unlike the standard Accordion, the Advanced Accordion allows you to add **any supported block inside the panel**.
+
+Examples include:
+
+- Paragraph blocks
+- Images
+- Lists
+
+This makes the Advanced Accordion more flexible for complex content.
+
+---
+
+## Tips for Best Results
+
+- Keep headings **short and easy to scan**.
+- Avoid placing **too many blocks inside a single panel**.
+- Use **Single mode** for FAQ-style lists.
+- Use the **standard Accordion** when content is simple text.
+- Use the **Advanced Accordion** when you need nested blocks.

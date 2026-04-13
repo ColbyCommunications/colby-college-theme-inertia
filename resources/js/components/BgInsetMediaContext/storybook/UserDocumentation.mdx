@@ -1,0 +1,86 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as BgInsetMediaContextStories from "./BgInsetMediaContext.stories";
+
+<Meta title="Blocks/Background Inset Media Context/Documentation" />
+
+# Background Inset Media Context
+
+The **Background Inset Media Context** block displays content inside a styled background section with inset spacing and a media + text layout.
+
+It is designed to highlight important content while keeping it visually distinct from the rest of the page.
+
+---
+
+## When to Use This Block
+
+Use this block when:
+
+- You want to highlight a key message or feature section
+- You need a visually distinct content area with a background treatment
+- You are combining media (image or video) with supporting text
+
+### Example uses:
+
+- Featured callout sections
+- Promotional or highlight content
+- Landing page feature blocks
+- Storytelling sections with imagery
+
+---
+
+## Preview
+
+<Canvas of={BgInsetMediaContextStories.Primary} />
+
+---
+
+## Block Settings
+
+### Type
+
+Controls the visual style of the background content.
+
+Options include:
+
+- **Dark** – Uses a darker background style for emphasis.
+- **Light** – Uses a lighter background style for subtle emphasis.
+
+---
+
+## Content
+
+### Context
+
+This block uses a shared **Context system** to define its content.
+
+It may include:
+
+- Heading
+- Paragraph text
+- Buttons or links
+- Supporting layout elements
+
+The content appears inside the inset background area and is displayed using a media + text layout.
+
+---
+
+## Layout
+
+This block is automatically structured as a **full-width background section with inset content**.
+
+It includes:
+
+- Centered content container
+- Maximum width constraints for readability
+- Inner padding for spacing
+- A media + text layout component
+
+---
+
+## Tips for Best Results
+
+- Use **Dark type** for high-impact or promotional content
+- Use **Light type** for subtle informational sections
+- Keep content focused and concise for best readability
+- Pair with strong visuals for maximum effect
+- Avoid overloading the section with too much text

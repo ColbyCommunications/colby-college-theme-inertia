@@ -1,0 +1,207 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as TestimonialCarouselStories from "./TestimonialCarousel.stories";
+
+<Meta title="Blocks/Testimonial Carousel/Documentation" />
+
+# Testimonial Carousel
+
+The **Testimonial Carousel** block is used to showcase rotating testimonials alongside supporting imagery.
+
+It combines a visual slideshow with synchronized quote content, allowing users to engage with stories, feedback, or endorsements in an interactive format.
+
+---
+
+## When to Use This Block
+
+Use the Testimonial Carousel block when:
+
+- You want to highlight user or student testimonials
+- You need to present multiple quotes in a limited space
+- You want to combine imagery with narrative feedback
+- You want to add movement and engagement to a page
+
+### Example uses:
+
+- Student or alumni testimonials
+- Customer or client feedback
+- Case study highlights
+- Brand or program endorsements
+
+---
+
+## Preview
+
+<Canvas of={TestimonialCarouselStories.Default} />
+
+---
+
+## Context
+
+The **Context** section introduces the testimonial carousel.
+
+It typically includes:
+
+- Heading
+- Paragraph
+- Optional buttons
+
+This area provides editorial framing for the testimonials and helps users understand the purpose of the carousel.
+
+### Common purposes:
+
+- Introduce a theme (e.g. “What our students say”)
+- Provide supporting narrative
+- Drive users to related content via CTA buttons
+
+---
+
+## Carousel Items
+
+The **Items** repeater defines each slide in the carousel.
+
+Each item includes:
+
+- **Image**
+  - Primary visual for the testimonial slide
+  - Displayed in the carousel window
+
+- **Caption (optional)**
+  - Short descriptive text below the image
+
+- **Testimonial**
+  - Quote (required)
+  - Name (required)
+
+Each slide pairs imagery with a corresponding quote for context.
+
+---
+
+## Slide Structure
+
+Each carousel slide contains two linked components:
+
+### 1. Visual Slide (Image)
+
+- Displays a full-width responsive image
+- Maintains consistent aspect ratio across slides
+- Optional caption appears below the image
+
+### 2. Quote Panel
+
+- Displays the testimonial text
+- Shows the name of the person quoted
+- Updates in sync with the active slide
+
+---
+
+## Carousel Behavior
+
+The Testimonial Carousel uses an auto-advancing slide system powered by Glide.js.
+
+### Key behaviors:
+
+- One slide visible at a time
+- Smooth animated transitions between slides
+- Active slide controls which testimonial is shown
+- Manual navigation via arrow controls
+
+---
+
+## Autoplay Behavior
+
+The carousel includes automatic playback:
+
+- Slides advance every 5 seconds
+- Autoplay pauses when:
+  - User hovers over the carousel
+- Autoplay resumes when:
+  - Mouse leaves the carousel area
+
+This ensures both engagement and user control.
+
+---
+
+## Navigation Controls
+
+The carousel includes arrow-based navigation:
+
+- **Next** → advances to the next slide
+- **Previous** → returns to the previous slide
+
+Controls are:
+
+- Positioned in the top-right area of the carousel
+- Accessible via keyboard interaction
+- Independent of autoplay timing
+
+---
+
+## Synchronised Content
+
+A key feature of this block is **synchronisation between image and quote**:
+
+- Image slide changes trigger quote updates
+- Quote panel always reflects the active slide
+- Only one testimonial is visible at a time
+
+This ensures a clear connection between visuals and narrative content.
+
+---
+
+## Layout Behaviour
+
+### Desktop
+
+- Context sits on the left
+- Carousel occupies the main right area
+- Quote panel is aligned alongside slides
+
+### Mobile
+
+- Layout stacks vertically
+- Context appears above carousel
+- Quote content appears below or integrated
+
+---
+
+## Animation Behaviour
+
+The carousel includes smooth motion effects:
+
+- Slide transitions are animated
+- Quote transitions fade in/out
+- Active state changes are visually reinforced
+
+This creates a polished storytelling experience without overwhelming the user.
+
+---
+
+## Accessibility
+
+The Testimonial Carousel is designed with accessibility considerations:
+
+- Only one testimonial is shown at a time for clarity
+- Navigation controls are keyboard accessible
+- Images include alt text for screen readers
+- Content updates are visually and structurally synchronized
+- Hover pause prevents unintended motion
+
+---
+
+## Performance Notes
+
+- Glide instance is initialised after mount for DOM stability
+- Autoplay is handled via interval timer
+- Carousel is destroyed cleanly on component unmount
+- Animations are optimized for smooth transitions
+
+---
+
+## Best Practices
+
+- Use high-quality, consistent imagery
+- Keep testimonial quotes concise and impactful
+- Limit the number of slides for better engagement
+- Ensure names are clearly attributed
+- Avoid overly long captions under images
+- Use testimonials that reflect authentic experiences

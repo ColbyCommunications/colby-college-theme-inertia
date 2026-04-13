@@ -1,0 +1,144 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as DarkInterstitialStories from "./DarkInterstitial.stories";
+
+<Meta title="Blocks/Dark Interstitial/Documentation" />
+
+# Dark Interstitial
+
+The **Dark Interstitial** block is a full-width, high-impact section designed to break up page flow with bold styling, animated facts, and optional image strips.
+
+It is typically used for storytelling, emphasis, or transitional content between major page sections.
+
+---
+
+## When to Use This Block
+
+Use the Dark Interstitial when:
+
+- You want a visually distinct break in page content
+- You need to highlight key metrics or facts
+- You want a dark, immersive storytelling section
+
+### Example uses:
+
+- Impact statistics sections
+- Institutional storytelling moments
+- Mid-page transitions between content blocks
+
+---
+
+## Preview
+
+<Canvas of={DarkInterstitialStories.Primary} />
+
+---
+
+## Icon
+
+If enabled, an icon is displayed in the top-right of the section.
+
+Use this when:
+
+- You want to reinforce branding or identity
+- You need a visual accent for the section
+
+If disabled, the section displays without the decorative icon and pattern overlay.
+
+---
+
+## Context
+
+The Context area contains the primary message content, including:
+
+- Subheading
+- Heading
+- Paragraph text
+- Optional buttons
+
+This content is centered and visually emphasized for readability against the dark background.
+
+---
+
+## Facts
+
+Facts are optional animated statistic blocks displayed below the main context.
+
+Each fact includes:
+
+### Figure
+
+A large numeric or key value displayed prominently.
+
+### Paragraph
+
+Supporting description text that explains the figure.
+
+Use facts when:
+
+- You want to present measurable impact
+- You need visual emphasis on key data points
+
+Facts animate into view as the user scrolls.
+
+---
+
+## Images
+
+Images are displayed in a horizontally scrollable strip below the facts section.
+
+Each image includes:
+
+- A full-height visual
+- Optional caption text
+
+Use images when:
+
+- You want to reinforce storytelling visually
+- You need a supporting media gallery within the section
+
+---
+
+## Layout Behavior
+
+### Full Width Section
+
+The block spans the full width of the page and overrides default container constraints.
+
+---
+
+### Grid Structure
+
+The internal layout uses a 12-column grid:
+
+- Main content is centered (8-column span)
+- Facts section is centered beneath content
+- Images span full width with horizontal scrolling on smaller screens
+
+---
+
+## Animations
+
+Facts include scroll-triggered animations:
+
+- Figures scale and fade in
+- Paragraph text fades in after the figure
+- Animations trigger when elements enter the viewport
+
+If animation is disabled (bot mode), all content is shown statically.
+
+---
+
+## Accessibility & Fallbacks
+
+- Animations are disabled for bot or crawler detection
+- Content remains fully readable without JavaScript
+- Images include alt text support via the Picture component
+
+---
+
+## Tips for Best Results
+
+- Use sparingly due to its high visual impact
+- Limit facts to 2–4 items for readability
+- Keep figures short and impactful
+- Use images that support—not compete with—the message

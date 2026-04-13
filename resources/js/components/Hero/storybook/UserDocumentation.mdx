@@ -1,0 +1,168 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as HeroStories from "./Hero.stories";
+
+<Meta title="Blocks/Hero/Documentation" />
+
+# Hero
+
+The **Hero** block introduces a page or section with prominent text and optional images.  
+It is commonly used near the top of a page to present key messaging along with supporting imagery.
+
+The block combines **headline content, optional calls to action, and one or more images** within a structured layout.
+
+---
+
+## When to Use This Block
+
+Use the Hero block when:
+
+- You want to introduce a page with strong editorial content
+- You want to combine text with one or more supporting images
+- You need a flexible hero layout that can display different image configurations
+
+### Example uses:
+
+- Page introductions
+- Program or department headers
+- Feature announcements
+- Editorial storytelling sections
+
+---
+
+## Preview
+
+<Canvas of={HeroStories.Primary} />
+
+---
+
+## Image Orientation
+
+The **Image Orientation** setting controls the shape of the primary image.
+
+### Square
+
+Displays the image in a square format.
+
+Use this when:
+
+- The image has a balanced composition
+- The subject fits well in a square crop
+
+### Portrait
+
+Displays the image in a taller portrait format.
+
+Use this when:
+
+- The image subject is vertically oriented
+- The design benefits from a taller visual element
+
+---
+
+## Align
+
+The **Align** setting controls how the hero content and images are arranged.
+
+### Default
+
+Displays the main content with a single supporting image alongside it.
+
+Use this layout when:
+
+- You want a traditional hero layout with text and image side by side.
+
+### Center
+
+Centers the main content and allows multiple images to appear below it.
+
+Use this layout when:
+
+- You want a more editorial presentation
+- You want to show multiple supporting images
+
+---
+
+## Context
+
+The **Context** section contains the primary text content for the hero.
+
+This includes:
+
+- Subheading
+- Heading
+- Paragraph text
+- Optional buttons
+
+The content introduces the page and provides key information or calls to action.
+
+---
+
+## Image
+
+When **Align** is set to **Default**, a single image can be added beside the content.
+
+The image helps visually support the hero message.
+
+An optional **caption** may also be included to describe or credit the image.
+
+---
+
+## Images
+
+When **Align** is set to **Center**, multiple images can be added instead of a single image.
+
+Each image may include:
+
+- Image file
+- Optional caption
+
+These images appear in a grid layout below the hero content.
+
+---
+
+## Columns
+
+The **Columns** setting controls how many images appear in each row when using the **Center** alignment.
+
+### 3 Columns
+
+Displays images in rows of three.
+
+Use this when:
+
+- Images are larger or more detailed
+- You want more spacing between images
+
+### 4 Columns
+
+Displays images in rows of four.
+
+Use this when:
+
+- You want to show more images within the same space
+- Images work well at smaller sizes
+
+---
+
+## Layout Behavior
+
+### Content Layout
+
+The main text content appears prominently at the top of the hero and may be left-aligned or centered depending on the layout.
+
+---
+
+### Image Placement
+
+- **Default alignment:** A single image appears beside the content.
+- **Center alignment:** Multiple images appear in a grid below the content.
+
+---
+
+## Tips for Best Results
+
+- Use **clear, concise headings** to introduce the page
+- Choose images that visually support the hero message
+- Keep paragraph text relatively short for readability
+- Use captions when images require context or credit
+- Limit the number of images to maintain visual focus

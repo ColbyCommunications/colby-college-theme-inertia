@@ -1,0 +1,131 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as ListContextStories from "./ListContext.stories";
+
+<Meta title="Blocks/List Context/Documentation" />
+
+# List Context
+
+The **List Context** block combines a content section with a structured list of links or items.
+
+It is commonly used to present **supporting information alongside a clear set of navigational or reference links**, making it useful for resource lists, quick navigation, or grouped content.
+
+---
+
+## When to Use This Block
+
+Use the List Context block when:
+
+- You want to pair descriptive content with a related list
+- You need a structured list of links or references
+- You want to present supporting navigation or grouped resources
+
+### Example uses:
+
+- Resource lists
+- Related links sections
+- Quick navigation groups
+- Supporting editorial content with references
+
+---
+
+## Preview
+
+<Canvas of={ListContextStories.Default} />
+
+---
+
+## Size
+
+The **Size** setting controls the visual weight of both the context and the list.
+
+### Default
+
+Displays standard heading and list styling.
+
+Use this when:
+
+- Content should feel balanced and prominent
+- The list is a key part of the section
+
+### Small
+
+Reduces the visual prominence of both the context and list.
+
+Use this when:
+
+- The list is secondary to the surrounding content
+- You want a more subtle, compact presentation
+
+---
+
+## Context
+
+The **Context** section contains the descriptive content for the block.
+
+This includes:
+
+- Subheading
+- Heading
+- Paragraph text
+- Optional buttons
+
+This content introduces or explains the purpose of the list.
+
+---
+
+## Items
+
+The **Items** field defines the list entries displayed in the block.
+
+Each item can be configured in two ways:
+
+### Linked Item
+
+- Displays a clickable link
+- Includes a link URL and label
+
+Use this when:
+
+- The item should navigate to another page or resource
+
+### Text Item
+
+- Displays plain text without a link
+- Used when no navigation is required
+
+Use this when:
+
+- The item is informational only
+- No click action is needed
+
+---
+
+## Layout Behavior
+
+### Two-Column Layout
+
+The block is split into two columns:
+
+- Left: Context content
+- Right: List of items
+
+This layout helps separate explanatory content from structured links.
+
+---
+
+### Responsive Behavior
+
+On smaller screens:
+
+- The context appears above the list
+- Items stack vertically for easier reading
+
+---
+
+## Tips for Best Results
+
+- Keep list items short and scannable
+- Use links only when navigation is necessary
+- Use the **Small** size for secondary or supporting lists
+- Ensure context clearly explains the purpose of the list
+- Group related items together for better usability

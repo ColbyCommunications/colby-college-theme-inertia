@@ -1,0 +1,145 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as ImageTextStories from "./ImageText.stories";
+
+<Meta title="Blocks/Image with Text/Documentation" />
+
+# Image with Text
+
+The **Image with Text** block combines an image with a text area, allowing you to display content side-by-side or wrapped around an image.
+
+It is useful for adding visual context alongside written content.
+
+---
+
+## When to Use This Block
+
+Use the Image with Text block when:
+
+- You want to pair text with a supporting image
+- You need a more engaging layout than a standard image block
+- You want to break up long text sections with visuals
+
+### Example uses:
+
+- Editorial content or articles
+- Program or department highlights
+- Faculty or campus storytelling
+- Feature sections on landing pages
+
+---
+
+## Preview
+
+<Canvas of={ImageTextStories.Default} />
+
+---
+
+## Block Settings
+
+### Paragraph Text
+
+The main text content displayed alongside the image.
+
+You can use:
+
+- Headings
+- Paragraphs
+- Lists
+- Basic formatting
+
+---
+
+### Wrapping Text
+
+Controls how text flows around the image.
+
+Options include:
+
+- **Wrap** – Text flows around the image.
+- **No Wrap** – Image and text are displayed side-by-side.
+
+---
+
+### Align Text
+
+Available when **No Wrap** is selected.
+
+Controls vertical alignment of the text relative to the image:
+
+- Top
+- Center
+
+---
+
+### Image
+
+Upload or select an image from the media library.
+
+---
+
+### Caption
+
+If enabled, a caption will appear below the image.
+
+Use captions to:
+
+- Provide context
+- Add attribution
+- Describe the image
+
+---
+
+### Align Image
+
+Controls whether the image appears on the left or right side of the text.
+
+Options include:
+
+- Left
+- Right
+
+---
+
+### Size by Percentage
+
+Controls how the image is sized.
+
+- If enabled, the image is sized using a percentage scale.
+- If disabled, predefined image orientation styles are used.
+
+---
+
+### Image Orientation
+
+Available when percentage sizing is disabled.
+
+Options include:
+
+- Default
+- Square
+- Rectangle
+- Landscape
+- Portrait
+
+---
+
+### Image Scale
+
+(Only available when **Size by Percentage** is enabled)
+
+Controls the width of the image:
+
+- 100% – Full width
+- 75% – Slightly smaller image
+- 50% – Half width
+- 25% – Quarter width
+
+---
+
+## Tips for Best Results
+
+- Use **Wrap mode** for editorial-style content
+- Use **No Wrap mode** for structured layouts or feature sections
+- Keep text concise when using large images
+- Alternate image alignment (left/right) for visual variety
+- Use consistent image sizing when displaying multiple blocks on a page

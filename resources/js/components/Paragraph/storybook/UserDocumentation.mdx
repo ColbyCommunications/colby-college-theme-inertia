@@ -1,0 +1,93 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as ParagraphStories from "./Paragraph.stories";
+
+<Meta title="Blocks/Paragraph/Documentation" />
+
+# Paragraph
+
+The **Paragraph** block provides a simple rich text area for displaying formatted content within a page.
+
+It is designed for flexible editorial text, allowing content editors to add and style basic written content without requiring additional layout structure.
+
+---
+
+## When to Use This Block
+
+Use the Paragraph block when:
+
+- You need to add standalone text content to a page
+- You want to include editorial or descriptive copy
+- You need simple formatted content without layout complexity
+- You are building long-form or narrative-driven pages
+
+### Example uses:
+
+- Article or editorial body text
+- Section descriptions
+- Supporting explanations for other blocks
+- General informational content
+
+---
+
+## Preview
+
+<Canvas of={ParagraphStories.Default} />
+
+---
+
+## Paragraph Text
+
+The **Paragraph Text** field is a WYSIWYG editor that allows formatted text input.
+
+It supports:
+
+- Basic text formatting (bold, italic, links)
+- Paragraph structure
+- Simple rich text styling
+
+This allows editors to create readable and structured content without needing technical markup.
+
+---
+
+## Content Behavior
+
+The Paragraph block renders content directly as HTML.
+
+This means:
+
+- Formatting applied in the editor is preserved on output
+- Content flows naturally within the page layout
+- No additional structural constraints are applied
+
+---
+
+## Styling
+
+Paragraph content is styled by the theme’s typography system.
+
+This ensures:
+
+- Consistent font sizing and spacing across the site
+- Readability across different screen sizes
+- Visual alignment with other content blocks
+
+---
+
+## Accessibility
+
+The Paragraph block supports accessibility through:
+
+- Semantic HTML output
+- Proper text hierarchy within page structure
+- Readable line lengths and spacing defined by global styles
+- Support for accessible links within text content
+
+---
+
+## Tips for Best Results
+
+- Keep paragraphs focused on a single idea or topic
+- Use formatting sparingly to maintain readability
+- Avoid overly long blocks of unbroken text
+- Use links to connect related content where appropriate
+- Break long content into multiple Paragraph blocks for better flow

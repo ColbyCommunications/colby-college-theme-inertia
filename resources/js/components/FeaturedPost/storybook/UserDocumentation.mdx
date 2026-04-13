@@ -1,0 +1,165 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as FeaturedPostStories from "./FeaturedPost.stories";
+
+<Meta title="Blocks/Featured Post/Documentation" />
+
+# Featured Post
+
+The **Featured Post** block highlights a single editorial post with a strong visual hierarchy, combining a large featured image, supporting post metadata, and a contextual callout section.
+
+It is designed to promote **high-priority or editorial content** such as news, announcements, or featured articles.
+
+---
+
+## When to Use This Block
+
+Use the Featured Post block when:
+
+- You want to highlight a single important article or post
+- You need a strong visual + editorial storytelling layout
+- You want to combine post content with a promotional context
+- You are featuring news, announcements, or editorial highlights
+
+### Example uses:
+
+- Featured blog post on a homepage
+- Editorial highlight in a landing page
+- News spotlight section
+- Campaign or announcement feature
+- “Latest story” promotion
+
+---
+
+## Preview
+
+<Canvas of={FeaturedPostStories.Default} />
+
+---
+
+## Block Structure
+
+The block is composed of three main visual areas:
+
+- Caption (floating label)
+- Featured post (image + post content)
+- Context callout (supporting message and CTA)
+
+---
+
+## Heading & Paragraph
+
+The top-level content introduces the featured section.
+
+### Heading (required)
+
+The main title of the featured post section.
+
+- Used as the primary editorial headline
+- Appears in the contextual CTA area
+
+---
+
+### Paragraph (required)
+
+Supporting description that introduces or frames the featured content.
+
+- Used to provide editorial context
+- Typically short-form copy
+
+---
+
+## Caption
+
+A short label displayed in the upper-right area of the block.
+
+- Acts as a category or section label (e.g. “Latest News”, “Featured Story”)
+- Rendered in uppercase styled text
+- Positioned above or alongside the featured image area
+
+---
+
+## Buttons
+
+Optional call-to-action buttons linked to the main context.
+
+Examples:
+
+- “Read more”
+- “View all posts”
+- “Explore”
+
+Buttons are passed through a cloned button group field.
+
+---
+
+## Featured Post Content
+
+The **post object** contains the main featured content.
+
+### Image
+
+- Large visual asset for the featured post
+- Acts as the primary visual anchor
+- Required for proper layout rendering
+
+---
+
+### Post Context
+
+Includes structured content about the post:
+
+#### Subheading
+
+- Typically the post date or metadata
+
+#### Heading
+
+- Title of the post
+
+#### Paragraph
+
+- Short excerpt or summary of the post
+
+#### Buttons
+
+- Optional CTAs related to the post itself
+
+---
+
+## Layout Behavior
+
+### Desktop Layout
+
+- 12-column grid layout
+- Featured image spans majority of left area
+- Context block positioned on the right
+- Caption is positioned absolutely in the top-right region
+
+---
+
+### Caption Positioning
+
+- Positioned over or near the featured image area
+- Includes decorative animated border element
+- Acts as a visual label for the section
+
+---
+
+## Ordering
+
+On desktop:
+
+1. Featured image (primary focus)
+2. Post summary content (under image)
+3. Context CTA (right column)
+4. Caption overlay (top-right)
+
+---
+
+## Tips for Best Results
+
+- The post image is required
+- Heading, paragraph, and caption are required for full layout integrity
+- Best used for **single-item promotion only**
+- Avoid using multiple Featured Post blocks on the same page
+- Works best when paired with strong editorial imagery

@@ -1,0 +1,101 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as EmbedStories from "./Embed.stories";
+
+<Meta title="Blocks/Embed/Documentation" />
+
+# Embed
+
+The **Embed** block allows editors to insert third-party embedded content directly into a page.  
+This includes media and interactive widgets such as videos, social media posts, maps, and external tools.
+
+Content is added by pasting the **embed code provided by the service** you want to display.
+
+---
+
+## When to Use This Block
+
+Use the Embed block when:
+
+- You need to display content hosted on another platform
+- The platform provides **embed code (usually an iframe or script)**
+- The content cannot be recreated using standard blocks
+
+### Example uses
+
+- YouTube or Vimeo videos
+- Google Maps
+- Social media posts (X/Twitter, Instagram)
+- Weather widgets
+- Event widgets
+- External tools or calculators
+
+---
+
+## Preview
+
+<Canvas of={EmbedStories.VideoEmbed} />
+
+---
+
+## Adding an Embed
+
+1. Find the **Embed** or **Share** option on the platform you want to embed.
+2. Copy the **embed code** provided.
+3. Paste the full code snippet into the **Embed field**.
+
+The block will render the embedded content automatically when the page is viewed.
+
+---
+
+## Supported Content
+
+Most services that provide embed code will work correctly. Common examples include:
+
+- **Video platforms** – YouTube, Vimeo
+- **Social media** – X (Twitter), Instagram
+- **Maps** – Google Maps
+- **Widgets** – Weather, event listings, booking tools
+
+If the platform provides an **iframe or script-based embed**, it will usually work.
+
+---
+
+## Content Field
+
+The Embed block contains a single field:
+
+### Embed
+
+Paste the **full embed code** from the external service.
+
+This may include:
+
+- `<iframe>` embeds
+- `<script>` widgets
+- HTML snippets provided by the platform
+
+Do **not** paste just a URL unless the platform explicitly supports it.
+
+---
+
+## Layout Behavior
+
+### Full Content Width
+
+Embedded content fills the available content width of the page section.
+
+The exact appearance depends on the external service and its embed settings.
+
+### Responsive Behavior
+
+Most modern embeds automatically adjust to different screen sizes. However, behavior ultimately depends on how the third-party widget is built.
+
+---
+
+## Tips for Best Results
+
+- Always paste the **entire embed snippet**, not just part of it.
+- Use the **preview** to confirm the embed displays correctly.
+- Avoid embedding **multiple heavy widgets** in the same section to maintain page performance.
+- If an embed looks too large or too small, check the settings on the source platform before copying the embed code.
+- When embedding social posts, ensure the content is **publicly accessible**.

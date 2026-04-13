@@ -1,0 +1,191 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as MediaContextStories from "./MediaContext.stories";
+
+<Meta title="Blocks/Media Context/Documentation" />
+
+# Media Context
+
+The **Media Context** block combines visual media (image or video) with structured contextual content.
+
+It is designed for editorial layouts where media and content are tightly integrated, allowing flexible positioning, sizing, and layout control.
+
+---
+
+## When to Use This Block
+
+Use the Media Context when:
+
+- You want to pair an image or video with structured content
+- You need flexible layouts with controlled spacing and alignment
+- You are building editorial or storytelling sections
+- You want media and content to feel balanced and intentional
+
+### Example uses:
+
+- Feature story sections
+- Editorial highlights
+- Product or campaign storytelling
+- Educational or informational content blocks
+
+---
+
+## Preview
+
+<Canvas of={MediaContextStories.Primary} />
+
+---
+
+## Media Type
+
+The Media Context block supports two media types:
+
+### Image
+
+By default, the block displays an image.
+
+The image includes:
+
+- Responsive sizing
+- Lazy loading for performance
+- Alt text for accessibility
+
+Images are used when no video ID is provided.
+
+---
+
+### Video
+
+If a video ID is provided, the block renders a video instead of an image.
+
+The video component supports:
+
+- Embedded playback using a video provider
+- Optional poster image (fallback image)
+- Responsive scaling within the layout
+
+This is ideal for promotional or explainer content.
+
+---
+
+## Layout Options
+
+### Inset Layout
+
+The **Inset** option adjusts the grid layout to create a more editorial, offset design.
+
+When enabled:
+
+- Content is positioned within a 12-column grid
+- Media and context can be visually offset from the edges
+- Layout feels more immersive and designed
+
+When disabled:
+
+- A simpler 8-column grid is used
+- Content aligns more centrally
+- Layout is more compact and structured
+
+---
+
+### Reverse Layout
+
+The **Reverse** option flips the position of media and context.
+
+When enabled:
+
+- Media and text swap sides
+- Layout order is visually reversed on desktop
+
+This is useful for alternating layouts in long-form pages.
+
+---
+
+## Size Options
+
+The **Size** setting controls the visual emphasis of the contextual content.
+
+Available options:
+
+- **Medium** – Balanced typography and spacing for general use
+- **Large** – Increased typographic scale for stronger emphasis
+
+Size affects how prominently the content is displayed relative to the media.
+
+---
+
+## Media Behavior
+
+### Image Rendering
+
+When using an image:
+
+- The image fills its grid area
+- Aspect ratio is preserved
+- Responsive scaling ensures proper display across devices
+
+---
+
+### Video Rendering
+
+When using a video:
+
+- The video replaces the image entirely
+- The same layout rules apply as with images
+- A fallback image can be used for loading or preview states
+
+---
+
+## Context Content
+
+The context area is powered by a structured content component and may include:
+
+- **Subheading (optional)** – Small introductory label
+- **Heading** – Primary title
+- **Paragraph** – Supporting text
+- **Buttons** – Call-to-action links
+
+This content is designed to provide narrative or explanatory support for the media.
+
+---
+
+## Layout Behavior
+
+### Grid Structure
+
+The layout adjusts based on configuration:
+
+- With **Inset enabled**: 12-column grid layout
+- With **Inset disabled**: 8-column grid layout
+
+Media and context are placed side-by-side within this grid.
+
+---
+
+### Column Positioning
+
+Depending on settings:
+
+- Media can appear on the left or right
+- Context can be reversed relative to media
+- Inset layouts allow offset positioning for more dynamic compositions
+
+---
+
+## Accessibility
+
+The Media Context block is built with accessibility in mind:
+
+- Images include descriptive alt text
+- Videos support accessible playback controls via the embedded player
+- Content hierarchy uses semantic headings
+- Buttons (within context) are keyboard accessible
+
+---
+
+## Tips for Best Results
+
+- Use high-quality images or video for maximum impact
+- Choose **Inset layouts** for editorial or immersive pages
+- Use **Reverse layouts** to create visual rhythm across sections
+- Keep contextual text concise and focused
+- Use video sparingly for high-impact storytelling moments

@@ -1,0 +1,98 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as AccordionStories from "./Accordion.stories";
+
+<Meta title="Blocks/Accordion/Documentation" />
+
+# Accordion
+
+The **Accordion** block lets you display a list of expandable sections that visitors can open and close.
+
+Each section contains a **heading** and **content**. Visitors click the heading to expand or collapse the panel.
+
+---
+
+## When to Use This Block
+
+Use the Accordion when:
+
+- You have multiple related pieces of content
+- You want to keep pages shorter and easier to scan
+- You want visitors to reveal information only when they need it
+
+### Example uses:
+
+- FAQ sections
+- Program/course details
+- Policies
+
+---
+
+## Preview
+
+<Canvas of={AccordionStories.Default} />
+
+---
+
+## Block Settings
+
+### Single
+
+If enabled, **only one accordion panel can be open at a time**.
+
+- Opening a new panel will automatically close the currently open one.
+- This is commonly used for **FAQ sections**.
+
+If disabled, visitors can open **multiple panels at once**.
+
+---
+
+### Open by Default
+
+If enabled, the **first accordion panel will be open automatically when the page loads**.
+
+Use this if:
+
+- The first panel contains important information
+- You want to highlight the first item
+
+If disabled, all panels start **closed**.
+
+---
+
+## Panels
+
+Panels are the individual expandable sections inside the accordion.
+
+You can add as many panels as you need.
+
+Each panel includes:
+
+### Heading
+
+The **title of the accordion section**.
+
+This is what visitors click to open the panel.
+
+---
+
+### Content
+
+The **content that appears when the panel is opened**.
+
+You can add:
+
+- Text
+- Lists
+- Links
+- Basic formatting (bold, italics, etc.)
+
+For more complex content (nested blocks), use the **Advanced Accordion**.
+
+---
+
+## Tips for Best Results
+
+- Keep headings **short and scannable**.
+- Avoid placing **very large amounts of content** inside one panel.
+- Use **Single mode** for FAQ sections.
+- Use **multiple-open mode** when users may want to compare information between panels.

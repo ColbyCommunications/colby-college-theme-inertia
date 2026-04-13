@@ -1,0 +1,139 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as RelatedContentStories from "./RelatedContent.stories";
+
+<Meta title="Blocks/Related Content/Documentation" />
+
+# Related Content
+
+The **Related Content** block displays a curated collection of related items, typically used to guide users toward additional relevant pages or resources.
+
+It combines a section heading with a grid of linked content cards, helping extend user engagement beyond the current page.
+
+---
+
+## When to Use This Block
+
+Use the Related Content block when:
+
+- You want to suggest additional relevant content
+- You are guiding users toward deeper exploration of a topic
+- You need a curated content section at the end of a page
+- You want to improve internal navigation and discovery
+
+### Example uses:
+
+- “You may also like” sections
+- Related articles or news posts
+- Supporting resources for editorial content
+- End-of-page content discovery sections
+
+---
+
+## Preview
+
+<Canvas of={RelatedContentStories.Default} />
+
+---
+
+## Heading
+
+The **Heading** field defines the title of the related content section.
+
+It:
+
+- Appears centered above the content grid
+- Helps introduce the purpose of the section
+- Is typically short and descriptive
+
+Common examples include:
+
+- Related Content
+- You May Also Like
+- Explore More
+- Related Articles
+
+---
+
+## Items
+
+The **Items** field is a repeater used to define the related content cards.
+
+Each item includes:
+
+- **Image** – Visual thumbnail representing the content
+- **Context** – Structured content including:
+  - Heading
+  - Supporting text
+  - Link or call-to-action
+
+These items form a grid of clickable content cards.
+
+---
+
+## Layout Behavior
+
+### Grid Display
+
+Related Content is displayed using a responsive grid layout:
+
+- **Desktop:** Multi-column grid (typically 4 columns)
+- **Tablet:** Reduced number of columns for readability
+- **Mobile:** Stacked layout for vertical scrolling
+
+---
+
+### Article Grid System
+
+This block is powered by the **Article Grid** component, which provides:
+
+- Consistent card styling
+- Flexible grid column control
+- Responsive layout behavior
+- Support for manual content items
+
+---
+
+## Content Structure
+
+Each related item typically functions as a content card.
+
+It may include:
+
+- Image thumbnail
+- Title or heading
+- Short descriptive text
+- Link to full content
+
+These elements help users quickly understand and navigate to related material.
+
+---
+
+## Visual Hierarchy
+
+The block is structured to create a clear hierarchy:
+
+1. Section heading (top, centered)
+2. Grid of related content cards (below)
+
+This ensures users can quickly scan and choose relevant content.
+
+---
+
+## Accessibility
+
+The Related Content block is built with accessibility in mind:
+
+- Headings use semantic HTML structure
+- Images include descriptive alt text
+- Links are keyboard accessible
+- Grid layout maintains logical reading order
+
+---
+
+## Tips for Best Results
+
+- Keep the heading short and purposeful
+- Use consistent imagery across all items
+- Limit items to highly relevant content only
+- Avoid overloading the grid with too many options
+- Ensure all links lead to meaningful, up-to-date pages

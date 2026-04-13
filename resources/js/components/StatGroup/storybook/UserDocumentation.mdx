@@ -1,0 +1,159 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as StatGroupStories from "./StatGroup.stories";
+
+<Meta title="Blocks/Stat Group/Documentation" />
+
+# Stat Group
+
+The **Stat Group** block is used to present key metrics, figures, or supporting data alongside contextual editorial content.
+
+It combines a structured intro section with a grid of statistics, making it ideal for highlighting performance indicators or impactful numbers.
+
+---
+
+## When to Use This Block
+
+Use the Stat Group block when:
+
+- You need to highlight key metrics or performance data
+- You want to support content with quantitative evidence
+- You are presenting results, outcomes, or benchmarks
+- You want to visually break up editorial content with data
+
+### Example uses:
+
+- Company performance statistics
+- Research or report highlights
+- Impact summaries (e.g., users, revenue, growth)
+- Service or product effectiveness metrics
+
+---
+
+## Preview
+
+<Canvas of={StatGroupStories.Default} />
+
+---
+
+## Context
+
+The **Context** section provides introductory content for the Stat Group block.
+
+It is a reusable content structure that typically includes:
+
+- Subheading
+- Heading
+- Paragraph
+- Optional buttons
+
+This area helps frame the statistics and provide narrative or editorial context.
+
+### Purpose:
+
+- Introduces the data being shown
+- Provides meaning behind the stats
+- Supports conversion with optional CTAs
+
+---
+
+## Items
+
+The **Items** field is a repeater used to define individual statistics.
+
+Each item includes:
+
+- **Heading** – The main stat value (e.g. “98%”, “10M”, “24/7”)
+- **Paragraph** – Supporting description or explanation
+
+These items are displayed in a responsive grid layout.
+
+---
+
+## Stat Item Structure
+
+Each stat item is designed to be simple and scannable:
+
+### Heading
+
+- Large, visually prominent number or value
+- Used to draw immediate attention
+- Should be short and impactful
+
+### Paragraph
+
+- Supporting text that explains the stat
+- Provides context or clarification
+- Should remain concise
+
+---
+
+## Layout Behavior
+
+### Grid Display
+
+The Stat Group block uses a responsive grid layout:
+
+- **Desktop:** Multi-column grid (typically 4 stats per row)
+- **Tablet:** Reduced columns for readability
+- **Mobile:** Two-column or stacked layout depending on space
+
+---
+
+### Overall Structure
+
+The layout is split into two main sections:
+
+1. **Context Section (Intro)**
+   - Centered content block
+   - Includes heading, paragraph, and optional buttons
+
+2. **Stats Grid**
+   - Displays individual stat items
+   - Uses consistent spacing and alignment
+
+---
+
+## Content Hierarchy
+
+The block is structured to guide user attention:
+
+1. Context content (sets meaning and intent)
+2. Large stat values (visual focus)
+3. Supporting descriptions (clarification)
+
+This ensures users understand both the data and its relevance.
+
+---
+
+## Buttons (Optional)
+
+The Context section may include buttons to support engagement.
+
+Buttons can be used for:
+
+- Driving users to related pages
+- Encouraging conversions
+- Linking to deeper information or reports
+
+---
+
+## Accessibility
+
+The Stat Group block is built with accessibility in mind:
+
+- Semantic heading structure for stat values
+- Text remains readable without visual hierarchy alone
+- Sufficient contrast between headings and paragraphs
+- Responsive layout preserves logical reading order
+- Content remains linear and screen-reader friendly
+
+---
+
+## Best Practices
+
+- Keep stat headings short and impactful
+- Use consistent formatting for all numeric values
+- Avoid overly long paragraph descriptions
+- Limit the number of stats to maintain clarity
+- Ensure context clearly explains what the stats represent
+- Use real, meaningful data rather than decorative numbers

@@ -1,0 +1,122 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as ImageStories from "./Image.stories";
+
+<Meta title="Blocks/Image/Documentation" />
+
+# Image
+
+The **Image** block allows you to add and display images with optional captions, sizing, and alignment controls.
+
+You can use either an uploaded image or an external image URL.
+
+---
+
+## When to Use This Block
+
+Use the Image block when:
+
+- You want to visually support content with a single image
+- You need to highlight a person, place, or object
+- You want to break up text-heavy pages with visuals
+
+### Example uses:
+
+- Feature images in articles
+- Faculty or campus photography
+- Supporting visuals in long-form content
+- Diagrams or illustrations
+
+---
+
+## Preview
+
+<Canvas of={ImageStories.Default} />
+
+---
+
+## Block Settings
+
+### Image
+
+Upload or select an image from the media library.
+
+You can also use an external image URL if needed.
+
+---
+
+### Caption
+
+If enabled, a caption will appear below the image.
+
+Use captions to:
+
+- Describe what the image shows
+- Provide attribution or context
+
+---
+
+### Align Center
+
+If enabled, the image will be centered on the page.
+
+If disabled, the image will align with the default page layout.
+
+---
+
+### Size by Percentage
+
+Controls how the image is sized.
+
+- If enabled, the image size is controlled using a percentage value.
+- If disabled, the image uses predefined orientation settings.
+
+---
+
+### Image Orientation
+
+Choose how the image is displayed when percentage sizing is disabled.
+
+Options include:
+
+- Default
+- Square
+- Rectangle
+- Landscape
+- Portrait
+
+---
+
+### Image Scale
+
+(Only available when **Size by Percentage** is enabled)
+
+Controls the width of the image:
+
+- 100% – Full width
+- 75% – Slightly reduced width
+- 50% – Half width
+- 25% – Quarter width
+
+---
+
+### Image Path
+
+Optional.
+
+Use this if you already know the direct URL of an image instead of uploading it.
+
+---
+
+### Caption (Optional Text Field)
+
+Alternative caption field used when working with external image paths.
+
+---
+
+## Tips for Best Results
+
+- Use **high-quality images** that are optimized for web
+- Add captions when the image needs context or explanation
+- Use **center alignment** for standalone or featured images
+- Avoid overly small images unless used decoratively
+- Use consistent **aspect ratios** when displaying multiple images together

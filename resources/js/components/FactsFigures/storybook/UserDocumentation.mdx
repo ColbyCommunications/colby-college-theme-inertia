@@ -1,0 +1,131 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as FactsFiguresStories from "./FactsFigures.stories";
+
+<Meta title="Blocks/Facts and Figures/Documentation" />
+
+# Facts & Figures
+
+The **Facts & Figures** block combines a structured content section with a supporting image and a set of key numeric or short-form data points.
+
+It is designed to present **statistics, metrics, or key takeaways** alongside editorial context.
+
+---
+
+## When to Use This Block
+
+Use the Facts & Figures block when:
+
+- You want to highlight key statistics or measurable data
+- You need to support editorial content with quantitative information
+- You want to combine text, imagery, and data in a structured layout
+- You are presenting impact, performance, or summary figures
+
+### Example uses:
+
+- Program outcomes (e.g. graduation rates, ratios, percentages)
+- Institutional highlights
+- Performance summaries
+- Impact reporting sections
+- Data-backed storytelling alongside editorial context
+
+---
+
+## Preview
+
+<Canvas of={FactsFiguresStories.Primary} />
+
+---
+
+## Block Structure
+
+The block is composed of three main sections:
+
+- Top divider line
+- Main content row (context + image)
+- Facts grid
+
+---
+
+## Context Section
+
+The **Context** section is cloned from the shared Context field group.
+
+It typically includes:
+
+- Heading
+- Paragraph
+- Buttons (optional)
+
+This section provides the narrative or explanation that supports the data.
+
+---
+
+## Image
+
+A single **required image** is displayed alongside the context.
+
+- Supports full image object (URL + alt text)
+- Serves as a visual anchor for the section
+- Positioned opposite the text in the layout
+
+---
+
+## Facts
+
+Facts are added via a **repeater field**.
+
+Each fact includes:
+
+### Figure
+
+A short numeric or key-value style highlight.
+
+Examples:
+
+- `10:1`
+- `95%`
+- `1,200`
+- `Top 5`
+
+---
+
+### Paragraph
+
+A short description that explains the figure.
+
+Keep this concise and supportive of the metric.
+
+---
+
+## Layout Behavior
+
+### Desktop Layout
+
+- The block uses a 12-column grid
+- Image and context are split into separate columns
+- Facts are displayed in a 3-column grid
+
+### Facts Grid
+
+- Each fact occupies 1/3 of the grid width
+- Designed for quick scanning of metrics
+
+---
+
+## Ordering
+
+On desktop:
+
+- Image appears on the left (visually reordered)
+- Context appears on the right
+- Facts sit beneath the main content area
+
+---
+
+## Tips for Best Results
+
+- The image is required for this block to render correctly
+- Facts are optional but strongly recommended
+- Best used when you have **3–6 key metrics**
+- Avoid long paragraphs inside fact descriptions
+- Keep figures short and visually scannable

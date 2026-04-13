@@ -1,5 +1,5 @@
 <template>
-  <div class="advanced-accordion max-w-screen-2xl w-full mx-auto">
+  <div class="advanced-accordion mx-auto w-full max-w-screen-2xl">
     <div class="colby-advanced-accordion-block border-b border-gray-300">
       <AdvancedAccordionPanel
         v-for="(panel, index) in panels"

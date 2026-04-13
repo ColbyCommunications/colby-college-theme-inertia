@@ -1,0 +1,105 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as HwImageSectionStories from "./HwImageSection.stories";
+
+<Meta title="Blocks/Half Width Image Section/Documentation" />
+
+# Half-Width Image Section
+
+The **Half-Width Image Section** block displays a side-by-side layout with an image on one side and text content on the other.
+
+This layout is commonly used to combine **visual storytelling with supporting editorial content** while maintaining a clean and balanced page structure.
+
+---
+
+## When to Use This Block
+
+Use the Half-Width Image Section when:
+
+- You want to pair an image with descriptive content
+- You want a visually balanced two-column layout
+- You want to highlight a program, initiative, or feature
+
+### Example uses:
+
+- Program highlights
+- Department or initiative introductions
+- Storytelling sections with supporting imagery
+- Calls to action paired with photography
+
+---
+
+## Preview
+
+<Canvas of={HwImageSectionStories.Default} />
+
+---
+
+## Reverse
+
+The **Reverse** option swaps the position of the image and the content.
+
+### Disabled
+
+The image appears on the left and the text content appears on the right.
+
+### Enabled
+
+The text content appears on the left and the image appears on the right.
+
+Use this option when placing multiple sections in sequence to create visual variety across the page.
+
+---
+
+## Image
+
+The **Image** field provides the visual element for the section.
+
+The image fills half of the layout and scales responsively across screen sizes.
+
+Choose images that:
+
+- Work well in a rectangular crop
+- Clearly support the accompanying text
+- Maintain quality at large display sizes
+
+---
+
+## Context
+
+The **Context** section contains the main text content displayed beside the image.
+
+This includes:
+
+- Subheading
+- Heading
+- Paragraph text
+- Optional buttons
+
+Use this area to explain or expand on the message represented by the image.
+
+---
+
+## Layout Behavior
+
+### Two-Column Layout
+
+On larger screens, the section displays as two equal columns:
+
+- Image on one side
+- Text content on the other
+
+---
+
+### Stacked Layout
+
+On smaller screens, the layout stacks vertically with the image appearing above the text content.
+
+---
+
+## Tips for Best Results
+
+- Choose images that clearly support the accompanying content
+- Keep text concise to maintain visual balance
+- Alternate the **Reverse** setting when using multiple sections in a row
+- Use buttons when the section leads to additional content
+- Ensure images remain clear and readable at large sizes

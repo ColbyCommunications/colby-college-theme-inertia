@@ -1,0 +1,154 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as SectionNavStories from "./SectionNav.stories";
+
+<Meta title="Blocks/Section Navigation/Documentation" />
+
+# Section Navigation
+
+The **Section Navigation** block provides a horizontal, scrollable navigation bar that helps users quickly jump to key sections within a page.
+
+It is typically placed near the top of long-form content to improve usability and reduce scrolling friction.
+
+---
+
+## When to Use This Block
+
+Use the Section Navigation block when:
+
+- A page contains multiple distinct sections
+- You want to improve in-page navigation
+- Users need quick access to key anchors or content areas
+- You want to reduce scrolling on long pages
+
+### Example uses:
+
+- Long editorial articles with multiple chapters
+- Service or product pages with anchored sections
+- Guides, resources, or documentation pages
+- Landing pages with structured content blocks
+
+---
+
+## Preview
+
+<Canvas of={SectionNavStories.Default} />
+
+---
+
+## Title
+
+The **Title** field defines the label shown at the start of the navigation row.
+
+It:
+
+- Appears on the left side of the navigation bar
+- Acts as a contextual label for the links
+- Is typically short and descriptive
+
+### Default value:
+
+- `In this section:`
+
+You may update this to match page tone or structure, for example:
+
+- “On this page:”
+- “Jump to:”
+- “Explore:”
+
+---
+
+## Items
+
+The **Items** field is a repeater used to define navigation links.
+
+Each item includes:
+
+- **Link** – URL and display text for navigation
+- **Icon Class** – Material icon name displayed next to the label
+
+These items are rendered as clickable navigation links in a horizontal list.
+
+---
+
+## Link Behavior
+
+Each navigation item:
+
+- Navigates to a section anchor or URL
+- Supports internal and external links
+- Is keyboard accessible and screen-reader friendly
+- Displays an optional icon before the label
+
+---
+
+## Layout Behavior
+
+### Horizontal Scroll Navigation
+
+The Section Navigation block is displayed as a horizontal row:
+
+- **Desktop:** Inline centered navigation
+- **Tablet:** Condensed spacing with possible overflow scroll
+- **Mobile:** Horizontal scroll enabled for accessibility
+
+If items exceed the viewport width, users can scroll horizontally.
+
+---
+
+## Animation Behavior
+
+The block includes a subtle entrance animation:
+
+- Items fade in and slide into place
+- Staggered animation creates sequential reveal
+- Improves perceived performance and visual polish
+
+### Bot Handling
+
+- Animations are disabled for bot visitors
+- Items render instantly when motion is disabled
+
+---
+
+## Content Structure
+
+Each navigation item consists of:
+
+- Optional icon
+- Link text
+- URL or anchor destination
+
+The title acts as a contextual label for the group.
+
+---
+
+## Visual Hierarchy
+
+The structure follows a simple hierarchy:
+
+1. Title label (left)
+2. Navigation items (horizontal row)
+
+This keeps the interface compact and scannable.
+
+---
+
+## Accessibility
+
+The Section Navigation block is accessible by design:
+
+- Semantic heading (`h2`) for the title
+- Keyboard-navigable links
+- Visible focus states
+- Icons are decorative and do not replace text
+- Maintains logical tab order even with horizontal scrolling
+
+---
+
+## Tips for Best Results
+
+- Keep item labels short and meaningful
+- Avoid too many navigation items
+- Ensure links point to valid sections or pages
+- Use icons consistently and sparingly
+- Place near the top of the page for best usability

@@ -1,0 +1,131 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as ArticleSectionStories from "./ArticleSection.stories";
+
+<Meta title="Blocks/Article Section/Documentation" />
+
+# Article Section
+
+The **Article Section** block displays a group of articles with a section heading and optional carousel layout.
+
+Articles can be pulled from **internal posts**, an **external API**, or **added manually**, allowing you to feature news, stories, or announcements in a structured section.
+
+---
+
+## When to Use This Block
+
+Use the Article Section when:
+
+- You want to highlight a group of related articles
+- You need a featured news section on a page
+- You want articles displayed in a **carousel or grouped layout**
+
+### Example uses:
+
+- Homepage news highlights
+- Department news sections
+- Featured stories
+- Academic news or faculty accomplishments
+
+---
+
+## Preview
+
+<Canvas of={ArticleSectionStories.Primary} />
+
+---
+
+## Block Settings
+
+### Display Posts Method
+
+Choose how articles will be added to the section.
+
+Options include:
+
+- **Internal Posts** – Display posts from within the site.
+- **External API** – Pull articles from an external feed.
+- **Add Posts Manually** – Create custom article items.
+
+---
+
+### Carousel
+
+If enabled, articles will display in a **horizontal carousel** that visitors can scroll through.
+
+If disabled, articles will display in a **standard layout**.
+
+---
+
+## Section Content
+
+### Context
+
+Add the section’s introductory content, such as:
+
+- Title
+- Description
+- Link or call-to-action
+
+This appears **above the list of articles**.
+
+---
+
+## Adding Items Manually
+
+When **Add Posts Manually** is selected, you can create custom article items.
+
+Each item includes the following fields:
+
+### Image
+
+Upload or select an image to represent the article.
+
+---
+
+### Context
+
+Add supporting content such as:
+
+- Title
+- Description
+- Link
+
+---
+
+## External API Settings
+
+When **External API** is selected, additional options appear.
+
+### API
+
+Choose which external feed to display.
+
+Examples include:
+
+- Academic News
+- Faculty Accomplishments
+
+---
+
+## Internal Post Settings
+
+When **Internal Posts** is selected, the section can automatically display posts from the site.
+
+### Render Posts
+
+If enabled, posts will be automatically pulled into the section.
+
+---
+
+### Render Posts Category
+
+Choose which post category should be displayed.
+
+---
+
+## Tips for Best Results
+
+- Use this block for **featured article sections** on major pages.
+- Add a clear **section title and description** using the Context field.
+- Enable **Carousel** when displaying many articles in a limited space.
+- Use **Manual items** when you want to curate specific articles.

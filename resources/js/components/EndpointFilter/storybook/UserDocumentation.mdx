@@ -1,0 +1,107 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as EndpointFilterStories from "./EndpointFilter.stories";
+
+<Meta title="Blocks/Endpoint Filter/Documentation" />
+
+# Endpoint Filter
+
+The **Endpoint Filter** block displays a list of items pulled from an external data source and optionally allows visitors to filter the results.
+
+It is commonly used to display **event listings** that are loaded dynamically from an events feed.
+
+---
+
+## When to Use This Block
+
+Use the Endpoint Filter block when:
+
+- You want to display a list of content from an external feed
+- The content updates automatically outside of WordPress
+- You want visitors to filter the displayed results by category or type
+
+### Example uses:
+
+- Event listings
+- Program schedules
+- External calendars
+- Filterable lists of feed-based content
+
+---
+
+## Preview
+
+<Canvas of={EndpointFilterStories.Default} />
+
+---
+
+## Endpoint
+
+The **Endpoint** field defines the external data source the block will load.
+
+This should be the **URL of a JSON feed** that returns a list of items to display.
+
+Each item typically includes information such as:
+
+- Date
+- Title
+- Time
+- Link to more details
+
+When the page loads, the block retrieves data from this endpoint and displays the results automatically.
+
+---
+
+## Filters
+
+The **Filters** option controls whether a filter navigation menu appears above the content.
+
+### Disabled
+
+Only the default endpoint results are displayed.
+
+Use this when:
+
+- You only want to show a single list of items
+- Filtering is not necessary
+
+### Enabled
+
+A filter navigation menu appears above the list, allowing visitors to switch between different endpoints.
+
+Use this when:
+
+- Content can be grouped by categories
+- Visitors may want to browse different types of events
+
+---
+
+## Layout Behavior
+
+### Filter Navigation
+
+When enabled, the filter menu appears above the content and displays selectable filter options.
+
+Selecting a filter loads new results without leaving the page.
+
+---
+
+### Content Grid
+
+Items are displayed in a responsive grid layout.
+
+Each item typically shows:
+
+- Date
+- Event title
+- Time
+- A **Learn More** button linking to the full event details
+
+---
+
+## Tips for Best Results
+
+- Use a **reliable endpoint URL** that returns properly formatted data
+- Enable filters only when there are **multiple meaningful categories**
+- Keep event titles concise for better readability
+- Verify that event links open the correct external pages
+- Use this block for **dynamic content that updates frequently**

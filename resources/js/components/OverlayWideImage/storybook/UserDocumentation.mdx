@@ -1,0 +1,168 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as OverlayWideImageStories from "./OverlayWideImage.stories";
+
+<Meta title="Blocks/Overlay Wide Image/Documentation" />
+
+# Overlay Wide Image
+
+The **Overlay Wide Image** block combines a full-width wide image with an overlaid content area.
+
+It is designed for strong visual storytelling where text content sits directly on top of an immersive image background.
+
+---
+
+## When to Use This Block
+
+Use the Overlay Wide Image when:
+
+- You want a full-width image with overlaid messaging
+- You need a strong visual section break in a page
+- You are building editorial or campaign-style layouts
+- You want text and imagery to feel tightly integrated
+
+### Example uses:
+
+- Editorial feature highlights
+- Campaign banners
+- Story-driven page sections
+- Visual call-to-action sections
+
+---
+
+## Preview
+
+<Canvas of={OverlayWideImageStories.Default} />
+
+---
+
+## Layout Structure
+
+The Overlay Wide Image block is built as a layered composition:
+
+- A full-width background image
+- A semi-transparent overlay layer
+- A contextual content area positioned on top
+
+This creates a visually rich, immersive section.
+
+---
+
+## Image
+
+The **Image** field is the background visual for the block.
+
+It:
+
+- Fills the entire width of the container
+- Maintains a wide landscape aspect ratio
+- Scales responsively across screen sizes
+- Acts as the visual foundation for the overlay content
+
+For best results, use high-resolution landscape imagery.
+
+---
+
+## Overlay Content
+
+The overlay layer contains contextual information that sits on top of the image.
+
+It includes:
+
+- **Subheading (optional)** – Introductory label
+- **Heading** – Primary message or title
+- **Paragraph** – Supporting description text
+- **Buttons** – Call-to-action links
+
+The overlay uses a semi-transparent background to ensure readability over the image.
+
+---
+
+## Alignment Options
+
+The **Align** setting controls the positioning of the overlay content.
+
+Available options:
+
+- **Left** – Content aligns to the left side of the image
+- **Center** – Content is centered within the overlay
+
+This allows flexibility depending on composition and focal point of the image.
+
+---
+
+## Context Content
+
+The context content is structured and reusable, designed for consistent presentation across blocks.
+
+It supports:
+
+- Hierarchical text (subheading → heading → paragraph)
+- One or more call-to-action buttons
+- Flexible sizing based on design system rules
+
+This ensures consistency across editorial layouts.
+
+---
+
+## Layout Behavior
+
+### Aspect Ratio
+
+The block maintains a wide landscape ratio:
+
+- Ensures consistent visual presentation
+- Preserves image composition across devices
+- Prevents layout shifts during responsive scaling
+
+---
+
+### Responsive Behavior
+
+- **Desktop:** Image fills background with overlay centered or aligned left
+- **Tablet:** Overlay adjusts padding for readability
+- **Mobile:** Content stacks with reduced spacing for compact viewing
+
+---
+
+### Overlay Positioning
+
+The overlay is:
+
+- Vertically centered within the image area
+- Horizontally aligned based on selected setting
+- Responsive with padding adjustments across breakpoints
+
+---
+
+## Buttons
+
+Buttons appear within the overlay content and act as calls to action.
+
+They support:
+
+- Internal links
+- External URLs
+- Optional target behavior (same tab or new tab)
+
+Buttons are intended to guide users toward key actions or pages.
+
+---
+
+## Accessibility
+
+The Overlay Wide Image block is designed with accessibility in mind:
+
+- Images include descriptive alt text
+- Overlay text maintains sufficient contrast over background imagery
+- Buttons are keyboard accessible and clearly labeled
+- Content hierarchy supports screen reader navigation
+
+---
+
+## Tips for Best Results
+
+- Use high-quality, wide-format images for best impact
+- Ensure strong contrast between text and background
+- Keep overlay content concise and focused
+- Use alignment intentionally to match image composition
+- Avoid overcrowding the overlay with too many buttons

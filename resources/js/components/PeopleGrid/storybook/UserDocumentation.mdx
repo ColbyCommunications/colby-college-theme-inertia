@@ -1,0 +1,176 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as PeopleGridStories from "./PeopleGrid.stories";
+
+<Meta title="Blocks/People Grid/Documentation" />
+
+# People Grid
+
+The **People Grid** block is used to display staff and faculty in a structured grid layout.
+
+It is primarily designed for academic department and office pages, with support for both automated population and manual selection of individuals.
+
+---
+
+## When to Use This Block
+
+Use the People Grid when:
+
+- You need to display faculty or staff listings
+- You are building academic department pages
+- You want a structured directory of people profiles
+- You need a mix of automated and manually curated listings
+
+### Example uses:
+
+- Academic department faculty listings
+- Office or administrative staff directories
+- Research group member listings
+- Institutional team pages
+
+---
+
+## Preview
+
+<Canvas of={PeopleGridStories.Default} />
+
+---
+
+## Auto Populate
+
+The **Auto Populate** option allows the grid to automatically pull people based on department data.
+
+When enabled:
+
+- People are automatically retrieved by department name
+- Data is sourced from the site’s People directory
+- Listings update dynamically based on department matching
+
+### Important Notes:
+
+- Auto population is intended for academic department homepages only
+- Some people may not appear automatically if their Workday department does not match the website department URL
+- Missing individuals may need to be added manually
+
+---
+
+## Manual People Selection
+
+The People Grid also supports manual additions.
+
+Editors can:
+
+- Select individual people from the People post type
+- Add multiple people via a repeater field
+- Combine manual entries with auto-populated results
+
+This is useful when:
+
+- A person does not appear in automatic results
+- You need to highlight specific individuals
+- You want curated ordering or grouping
+
+---
+
+## Excluding People
+
+The block includes an option to exclude specific people from appearing.
+
+This allows editors to:
+
+- Remove individuals from auto-populated results
+- Override unwanted or outdated listings
+- Fine-tune department-based outputs
+
+---
+
+## Grid Layout
+
+The People Grid uses a responsive article grid system:
+
+- Displays people in a multi-column layout
+- Adjusts number of columns based on configuration
+- Optimized for portrait-style profile images
+
+Each person is rendered as a card within the grid.
+
+---
+
+## Underlying System
+
+The People Grid is powered by the **Article Grid** component.
+
+It inherits key layout and display behaviors such as:
+
+- Column configuration
+- Image orientation (portrait)
+- Manual vs automated content handling
+- Responsive grid structure
+
+---
+
+## Content Behavior
+
+Each person typically includes:
+
+- Profile image
+- Name and title
+- Supporting contextual information (depending on template)
+
+Content is sourced from the **People post type**.
+
+---
+
+## Layout Behavior
+
+### Columns
+
+The grid supports configurable column layouts:
+
+- Multi-column display on desktop
+- Responsive reduction on tablet and mobile
+- Consistent spacing between profile cards
+
+---
+
+### Image Orientation
+
+Profile images are displayed in a **portrait orientation** to ensure consistency across listings.
+
+This helps:
+
+- Maintain uniform card heights
+- Improve scanability in large directories
+- Emphasize portrait-style profile photography
+
+---
+
+## Data Sources
+
+The People Grid can source content from:
+
+- **Auto-populated department data**
+- **Manually selected People posts**
+- **Excluded People overrides**
+
+This allows flexible combinations of automated and curated content.
+
+---
+
+## Accessibility
+
+The People Grid is designed with accessibility in mind:
+
+- Each person card includes semantic structure
+- Images include alt text where available
+- Grid layout supports keyboard navigation
+- Content order remains logical for screen readers
+
+---
+
+## Tips for Best Results
+
+- Use auto-populate for department-wide listings where possible
+- Manually curate when highlighting key individuals
+- Ensure profile images are consistent and high quality
+- Avoid mixing unrelated roles within the same grid
+- Use exclusions carefully to maintain accurate listings

@@ -9,9 +9,9 @@ import { setup } from "@storybook/vue3";
 import { useGlobalLoader } from "../resources/js/composables/useGlobalLoader.js";
 import { ref } from "vue";
 
-setup((app) => {
-  app.use(InstantSearch);
-});
+// setup((app) => {
+//   app.use(InstantSearch);
+// });
 
 const preview = {
   tags: ["autodocs"],

@@ -1,0 +1,132 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as ListSectionStories from "./ListSection.stories";
+
+<Meta title="Blocks/List Section/Documentation" />
+
+# List Section
+
+The **List Section** block displays multiple grouped lists of linked items in a structured, responsive layout.
+
+Each list can include an optional heading and a collection of linked items, making this block ideal for navigation hubs, resource directories, and grouped content link lists.
+
+---
+
+## When to Use This Block
+
+Use the List Section when:
+
+- You need to display grouped navigation links
+- You want to organize related resources into categories
+- You are building directory-style content sections
+- You want to present structured link collections in columns
+
+### Example uses:
+
+- Resource or documentation hubs
+- Footer or sitemap-style link groups
+- Program or service listings
+- Category-based navigation sections
+
+---
+
+## Preview
+
+<Canvas of={ListSectionStories.Default} />
+
+---
+
+## Lists
+
+The **Lists** field is a repeater that allows editors to create multiple grouped lists.
+
+Each list contains:
+
+- **Heading (optional)** – A title displayed above the list
+- **Items** – A required repeater of linked items
+
+You can add as many lists as needed, allowing flexible multi-column layouts.
+
+---
+
+## List Items
+
+Each list contains one or more items.
+
+Each item includes:
+
+- **Link** – A link field containing:
+  - URL
+  - Link title
+  - Optional target (same tab or new tab)
+
+The link title is displayed as the clickable text in the list.
+
+---
+
+## Layout Behavior
+
+### Responsive Grid
+
+The List Section automatically adapts to screen size:
+
+- **Desktop:** Lists are displayed in a multi-column horizontal layout
+- **Tablet:** Columns wrap based on available width
+- **Mobile:** Lists stack vertically for easy scrolling
+
+---
+
+### Column Structure
+
+Each list is rendered as an independent column:
+
+- Lists are evenly spaced across the container
+- Column widths adjust dynamically based on screen size
+- Spacing ensures readability between groups
+
+---
+
+## Headings
+
+If a heading is provided, it appears above the list items.
+
+Headings are useful for:
+
+- Categorizing link groups
+- Improving scanability
+- Providing context for grouped navigation
+
+If no heading is set, the list will display items only.
+
+---
+
+## Links
+
+Each item in the list is a clickable link.
+
+Links support:
+
+- Internal pages
+- External URLs
+- Optional new tab behavior
+
+Link text is derived from the link’s title field.
+
+---
+
+## Accessibility
+
+The List Section is structured for accessibility:
+
+- Headings provide semantic grouping for screen readers
+- Links are keyboard navigable
+- Lists use proper HTML list structure for clarity
+
+---
+
+## Tips for Best Results
+
+- Group related links under clear, descriptive headings
+- Keep link titles short and meaningful
+- Avoid overcrowding lists with too many items
+- Use consistent naming patterns across multiple lists
+- Limit each list to a focused topic or category for better usability
