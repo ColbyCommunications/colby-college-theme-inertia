@@ -1,7 +1,26 @@
 <template>
   <div class="embed">
     <div class="embed__main">
-      <div ref="embedContainer" v-html="embed"></div>
+      <div class="
+      [&>div>div_span.lw-event-date]:text-sm
+      [&>div>div_span.lw-event-date]:uppercase
+      [&>div>div_span.lw-event-date]:tracking-wider
+      [&>div>div_span.lw-event-date]:leading-[2]
+      [&>div>div_span.lw-event-date]:text-[#366bcf]
+
+      [&>div>div_span.lw-event-time]:text-[#365185]
+      [&>div>div_span.lw-event-time]:font-body
+      [&>div>div_span.lw-event-time]:text-sm
+      [&>div>div_span.lw-event-time]:font-normal
+
+      [&>div>div_span.lw-event-name]:font-extended
+      [&>div>div_span.lw-event-name]:font-bold
+      [&>div>div_span.lw-event-name]:leading-[1.5]
+      [&>div>div_span.lw-event-name]:underline
+      [&>div>div_span.lw-event-name]:hover:no-underline
+      [&>div>div_span.lw-event-name]:tracking-tight
+      [&>div>div_span.lw-event-name]:text-lg
+      [&>div>div_span.lw-event-name]:text-indigo" ref="embedContainer" v-html="embed"></div>
     </div>
   </div>
 </template>
