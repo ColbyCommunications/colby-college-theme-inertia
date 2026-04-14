@@ -160,7 +160,7 @@ add_action('wp_enqueue_scripts', function () {
       $manifest = json_decode(file_get_contents($manifest_path), true);
       $entry    = $manifest['resources/js/app.js'] ?? null;
       if ($entry) {
-        wp_enqueue_script_module('colby-app', get_stylesheet_directory_uri() . '/dist/' . $entry['file'], [], null, true);
+        wp_enqueue_script_module('colby-app', get_stylesheet_directory_uri() . '/dist/' . $entry['file'], [], null,  array( 'in_footer' => true, 'fetchpriority' => 'high' ));
         if (!empty($entry['css'])) {
           foreach ($entry['css'] as $css) {
             wp_enqueue_style('colby-app', get_stylesheet_directory_uri() . '/dist/' . $css, [], null);
