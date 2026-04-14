@@ -16,7 +16,7 @@
         <li
           v-for="(item, index) in items"
           :key="index"
-          class="section-nav__item font-body text-14 leading-130 font-medium whitespace-nowrap text-indigo-800 md:text-10"
+          class="section-nav__item font-body text-14 leading-130 font-medium whitespace-nowrap text-indigo-800 md:text-12"
         >
           <a
             class="text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
