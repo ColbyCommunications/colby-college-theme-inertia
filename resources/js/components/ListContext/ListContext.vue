@@ -10,7 +10,7 @@
           :subheading="subheading"
           :heading="heading"
           :paragraph="paragraph"
-          :buttons="{ items: buttonItems }"
+          :buttons="{ items: buttons }"
         />
       </div>
       <div class="list-context__main md:col-span-3">
