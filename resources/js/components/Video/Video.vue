@@ -31,9 +31,7 @@
       <Picture
         :alt="image.alt || ''"
         class="absolute top-0 left-0 h-full w-full object-cover"
-        :src="image.src"
-        :sizeDesktop:="image.srcset"
-        :sizeMobile="image.sizes.Hero"
+        :src="image.url"
       />
     </div>
 
