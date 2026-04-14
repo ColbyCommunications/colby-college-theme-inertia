@@ -154,28 +154,50 @@ if (!function_exists('colby_block_article_section_get_remote_data')) {
     {
         $render_api = $data['render_api'] ?? false;
 
-        if (!colby_block_article_section_is_truthy($render_api)) {
-            return $data;
+        if (colby_block_article_section_is_truthy($render_api)) {
+
+            $endpoint = colby_block_article_section_get_endpoint($data);
+
+            if (!$endpoint) {
+                return $data;
+            }
+
+            $cache_key = 'colby_block_article_section_' . md5($endpoint);
+            $items = colby_block_article_section_get_cached_remote_json($cache_key, $endpoint, 300);
+
+            if (($data['api'] ?? '') === 'Faculty Accomplishments') {
+                $items = colby_block_article_section_normalize_faculty_items($items);
+            } elseif (($data['api'] ?? '') === 'Academic News') {
+                $items = colby_block_article_section_normalize_academic_items($items);
+            }
+
+            $data['initial_items'] = is_array($items) ? $items : [];
+            $data['hydrated_from_server'] = !empty($data['initial_items']);
+            $data['should_client_refresh'] = false;
+        } else if($data['display_posts_method'] === 'internal') {
+            $items = get_posts([
+                'post_type' => 'post',
+                'post__not_in' => $data['internal_post_exclusions'] || [],
+                'posts_per_page' => 10,
+                'tax_query' => [
+                    'taxonomy' => 'category',
+                    'field' => 'term_id',
+                    'terms' => $data['render_posts_category']
+                ]
+            ]);
+            
+            $data['initial_items'] = is_array($items) ? array_map(function (&$post) {
+                // dd($post);
+                $post->heading = $post->post_title;
+                $post->subheading = $post->post_type == 'post' ? date("M d, Y", strtotime($post->post_date)) : null;
+                $post->paragraph = wp_trim_words(get_the_excerpt($post->ID), 50);
+                return $post;
+            }, $items) : [];
+            $data['hydrated_from_server'] = !empty($data['initial_items']);
+            $data['should_client_refresh'] = false;
         }
 
-        $endpoint = colby_block_article_section_get_endpoint($data);
-
-        if (!$endpoint) {
-            return $data;
-        }
-
-        $cache_key = 'colby_block_article_section_' . md5($endpoint);
-        $items = colby_block_article_section_get_cached_remote_json($cache_key, $endpoint, 300);
-
-        if (($data['api'] ?? '') === 'Faculty Accomplishments') {
-            $items = colby_block_article_section_normalize_faculty_items($items);
-        } elseif (($data['api'] ?? '') === 'Academic News') {
-            $items = colby_block_article_section_normalize_academic_items($items);
-        }
-
-        $data['initial_items'] = is_array($items) ? $items : [];
-        $data['hydrated_from_server'] = !empty($data['initial_items']);
-        $data['should_client_refresh'] = false;
+        // dd($data);
 
         return $data;
     }

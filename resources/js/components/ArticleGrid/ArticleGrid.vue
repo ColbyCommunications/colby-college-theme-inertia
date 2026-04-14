@@ -15,10 +15,10 @@
           <Article
             size="small"
             :image="item.image"
-            :subheading="item.date"
-            :heading="item.title.rendered"
+            :subheading="item.subheading"
+            :heading="item.heading"
             :border="normalizedBorder"
-            :paragraph="toSummaryText(item['post-meta-fields']?.summary)"
+            :paragraph="item.paragraph"
             :buttons="[
               {
                 button: {
