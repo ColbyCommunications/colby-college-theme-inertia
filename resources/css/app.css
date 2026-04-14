@@ -73,6 +73,31 @@
   direction: ltr;
 }
 
+@font-face {
+  font-family: "Noto Sans Extended Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(@fontsource-variable/noto-sans/files/noto-sans-cyrillic-ext-wght-normal.woff2)
+    format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Noto Sans Extended Variable";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(@fontsource-variable/noto-sans/files/noto-sans-cyrillic-ext-wght-italic.woff2)
+    format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
 /* Theme tokens */
 @theme {
   /* --- Colors --- */
@@ -107,8 +132,8 @@
   --color-gray-1000: #232b3b;
 
   /* --- Typography --- */
-  --font-display: "nimbus-sans", sans-serif;
-  --font-extended: "nimbus-sans-extended", sans-serif;
+  --font-display: "Noto Sans Extended Variable", sans-serif;
+  --font-extended: "Noto Sans Extended Variable", sans-serif;
   --font-body: "Libre Franklin Variable", sans-serif;
 
   --text-8: 0.5rem;
