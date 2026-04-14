@@ -53,6 +53,30 @@ add_action('init', function () {
             include_once $fields_file;
         }
     }
+
+    register_post_type(
+			'people',
+			array(
+				'labels'            => array(
+					'name'               => __( 'People' ),
+					'singular_name'      => __( 'Person' ),
+					'add_new_item'       => __( 'Add Person' ),
+					'edit_item'          => __( 'Edit Person' ),
+					'new_item'           => __( 'New Person' ),
+					'view_item'          => __( 'View Person' ),
+					'search_items'       => __( 'Search People' ),
+					'not_found'          => __( 'Person not found.' ),
+					'not_found_in_trash' => __( 'No Person found in trash.' ),
+				),
+				'rewrite'           => array( 'slug' => 'people/people-directory' ),
+				'public'            => true,
+				'has_archive'       => true,
+				'show_in_rest'      => false,
+				'menu_icon'         => 'dashicons-id-alt',
+				'show_in_nav_menus' => true,
+				'supports'          => array( 'title', 'revisions', 'excerpt', 'thumbnail' ),
+			)
+		);
 });
 
 add_action('init', function () {

@@ -72,7 +72,79 @@ function get_structured_block_data($block, $index = 0) {
 //   }
 //   // $block = enrich_block_data($block, $index);
 // }
-unset($block);
+// unset($block);
+
+function get_people_posts_by_department($segment3) {
+
+	// Handle cases where departments have commas in their name
+	switch ($segment3) {
+		case 'performance theater and dance':
+			$segment3 = "performance, theater, and dance";
+			break;
+		case 'science technology and society':
+			$segment3 = "science, technology, and society";
+			break;
+		case 'womens gender and sexuality studies':
+			$segment3 = "women's, gender, and sexuality studies";
+			break;
+	}
+    // Define query arguments
+    $args = array(
+    'post_type'      => 'people',       // Specify the post type
+    'posts_per_page' => -1,             // Retrieve all posts
+    'post_status'    => 'publish',      // Retrieve only published posts
+    'meta_query'     => array(
+        'relation' => 'AND',            // Ensure both conditions must be true
+        array(
+            'key'     => 'department',  // Custom field key
+            'value'   => $segment3,     // Value to match
+            'compare' => '=',           // Match exactly
+        ),
+        array(
+            'key'     => 'is_retiree',  // Custom field key for retirees
+            'value'   => '1',           // Exclude people with '1' for is_retiree
+            'compare' => '!=',          // Exclude if the value is 1
+        ),
+    ),
+	);
+
+    // Instantiate WP_Query
+    $query = new WP_Query($args);
+
+    // Initialize an array to hold the posts
+    $posts = [];
+
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $post = get_post();
+            if ($post) { // Check if get_post() returns a valid post object
+                $posts[] = ['post' => $post];
+            }
+        }
+        wp_reset_postdata();
+    }
+
+    return $posts;
+}
+
+function get_people($segment1, $segment2, $segment3) {
+    switch ($segment1) {
+        case 'academics':
+            switch ($segment2) {
+                case 'departments-and-programs':
+                    if ($segment3 !== '') {
+                        return get_people_posts_by_department($segment3);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+}
 
 
 function colby_process_single_block(array $block, int $index = 0, string $path = 'root'): array
@@ -98,6 +170,75 @@ function colby_process_single_block(array $block, int $index = 0, string $path =
             $block['attrs']['data']['blocks'],
             $block_path . '_group'
         );
+    } else if (($block['blockName'] ?? null) === 'acf/people-grid') {
+        // Split the URL path into segments
+        $url_segments = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
+        // dd($url_segments);
+        // Retrieve segments 1, 2, and 3 from the URL (if they exist)
+        $segment1 = $url_segments[0] ?? '';
+        $segment2 = $url_segments[1] ?? '';
+        $segment3 = $url_segments[2] ?? '';
+  
+        // Replace dashes in third url segment with spaces
+        $segment3 = strtolower(str_replace('-', ' ', trim($segment3)));
+  
+        // Handle auto populate if enabled
+        $is_enabled_auto_populate = $block['attrs']['data']['auto_populate'];
+
+        // dd($block);
+
+        $people_posts = $is_enabled_auto_populate ? get_people($segment1, $segment2, $segment3) : [];
+        $acf_items = $block['attrs']['data']['items'] ?: [];
+    
+        // Merge ACF items and people posts
+        $merged_items = array_merge(is_array($acf_items) ? $acf_items : [], is_array($people_posts) ? $people_posts : []);
+        
+        // get people exclusions
+        $people_exclusions = get_field('exclude_from_listings');
+  
+        $final_people_items = [];
+  
+        // process/obtain the final list of folks
+        if ($people_exclusions){
+          foreach ( $merged_items as $person) {
+            if(!in_array($person, $people_exclusions)) {
+              $final_people_items[] = $person;
+            }
+          }
+        } else {
+          $final_people_items = $merged_items;
+        }
+  
+        foreach ($final_people_items as &$item) {
+              if (isset($item['post'])) {
+                  $post_id = $item['post']->ID;
+                  if ($post_id) { // Ensure $post_id is valid
+                      $item['last_name'] = strtolower(get_post_meta($post_id, 'last_name', true));
+                      $item['heading'] = $item['post']->post_title;
+                      $item['paragraph'] = get_post_meta($post_id, 'title', true);
+                      $feat_image_id = get_post_thumbnail_id($post_id);
+                      $feat_image_array = wp_get_attachment_image_src($feat_image_id, 'Square_mobile');
+                      $feat_image_url = "";
+                      if ($feat_image_array && $feat_image_array[1] >= 300 && $feat_image_array[2] >= 300){
+                        $feat_image_url = get_the_post_thumbnail_url($post_id, 'Square_mobile');
+                      } else {
+                        $feat_image_url = 'https://www.colby.edu/wp-content/uploads/2022/11/directory-placeholder_E4E8F0_90_100-380x430_square.jpg';
+                      }
+                      $item['image'] = ['url' => $feat_image_url, 'alt' => 'Image of '. $item['post']->post_title];
+                  }
+              }
+          }
+          unset($item);
+  
+      // Sort the merged_items array by last_name
+      usort($final_people_items, function($a, $b) {
+      return strcmp(strtolower($a['last_name']), strtolower($b['last_name']));
+      });
+  
+      // Update context with merged items
+      $block['attrs']['data']['acf_items'] = $acf_items;
+      $block['attrs']['data']['people_posts'] = $people_posts;
+      $block['attrs']['data']['people'] = $final_people_items;
     }
 
     // $block = enrich_block_data($block, $index);

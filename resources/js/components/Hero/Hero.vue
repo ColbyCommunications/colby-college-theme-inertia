@@ -32,7 +32,7 @@
         >
           <Picture
             class="absolute top-0 left-0 h-full w-full object-cover"
-            :src="image.image.url"
+            :src="image.url"
             :alt="image.alt"
           />
         </div>
@@ -117,6 +117,8 @@ const props = defineProps({
     default: 3,
   },
 });
+
+console.log(props);
 
 const imageClass = computed(() => {
   return props.imageOrientation === "portrait"

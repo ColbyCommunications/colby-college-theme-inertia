@@ -12,7 +12,8 @@
 <script setup>
 import ArticleGrid from "@/js/components/ArticleGrid/ArticleGrid.vue";
 
-defineProps({
+const props = defineProps({
   people: { type: Array, default: () => [] },
 });
+console.log(props);
 </script>

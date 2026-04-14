@@ -1,5 +1,5 @@
 <template>
-    <div class="group">
+    <div class="group md:[&>div>section]:mt-[15px]" >
       <ComponentRouter :components="blocks" />
     </div>
   </template>

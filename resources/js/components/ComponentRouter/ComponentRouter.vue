@@ -53,6 +53,8 @@ const blockRegistry = {
   "acf/table": () => import("../Table/Table.vue"),
   "core/group": () => import("../Group/Group.vue"),
   "acf/paragraph": () => import("../Paragraph/Paragraph.vue"),
+  "acf/accordion": () => import("../Accordion/Accordion.vue"),
+  "acf/people-grid": () => import("../PeopleGrid/PeopleGrid.vue"),
 };
 
 function getLoader(blockName) {
@@ -108,6 +110,8 @@ function getPlaceholderHeight(item) {
     "acf/context-article-grid": 300,
     "core/heading": 0,
     "acf/table": 350,
+    "acf/people-grid": 350,
+    "acf/accordion": 350,
     "core/group": 350,
     "acf/paragraph": 350,
   };
