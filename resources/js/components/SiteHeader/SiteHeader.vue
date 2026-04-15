@@ -10,7 +10,8 @@
         class="header__left hidden h-full md:flex md:items-center md:justify-center"
       >
         <div class="flex flex-col">
-          <ColbyLogo :url="url" fillColor="--color-indigo" />
+          <ColbyLogo v-if="logo.length == 0" :url="url" fillColor="--color-indigo" />
+          <img v-else :src="logo" :style="logoStyle">
         </div>
       </div>
       <!-- Header Right -->
@@ -42,6 +43,8 @@ const props = defineProps({
     default: () => ({ main: [], utility: [] }),
   },
   url: { type: String, default: "" },
+  logo: { type: String, default: "" },
+  logoStyle: { type: String, default: "" },
 });
 
 // Reactive toggle for mobile menu

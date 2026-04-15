@@ -84,7 +84,7 @@ add_action('init', function () {
 });
 
 add_action('init', function () {
-  Inertia::share([
+  $global_site_data = [
     'site_data' => [
       'name'        => get_bloginfo('name'),
       'description' => get_bloginfo('description'),
@@ -101,7 +101,45 @@ add_action('init', function () {
       'people'  => colby_get_menu('people'),
       'social'  => colby_get_menu('social'),
     ],
-  ]);
+  ];
+
+  $header_logo_id = get_theme_mod( 'header_logo' );
+  $header_logo_styles = get_theme_mod( 'header_logo_styles' );
+
+  $headerlogo = wp_get_attachment_image_src( $header_logo_id , 'full' );
+  if($headerlogo) {
+    $global_site_data['site_data']['headerlogo'] = esc_url( $headerlogo[0] );
+    $global_site_data['site_data']['headerlogo_styles'] = $header_logo_styles;
+  }
+		
+  $footer_logo_id = get_theme_mod( 'footer_logo' );
+  $footer_logo_styles = get_theme_mod( 'footer_logo_styles' );
+
+  $footerlogo = wp_get_attachment_image_src( $footer_logo_id , 'full' );
+  if($footerlogo) {
+    $global_site_data['site_data']['footerlogo'] = esc_url( $footerlogo[0] );
+    $global_site_data['site_data']['footerlogo_styles'] = $footer_logo_styles;
+  } else {
+    $global_site_data['site_data']['footerlogo'] = get_template_directory_uri() . '/src/images/svg/logo_footer.svg';
+    $global_site_data['site_data']['footerlogo_styles'] = 'width:100px';
+  }
+  
+  $display_athletics_logo = get_theme_mod( 'display_athletics_logo', true );
+  $global_site_data['site_data']['display_athletics_logo'] = $display_athletics_logo;
+  
+  $footer_style = get_theme_mod( 'footer_style', 'colby.edu' ); 
+  $global_site_data['site_data']['footer_style'] = $footer_style;
+  
+  $algolia_index = get_theme_mod( 'algolia_index'); 
+  $global_site_data['site_data']['algolia_index'] = $algolia_index;
+  
+  $algolia_qs_index = get_theme_mod( 'algolia_qs_index'); 
+  $global_site_data['site_data']['algolia_qs_index'] = $algolia_qs_index;
+
+  $utility_menu_style = get_theme_mod( 'utility_menu_style', 'colby.edu' ); 
+  $global_site_data['site_data']['utility_menu_style'] = $utility_menu_style;
+
+  Inertia::share($global_site_data);
 
   Inertia::share('auth', function () {
     if (is_user_logged_in()) {
@@ -289,4 +327,191 @@ if (!function_exists('dd')) {
       dump(...$args);
       die();
   }
+}
+
+
+function mytheme_add_customizer_panels( $wp_customize ) {
+
+  // --- Header Settings Panel ---
+  $wp_customize->add_panel( 'colby_theme_settings_panel', array(
+      'title'       => __( 'Colby Theme Settings', 'mytheme' ),
+      'description' => __( 'Manage your website header settings, including logo and styles.', 'mytheme' ),
+      'priority'    => 25, // Placed after Site Identity (priority 20)
+  ) );
+
+  // Header Logo Section
+  $wp_customize->add_section( 'header_settings_section', array(
+      'title'    => __( 'Header Settings', 'mytheme' ),
+      'panel'    => 'colby_theme_settings_panel', // Associate with Header Settings panel
+      'priority' => 10,
+  ) );
+
+  // Header Logo Setting (Media Select)
+  $wp_customize->add_setting( 'header_logo', array(
+      'default'           => '', // No default logo
+      'type'              => 'theme_mod', // Stores in theme_mod options
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'absint', // Sanitize as absolute integer (attachment ID)
+  ) );
+
+  // Header Logo Control (Media Upload)
+  $wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'header_logo', array(
+      'label'       => __( 'Upload Header Logo', 'mytheme' ),
+      'section'     => 'header_settings_section',
+      'settings'    => 'header_logo',
+      'mime_type'   => 'image', // Only allow image uploads
+      'description' => __( 'Select an image for your website header logo.', 'mytheme' ),
+  ) ) );
+
+  // Header Logo Styles Setting (Text Field)
+  $wp_customize->add_setting( 'header_logo_styles', array(
+      'default'           => '',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+  ) );
+
+  // Header Logo Styles Control (Text Input)
+  $wp_customize->add_control( 'header_logo_styles', array(
+      'label'       => __( 'Header Logo Styles (CSS)', 'mytheme' ),
+      'section'     => 'header_settings_section',
+      'settings'    => 'header_logo_styles',
+      'type'        => 'text',
+      'description' => __( 'Enter custom CSS styles for the header logo (e.g., "width: 150px;").', 'mytheme' ),
+  ) );
+
+$wp_customize->add_setting( 'utility_menu_style', array(
+      'default'           => 'colby.edu', // Default option
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+  ) );
+
+  $wp_customize->add_control( 'utility_menu_style', array(
+      'label'       => __( 'Utility Menu Style', 'mytheme' ),
+      'section'     => 'header_settings_section',
+      'settings'    => 'utility_menu_style',
+      'type'        => 'select', // Specifies a dropdown
+      'choices'     => array(
+          'colby.edu'  => __( 'colby.edu', 'mytheme' ),
+          'child_site' => __( 'Child Site', 'mytheme' ), // Using 'child_site' as value for consistency
+      ),
+      'description' => __( 'Choose the desired style for the website utility menu.', 'mytheme' ),
+  ) );
+
+
+// Algolia
+  $wp_customize->add_section( 'algolia_settings_section', array(
+      'title'    => __( 'Algolia Settings', 'mytheme' ),
+      'panel'    => 'colby_theme_settings_panel', // Associate with Header Settings panel
+      'priority' => 10,
+  ) );
+
+// Algolia Index (Text Field)
+  $wp_customize->add_setting( 'algolia_index', array(
+      'default'           => '',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+  ) );
+
+  // Algolia Index Control (Text Input)
+  $wp_customize->add_control( 'algolia_index', array(
+      'label'       => __( 'Algoia Index', 'mytheme' ),
+      'section'     => 'algolia_settings_section',
+      'settings'    => 'algolia_index',
+      'type'        => 'text',
+  ) );
+
+// Algolia Query Suggestion Index (Text Field)
+  $wp_customize->add_setting( 'algolia_qs_index', array(
+      'default'           => '',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+  ) );
+
+  // Algolia Query Suggestion Index Control (Text Input)
+  $wp_customize->add_control( 'algolia_qs_index', array(
+      'label'       => __( 'Algoia Query Suggestion Index', 'mytheme' ),
+      'section'     => 'algolia_settings_section',
+      'settings'    => 'algolia_qs_index',
+      'type'        => 'text',
+  ) );
+
+  // Footer Logo Section
+  $wp_customize->add_section( 'footer_settings_section', array(
+      'title'    => __( 'Footer Settings', 'mytheme' ),
+      'panel'    => 'colby_theme_settings_panel', // Associate with Footer Settings panel
+      'priority' => 10,
+  ) );
+
+  // Footer Logo Setting (Media Select)
+  $wp_customize->add_setting( 'footer_logo', array(
+      'default'           => '',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'absint',
+  ) );
+
+  // Footer Logo Control (Media Upload)
+  $wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'footer_logo', array(
+      'label'       => __( 'Upload Footer Logo', 'mytheme' ),
+      'section'     => 'footer_settings_section',
+      'settings'    => 'footer_logo',
+      'mime_type'   => 'image',
+      'description' => __( 'Select an image for your website footer logo.', 'mytheme' ),
+  ) ) );
+
+  // Footer Logo Styles Setting (Text Field)
+  $wp_customize->add_setting( 'footer_logo_styles', array(
+      'default'           => '',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+  ) );
+
+  // Footer Logo Styles Control (Text Input)
+  $wp_customize->add_control( 'footer_logo_styles', array(
+      'label'       => __( 'Footer Logo Styles (CSS)', 'mytheme' ),
+      'section'     => 'footer_settings_section',
+      'settings'    => 'footer_logo_styles',
+      'type'        => 'text',
+      'description' => __( 'Enter custom CSS styles for the footer logo (e.g., "width: 100px;").', 'mytheme' ),
+  ) );
+
+// Display Athletics Logo Checkbox Setting
+  $wp_customize->add_setting( 'display_athletics_logo', array(
+      'default'           => 1, // Default to not displayed
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'mytheme_sanitize_checkbox', // Custom sanitize function
+  ) );
+
+  // Display Athletics Logo Checkbox Control
+  $wp_customize->add_control( 'display_athletics_logo', array(
+      'label'       => __( 'Display Athletics Logo', 'mytheme' ),
+      'section'     => 'footer_settings_section',
+      'settings'    => 'display_athletics_logo',
+      'type'        => 'checkbox',
+      'description' => __( 'Check to display a separate athletics logo in the footer.', 'mytheme' ),
+  ) );
+
+$wp_customize->add_setting( 'footer_style', array(
+      'default'           => 'colby.edu', // Default option
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+  ) );
+
+  $wp_customize->add_control( 'footer_style', array(
+      'label'       => __( 'Footer Style', 'mytheme' ),
+      'section'     => 'footer_settings_section',
+      'settings'    => 'footer_style',
+      'type'        => 'select', // Specifies a dropdown
+      'choices'     => array(
+          'colby.edu'  => __( 'colby.edu', 'mytheme' ),
+          'child_site' => __( 'Child Site', 'mytheme' ), // Using 'child_site' as value for consistency
+      ),
+      'description' => __( 'Choose the desired style for the website footer.', 'mytheme' ),
+  ) );
+}
+add_action( 'customize_register', 'mytheme_add_customizer_panels' );
+
+function mytheme_sanitize_checkbox( $checked ) {
+  return ( ( isset( $checked ) && true == $checked ) ? true : false );
 }
