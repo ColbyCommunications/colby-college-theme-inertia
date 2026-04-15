@@ -44,6 +44,8 @@
         footer: resolvedMenus.footer,
         social: resolvedMenus.social,
       }"
+      :logo="resolvedSiteData.footerlogo"
+      :logoStyle="resolvedSiteData['footerlogo_styles']"
     />
   </div>
 </template>

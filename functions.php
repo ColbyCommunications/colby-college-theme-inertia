@@ -119,9 +119,6 @@ add_action('init', function () {
   if($footerlogo) {
     $global_site_data['site_data']['footerlogo'] = esc_url( $footerlogo[0] );
     $global_site_data['site_data']['footerlogo_styles'] = $footer_logo_styles;
-  } else {
-    $global_site_data['site_data']['footerlogo'] = get_template_directory_uri() . '/src/images/svg/logo_footer.svg';
-    $global_site_data['site_data']['footerlogo_styles'] = 'width:100px';
   }
   
   $display_athletics_logo = get_theme_mod( 'display_athletics_logo', true );

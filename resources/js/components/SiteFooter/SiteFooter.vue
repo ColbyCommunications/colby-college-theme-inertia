@@ -8,7 +8,8 @@
         class="footer__left flex items-start justify-between border-solid border-indigo-900 md:col-span-5 md:justify-start md:space-x-8 md:border-r lg:space-x-12"
       >
         <div>
-          <ColbyLogo :url="url" fillColor="--color-white" />
+          <ColbyLogo v-if="logo.length == 0" :url="url" fillColor="--color-white" />
+          <img v-else :src="logo" :style="logoStyle"></img>
           <AthleticsLogo class="block lg:hidden" />
         </div>
 
@@ -94,6 +95,8 @@ const props = defineProps({
   url: { type: String, default: "" },
   address: { type: Object, default: () => ({}) },
   phone: { type: String, default: "" },
+  logo: { type: String, default: "" },
+  logoStyle: { type: String, default: "" },
 });
 </script>
 <style scoped>
