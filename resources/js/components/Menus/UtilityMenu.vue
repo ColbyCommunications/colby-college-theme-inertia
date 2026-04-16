@@ -1,8 +1,5 @@
 <template>
-  <nav
-    class="float-right block bg-[#f9fbff] px-5 pt-4 md:flex md:h-auto md:w-full md:justify-between md:pt-0"
-    aria-label="Utility menu"
-  >
+  <nav v-if="utilityMenuStyle === 'colby.edu'" class="float-right block bg-[#f9fbff] px-5 pt-4 md:flex md:h-auto md:w-full md:justify-between md:pt-0" aria-label="Utility menu">
     <!-- Left side: Utility links -->
     <ul
       class="hidden w-0 md:grid md:inline-flex md:w-auto md:grid-cols-3 md:grid-cols-none md:grid-rows-2 md:grid-rows-none md:gap-0 md:gap-x-5 md:space-x-6"
@@ -77,6 +74,24 @@
       </li>
     </ul>
   </nav>
+  <nav v-else class="header__utility flex justify-end h-[118px] lg:h-auto pt-4 lg:pt-0 px-5 bg-[#f9fbff]">
+    <ul
+      class="hidden w-0 md:grid md:inline-flex md:w-auto md:grid-cols-3 md:grid-cols-none md:grid-rows-2 md:grid-rows-none md:gap-0 md:gap-x-5 md:space-x-6"
+    >
+      <li
+        v-for="item in menu"
+        :key="item.id || item.url || item.title"
+        class="flex list-none items-center font-body text-16 leading-110 font-normal md:text-12"
+      >
+        <a
+          class="inline-flex items-center justify-center py-2 text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline min-w-[44px] min-h-[44px]"
+          :href="item.url"
+        >
+          {{ item.title }}
+        </a>
+      </li>
+    </ul>
+  </nav>
 </template>
 <script setup>
 import { ref, watch } from "vue";
@@ -91,6 +106,7 @@ const props = defineProps({
     default: () => [],
   },
   breakpoints: { type: String, default: "" },
+  utilityMenuStyle: { type: String, default: "" },
 });
 
 const showModal = ref(false);

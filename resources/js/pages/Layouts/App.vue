@@ -13,6 +13,7 @@
       :menus="{ main: resolvedMenus.main, utility: resolvedMenus.utility }"
       :logo="resolvedSiteData.headerlogo"
       :logoStyle="resolvedSiteData['headerlogo_styles']"
+      :utilityMenuStyle="resolvedSiteData['utility_menu_style']"
     />
 
     <main
