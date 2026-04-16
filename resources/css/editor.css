@@ -1,0 +1,18 @@
+.editor-styles-wrapper .wp-block[data-type^="acf/"] {
+  max-width: none;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.editor-styles-wrapper .wp-block[data-type^="acf/"] + .wp-block[data-type^="acf/"] {
+  margin-top: 1rem;
+}
+
+.editor-styles-wrapper .wp-block[data-type^="acf/"] .vue-block-preview {
+  padding: 1rem;
+}
+
+.vue-block-preview a {
+  pointer-events: none;
+}

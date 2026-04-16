@@ -6,6 +6,29 @@ import axios from "./plugins/axios"; // Import your configured instance, NOT the
 import "../css/app.css";
 import "@fontsource/material-symbols-sharp";
 
+function ensureColbyGlobals() {
+  window.colby = window.colby || {};
+
+  if (typeof window.colby.DISABLE_ANIMATIONS !== "boolean") {
+    window.colby.DISABLE_ANIMATIONS = false;
+  }
+
+  if (typeof window.colby.PRIMARY_DOMAIN !== "string" || !window.colby.PRIMARY_DOMAIN) {
+    window.colby.PRIMARY_DOMAIN = window.location.hostname;
+  }
+
+  if (typeof window.colby.isLocal !== "boolean") {
+    const host = window.location.hostname;
+    window.colby.isLocal =
+      host === "localhost" ||
+      host === "127.0.0.1" ||
+      host.endsWith(".lndo.site") ||
+      host.endsWith(".local");
+  }
+}
+
+ensureColbyGlobals();
+
 InertiaProgress.init();
 
 createInertiaApp({

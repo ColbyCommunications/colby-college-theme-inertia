@@ -16,6 +16,7 @@
 
 <script setup>
 import LazyBlock from "../LazyBlockWrapper/LazyBlockWrapper.vue";
+import { blockRegistry } from "../../editor-block-registry";
 
 const props = defineProps({
   components: {
@@ -23,40 +24,6 @@ const props = defineProps({
     default: () => [],
   },
 });
-
-const blockRegistry = {
-  "acf/advanced-accordion": () =>
-    import("../AdvancedAccordion/AdvancedAccordion.vue"),
-  "acf/article-grid": () => import("../ArticleGrid/ArticleGrid.vue"),
-  "acf/article-section": () => import("../ArticleSection/ArticleSection.vue"),
-  "acf/carousel": () => import("../Carousel/Carousel.vue"),
-  "acf/dark-interstitial": () =>
-    import("../DarkInterstitial/DarkInterstitial.vue"),
-  "acf/facts-figures": () => import("../FactsFigures/FactsFigures.vue"),
-  "acf/hero": () => import("../Hero/Hero.vue"),
-  "acf/home-hero": () => import("../HomeHero/HomeHero.vue"),
-  "acf/overlay-hero": () => import("../OverlayHero/OverlayHero.vue"),
-  "acf/section-nav": () => import("../SectionNav/SectionNav.vue"),
-  "acf/featured-post": () => import("../FeaturedPost/FeaturedPost.vue"),
-  "acf/testimonial-carousel": () =>
-    import("../TestimonialCarousel/TestimonialCarousel.vue"),
-  "acf/full-bleed-image": () => import("../FullBleedImage/FullBleedImage.vue"),
-  "acf/related-content": () => import("../RelatedContent/RelatedContent.vue"),
-  "acf/hw-image-section": () => import("../HwImageSection/HwImageSection.vue"),
-  "acf/list-section": () => import("../ListSection/ListSection.vue"),
-  "acf/list-context": () => import("../ListContext/ListContext.vue"),
-  "acf/stat-group": () => import("../StatGroup/StatGroup.vue"),
-  "acf/media-context": () => import("../MediaContext/MediaContext.vue"),
-  "acf/context-article-grid": () =>
-    import("../ContextArticleGrid/ContextArticleGrid.vue"),
-  "core/heading": () => import("../Heading/Heading.vue"),
-  "acf/table": () => import("../Table/Table.vue"),
-  "core/group": () => import("../Group/Group.vue"),
-  "acf/paragraph": () => import("../Paragraph/Paragraph.vue"),
-  "acf/accordion": () => import("../Accordion/Accordion.vue"),
-  "acf/people-grid": () => import("../PeopleGrid/PeopleGrid.vue"),
-  "acf/embed": () => import("../Embed/Embed.vue"),
-};
 
 function getLoader(blockName) {
   return blockRegistry[blockName] || (() => Promise.resolve({ default: null }));

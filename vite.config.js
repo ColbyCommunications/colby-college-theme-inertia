@@ -34,7 +34,10 @@ export default defineConfig(({ command, mode }) => {
       emptyOutDir: false,
       manifest: true,
       rollupOptions: {
-        input: path.resolve(__dirname, "resources/js/app.js"),
+        input: {
+          app: path.resolve(__dirname, "resources/js/app.js"),
+          editor: path.resolve(__dirname, "resources/js/editor.js"),
+        },
         output: {
           dir: path.resolve(__dirname, "dist"),
           format: "es",

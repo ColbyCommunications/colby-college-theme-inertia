@@ -117,9 +117,6 @@ const props = defineProps({
     default: 3,
   },
 });
-
-console.log(props);
-
 const imageClass = computed(() => {
   return props.imageOrientation === "portrait"
     ? "md:pb-[119.44444444444444%]"

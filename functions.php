@@ -3,6 +3,8 @@ use BoxyBird\Inertia\Inertia;
 
 // include __DIR__ . '/acf_fields.php';
 include __DIR__ . '/inc/block-validation.php';
+include __DIR__ . '/helpers/block_props.php';
+include __DIR__ . '/inc/editor-preview.php';
 
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
   require_once __DIR__ . '/vendor/autoload.php';
@@ -173,37 +175,108 @@ function colby_get_menu($location) {
   }, $items);
 }
 
-// Enqueue scripts.
-add_action('wp_enqueue_scripts', function () {
+function colby_is_vite_running(): bool {
+  static $vite_running = null;
+
+  if ($vite_running !== null) {
+    return $vite_running;
+  }
+
   $vite_internal = 'http://node:5173';
   $res = wp_remote_get("$vite_internal/vite/@vite/client", ['timeout' => 0.5]);
+
   $vite_running = !is_wp_error($res) && (int) wp_remote_retrieve_response_code($res) === 200;
 
-  if ($vite_running) {
-    $vite_public = home_url('/vite'); // e.g., https://colby.lndo.site/vite
+  return $vite_running;
+}
 
-    wp_enqueue_script_module('vite-client', "$vite_public/@vite/client", [], null, true);
-    // wp_script_add_data('vite-client', 'type', 'module');
+function colby_get_vite_manifest(): array {
+  static $manifest = null;
 
-    wp_enqueue_script_module('colby-app', "$vite_public/resources/js/app.js", [], null, true);
-    // wp_script_add_data('colby-app', 'type', 'module');
+  if ($manifest !== null) {
+    return $manifest;
+  }
 
-  } else {
-    // PROD: load built assets via manifest
-    $manifest_path = get_stylesheet_directory() . '/dist/.vite/manifest.json';
-    if (file_exists($manifest_path)) {
-      $manifest = json_decode(file_get_contents($manifest_path), true);
-      $entry    = $manifest['resources/js/app.js'] ?? null;
-      if ($entry) {
-        wp_enqueue_script_module('colby-app', get_stylesheet_directory_uri() . '/dist/' . $entry['file'], [], null,  array( 'in_footer' => true, 'fetchpriority' => 'high' ));
-        if (!empty($entry['css'])) {
-          foreach ($entry['css'] as $css) {
-            wp_enqueue_style('colby-app', get_stylesheet_directory_uri() . '/dist/' . $css, [], null);
-          }
-        }
+  $manifest_path = get_stylesheet_directory() . '/dist/.vite/manifest.json';
+
+  if (!file_exists($manifest_path)) {
+    $manifest = [];
+
+    return $manifest;
+  }
+
+  $decoded_manifest = json_decode(file_get_contents($manifest_path), true);
+  $manifest = is_array($decoded_manifest) ? $decoded_manifest : [];
+
+  return $manifest;
+}
+
+function colby_collect_vite_entry_css(array $manifest, string $entry_key, array &$visited = []): array {
+  if (isset($visited[$entry_key])) {
+    return [];
+  }
+
+  $entry = $manifest[$entry_key] ?? null;
+
+  if (!is_array($entry)) {
+    return [];
+  }
+
+  $visited[$entry_key] = true;
+  $css_files = [];
+
+  if (!empty($entry['css']) && is_array($entry['css'])) {
+    $css_files = $entry['css'];
+  }
+
+  if (!empty($entry['imports']) && is_array($entry['imports'])) {
+    foreach ($entry['imports'] as $import_key) {
+      foreach (colby_collect_vite_entry_css($manifest, $import_key, $visited) as $import_css) {
+        $css_files[] = $import_css;
       }
     }
   }
+
+  return array_values(array_unique($css_files));
+}
+
+function colby_enqueue_vite_entry(string $handle, string $source_file): void {
+  if (colby_is_vite_running()) {
+    $vite_public = home_url('/vite');
+
+    wp_enqueue_script_module('vite-client', "$vite_public/@vite/client");
+    wp_enqueue_script_module($handle, "$vite_public/$source_file");
+
+    return;
+  }
+
+  $manifest = colby_get_vite_manifest();
+  $entry = $manifest[$source_file] ?? null;
+
+  if (!$entry || empty($entry['file'])) {
+    return;
+  }
+
+  wp_enqueue_script_module($handle, get_stylesheet_directory_uri() . '/dist/' . $entry['file']);
+
+  $css_files = colby_collect_vite_entry_css($manifest, $source_file);
+
+  if (empty($css_files)) {
+    return;
+  }
+
+  foreach ($css_files as $index => $css) {
+    wp_enqueue_style($handle . '-css-' . $index, get_stylesheet_directory_uri() . '/dist/' . $css, [], null);
+  }
+}
+
+// Enqueue scripts.
+add_action('wp_enqueue_scripts', function () {
+  colby_enqueue_vite_entry('colby-app', 'resources/js/app.js');
+}, 20);
+
+add_action('enqueue_block_editor_assets', function () {
+  colby_enqueue_vite_entry('colby-editor', 'resources/js/editor.js');
 }, 20);
 
 add_action( 'after_setup_theme', 'theme_supports'  );
@@ -292,7 +365,7 @@ function theme_supports() {
     return $toolbars;
 });
 
-add_action('wp_head', function() {
+function colby_print_window_bootstrap() {
   $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
   $bots = [
       'Googlebot', 'Bingbot', 'Slurp', 'DuckDuckBot', 'Baiduspider', 
@@ -307,9 +380,13 @@ add_action('wp_head', function() {
       }
   }
 
-  // Output a small script to the head
-  echo '<script type="text/javascript">window.colby = window.colby || {}; window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';window.colby.PRIMARY_DOMAIN = "' . PRIMARY_DOMAIN . '";window.colby.isLocal = ' . ('ON' === getenv( 'LANDO' ) ? 'true' : 'false') .'</script>';
-}, 1);
+  $primary_domain = defined('PRIMARY_DOMAIN')
+    ? PRIMARY_DOMAIN
+    : (wp_parse_url(home_url('/'), PHP_URL_HOST) ?: '');
+
+  echo '<script type="text/javascript">window.colby = window.colby || {}; window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';window.colby.PRIMARY_DOMAIN = "' . esc_js($primary_domain) . '";window.colby.isLocal = ' . ('ON' === getenv( 'LANDO' ) ? 'true' : 'false') .'</script>';
+}
+add_action('wp_head', 'colby_print_window_bootstrap', 1);
 
 if (!function_exists('dump')) {
   function dump(...$args) {

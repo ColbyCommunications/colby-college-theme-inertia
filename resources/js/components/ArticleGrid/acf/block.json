@@ -6,7 +6,7 @@
   "icon": "admin-post",
   "keywords": ["layout", "article", "grid", "image"],
   "acf": {
-    "mode": "edit",
+    "mode": "preview",
     "blockVersion": 2
   },
   "supports": {
