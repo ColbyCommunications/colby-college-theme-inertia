@@ -16,7 +16,7 @@
       </div>
       <!-- Header Right -->
       <div class="header__right flex flex-col items-end">
-        <UtilityMenu :menu="menus.utility" :utilityMenuStyle="utilityMenuStyle" />
+        <UtilityMenu :menu="menus.utility" :utilityMenuStyle="utilityMenuStyle" :utilityMenuButton="utilityMenuButton" />
         <MainMenu :menu="menus.main" :isCurrent="isCurrent" />
       </div>
       <!-- Mobile -->
@@ -46,6 +46,7 @@ const props = defineProps({
   logo: { type: String, default: "" },
   logoStyle: { type: String, default: "" },
   utilityMenuStyle: { type: String, default: "" },  
+  utilityMenuButton: { type: Object, default: () => ({text: "", url: ""}) },  
 });
 
 // Reactive toggle for mobile menu

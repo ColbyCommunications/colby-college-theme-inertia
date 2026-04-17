@@ -14,6 +14,7 @@
       :logo="resolvedSiteData.headerlogo"
       :logoStyle="resolvedSiteData['headerlogo_styles']"
       :utilityMenuStyle="resolvedSiteData['utility_menu_style']"
+      :utilityMenuButton="utilityButtonProps"
     />
 
     <main
@@ -93,6 +94,11 @@ const resolvedMenus = computed(() => ({
 }));
 
 const globalAlert = computed(() => resolvedSiteData.value.alert || null);
+
+const utilityButtonProps = computed(() => ({
+    text: resolvedSiteData.value.utility_button_text,
+    url: resolvedSiteData.value.utility_button_url
+  }));
+
 </script>
 
-<style scoped></style>
