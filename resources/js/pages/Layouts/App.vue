@@ -48,6 +48,7 @@
       }"
       :logo="resolvedSiteData.footerlogo"
       :logoStyle="resolvedSiteData['footerlogo_styles']"
+      :footerStyle="resolvedSiteData['footer_style']"
     />
   </div>
 </template>

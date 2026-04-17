@@ -1,6 +1,6 @@
 <!-- Footer.vue -->
 <template>
-  <footer class="footer space-y-14 bg-indigo pt-14 pb-14">
+  <footer v-if="footerStyle === 'colby.edu'" class="footer space-y-14 bg-indigo pt-14 pb-14">
     <div
       class="footer__inner mx-auto my-0 w-full max-w-screen-2xl space-y-8 gap-x-10 px-5 md:grid md:grid-cols-12 md:space-y-0"
     >
@@ -81,6 +81,80 @@
       </div>
     </div>
   </footer>
+  <footer v-else class="footer-child bg-indigo py-14">
+    <div class="footer__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
+      <div class="footer__left md:col-span-6">
+        <a 
+          class="block hover:text-white hover:underline transition-all duration-200 ease-in-out mb-4" 
+          :href="address?.url" 
+          aria-label="Go to the homepage"
+        >
+          <ColbyLogo v-if="logo.length == 0" :url="url" fillColor="--color-white" />
+
+          <img v-else :src="logo" :style="logoStyle" />
+        </a>
+        <p class="font-body font-normal text-14 leading-130 text-gray-500 mt-8 md:mt-7" v-html=" address?.text" />
+      </div>
+      
+      <div class="footer__right md:col-start-8 md:col-span-5 mt-6 md:mt-0">
+        <ul
+          class="footer__links space-between flex flex-wrap border-y border-solid border-[#365185] pt-8 pb-4 md:border-y-0 md:pt-0 md:pb-0 footer__links grid grid-cols-2 gap-4"
+        >
+
+        <li
+          v-for="(item, index) in menus.footer"
+          :key="index"
+          class="col-span-1 font-body font-normal text-18 leading-120"
+        >
+          <a class="flex items-center min-h-[44px] text-gray-200 hover:text-white hover:underline transition-all duration-200 ease-in-out" :href="item.url">{{ item.title }}</a>
+        
+        </li>
+        </ul>
+      </div>
+      <div class="col-span-12 pb-8 md:pb-12 border-b border-gray-800"></div>
+    </div>
+
+    <div class="footer__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 mt-12 mx-auto">
+      <div class="md:col-span-12 md:flex justify-between items-center">
+        
+        <ul class="footer__utility flex flex-wrap md:flex-nowrap gap-6 md:gap-0 md:space-x-6">
+          <li 
+            v-for="(item, index) in menus.action" 
+            :key="index" 
+            class="inline-block"
+          >
+            <a 
+              class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-white font-body font-normal text-14 leading-130 !no-underline text-white bg-indigo focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1.5 px-4 transition-all duration-200 ease-in-out min-w-[44px] min-h-[44px]" 
+              :href="item.url"
+            >
+              <Icon :name="item.title.toLowerCase()" class="fill-white w-3.5 h-3.5" />
+              <span class="btn__text">
+                {{ item.title }}
+                <div class="btn__border block bg-white h-px w-0 group-hover:w-full transition-all duration-200 ease-in-out"></div>
+              </span>
+            </a>
+          </li>
+        </ul>
+
+        <ul class="footer__socials flex space-x-4 mt-10 md:mt-0">
+          <li 
+            v-for="(item, index) in menus.social" 
+            :key="index" 
+            class="text-[0]"
+          >
+            <a class="flex text-indigo-100" :href="item.platform.url">
+              <Icon 
+                :name="item.platform.title.toLowerCase()" 
+                class="fill-indigo-100 hover:fill-indigo-500 max-w-6 md:max-w-4 max-h-6 md:max-h-4 w-full transition-all duration-200 ease-in-out" 
+              />
+              <span class="sr-only">{{ item.platform.title }}</span>
+            </a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </footer>
 </template>
 
 <script setup>
@@ -89,6 +163,7 @@ import AthleticsLogo from "../Logos/AthleticsLogo.vue";
 import ActionMenu from "../Menus/ActionMenu.vue";
 import Button from "../Button/Button.vue";
 import SocialMenu from "../Menus/SocialMenu.vue";
+import Icon from "@/js/components/Icon/Icon.vue";
 
 const props = defineProps({
   menus: { type: Object, default: () => ({}) },
@@ -97,7 +172,10 @@ const props = defineProps({
   phone: { type: String, default: "" },
   logo: { type: String, default: "" },
   logoStyle: { type: String, default: "" },
+  footerStyle: { type: String, default: "" },
 });
+
+console.log(props);
 </script>
 <style scoped>
   .home .nondescrimination-message {
