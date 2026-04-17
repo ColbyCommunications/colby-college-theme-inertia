@@ -77,6 +77,37 @@ add_action('init', function () {
 				'supports'          => array( 'title', 'revisions', 'excerpt', 'thumbnail' ),
 			)
 		);
+
+
+    // taxonomies
+    register_taxonomy(
+			'page-categories',
+			'page',
+			array(
+				'hierarchical'      => true,
+				'show_ui'           => true,
+				'show_in_rest'      => true,
+				'show_admin_column' => true,
+				'query_var'         => true,
+				'public'            => true,
+				'show_tagcloud'     => false,
+				'capabilities'      => array(
+					'manage_terms' => 'manage_options',
+					'edit_terms'   => 'manage_options',
+					'delete_terms' => 'manage_options',
+					'assign_terms' => 'manage_options',
+				),
+				'rewrite'           => array(
+					'slug' => 'page-categories',
+				),
+				'labels'            => array(
+					'name'          => __( 'Categories' ),
+					'singular_name' => __( 'Category' ),
+					'add_new_item'  => __( 'Add New Category' ),
+					'menu_name'     => __( 'Categories' ),
+				),
+			)
+		);
 });
 
 add_action('init', function () {
