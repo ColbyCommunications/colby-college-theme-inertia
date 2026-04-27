@@ -6,16 +6,39 @@ export default {
   component: InsetWidget,
   tags: ["!autodocs"],
   argTypes: {
-    size: {
-      control: "select",
-      options: ["small", "medium", "large"],
+    inset: {
+      type: "boolean",
+      name: "Inset",
+      table: { category: "Wordpress Fields" },
     },
+    subheading: {
+      name: "Subheading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    heading: {
+      name: "Heading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    paragraph: {
+      name: "Paragraph",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    buttons: {
+      name: "Buttons",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    size: { table: { disable: true } },
   },
 };
 
 export const Default = {
-  name: "Default",
+  name: "Inset Widget",
   args: {
+    inset: false,
     subheading: "Get Involved",
     heading: "Ready to Learn More?",
     paragraph:

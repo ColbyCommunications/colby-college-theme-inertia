@@ -5,10 +5,17 @@ export default {
   title: "Blocks/List Section",
   component: ListSection,
   tags: ["!autodocs"],
+  argTypes: {
+    lists: {
+      name: "Lists",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+  },
 };
 
 export const Default = {
-  name: "Default",
+  name: "List Section",
   args: {
     lists: [
       {

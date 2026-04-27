@@ -5,11 +5,39 @@ export default {
   title: "Blocks/Testimonial Carousel",
   component: TestimonialCarousel,
   tags: ["!autodocs"],
+  argTypes: {
+    subheading: {
+      name: "Subheading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    heading: {
+      name: "Heading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    paragraph: {
+      name: "Paragraph",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    buttons: {
+      name: "Buttons",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    items: {
+      name: "Items",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+  },
 };
 
 export const Default = {
-  name: "Default",
+  name: "Testimonial Carousel",
   args: {
+    subheading: "What Our Community Says",
     heading: "Testimonials",
     paragraph:
       "Hear from our students and alumni about their experiences at Colby.",

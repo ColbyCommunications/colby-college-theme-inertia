@@ -7,14 +7,48 @@ export default {
   tags: ["!autodocs"],
   argTypes: {
     type: {
-      control: "select",
+      name: "Type",
+      control: {
+        type: "inline-radio",
+        labels: {
+          dark: "Dark",
+          light: "Light",
+        },
+      },
       options: ["dark", "light"],
+      table: { category: "Wordpress Fields" },
     },
+    subheading: {
+      name: "Subheading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    heading: {
+      name: "Heading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    paragraph: {
+      name: "Paragraph",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    buttons: {
+      name: "Buttons",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    image: {
+      name: "",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    hero: { table: { disable: true } },
   },
 };
 
 export const Dark = {
-  name: "Dark",
+  name: "Full Bleed Hero",
   args: {
     type: "dark",
     subheading: "Lorem ipsum",

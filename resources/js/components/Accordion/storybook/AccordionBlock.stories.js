@@ -9,15 +9,18 @@ export default {
     single: {
       control: "boolean",
       description: "If true, opening one panel automatically closes others.",
+      table: { category: "Wordpress Fields" },
     },
     openByDefault: {
       control: "boolean",
       description:
         "If true, the first panel will be open when the component mounts.",
+      table: { category: "Wordpress Fields" },
     },
     panels: {
       control: "object",
       description: "Array of content objects. Content accepts HTML strings.",
+      table: { category: "Wordpress Fields" },
     },
   },
   parameters: {

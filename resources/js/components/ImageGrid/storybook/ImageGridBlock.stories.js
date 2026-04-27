@@ -1,5 +1,6 @@
 import { expect } from "storybook/test";
 import ImageGrid from "../ImageGrid.vue";
+import { image } from "superagent/lib/node/parsers";
 
 export default {
   title: "Blocks/Image Grid",
@@ -7,8 +8,23 @@ export default {
   tags: ["!autodocs"],
   argTypes: {
     imageOrientation: {
-      control: "select",
+      name: "Image Orientation",
+      control: {
+        type: "radio",
+        labels: {
+          square: "Square",
+          rectangle: "Rectangle",
+          portrait: "Portrait",
+          landscape: "Landscape",
+        },
+      },
       options: ["square", "rectangle", "portrait", "landscape"],
+      table: { category: "Wordpress Fields" },
+    },
+    images: {
+      name: "Images",
+      control: "object",
+      table: { category: "Wordpress Fields" },
     },
   },
 };
@@ -29,10 +45,10 @@ const sampleImages = [
 ];
 
 export const Square = {
-  name: "Square",
+  name: "Image Grid",
   args: {
-    images: sampleImages,
     imageOrientation: "square",
+    images: sampleImages,
   },
   play: async ({ canvas }) => {
     await expect(canvas.getByAltText("Placeholder 1")).toBeInTheDocument();

@@ -6,11 +6,66 @@ export default {
   title: "Blocks/Media Context",
   component: MediaContext,
   tags: ["!autodocs"],
+  argTypes: {
+    inset: {
+      name: "Inset",
+      control: "boolean",
+      table: { category: "Wordpress Fields" },
+    },
+    size: {
+      name: "Size",
+      control: {
+        type: "inline-radio",
+        labels: {
+          medium: "Medium",
+          large: "Large",
+        },
+      },
+      options: ["medium", "large"],
+      table: { category: "Wordpress Fields" },
+    },
+    reverse: {
+      name: "Reverse",
+      control: "boolean",
+      table: { category: "Wordpress Fields" },
+    },
+    image: {
+      name: "Image",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    video: {
+      name: "Video",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    subheading: {
+      name: "Subheading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    heading: {
+      name: "Heading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    paragraph: {
+      name: "Paragraph",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    buttons: {
+      name: "Buttons",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+  },
 };
 
 const globalArgs = {
-  heading: "Lorem Ipsum",
-  subheading: "Veritatis sit voluptatem",
+  inset: false,
+  size: "medium",
+  reverse: false,
   image: {
     src: "https://placeholdit.com/600x400/dddddd/999999",
     srcset:
@@ -21,8 +76,21 @@ const globalArgs = {
       mobile: "https://placehold.co/300x200",
     },
   },
+  video: {
+    id: "1234",
+  },
+  subheading: "Veritatis sit voluptatem",
+  heading: "Lorem Ipsum",
   paragraph:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  buttons: [
+    {
+      button: {
+        title: "Learn More",
+        url: "https://www.colby.edu/academics",
+      },
+    },
+  ],
 };
 
 const assertHeadingAndParagraph = async ({ canvas }) => {
@@ -31,7 +99,7 @@ const assertHeadingAndParagraph = async ({ canvas }) => {
 };
 
 export const Primary = {
-  name: "Default",
+  name: "Media Context",
   args: {
     ...globalArgs,
   },

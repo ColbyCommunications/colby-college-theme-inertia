@@ -1,0 +1,161 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as IntroContextStories from "./IntroContext.stories";
+
+<Meta title="Blocks/Intro Context/Documentation" />
+
+# Intro Context
+
+The **Intro Context** block introduces a section of content with a clear heading, supporting text, and optional call-to-action buttons.
+
+It is designed to provide structured introductory content that leads into more detailed sections of a page.
+
+This block works especially well at the beginning of pages or sections where users need context before exploring additional content.
+
+---
+
+## When to Use This Block
+
+Use the Intro Context block when:
+
+- You need to introduce a page section with clear messaging
+- You want to pair a heading with supporting text
+- You want to include one or more call-to-action buttons
+- You need a structured layout for editorial or informational content
+
+### Example uses:
+
+- Page introductions
+- Section introductions within long pages
+- Program or department descriptions
+- Marketing or informational lead-ins
+
+---
+
+## Preview
+
+<Canvas of={IntroContextStories.Default} />
+
+---
+
+## Block Structure
+
+The Intro Context block is composed of two main areas:
+
+1. **Primary Context**
+2. **Supporting Content**
+
+These areas work together to present structured information in a balanced layout.
+
+---
+
+## Primary Context
+
+The primary area introduces the content with a clear heading structure.
+
+It may include:
+
+- **Subheading (optional)** – A short introductory label
+- **Heading** – The main title for the section
+
+This area helps establish hierarchy and guides readers into the section.
+
+A subtle top border visually separates the introduction from preceding content.
+
+---
+
+## Supporting Content
+
+The secondary area contains additional information that expands on the heading.
+
+It may include:
+
+- **Text** – A paragraph or multiple paragraphs of supporting content
+- **Buttons (optional)** – Calls to action that link to relevant pages or resources
+
+This content provides more detail while maintaining a clear and readable layout.
+
+---
+
+## Buttons
+
+Editors can add one or more buttons using the **Buttons** field.
+
+Each button includes:
+
+- **Link URL**
+- **Link text**
+- **Optional link target** (such as opening in a new tab)
+
+Buttons appear beneath the supporting text and help guide users toward the next action.
+
+Examples:
+
+- Apply Now
+- Learn More
+- View Programs
+- Explore Resources
+
+---
+
+## Layout Options
+
+### Standard Layout
+
+By default, the block displays content in two balanced columns on larger screens:
+
+- Left column: Heading and subheading
+- Right column: Text and buttons
+
+On smaller screens, the layout stacks vertically for readability.
+
+---
+
+### Inset Layout
+
+The block supports an **Inset layout** that adjusts the grid positioning.
+
+When enabled:
+
+- The content shifts inward within the page grid
+- The layout creates a more editorial appearance
+- The section feels more integrated with surrounding content
+
+When disabled:
+
+- Content aligns with the standard grid edges
+- The layout appears more structured and symmetrical
+
+---
+
+## Typography and Spacing
+
+The Intro Context block is designed with readable editorial spacing.
+
+This includes:
+
+- Clear heading hierarchy
+- Comfortable line length for body text
+- Consistent spacing between text and buttons
+
+These design choices ensure the content remains easy to scan and read.
+
+---
+
+## Accessibility
+
+The Intro Context block follows accessibility best practices:
+
+- Headings use semantic hierarchy
+- Buttons are fully keyboard accessible
+- Text content is readable across screen sizes
+- Links include descriptive text for clarity
+
+---
+
+## Tips for Best Results
+
+- Use concise headings that clearly introduce the section
+- Keep supporting text focused and easy to scan
+- Use buttons to guide users toward meaningful actions
+- Avoid long paragraphs to maintain readability
+- Place this block at the beginning of sections to establish context

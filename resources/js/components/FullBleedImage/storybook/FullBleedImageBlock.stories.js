@@ -5,10 +5,32 @@ export default {
   title: "Blocks/Full Bleed Image",
   component: FullBleedImage,
   tags: ["!autodocs"],
+  argTypes: {
+    heading: {
+      name: "Heading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    paragraph: {
+      name: "Paragraph",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    buttons: {
+      name: "Buttons",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    image: {
+      name: "Image",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+  },
 };
 
 export const Default = {
-  name: "Default",
+  name: "Full Bleed Image",
   args: {
     heading: "Areas of Distinction",
     paragraph:

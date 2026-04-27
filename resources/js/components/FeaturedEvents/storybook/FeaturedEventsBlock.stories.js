@@ -87,10 +87,49 @@ export default {
     layout: "fullscreen",
   },
   argTypes: {
-    heading: { control: "text" },
-    paragraph: { control: "text" },
-    items: { control: "object" },
+    display_posts_method: {
+      name: "Display Posts Method",
+      control: {
+        type: "select",
+        labels: {
+          api: "External API",
+          manual: "Add Posts Manually",
+        },
+      },
+      options: ["api", "manual"],
+      table: { category: "Wordpress Fields" },
+    },
+    render_api: {
+      name: "Render API",
+      control: { type: "boolean" },
+      if: { arg: "display_posts_method", eq: "api" },
+      table: { category: "Wordpress Fields" },
+    },
+    api: {
+      name: "API",
+      control: "inline-radio",
+      options: ["Latest News"],
+      if: { arg: "display_posts_method", eq: "api" },
+      table: { category: "Wordpress Fields" },
+    },
+    heading: {
+      name: "Heading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    paragraph: {
+      name: "Paragraph",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    items: {
+      name: "Items",
+      control: "object",
+      if: { arg: "display_posts_method", eq: "manual" },
+      table: { category: "Wordpress Fields" },
+    },
   },
+
   // Mock the EndpointFilter's axios call (fires on mount)
   beforeEach: () => {
     const spy = spyOn(axios, "get").mockResolvedValue({
@@ -105,12 +144,16 @@ const render = (args) => ({
   setup() {
     return { args };
   },
-  template: '<FeaturedEvents v-bind="args" />',
+  template: "<FeaturedEvents v-bind='args' />",
 });
 
 export const Default = {
+  name: "Featured Events",
   render,
   args: {
+    display_posts_method: "api",
+    render_api: true,
+    api: "Latest News",
     heading: "Featured Events",
     paragraph:
       "Explore upcoming major events, lectures, and performances happening on Mayflower Hill.",
@@ -120,6 +163,7 @@ export const Default = {
     // Assert carousel heading renders
     const heading = await canvas.findByText("Featured Events");
     await expect(heading).toBeInTheDocument();
+
     await waitFor(() => {
       expect(axios.get).toHaveBeenCalled();
     });

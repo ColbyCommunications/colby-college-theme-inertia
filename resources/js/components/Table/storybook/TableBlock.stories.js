@@ -60,13 +60,54 @@ export default {
   title: "Blocks/Table",
   component: Table,
   tags: ["!autodocs"],
+  argTypes: {
+    render_api: {
+      name: "Render API",
+      control: { type: "boolean" },
+      table: { category: "Wordpress Fields" },
+    },
+    api: {
+      name: "API",
+      control: { type: "inline-radio" },
+      options: [
+        "Majors and Minors",
+        "Department Courses",
+        "Course Catalogue",
+        "Departments",
+        "Offices",
+      ],
+      table: { category: "Wordpress Fields" },
+      if: { arg: "render_api", eq: true },
+    },
+    headings: {
+      name: "Headings",
+      control: "object",
+      if: { arg: "render_api", eq: false },
+      table: { category: "Wordpress Fields" },
+    },
+    items: {
+      name: "Items",
+      control: "object",
+      if: { arg: "render_api", eq: false },
+      table: { category: "Wordpress Fields" },
+    },
+    itemsPerPage: {
+      name: "Items Per Page",
+      control: { type: "number", min: 1, step: 1 },
+      if: { arg: "render_api", eq: true },
+      table: { category: "Wordpress Fields" },
+    },
+    departmentCode: { table: { disable: true } },
+    externalItems: { table: { disable: true } },
+    default: { table: { disable: true } },
+  },
 };
 
 export const Static = {
-  name: "Static",
+  name: "Table",
   args: {
-    renderApi: true,
-    api: "Department Courses",
+    render_api: true,
+    api: "Majors and Minors",
     departmentCode: "BIOL",
     itemsPerPage: 5,
   },

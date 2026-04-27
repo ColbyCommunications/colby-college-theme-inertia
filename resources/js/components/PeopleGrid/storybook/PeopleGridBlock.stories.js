@@ -5,6 +5,24 @@ export default {
   title: "Blocks/People Grid",
   component: PeopleGrid,
   tags: ["!autodocs"],
+  argTypes: {
+    auto_populate: {
+      name: "Auto Populate by Department Name (Academic Dept Homepages Only)",
+      control: "boolean",
+      table: { category: "Wordpress Fields" },
+    },
+    items: {
+      name: "Add Additional People",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    exclude_from_listings: {
+      name: "Exclude People from Appearing",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    people: { table: { disable: true } },
+  },
 };
 
 const samplePeople = [
@@ -63,7 +81,7 @@ const samplePeople = [
 ];
 
 export const Default = {
-  name: "Default",
+  name: "People Grid",
   args: {
     people: samplePeople,
   },

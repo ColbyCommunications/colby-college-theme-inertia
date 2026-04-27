@@ -1,6 +1,6 @@
 <template>
   <div
-    class="list-block-grid grid grid-cols-12 gap-10 max-w-screen-2xl w-full my-0 mx-auto"
+    class="list-block-grid mx-auto my-0 grid w-full max-w-screen-2xl grid-cols-12 gap-10"
   >
     <div
       v-for="(item, index) in items"

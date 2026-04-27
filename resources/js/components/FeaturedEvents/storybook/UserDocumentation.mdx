@@ -1,0 +1,148 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as FeaturedEventsStories from "./FeaturedEvents.stories";
+
+<Meta title="Blocks/Featured Events/Documentation" />
+
+# Featured Events
+
+The **Featured Events** block highlights upcoming or important events using a visual **carousel combined with a dynamic event list**.
+
+It is designed to surface key events while also providing quick access to additional upcoming events pulled from the site’s event data.
+
+---
+
+## When to Use This Block
+
+Use the Featured Events block when:
+
+- You want to highlight important or promoted events
+- You need a visually engaging way to showcase multiple events
+- You want a combination of **featured content and automatically listed events**
+- You are building event-focused landing pages
+
+### Example uses:
+
+- Events landing pages
+- Seasonal or campaign event highlights
+- Campus or community event promotion
+- Marketing pages highlighting upcoming activities
+
+---
+
+## Preview
+
+<Canvas of={FeaturedEventsStories.Default} />
+
+---
+
+## Block Structure
+
+The Featured Events block contains two main sections:
+
+1. **Featured Events Carousel**
+2. **Additional Events List**
+
+These sections work together to highlight key events while still showing more upcoming opportunities.
+
+---
+
+## Featured Events Carousel
+
+The carousel displays selected events in a large, visually prominent slider.
+
+It supports:
+
+- Event imagery
+- Event titles
+- Supporting text or descriptions
+- Navigation controls to browse multiple events
+
+Editors can add multiple events to the carousel to create a rotating showcase.
+
+The carousel is intended for **high-priority or featured events** that deserve extra attention.
+
+---
+
+## Carousel Content
+
+Each carousel slide may include:
+
+- **Event title**
+- **Short description or summary**
+- **Event image**
+- **Optional event links or calls to action**
+
+Slides are displayed one at a time and users can navigate through them using carousel controls.
+
+---
+
+## Additional Events List
+
+Below the carousel, the block displays a **dynamic list of upcoming events**.
+
+This section automatically pulls event content from the site's event source.
+
+By default:
+
+- Up to **three events** are displayed
+- Events appear in a compact list layout
+- The content updates automatically as events change
+
+This ensures the page always surfaces fresh event content without manual updates.
+
+---
+
+## Layout Behavior
+
+### Page Width
+
+The block uses a centered layout designed for wide page sections.
+
+Content is positioned within a **12-column grid**, ensuring consistent alignment with other page elements.
+
+Both the carousel and event list align within this grid for a clean, balanced presentation.
+
+---
+
+### Full-Width Section
+
+The background of the Featured Events block spans the **full width of the page**.
+
+This helps visually separate the section from surrounding content and creates a strong visual anchor on event-focused pages.
+
+---
+
+## Background Styling
+
+The block includes a decorative background pattern that enhances the visual design of the section.
+
+This pattern:
+
+- Covers the full width of the page
+- Scales responsively
+- Helps visually highlight the events section
+
+Editors do not need to configure this — it is automatically applied by the block.
+
+---
+
+## Accessibility
+
+The Featured Events block supports accessibility best practices:
+
+- Carousel navigation controls are keyboard accessible
+- Event links are fully navigable using keyboard controls
+- Images support descriptive alt text
+- Content hierarchy follows semantic heading structure
+
+These features help ensure event content is accessible to all users.
+
+---
+
+## Tips for Best Results
+
+- Use **high-quality images** for carousel events
+- Feature only the **most important events** in the carousel
+- Keep event descriptions concise and informative
+- Avoid adding too many slides to maintain usability
+- Let the automatic event list handle additional upcoming events

@@ -5,13 +5,20 @@ import { expect } from "storybook/test";
 export default {
   title: "Blocks/Bordered Article Row",
   component: BorderedArticleRow,
+  argTypes: {
+    items: {
+      name: "Items",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+  },
 };
 
 const mockItems = [
   {
     image: {
       url: "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-      alt: "this is an alt"
+      alt: "this is an alt",
     },
     heading: "Future of Artificial Intelligence",
     subheading: "Technology",
@@ -27,7 +34,7 @@ const mockItems = [
   {
     image: {
       url: "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-      alt: "this is an alt"
+      alt: "this is an alt",
     },
     heading: "Sustainable Energy Solutions",
     subheading: "Environment",
@@ -41,7 +48,7 @@ const mockItems = [
   {
     image: {
       url: "https://www.colby.edu/wp-content/uploads/2025/12/Untitled-2025-12-18T101409.127-2400x1320.jpeg",
-      alt: "this is an alt"
+      alt: "this is an alt",
     },
     heading: "Modern Architecture Trends",
     subheading: "Design",
@@ -55,7 +62,7 @@ const mockItems = [
 ];
 
 export const Primary = {
-  name: "Default",
+  name: "Bordered Article Row",
   tags: ["!autodocs"],
   args: {
     items: mockItems,

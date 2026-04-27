@@ -52,6 +52,7 @@ const render = (args) => ({
 
 // --- Story 1: Default (Light Mode) ---
 export const Default = {
+  name: "Endpoint Filter",
   render,
   args: {
     type: "light",

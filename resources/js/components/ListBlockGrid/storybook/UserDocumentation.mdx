@@ -1,0 +1,167 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as ListBlockGridStories from "./ListBlockGrid.stories";
+
+<Meta title="Blocks/List Block Grid/Documentation" />
+
+# List Block Grid
+
+The **List Block Grid** displays multiple content blocks in a responsive grid layout.
+
+It is designed to organize structured content into repeatable “list blocks,” allowing editors to present multiple items in a consistent and visually balanced format.
+
+Each item in the grid is powered by a reusable **List Block component**, making this block ideal for structured, repeatable content sections.
+
+---
+
+## When to Use This Block
+
+Use the List Block Grid when:
+
+- You need to display multiple structured content items
+- You want a consistent layout for repeated content blocks
+- You are presenting categorized or grouped information
+- You need a flexible grid-based content system
+
+### Example uses:
+
+- Program or service listings
+- Resource or feature lists
+- Department or team summaries
+- FAQ-style grouped content
+- Multi-item informational sections
+
+---
+
+## Preview
+
+<Canvas of={ListBlockGridStories.TwoColumns} />
+
+---
+
+## Block Structure
+
+The List Block Grid consists of:
+
+1. **Grid Container**
+2. **List Block Items**
+
+Each item is rendered as a full List Block inside a responsive grid.
+
+---
+
+## Grid Layout
+
+The block uses a **12-column grid system** to control layout structure.
+
+Items are automatically placed into columns based on the selected configuration.
+
+This ensures consistent alignment across different page sections.
+
+---
+
+## Column Options
+
+Editors can choose how many columns the grid displays.
+
+### Available options:
+
+- **2 Columns** – Larger, more readable blocks with more spacing
+- **3 Columns** – Balanced grid for medium-density layouts
+
+Each option adjusts how items are distributed across the page.
+
+---
+
+### Column Behavior
+
+The layout adapts responsively:
+
+- On smaller screens: items stack vertically
+- On medium screens and above: items follow the selected column structure
+
+This ensures readability across all devices.
+
+---
+
+## Item Structure
+
+Each grid item contains a full **List Block**, which may include:
+
+- **Subheading (optional)** – A small label or category
+- **Heading** – The main title of the item
+- **Paragraph** – Supporting descriptive text
+- **Buttons (optional)** – Calls to action or links
+
+This allows each item to function as a self-contained content block.
+
+---
+
+## Type Styling
+
+Each List Block item supports a **type setting**, which controls its visual style.
+
+### Available types:
+
+- **Light** – Clean and minimal styling for standard use cases
+- **Dark** – High-contrast styling for emphasis or darker sections
+
+The type setting helps align the grid with the surrounding design context.
+
+---
+
+## Layout Behavior
+
+### Responsive Grid
+
+The grid automatically adjusts based on screen size:
+
+- **Mobile:** Single-column layout
+- **Tablet/Desktop:** Multi-column layout based on selection
+
+This ensures optimal readability regardless of device.
+
+---
+
+### Column Width Mapping
+
+The grid uses predefined column spans:
+
+- **2 columns:** Each item spans 6 grid columns
+- **3 columns:** Each item spans 4 grid columns
+- _(Additional configurations may be extended in future updates)_
+
+This system maintains consistent spacing and alignment.
+
+---
+
+## Spacing and Alignment
+
+The List Block Grid uses consistent spacing rules:
+
+- Equal gaps between items
+- Balanced vertical rhythm
+- Uniform alignment across rows
+
+This ensures a structured and easy-to-scan layout.
+
+---
+
+## Accessibility
+
+The List Block Grid supports accessibility best practices:
+
+- Content hierarchy is preserved through semantic headings
+- Buttons within List Blocks are keyboard accessible
+- Grid structure remains readable when linearized (screen readers)
+- Text contrast is maintained through type settings
+
+---
+
+## Tips for Best Results
+
+- Keep each List Block focused on a single idea
+- Avoid overly long text in individual items
+- Use consistent styling across all items
+- Choose column counts based on content density
+- Use the **2-column layout** for readability-heavy content
+- Use the **3-column layout** for compact, scannable lists

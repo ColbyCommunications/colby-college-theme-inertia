@@ -1,0 +1,179 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as MediaContextSectionStories from "./MediaContextSection.stories";
+
+<Meta title="Blocks/Media Context Section/Documentation" />
+
+# Media Context Section
+
+The **Media Context Section** block displays a vertical stack of **Media Context components** within a structured, full-width section.
+
+It is designed for building multi-row storytelling layouts where each item pairs media (image or video) with contextual content, creating a flowing editorial experience.
+
+---
+
+## When to Use This Block
+
+Use the Media Context Section when:
+
+- You need multiple Media Context blocks in a single section
+- You want a structured storytelling flow with alternating media/content blocks
+- You are building long-form editorial or campaign pages
+- You want to group related media + content pairs together
+
+### Example uses:
+
+- Campaign storytelling pages
+- Feature walkthrough sections
+- Product or service breakdowns
+- Editorial narratives with multiple steps or themes
+- Educational or explainer content layouts
+
+---
+
+## Preview
+
+<Canvas of={MediaContextSectionStories.Wide} />
+
+---
+
+## Block Structure
+
+The Media Context Section is composed of:
+
+1. **Media Context Items (repeating blocks)**
+2. **Background Styling Layer**
+
+Each item is rendered using the Media Context block, ensuring consistency across all entries.
+
+---
+
+## Media Context Items
+
+The main content of this block is a list of **Media Context components**.
+
+Each item includes:
+
+- Image or video media
+- Structured context content (heading, paragraph, buttons)
+- Layout options such as inset, reverse, and sizing
+
+Items are stacked vertically to create a continuous storytelling flow.
+
+---
+
+## Item Composition
+
+Each Media Context item is a fully self-contained block and may include:
+
+### Media
+
+- Image (default)
+- Video (optional, replaces image)
+
+### Context
+
+- Subheading (optional)
+- Heading
+- Paragraph
+- Buttons (optional call-to-action links)
+
+### Layout Controls (per item)
+
+- Inset layout
+- Reverse layout
+- Size variations
+
+This allows each row to have its own visual structure while remaining consistent overall.
+
+---
+
+## Type Options
+
+The Media Context Section supports a **type setting** that controls overall layout width.
+
+### Available types:
+
+- **Wide (default)**
+  - Full-width layout
+  - Items span the full 12-column grid
+
+- **Narrow**
+  - Constrained layout
+  - Content is centered within a narrower 10-column span
+
+This helps control visual density depending on page context.
+
+---
+
+## Layout Behavior
+
+### Grid Structure
+
+The section uses a **12-column grid system**:
+
+- Wide layout: items span the full grid width
+- Narrow layout: items are centered with offset columns
+
+This ensures alignment with other page components.
+
+---
+
+### Vertical Stacking
+
+All Media Context items are stacked vertically:
+
+- Each item appears below the previous one
+- Consistent spacing separates each block
+- Creates a natural reading flow for long-form content
+
+---
+
+## Background Styling
+
+The Media Context Section includes a decorative background layer.
+
+This background:
+
+- Is positioned absolutely behind content
+- Uses a branded pattern
+- Adjusts in size depending on layout type
+- Adds visual depth without interfering with readability
+
+### Background Behavior:
+
+- **Wide layout:** background covers a smaller portion of the section
+- **Narrow layout:** background expands to fill the full section area
+
+---
+
+## Spacing and Layout Rhythm
+
+The block uses generous vertical spacing to support readability:
+
+- Large padding at top and bottom of section
+- Consistent spacing between Media Context items
+- Balanced whitespace to separate content blocks clearly
+
+This ensures the section feels structured and easy to scan.
+
+---
+
+## Accessibility
+
+The Media Context Section follows accessibility best practices:
+
+- Each Media Context item maintains semantic structure
+- Images include descriptive alt text
+- Video content (if used) supports accessible playback controls
+- Buttons remain keyboard accessible
+- Content order is logical when linearized for screen readers
+
+---
+
+## Tips for Best Results
+
+- Use this block for **multi-step or narrative content**
+- Keep each Media Context item focused on a single idea
+- Alternate media alignment within items for visual rhythm
+- Use the **narrow layout** for editorial or focused storytelling
+- Use the **wide layout** for immersive, full-page sections

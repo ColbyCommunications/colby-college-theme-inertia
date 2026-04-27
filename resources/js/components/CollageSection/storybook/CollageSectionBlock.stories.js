@@ -5,11 +5,36 @@ export default {
   title: "Blocks/Collage Section",
   component: CollageSection,
   tags: ["!autodocs"],
+  argTypes: {
+    heading: {
+      name: "Heading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    subheading: {
+      name: "Subheading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    paragraph: {
+      name: "Paragraph",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    images: {
+      name: "Images",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    buttons: { table: { disable: true } },
+  },
 };
 
 const globalArgs = {
-  heading: "Lorem Ipsum",
   subheading: "Veritatis sit voluptatem",
+  heading: "Lorem Ipsum",
+  paragraph:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   images: [
     {
       src: "https://placeholdit.com/600x400/dddddd/999999",
@@ -50,13 +75,10 @@ const globalArgs = {
       },
     },
   ],
-  paragraph:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 };
 
 export const Primary = {
-  // 👇 Rename this story
-  name: "Default",
+  name: "Collage Section",
   args: {
     ...globalArgs,
   },

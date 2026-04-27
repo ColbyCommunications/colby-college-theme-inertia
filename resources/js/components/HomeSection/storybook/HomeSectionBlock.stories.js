@@ -8,7 +8,7 @@ export default {
 };
 
 export const Default = {
-  name: "Default",
+  name: "Home Section",
   args: {
     news: {
       renderApi: false,

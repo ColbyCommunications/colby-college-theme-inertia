@@ -1,20 +1,20 @@
 <template>
   <div class="intro-context">
     <div
-      class="intro-context__inner md:grid md:grid-cols-12 gap-10 max-w-screen-2xl w-full px-5 mx-auto"
+      class="intro-context__inner mx-auto w-full max-w-screen-2xl gap-10 px-5 md:grid md:grid-cols-12"
     >
       <div
-        class="intro-context__main pt-5 border-t border-azure"
-        :class="inset ? 'md:col-start-2 md:col-span-5' : 'md:col-span-6'"
+        class="intro-context__main border-t border-azure pt-5"
+        :class="inset ? 'md:col-span-5 md:col-start-2' : 'md:col-span-6'"
       >
         <Context :size="size" :subheading="subheading" :heading="heading" />
       </div>
       <div
-        class="intro-context__secondary mt-2 md:mt-0 grid gap-4"
+        class="intro-context__secondary mt-2 grid gap-4 md:mt-0"
         :class="inset ? 'md:col-span-5' : 'md:col-span-6'"
       >
         <div
-          class="font-body font-normal text-18 leading-130 text-indigo-800"
+          class="font-body text-18 leading-130 font-normal text-indigo-800"
           v-html="text"
         ></div>
         <ButtonGroup

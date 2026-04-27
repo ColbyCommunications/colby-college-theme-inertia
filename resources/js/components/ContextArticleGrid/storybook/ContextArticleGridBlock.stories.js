@@ -4,6 +4,18 @@ export default {
   title: "Blocks/Context Article Grid",
   component: ContextArticleGrid,
   argTypes: {
+    renderApi: {
+      control: "boolean",
+      name: "Render API",
+      table: { category: "Wordpress Fields" },
+    },
+    api: {
+      control: "radio",
+      name: "API",
+      options: ["Manual", "People", "Alumni"],
+      if: { arg: "renderApi", eq: true },
+      table: { category: "Wordpress Fields" },
+    },
     heading: {
       control: "text",
       name: "Heading",
@@ -19,11 +31,59 @@ export default {
       name: "Paragraph",
       table: { category: "Wordpress Fields" },
     },
-
-    // disabled controls
-    renderApi: { table: { disable: true } },
+    buttons: {
+      control: "object",
+      name: "Buttons",
+      table: { category: "Wordpress Fields" },
+    },
+    display_posts_method: {
+      name: "Display Posts Method",
+      control: {
+        type: "select",
+        labels: {
+          internal: "Internal Posts",
+          api: "External API",
+          manual: "Add Posts Manually",
+        },
+      },
+      options: ["internal", "api", "manual"],
+      table: { category: "Wordpress Fields" },
+    },
+    render_posts: {
+      control: "boolean",
+      name: "Render Posts",
+      if: { arg: "display_posts_method", eq: "internal" },
+      table: { category: "Wordpress Fields" },
+    },
+    size: {
+      name: "Size",
+      control: { type: "inline-radio" },
+      options: ["small", "xsmall"],
+      table: { category: "Wordpress Fields" },
+    },
+    columns: {
+      name: "Columns",
+      control: { type: "inline-radio" },
+      options: [2, 3, 4],
+      table: { category: "Wordpress Fields" },
+    },
+    image_orientation: {
+      name: "Image Orientation",
+      control: { type: "inline-radio" },
+      options: ["rectangle", "square", "portrait"],
+      table: { category: "Wordpress Fields" },
+    },
+    border: {
+      name: "Border",
+      control: { type: "boolean" },
+      table: { category: "Wordpress Fields" },
+    },
+    options: ["internal", "api", "manual"],
+    table: { category: "Wordpress Fields" },
+  },
+  cta: {
+    render_api: { table: { disable: true } },
     items: { table: { disable: true } },
-    api: { table: { disable: true } },
     cta: { table: { disable: true } },
     perPage: { table: { disable: true } },
   },
@@ -92,13 +152,22 @@ const mockItems = [
 
 // --- Story 1: Manual Mode (Static Data) ---
 export const ManualData = {
+  name: "Context Article Grid",
   render,
   args: {
     renderApi: false,
+    api: "Manual",
     subheading: "Latest Updates",
     heading: "News & Stories",
     paragraph:
       "Explore the latest happenings from around the campus and beyond.",
+    buttons: [{ button: { url: "#", title: "Test Button" } }],
+    display_posts_method: "internal",
+    render_posts: true,
+    size: "small",
+    columns: 2,
+    image_orientation: "rectangle",
+    border: false,
     cta: "Read Story",
     items: mockItems,
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="testimonial-carousel space-y-11">
     <div
-      class="testimonial-carousel__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto"
+      class="testimonial-carousel__inner mx-auto my-0 w-full max-w-screen-2xl gap-x-10 px-5 md:grid md:grid-cols-12"
     >
       <div class="testimonial-carousel__context md:col-span-5">
         <Context
@@ -10,13 +10,14 @@
           :arrow="true"
           :reverse="true"
           :heading="heading"
+          :subheading="subheading"
           :paragraph="paragraph"
           :buttons="{ items: buttons }"
         />
       </div>
     </div>
     <div
-      class="testimonial-carousel__inner relative md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto"
+      class="testimonial-carousel__inner relative mx-auto my-0 w-full max-w-screen-2xl gap-x-10 px-5 md:grid md:grid-cols-12"
       @mouseenter="pauseCarousel"
       @mouseleave="playCarousel"
     >
@@ -33,14 +34,14 @@
                   class="testimonial-carousel__image relative md:pb-[46.51162790697675%]"
                 >
                   <Picture
-                    class="md:absolute w-full h-full object-cover"
+                    class="h-full w-full object-cover md:absolute"
                     :src="item.image?.url"
                     :alt="item.image?.alt"
                   />
                 </div>
                 <p
                   v-if="item.caption"
-                  class="font-body font-normal text-10 leading-140 text-indigo-800 mt-2"
+                  class="mt-2 font-body text-10 leading-140 font-normal text-indigo-800"
                 >
                   {{ item.caption }}
                 </p>
@@ -50,24 +51,24 @@
         </div>
       </div>
       <div
-        class="testimonial-carousel__quotes md:col-span-3 md:order-[-1] self-end mt-12 md:mt-0"
+        class="testimonial-carousel__quotes mt-12 self-end md:order-[-1] md:col-span-3 md:mt-0"
       >
         <div class="testimonial-carousel__quotes-wrap relative h-[150px]">
           <div
             v-for="(item, index) in items"
             :key="index"
-            class="testimonial-carousel__quote absolute top-0 md:top-auto md:bottom-0 left-0 w-full pt-2 invisible opacity-0 space-y-2 border-t border-solid border-canary transition-all duration-300 ease-in-out"
+            class="testimonial-carousel__quote invisible absolute top-0 left-0 w-full space-y-2 border-t border-solid border-canary pt-2 opacity-0 transition-all duration-300 ease-in-out md:top-auto md:bottom-0"
             :class="{
-              '!visible opacity-100 !translate-y-0': activeSlide === index,
+              '!visible !translate-y-0 opacity-100': activeSlide === index,
             }"
           >
             <p
-              class="font-extended font-normal text-20 leading-110 -tracking-[0.01em] text-indigo"
+              class="font-extended text-20 leading-110 font-normal -tracking-[0.01em] text-indigo"
             >
               {{ item.testimonial.quote }}
             </p>
             <div
-              class="font-body font-normal text-14 leading-130 text-indigo-800"
+              class="font-body text-14 leading-130 font-normal text-indigo-800"
             >
               {{ item.testimonial.name }}
             </div>
@@ -75,7 +76,7 @@
         </div>
       </div>
       <div
-        class="testimonial-carousel__controls md:absolute top-[-40px] right-[20px] flex justify-end mt-4 md:mt-0 md:translate-y-[-100%]"
+        class="testimonial-carousel__controls top-[-40px] right-[20px] mt-4 flex justify-end md:absolute md:mt-0 md:translate-y-[-100%]"
       >
         <ArrowControls size="large" type="light" @prev="prev" @next="next" />
       </div>
@@ -92,11 +93,11 @@ import ArrowControls from "@/js/components/ArrowControls/ArrowControls.vue";
 
 const props = defineProps({
   heading: { type: String, default: "" },
+  subheading: { type: String, default: "" },
   paragraph: { type: String, default: "" },
   buttons: { type: Array, default: () => [] },
   items: { type: Array, default: () => [] },
 });
-
 
 const rootEl = ref(null);
 const activeSlide = ref(0);

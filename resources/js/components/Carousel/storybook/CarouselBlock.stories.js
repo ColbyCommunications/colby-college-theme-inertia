@@ -85,7 +85,7 @@ export default {
 };
 
 export const Primary = {
-  name: "Primary",
+  name: "Carousel",
   args: {
     render_api: false,
     items: mockItems,

@@ -5,6 +5,18 @@ export default {
   title: "Blocks/Related Content",
   component: RelatedContent,
   tags: ["!autodocs"],
+  argTypes: {
+    heading: {
+      name: "Heading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    items: {
+      name: "Items",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+  },
 };
 
 const sampleItems = [
@@ -63,7 +75,7 @@ const sampleItems = [
 ];
 
 export const Default = {
-  name: "Default",
+  name: "Related Content",
   args: {
     heading: "Related Content",
     items: sampleItems,

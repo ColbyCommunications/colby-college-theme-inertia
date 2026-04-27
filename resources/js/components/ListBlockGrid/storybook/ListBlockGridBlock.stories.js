@@ -7,8 +7,27 @@ export default {
   tags: ["!autodocs"],
   argTypes: {
     columns: {
-      control: "select",
-      options: [2, 3, 4],
+      name: "Columns",
+      control: "inline-radio",
+      options: [2, 3],
+      table: { category: "Wordpress Fields" },
+    },
+    type: {
+      name: "Type",
+      control: {
+        type: "inline-radio",
+        labels: {
+          light: "Light",
+          dark: "Dark",
+        },
+      },
+      options: ["light", "dark"],
+      table: { category: "Wordpress Fields" },
+    },
+    items: {
+      name: "Items",
+      control: "object",
+      table: { category: "Wordpress Fields" },
     },
   },
 };
@@ -21,9 +40,10 @@ const sampleItem = {
 };
 
 export const TwoColumns = {
-  name: "Two Columns",
+  name: "List Block Grid",
   args: {
     columns: 2,
+    type: "light",
     items: [sampleItem, sampleItem, sampleItem, sampleItem],
   },
   play: async ({ canvas }) => {

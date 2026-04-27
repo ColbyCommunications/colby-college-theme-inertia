@@ -6,10 +6,12 @@ export default {
   component: MediaContextSection,
   tags: ["!autodocs"],
   argTypes: {
-    type: {
-      control: "select",
-      options: ["wide", "narrow"],
+    items: {
+      name: "Items",
+      control: "object",
+      table: { category: "Wordpress Fields" },
     },
+    type: { table: { disable: true } },
   },
 };
 
@@ -42,7 +44,7 @@ const sampleItems = [
 ];
 
 export const Wide = {
-  name: "Wide",
+  name: "Media Context Section",
   args: {
     type: "wide",
     items: sampleItems,

@@ -5,10 +5,37 @@ export default {
   title: "Blocks/Featured Post",
   component: FeaturedPost,
   tags: ["!autodocs"],
+  argTypes: {
+    heading: {
+      name: "Heading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    paragraph: {
+      name: "Paragraph",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    caption: {
+      name: "Caption",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    buttons: {
+      name: "Buttons",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    post: {
+      name: "Post",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+  },
 };
 
 export const Default = {
-  name: "Default",
+  name: "Featured Post",
   args: {
     heading: "Events",
     paragraph:

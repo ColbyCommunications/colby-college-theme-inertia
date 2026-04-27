@@ -1,0 +1,178 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as RelatedSectionStories from "./RelatedSection.stories";
+
+<Meta title="Blocks/Related Section/Documentation" />
+
+# Related Section
+
+The **Related Section** block presents a contextual introduction alongside a grid of related linked items.
+
+It is designed to guide users toward additional content by pairing a text-based introduction with visually engaging linked cards.
+
+Each item includes an image and a linked title, making it ideal for navigation to related pages or content hubs.
+
+---
+
+## When to Use This Block
+
+Use the Related Section when:
+
+- You want to suggest related or recommended content
+- You need a visually driven navigation section
+- You are linking to additional articles, pages, or resources
+- You want to combine editorial context with clickable content cards
+
+### Example uses:
+
+- Related articles or blog posts
+- Suggested resources or guides
+- Program or service cross-links
+- Content discovery sections
+- “You may also like” style modules
+
+---
+
+## Preview
+
+<Canvas of={RelatedSectionStories.Default} />
+
+---
+
+## Block Structure
+
+The Related Section consists of two main parts:
+
+1. **Context Area**
+2. **Related Item Grid**
+
+These components work together to introduce and visually surface related content.
+
+---
+
+## Context Area
+
+The context area introduces the purpose of the section.
+
+It may include:
+
+- **Subheading (optional)** – A short label or category
+- **Heading** – The main section title
+- **Paragraph** – Supporting description
+- **Buttons (optional)** – Calls to action or navigation links
+
+This area helps orient users before they view the related items.
+
+---
+
+## Related Items Grid
+
+The grid displays a series of linked content cards.
+
+Each item includes:
+
+- **Image thumbnail**
+- **Linked title overlay**
+- **Clickable card linking to related content**
+
+Items are visually designed to encourage exploration and navigation.
+
+---
+
+## Item Structure
+
+Each related item contains:
+
+### Image
+
+A responsive thumbnail image used as the visual background.
+
+Features:
+
+- Responsive scaling
+- Cover-based cropping
+- Hover zoom effect for interactivity
+- Aspect ratio adapts for mobile and desktop
+
+---
+
+### Link Overlay
+
+Each item includes a clickable link overlay containing:
+
+- The title of the linked content
+- A gradient overlay to ensure text readability
+- Full-card clickable interaction
+
+The entire card functions as a navigation element.
+
+---
+
+## Layout Behavior
+
+### Grid Structure
+
+The layout uses a **12-column grid system**:
+
+- Context area spans **4 columns (desktop)**
+- Related items span **4 columns each (desktop)**
+- Items wrap naturally across rows depending on quantity
+
+---
+
+### Responsive Behavior
+
+The grid adapts across screen sizes:
+
+- **Mobile:** Items stack vertically
+- **Tablet:** Two items per row
+- **Desktop:** Three-column layout with context alongside
+
+This ensures a balanced browsing experience across devices.
+
+---
+
+## Interaction Behavior
+
+### Hover Effects
+
+Each item includes subtle interactive behavior:
+
+- Image slightly scales on hover
+- Smooth transition enhances visual feedback
+- Overlay remains readable at all times
+
+This improves engagement and encourages exploration.
+
+---
+
+## Accessibility
+
+The Related Section supports accessibility best practices:
+
+- Each card is a fully keyboard-accessible link
+- Images include descriptive alt text
+- Text overlays maintain sufficient contrast
+- Link titles clearly describe destination content
+- Semantic structure supports screen readers
+
+---
+
+## Spacing and Layout
+
+The block uses structured spacing to separate content clearly:
+
+- Context area is separated from grid items
+- Consistent gaps between cards
+- Balanced vertical rhythm across the section
+
+This ensures readability and visual clarity.
+
+---
+
+## Tips for Best Results
+
+- Use **high-quality images** that clearly represent linked content
+- Keep link titles short and descriptive
+- Limit the number of items to maintain focus
+- Use the context area to clearly explain why items are related
+- Ensure all linked content is meaningfully connected to the page topic

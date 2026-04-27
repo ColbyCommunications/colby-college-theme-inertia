@@ -7,15 +7,50 @@ export default {
   tags: ["!autodocs"],
   argTypes: {
     size: {
-      control: "select",
-      options: ["small", "medium"],
+      name: "Size",
+      control: {
+        type: "inline-radio",
+        labels: {
+          default: "Default",
+          small: "Small",
+        },
+      },
+      options: ["default", "small"],
+      table: { category: "Wordpress Fields" },
+    },
+    subheading: {
+      name: "Subheading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    heading: {
+      name: "Heading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    paragraph: {
+      name: "Paragraph",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    buttons: {
+      name: "Buttons",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    items: {
+      name: "Items",
+      control: "object",
+      table: { category: "Wordpress Fields" },
     },
   },
 };
 
 export const Default = {
-  name: "Default",
+  name: "List Context",
   args: {
+    size: "default",
+    subheading: "Subheading",
     heading: "More from [Program]",
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue pulvinar lectus.",

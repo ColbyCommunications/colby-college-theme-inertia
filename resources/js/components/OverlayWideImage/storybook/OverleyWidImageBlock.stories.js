@@ -5,11 +5,51 @@ export default {
   title: "Blocks/Overlay Wide Image",
   component: OverlayWideImage,
   tags: ["!autodocs"],
+  argTypes: {
+    align: {
+      name: "Align",
+      control: {
+        type: "inline-radio",
+        labels: {
+          left: "Left",
+          center: "Center",
+        },
+      },
+      options: ["left", "center"],
+      table: { category: "Wordpress Fields" },
+    },
+    subheading: {
+      name: "Subheading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    heading: {
+      name: "Heading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    paragraph: {
+      name: "Paragraph",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    buttons: {
+      name: "Buttons",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    image: {
+      name: "Image",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+  },
 };
 
 export const Default = {
-  name: "Default",
+  name: "Overlay Wide Image",
   args: {
+    align: "left",
     subheading: "Green Colby",
     heading: "Sustainability and Stewardship",
     paragraph:

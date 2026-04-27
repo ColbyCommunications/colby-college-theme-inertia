@@ -6,13 +6,55 @@ export default {
   title: "Blocks/Facts and Figures",
   component: FactsFigures,
   tags: ["!autodocs"],
+  argTypes: {
+    subheading: {
+      name: "Subheading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    heading: {
+      name: "Heading",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    buttons: {
+      name: "Buttons",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    facts: {
+      name: "Facts",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    image: {
+      name: "Image",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+    paragraph: {
+      name: "Paragraph",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+  },
 };
 
 export const Primary = {
-  name: "Primary",
+  name: "Facts and Figures",
   args: {
     subheading: "Lorem ipsum",
     heading: "Lorem ipsum",
+    paragraph:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    buttons: [
+      {
+        button: {
+          title: "Learn More",
+          url: "#",
+        },
+      },
+    ],
     facts: [
       { figure: "100%", paragraph: "consectetur adipiscing elit" },
       { figure: "100%", paragraph: "consectetur adipiscing elit" },
@@ -27,8 +69,6 @@ export const Primary = {
         Square_mobile: "https://placehold.co/400x300",
       },
     },
-    paragraph:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   play: async ({ canvas }) => {
     await expect(canvas.getByText("Lorem ipsum")).toBeInTheDocument();

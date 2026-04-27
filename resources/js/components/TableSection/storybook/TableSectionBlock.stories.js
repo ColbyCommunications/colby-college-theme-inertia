@@ -8,7 +8,7 @@ export default {
 };
 
 export const Default = {
-  name: "Default",
+  name: "Table Section",
   args: {
     table: {
       renderApi: false,

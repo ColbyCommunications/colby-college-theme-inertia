@@ -1,0 +1,145 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as TableSectionStories from "./TableSection.stories";
+
+<Meta title="Blocks/Table Section/Documentation" />
+
+# Table Section
+
+The **Table Section** block displays structured tabular data within a centered, full-width section.
+
+It is designed to present clear, easy-to-scan information such as comparisons, specifications, or structured datasets in a readable format.
+
+---
+
+## When to Use This Block
+
+Use the Table Section when:
+
+- You need to present structured data in rows and columns
+- You want to compare multiple items or attributes
+- You are displaying reference or informational data
+- You need a clean, scannable layout for dense information
+
+### Example uses:
+
+- Pricing comparisons
+- Feature matrices
+- Program or course comparisons
+- Technical specifications
+- Reference data tables
+
+---
+
+## Preview
+
+<Canvas of={TableSectionStories.Default} />
+
+---
+
+## Block Structure
+
+The Table Section consists of a single main element:
+
+1. **Table Component**
+
+The table is centered within a constrained content width for optimal readability.
+
+---
+
+## Table Component
+
+The table is powered by a reusable Table component and may include:
+
+- Table headers
+- Multiple rows of structured data
+- Aligned columns for comparison
+- Responsive behavior for smaller screens
+
+This ensures consistent formatting across all table-based content.
+
+---
+
+## Data Structure
+
+The table supports structured content organized into:
+
+- **Header row** – Column labels that define data categories
+- **Body rows** – Individual data entries
+- **Cells** – Structured values within each row
+
+This format makes it ideal for comparisons and reference information.
+
+---
+
+## Layout Behavior
+
+### Centered Layout
+
+The table is centered within the page:
+
+- Content spans a constrained width (8 columns on desktop)
+- Surrounded by whitespace for readability
+- Ensures focus remains on structured data
+
+---
+
+### Full-Width Section Background
+
+The Table Section uses a full-width background to visually separate it from surrounding content.
+
+This helps:
+
+- Highlight structured data
+- Improve scannability
+- Create visual distinction from text-heavy sections
+
+---
+
+## Responsiveness
+
+The table is designed to adapt across devices:
+
+- **Desktop:** Full multi-column layout
+- **Tablet:** Condensed spacing for readability
+- **Mobile:** Horizontal scroll or stacked formatting (depending on table configuration)
+
+This ensures usability even with dense datasets.
+
+---
+
+## Table Behavior
+
+### Scannability
+
+The table is optimized for quick scanning:
+
+- Clear column alignment
+- Strong visual hierarchy between headers and data
+- Consistent spacing between rows
+
+---
+
+### Content Density
+
+The Table Section is best used for structured, information-heavy content where clarity is more important than visual storytelling.
+
+---
+
+## Accessibility
+
+The Table Section supports accessibility best practices:
+
+- Proper semantic table structure (headers and rows)
+- Screen-reader friendly labeling
+- Keyboard navigable content where applicable
+- Sufficient contrast between text and background
+
+---
+
+## Tips for Best Results
+
+- Keep column headers clear and descriptive
+- Avoid overly wide tables when possible
+- Use concise values for better readability
+- Limit the number of columns for mobile usability
+- Use tables only for structured data (not layout purposes)

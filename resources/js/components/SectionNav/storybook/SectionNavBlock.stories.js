@@ -5,10 +5,22 @@ export default {
   title: "Blocks/Section Navigation",
   component: SectionNav,
   tags: ["!autodocs"],
+  argTypes: {
+    title: {
+      name: "Title",
+      control: "text",
+      table: { category: "Wordpress Fields" },
+    },
+    items: {
+      name: "Items",
+      control: "object",
+      table: { category: "Wordpress Fields" },
+    },
+  },
 };
 
 export const Default = {
-  name: "Default",
+  name: "Section Navigation",
   args: {
     title: "Academics",
     items: [
