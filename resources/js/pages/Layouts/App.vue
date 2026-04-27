@@ -13,6 +13,8 @@
       :menus="{ main: resolvedMenus.main, utility: resolvedMenus.utility }"
       :logo="resolvedSiteData.headerlogo"
       :logoStyle="resolvedSiteData['headerlogo_styles']"
+      :utilityMenuStyle="resolvedSiteData['utility_menu_style']"
+      :utilityMenuButton="utilityButtonProps"
     />
 
     <main
@@ -46,6 +48,7 @@
       }"
       :logo="resolvedSiteData.footerlogo"
       :logoStyle="resolvedSiteData['footerlogo_styles']"
+      :footerStyle="resolvedSiteData['footer_style']"
     />
   </div>
 </template>
@@ -92,6 +95,11 @@ const resolvedMenus = computed(() => ({
 }));
 
 const globalAlert = computed(() => resolvedSiteData.value.alert || null);
+
+const utilityButtonProps = computed(() => ({
+    text: resolvedSiteData.value.utility_button_text,
+    url: resolvedSiteData.value.utility_button_url
+  }));
+
 </script>
 
-<style scoped></style>

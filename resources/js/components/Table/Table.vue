@@ -16,7 +16,6 @@
       v-if="render_api || externalItems"
       class="!mb-8 mt-6 flex flex-wrap justify-between md:mt-0 md:flex-nowrap md:space-x-12"
     >
-      <!-- Search input -->
       <label
         class="relative mb-6 flex w-full max-w-sm shrink-0 text-[0] md:mb-0 md:shrink"
       >
@@ -56,7 +55,6 @@
         </svg>
       </label>
 
-      <!-- Department select (Course Catalogue mode) -->
       <select
         v-if="api === 'Course Catalogue'"
         v-model="selectedDepartment"
@@ -104,7 +102,6 @@
         <option value="WRTG">Writing Department</option>
       </select>
 
-      <!-- Division select -->
       <select
         v-if="
           api !== 'Department Courses' &&
@@ -125,13 +122,10 @@
         <option value="Social Sciences">Social Sciences</option>
       </select>
 
-      <!-- Term / type filter buttons -->
       <div v-if="filterOptions.length > 0" class="mb-6 flex md:mb-0">
         <button
           class="mr-5 font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
-          :class="{
-            '!text-indigo font-bold': filters.term === 'all',
-          }"
+          :class="{ '!text-indigo font-bold': filters.term === 'all' }"
           @click="toggleTermType('All')"
         >
           All
@@ -148,7 +142,6 @@
       </div>
     </div>
 
-    <!-- Data table -->
     <table
       v-if="render_api || externalItems"
       class="colby-table-block block w-full overflow-scroll md:table md:overflow-auto"
@@ -163,13 +156,13 @@
             {{ heading_item }}
           </th>
         </tr>
+
         <tr
           v-for="(item, index) in paginatedItems"
           :key="index"
           class="h-12 w-full odd:bg-gray-100 md:h-10"
         >
           <td class="whitespace-normal px-6 py-2">
-            <!-- Link with no image and no description -->
             <a
               v-if="item.link.url && !item.image"
               class="inline-flex items-center font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12"
@@ -178,7 +171,6 @@
               {{ item.link.title }}
             </a>
 
-            <!-- Person image + link -->
             <div v-if="item.image">
               <a :href="item.link.url" class="flex">
                 <picture>
@@ -204,7 +196,6 @@
               </a>
             </div>
 
-            <!-- Modal for course descriptions -->
             <Modal
               v-if="item.description"
               v-model="item.modalOpen"
@@ -227,7 +218,6 @@
               </template>
             </Modal>
 
-            <!-- Plain text (no link, no image, no description) -->
             <span
               v-if="!item.description && !item.image && !item.link.url"
               class="inline-flex items-center font-body text-20 leading-140 font-semibold text-indigo md:text-12"
@@ -246,7 +236,6 @@
       </tbody>
     </table>
 
-    <!-- Pagination -->
     <div
       v-if="totalPages > 0"
       class="pagination mt-10 flex items-center justify-between"
@@ -277,6 +266,7 @@
             />
           </svg>
         </button>
+
         <ul class="pagination__container inline-flex space-x-1">
           <li
             v-for="pageIndex in totalPages"
@@ -292,6 +282,7 @@
             </button>
           </li>
         </ul>
+
         <button
           v-if="currentPage !== totalPages"
           class="block p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
@@ -316,13 +307,9 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import axios from "axios";
 import Fuse from "fuse.js";
 import Modal from "@/js/components/Modal/Modal.vue";
 
-// ---------------------------------------------------------------------------
-// Props
-// ---------------------------------------------------------------------------
 const props = defineProps({
   render_api: {
     type: Boolean,
@@ -344,17 +331,37 @@ const props = defineProps({
     type: Array,
     default: null,
   },
+
+  // NEW
+  initial_items: {
+    type: Array,
+    default: () => [],
+  },
+  initial_heading: {
+    type: String,
+    default: "",
+  },
+  initial_headings: {
+    type: Array,
+    default: () => [],
+  },
+  initial_filter_options: {
+    type: Array,
+    default: () => [],
+  },
+  hydrated_from_server: {
+    type: Boolean,
+    default: false,
+  },
+  should_client_refresh: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-console.log(props);
-
-// ---------------------------------------------------------------------------
-// Reactive state
-// ---------------------------------------------------------------------------
 const fuse = ref(null);
 const heading = ref(undefined);
 const headings = ref(undefined);
-const endpoint = ref(undefined);
 const items = ref([]);
 const currentPage = ref(1);
 const searchTerm = ref("");
@@ -367,11 +374,9 @@ const filters = ref({
   division: "all",
 });
 
-// ---------------------------------------------------------------------------
-// Computed
-// ---------------------------------------------------------------------------
 const filteredItems = computed(() => {
   let f = [];
+
   if (
     props.api !== "Departments" &&
     props.api !== "People" &&
@@ -380,12 +385,7 @@ const filteredItems = computed(() => {
     f = items.value.filter((item) => item.type.includes(filters.value.term));
   }
 
-  let g;
-  if (f.length === 0) {
-    g = items.value;
-  } else {
-    g = items.value.filter((item) => item.type.includes(filters.value.term));
-  }
+  let g = f.length === 0 ? items.value : f;
 
   if (selectedDepartment.value !== "All Departments") {
     g = g.filter((item) => item.department === filters.value.department);
@@ -406,6 +406,7 @@ const filteredItems = computed(() => {
 
 const inputFilteredItems = computed(() => {
   let u = [];
+
   if (fuse.value) {
     if (searchTerm.value.length > 0) {
       const f = fuse.value.search(searchTerm.value);
@@ -414,6 +415,7 @@ const inputFilteredItems = computed(() => {
       u = filteredItems.value;
     }
   }
+
   return u;
 });
 
@@ -436,257 +438,6 @@ const totalPages = computed(() => {
   return Math.ceil(inputFilteredItems.value.length / props.itemsPerPage);
 });
 
-// ---------------------------------------------------------------------------
-// Helper functions
-// ---------------------------------------------------------------------------
-function _numberToString(i, capitalize) {
-  const numberwords = [
-    "zero",
-    "one",
-    "two",
-    "three",
-    "four",
-    "five",
-    "six",
-    "seven",
-    "eight",
-    "nine",
-    "ten",
-    "eleven",
-    "twelve",
-    "thirteen",
-    "fourteen",
-  ];
-
-  if (capitalize) {
-    return numberwords[i].charAt(0).toUpperCase() + numberwords[i].slice(1);
-  } else {
-    return numberwords[i];
-  }
-}
-
-function _reqs(area, labsci, writing, div) {
-  let reqs = false;
-  let toReturn = "";
-
-  if (area !== "") {
-    toReturn = toReturn + area;
-    reqs = true;
-  }
-
-  if (labsci === "L" || labsci === "D") {
-    if (reqs) {
-      toReturn = toReturn + ",&nbsp;";
-    }
-    toReturn = toReturn + "Lb";
-    reqs = true;
-  }
-
-  if (writing === "W1" || writing === "W2" || writing === "W3") {
-    if (reqs) {
-      toReturn = toReturn + ",&nbsp;";
-    }
-    toReturn = toReturn + writing;
-    reqs = true;
-  }
-
-  if (div !== "") {
-    if (reqs) {
-      toReturn = toReturn + ",&nbsp;";
-    }
-    toReturn = toReturn + div;
-    reqs = true;
-  }
-
-  if (reqs) {
-    toReturn = ' <strong class="recs">' + toReturn + ".</strong>";
-  }
-
-  return toReturn;
-}
-
-function _creditHours(crsno, minhrs, maxhrs) {
-  let creditHours = "";
-  if (maxhrs !== 0) {
-    if (crsno !== "MU193") {
-      creditHours =
-        ' <em class="creditHours">' + _numberToString(minhrs, true);
-      if (minhrs !== maxhrs) {
-        if (minhrs + 1 === maxhrs) {
-          creditHours += " or ";
-        } else {
-          if (minhrs < maxhrs) {
-            creditHours += " to ";
-          } else {
-            creditHours =
-              " Min hrs greater than Max hrs report to Registrar ";
-          }
-        }
-        creditHours += _numberToString(maxhrs, false);
-      }
-
-      creditHours += " credit hour";
-
-      if (
-        _numberToString(minhrs, true) !== "One" ||
-        _numberToString(maxhrs, true) !== "One"
-      ) {
-        creditHours += "s";
-      }
-
-      creditHours += ".</em>";
-    }
-  } else {
-    creditHours = '<em class="creditHours">Noncredit.</em>';
-  }
-  return creditHours;
-}
-
-function _faculty(sections) {
-  let faculty = [];
-  sections.forEach((section) => {
-    const sectionFaculty = (section.faculty || []).map((obj) =>
-      obj.faculty_name.split(",")[0],
-    );
-    faculty = faculty.concat(sectionFaculty);
-  });
-  const uniqueFaculty = [...new Set(faculty)];
-  return uniqueFaculty.join(", ");
-}
-
-function renderDesc(item) {
-  const creditHours = _creditHours(item.crsno, item.minhrs, item.maxhrs);
-  let reqs = "";
-  let prereq = "";
-
-  if (item.prereq !== "") {
-    prereq =
-      ' <em class="prerequisite">Prerequisite:</em> <span class="prereq">' +
-      item.prereq +
-      "</span>";
-  }
-
-  if (item.crsno.substring(0, 2) !== "IS") {
-    reqs = _reqs(item.area, item.labsci, item.writing, item.diversity);
-  }
-
-  const faculty = _faculty(item.sections);
-
-  return `${item.abstr}<br/>${prereq} ${creditHours} ${reqs} <i style="text-transform: uppercase">${faculty}</i>`;
-}
-
-function removeTags(str) {
-  if (str) {
-    return str.replace(/(<([^>]+)>)/gi, "");
-  } else {
-    return "";
-  }
-}
-
-function transformDept(item) {
-  switch (item.Dept.toLowerCase()) {
-    case "afam":
-      return "african-american-studies";
-    case "amer":
-      return "american-studies";
-    case "anth":
-      return "anthropology";
-    case "art":
-      return "art";
-    case "biol":
-      return "biology";
-    case "chem":
-      return "chemistry";
-    case "clas":
-      return "classics";
-    case "comp":
-      return "computer-science";
-    case "east":
-      return "east-asian-studies";
-    case "econ":
-      return "economics";
-    case "educ":
-      return "education";
-    case "engl":
-      return "english";
-    case "envs":
-      return "environmental-studies";
-    case "frit":
-      return "french-and-italian";
-    case "geol":
-      return "geology";
-    case "glst":
-      return "global-studies";
-    case "gmru":
-      return "german-and-russian";
-    case "govt":
-      return "government";
-    case "hist":
-      return "history";
-    case "ltam":
-      return "latin-american-studies";
-    case "math":
-      return "mathematics";
-    case "musi":
-      return "music";
-    case "phil":
-      return "philosophy";
-    case "phys":
-      return "physics-and-astronomy";
-    case "psyc":
-      return "psychology";
-    case "relg":
-      return "religious-studies";
-    case "scit":
-      return "science-technology-and-society";
-    case "socy":
-      return "sociology";
-    case "span":
-      return "spanish";
-    case "stat":
-      return "statistics";
-    case "thea":
-      return "performance-theater-and-dance";
-    case "wrtg":
-      return "writing-department";
-    case "wgst":
-      return "womens-gender-and-sexuality-studies";
-    case "intd":
-      switch (item.Text.toLowerCase()) {
-        case "jewish studies":
-          return "jewish-studies";
-        case "cinema studies":
-          return "cinema-studies";
-        default:
-          return "";
-      }
-    default:
-      return "";
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Session-type mapping helper
-// ---------------------------------------------------------------------------
-function mapSessionTypes(sessOffered) {
-  const itemTypes = sessOffered.split(",");
-  return itemTypes.map((type) => {
-    switch (type.trim()) {
-      case "FA":
-        return "Fall";
-      case "SP":
-        return "Spring";
-      case "JP":
-        return "January";
-      default:
-        return type.trim();
-    }
-  });
-}
-
-// ---------------------------------------------------------------------------
-// Fuse.js initialisation
-// ---------------------------------------------------------------------------
 function initFuse() {
   if (filteredItems.value) {
     fuse.value = new Fuse(filteredItems.value, {
@@ -700,9 +451,6 @@ function initFuse() {
   }
 }
 
-// ---------------------------------------------------------------------------
-// URL query-parameter management
-// ---------------------------------------------------------------------------
 function updateQueryParams() {
   const params = new URLSearchParams();
 
@@ -726,9 +474,6 @@ function updateQueryParams() {
   window.history.pushState({ path: newUrl }, "", newUrl);
 }
 
-// ---------------------------------------------------------------------------
-// Navigation & filter methods
-// ---------------------------------------------------------------------------
 function navigateFn(index) {
   currentPage.value = index;
   updateQueryParams();
@@ -744,6 +489,7 @@ function navigatePages(dir) {
       currentPage.value += 1;
     }
   }
+
   updateQueryParams();
 }
 
@@ -756,21 +502,16 @@ function toggleDepartment(event) {
 
   if (event.target.value === "All Departments") {
     filters.value.department = "all";
+  } else {
+    filters.value.department = event.target.value;
   }
-  filters.value.department = event.target.value;
 
   updateQueryParams();
 }
 
 function toggleTermType(term) {
   currentPage.value = 1;
-
-  if (term === "All") {
-    filters.value.term = "all";
-  } else {
-    filters.value.term = term;
-  }
-
+  filters.value.term = term === "All" ? "all" : term;
   updateQueryParams();
 }
 
@@ -778,6 +519,7 @@ function toggleTermDivision(event, runUpdate) {
   if (selectedDepartment.value !== "All Departments") {
     selectedDepartment.value = "All Departments";
   }
+
   currentPage.value = 1;
 
   switch (event.target.value) {
@@ -844,11 +586,7 @@ function onSearchChange() {
   currentPage.value = 1;
 }
 
-// ---------------------------------------------------------------------------
-// Lifecycle
-// ---------------------------------------------------------------------------
-onMounted(async () => {
-  // Read URL query params
+onMounted(() => {
   const params = new URLSearchParams(window.location.search);
 
   if (
@@ -891,125 +629,15 @@ onMounted(async () => {
   if (params.has("pag")) {
     currentPage.value = Number(params.get("pag"));
   }
-  console.log(props.render_api);
-  // API-driven data
+
   if (props.render_api) {
-    switch (props.api) {
-      case "Department Courses":
-        endpoint.value = "https://www.colby.edu/endpoints/v1/courses/";
-        heading.value = "Department Courses";
-        break;
-      case "Course Catalogue":
-        endpoint.value = "https://www.colby.edu/endpoints/v1/courses/";
-        heading.value = props.api;
-        break;
-      case "Majors and Minors":
-        endpoint.value =
-          "https://www.colby.edu/endpoints/v1/majorsminors/";
-        heading.value = props.api;
-        break;
-    }
-
-    try {
-      const response = await axios.get(endpoint.value);
-      console.log(response);
-      switch (props.api) {
-        case "Department Courses": {
-          const deptItems = response.data.courses.filter(
-            (item) =>
-              item.dept === props.departmentCode && item.longTitle,
-          );
-          items.value = deptItems.map((item) => {
-            const itemTypes = mapSessionTypes(item.sessOffered);
-            return {
-              title:
-                item.secTitle && !item.secTitle.includes("See ")
-                  ? item.secTitle
-                  : item.longTitle,
-              type: itemTypes,
-              link: {
-                title:
-                  item.secTitle && !item.secTitle.includes("See ")
-                    ? item.secTitle
-                    : item.longTitle,
-                url: null,
-              },
-              columns: [item.crsno, removeTags(item.abstr)],
-              modalOpen: false,
-            };
-          });
-          headings.value = ["Name", "Course Number", "Description"];
-          filterOptions.value = ["Fall", "Spring", "January"];
-          break;
-        }
-        case "Course Catalogue": {
-          const catalogueItems = response.data.courses.filter(
-            (item) => item.longTitle,
-          );
-          items.value = catalogueItems.map((item) => {
-            const itemTypes = mapSessionTypes(item.sessOffered);
-            return {
-              title:
-                item.secTitle && !item.secTitle.includes("See ")
-                  ? item.secTitle
-                  : item.longTitle,
-              description: renderDesc(item),
-              type: itemTypes,
-              department: item.dept,
-              link: {
-                title:
-                  item.secTitle && !item.secTitle.includes("See ")
-                    ? item.secTitle
-                    : item.longTitle,
-                url: null,
-              },
-              columns: [item.crsno, item.dept],
-              faculty: _faculty(item.sections),
-              modalOpen: false,
-            };
-          });
-          headings.value = ["Name", "Course Number", "Department"];
-          filterOptions.value = ["Fall", "Spring", "January"];
-          break;
-        }
-        case "Majors and Minors": {
-          const majors = [];
-          const minors = [];
-
-          response.data.forEach((item) => {
-            if (item.Type === "Major") {
-              majors.push(item);
-            } else {
-              minors.push(item);
-            }
-          });
-
-          items.value = majors.concat(minors).map((item) => {
-            return {
-              title: item.Text,
-              type: `${item.Type}s`,
-              link: {
-                title: item.Text,
-                url: `/academics/departments-and-programs/${transformDept(item)}`,
-              },
-              columns: [item.Dept, item.Type],
-              department: item.Dept,
-              modalOpen: false,
-            };
-          });
-          filterOptions.value = ["Majors", "Minors"];
-          headings.value = ["Name", "Department", "Type"];
-          break;
-        }
-      }
-
-      initFuse();
-    } catch (error) {
-      console.error("Error fetching API data:", error);
-    }
+    heading.value = props.initial_heading;
+    headings.value = props.initial_headings;
+    filterOptions.value = props.initial_filter_options;
+    items.value = props.initial_items || [];
+    initFuse();
   }
 
-  // External items (passed via prop)
   if (props.externalItems) {
     heading.value = props.api;
 
