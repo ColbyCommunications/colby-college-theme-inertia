@@ -36,6 +36,7 @@ export const Default = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Related Programs")).toBeInTheDocument();
     await expect(canvas.getByText("View All Programs")).toBeInTheDocument();
     await expect(canvas.getByText("Environmental Studies")).toBeInTheDocument();

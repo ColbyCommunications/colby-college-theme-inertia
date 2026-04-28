@@ -48,6 +48,7 @@ export const Primary = {
     type: "info",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // The Alert component renders heading with a trailing colon: "Alert:"
     await expect(canvas.getByText("Alert:")).toBeInTheDocument();
     await expect(
@@ -67,6 +68,7 @@ export const Secondary = {
     type: "emergency",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // The Alert component renders heading with a trailing colon: "Alert:"
     await expect(canvas.getByText("Alert:")).toBeInTheDocument();
     await expect(

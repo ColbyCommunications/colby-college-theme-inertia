@@ -31,6 +31,7 @@ export const Default = {
     menu: sampleMenu,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // These are hardcoded in the component template (not prop-driven)
     await expect(canvas.getByText("myColby")).toBeInTheDocument();
     await expect(canvas.getByText("Search")).toBeInTheDocument();

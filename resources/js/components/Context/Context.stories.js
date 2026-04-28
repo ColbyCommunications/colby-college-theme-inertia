@@ -46,6 +46,7 @@ export const Default = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Academics")).toBeInTheDocument();
     await expect(canvas.getByText("Explore Our Programs")).toBeInTheDocument();
     await expect(canvas.getByText("Learn More")).toBeInTheDocument();
@@ -70,6 +71,7 @@ export const WithMultipleButtons = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Admissions")).toBeInTheDocument();
     await expect(canvas.getByText("Apply to Colby")).toBeInTheDocument();
     await expect(canvas.getByText("Apply Now")).toBeInTheDocument();
@@ -94,6 +96,7 @@ export const Centered = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Mission")).toBeInTheDocument();
     await expect(canvas.getByText("Our Purpose")).toBeInTheDocument();
 
@@ -119,6 +122,7 @@ export const LightType = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Spotlight")).toBeInTheDocument();
     await expect(canvas.getByText("Faculty Achievements")).toBeInTheDocument();
 
@@ -143,6 +147,7 @@ export const NoButtons = {
     buttons: { items: [] },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Research")).toBeInTheDocument();
     await expect(canvas.getByText("Student-Faculty Collaboration")).toBeInTheDocument();
   },
@@ -166,6 +171,7 @@ export const WithHero = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Welcome")).toBeInTheDocument();
     await expect(canvas.getByText("Colby College")).toBeInTheDocument();
   },
@@ -185,6 +191,7 @@ export const StaticMode = {
     buttons: { items: [] },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Notice")).toBeInTheDocument();
     await expect(canvas.getByText("Campus Alert")).toBeInTheDocument();
   },

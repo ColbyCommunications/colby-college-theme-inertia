@@ -83,6 +83,7 @@ export const Default = {
   },
   render,
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const buttons = canvas.getAllByRole("button");
     const firstButton = buttons[0];
     const secondButton = buttons[1];
@@ -126,6 +127,7 @@ export const SingleMode = {
   },
   render,
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const buttons = canvas.getAllByRole("button");
     const firstButton = buttons[0];
     const secondButton = buttons[1];
@@ -164,6 +166,7 @@ export const PreOpened = {
   },
   render,
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const buttons = canvas.getAllByRole("button");
     const firstButton = buttons[0];
     const thirdButton = buttons[2];

@@ -114,7 +114,7 @@ add_action('init', function () {
   Inertia::setRootView('app.php');
 });
 
-add_action('init', function () {
+add_action('template_redirect', function () {
   $global_site_data = [
     'site_data' => [
       'name'        => get_bloginfo('name'),
@@ -171,6 +171,99 @@ add_action('init', function () {
   $global_site_data['site_data']['utility_button_text'] = $utility_button_text;
   $utility_button_url = get_theme_mod( 'utility_menu_button_url', '' ); 
   $global_site_data['site_data']['utility_button_url'] = $utility_button_url;
+
+
+  // construct breadcrumb
+  // Get the current URL path
+  $current_url = $_SERVER['REQUEST_URI'];
+    
+  $breadcrumbs_menu = array();
+
+  global $post;
+  
+  if(!is_front_page()) {
+    if (is_page()) {
+      // dd($post);
+      // Logic for pages
+      $ancestors = get_post_ancestors($post->ID);
+
+      // Reverse the order of ancestors to go from the top-level ancestor to the direct parent
+      $ancestors = array_reverse($ancestors);
+
+      foreach ($ancestors as $ancestor) {
+          $title = get_the_title($ancestor);
+          $link = get_permalink($ancestor);
+          
+          $breadcrumbs_menu[] = array(
+              'title' => $title,
+              'url'   => $link,
+          );
+      }
+
+      // Add the current page to the breadcrumb array
+      $breadcrumbs_menu[] = array(
+          'title' => $post->post_title,
+          'url'   => get_the_permalink($post->ID),
+      );
+
+      } elseif (is_single()) {
+        
+      // Logic for posts
+
+      $categories = get_the_category($post->ID);
+
+      if (!empty($categories)) {
+        $primary_category = $categories[0];
+        
+        $category_ancestors = get_ancestors($primary_category->term_id, 'category');
+        $category_ancestors = array_reverse($category_ancestors);
+
+        // Add ancestor categories to breadcrumbs
+        foreach ($category_ancestors as $ancestor_id) {
+            $ancestor = get_category($ancestor_id);
+            $category_link = get_category_link($ancestor->term_id);
+
+            // Check if 'category' is the first segment after the domain
+            $cleaned_link = preg_replace('/\/category\//', '/', $category_link, 1);
+
+            $breadcrumbs_menu[] = array(
+                'title' => $ancestor->name,
+                'url'   => $cleaned_link,
+            );
+        }
+
+            $primary_category_link = get_category_link($primary_category->term_id);
+            $cleaned_primary_link = preg_replace('/\/category\//', '/', $primary_category_link, 1);
+
+            $breadcrumbs_menu[] = array(
+                'title' => $primary_category->name,
+                'url'   => $cleaned_primary_link,
+            );
+        }
+
+        // Construct the "News" breadcrumb
+        $current_url = $_SERVER['REQUEST_URI']; // Get the current URL path
+        $news_url = rtrim(str_replace(trailingslashit($post->post_name), '', $current_url), '/');
+
+        // Add the "News" breadcrumb
+        $breadcrumbs_menu[] = array(
+            'title' => 'News',
+            'url'   => $news_url . '/',
+        );
+
+
+        // Add the current post to the breadcrumb array
+        $breadcrumbs_menu[] = array(
+            'title' => $post->post_title,
+            'url'   => get_the_permalink($post->ID),
+        );
+      }
+    }
+    $global_site_data['site_data']['breadcrumbs_menu'] = $breadcrumbs_menu;
+
+
+  // dd($global_site_data);
+
 
   Inertia::share($global_site_data);
 

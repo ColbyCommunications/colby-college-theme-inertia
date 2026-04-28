@@ -32,6 +32,7 @@ export const Default = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Events")).toBeInTheDocument();
     await expect(canvas.getByText("June 24, 2022")).toBeInTheDocument();
     await expect(
@@ -62,6 +63,7 @@ export const WithoutPostButtons = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("News")).toBeInTheDocument();
     await expect(canvas.getByText("March 15, 2024")).toBeInTheDocument();
     await expect(canvas.getByText("All News")).toBeInTheDocument();

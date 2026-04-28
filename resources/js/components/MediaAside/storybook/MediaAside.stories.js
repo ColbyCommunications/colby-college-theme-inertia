@@ -23,6 +23,7 @@ export const Static = {
     buttons: [{ url: "#", title: "Read Story" }],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByAltText("Placeholder image")).toBeInTheDocument();
     await expect(canvas.getByText("Read Story")).toBeInTheDocument();
   },
@@ -70,6 +71,7 @@ export const Carousel = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Slide one heading")).toBeInTheDocument();
   },
 };
@@ -86,6 +88,7 @@ export const StaticNoCaption = {
     paragraph: "This variant has no image caption.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("Static without caption"),
     ).toBeInTheDocument();
@@ -118,6 +121,7 @@ export const CarouselNoButtons = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("First slide without buttons"),
     ).toBeInTheDocument();
@@ -152,6 +156,7 @@ export const CarouselWithNavigation = {
     ],
   },
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Navigation slide one")).toBeInTheDocument();
     // Click next button
     const nextBtn = canvas.getByText("Next");
@@ -174,6 +179,7 @@ export const StaticNoParagraph = {
     buttons: [{ url: "#", title: "Read More" }],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Just a heading")).toBeInTheDocument();
     await expect(canvas.getByText("Read More")).toBeInTheDocument();
   },

@@ -105,6 +105,7 @@ export const ManualData = {
     items: mockItems,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Assert the section heading renders
     const heading = await canvas.findByText("News & Stories");
     await expect(heading).toBeVisible();
@@ -141,6 +142,7 @@ export const ApiGeneral = {
     return () => spy.mockRestore();
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Assert section heading renders
     const heading = await canvas.findByText("Latest News");
     await expect(heading).toBeVisible();
@@ -184,6 +186,7 @@ export const ApiArts = {
     return () => spy.mockRestore();
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const heading = await canvas.findByText("Arts & Culture");
     await expect(heading).toBeVisible();
     await waitFor(() => {
@@ -221,6 +224,7 @@ export const ApiAlumni = {
     return () => spy.mockRestore();
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const heading = await canvas.findByText("Alumni News");
     await expect(heading).toBeVisible();
     await waitFor(() => {

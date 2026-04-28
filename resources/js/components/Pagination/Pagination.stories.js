@@ -27,6 +27,7 @@ export const Default = {
     nextUrl: "#",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("Showing 24 of 2,568 results"),
     ).toBeInTheDocument();
@@ -44,6 +45,7 @@ export const NoPrevious = {
     nextUrl: "#",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("1")).toBeInTheDocument();
   },
 };
@@ -57,6 +59,7 @@ export const NoNext = {
     nextUrl: "",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("1")).toBeInTheDocument();
   },
 };
@@ -70,6 +73,7 @@ export const NoBothNavigation = {
     nextUrl: "",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Showing 10 of 10 results")).toBeInTheDocument();
     await expect(canvas.getByText("1")).toBeInTheDocument();
   },
@@ -90,6 +94,7 @@ export const MiddlePage = {
     nextUrl: "#",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Showing 48 of 2,568 results")).toBeInTheDocument();
     await expect(canvas.getByText("3")).toBeInTheDocument();
   },

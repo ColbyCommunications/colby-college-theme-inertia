@@ -24,14 +24,6 @@
           :aria-label="ariaLabel"
         >
           <Picture
-            v-if="useDesktopMobile"
-            class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
-            :src="image?.src"
-            :alt="image?.alt || ''"
-            :fromApi="fromApi"
-          />
-          <Picture
-            v-else
             class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
             :src="image?.src"
             :alt="image?.alt || ''"
@@ -50,14 +42,14 @@
           <Picture
             v-if="useDesktopMobile"
             class="w-full object-cover"
-            :src="image.url"
+            :src="image.src"
             :alt="image?.alt || ''"
             :fromApi="fromApi"
           />
           <Picture
             v-else
             class="w-full object-cover"
-            :src="image.url"
+            :src="image.src"
             :alt="image.alt || ''"
             :fromApi="fromApi"
           />
@@ -111,9 +103,6 @@ const hasButtons = computed(
     props.buttons[0].button?.url,
 );
 
-const useDesktopMobile = computed(
-  () => !!props.image?.sizes?.desktop || !!props.image?.sizes?.mobile,
-);
 
 const ariaLabel = computed(() => {
   const raw = props.heading || "";

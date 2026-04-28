@@ -29,6 +29,7 @@ export const Default = {
     ],
   },
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("What is the application deadline?"),
     ).toBeInTheDocument();

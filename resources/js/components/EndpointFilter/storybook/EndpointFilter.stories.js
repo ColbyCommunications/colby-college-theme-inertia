@@ -57,6 +57,7 @@ export const Default = {
     limit: 6,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Assert the filter bar renders
     const filterHeading = await canvas.findByText("Event types:");
     await expect(filterHeading).toBeVisible();
@@ -95,6 +96,7 @@ export const DarkMode = {
     limit: 6,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const filterHeading = await canvas.findByText("Event types:");
     await expect(filterHeading).toBeVisible();
     await waitFor(() => {
@@ -121,6 +123,7 @@ export const NoFilters = {
       "https://events.colby.edu/live/json/events/group/Athletics",
   },
   play: async ({ canvas, canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // The filter bar is hidden (filters=false)
     const headings = canvas.queryAllByText("Event types:");
     await expect(headings.length).toBe(0);
@@ -159,6 +162,7 @@ export const CustomFilterList = {
     initialEndpoint: "https://events.colby.edu/live/json/events",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Assert the custom filter buttons render
     const allEventsButton = await canvas.findByText("All Events");
     await expect(allEventsButton).toBeVisible();
@@ -193,6 +197,7 @@ export const WithLimit = {
     initialEndpoint: "https://events.colby.edu/live/json/events",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Assert only 2 events render despite 6 being returned
     const event1 = await canvas.findByText("Spring Concert Series");
     await expect(event1).toBeVisible();

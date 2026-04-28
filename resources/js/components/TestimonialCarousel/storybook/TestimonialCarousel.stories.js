@@ -50,6 +50,7 @@ export const Default = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Testimonials")).toBeInTheDocument();
     await expect(canvas.getByText("All Stories")).toBeInTheDocument();
     await expect(canvas.getByText("Jane Doe '22")).toBeInTheDocument();
@@ -98,6 +99,7 @@ export const WithCaptions = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Student Stories")).toBeInTheDocument();
     await expect(canvas.getByText("Alex Johnson '23")).toBeInTheDocument();
   },
@@ -128,6 +130,7 @@ export const SingleItem = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Solo Person '24")).toBeInTheDocument();
   },
 };

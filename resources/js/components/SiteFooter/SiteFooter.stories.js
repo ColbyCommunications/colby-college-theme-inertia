@@ -73,6 +73,7 @@ export const Default = {
   },
   render,
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Assert footer menu items render
     await expect(canvas.getByText("Admissions")).toBeVisible();
     await expect(canvas.getByText("Academics")).toBeVisible();

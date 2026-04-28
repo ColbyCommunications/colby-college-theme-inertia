@@ -42,6 +42,7 @@ export const Default = {
     mediaCaption: "Image caption here",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Image caption here")).toBeInTheDocument();
   },
 };
@@ -54,6 +55,7 @@ export const WrapLeft = {
     alignImage: "left",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Image caption here")).toBeInTheDocument();
   },
 };
@@ -66,6 +68,7 @@ export const WrapRight = {
     alignImage: "right",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Image caption here")).toBeInTheDocument();
   },
 };
@@ -78,6 +81,7 @@ export const SideBySideRight = {
     imageScale: "50",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Image caption here")).toBeInTheDocument();
   },
 };
@@ -90,6 +94,7 @@ export const Scale25 = {
     wrappingText: "no-wrap",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByRole("img")).toBeInTheDocument();
   },
 };
@@ -102,6 +107,7 @@ export const Scale75 = {
     wrappingText: "no-wrap",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByRole("img")).toBeInTheDocument();
   },
 };
@@ -114,6 +120,7 @@ export const Scale100 = {
     wrappingText: "no-wrap",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByRole("img")).toBeInTheDocument();
   },
 };
@@ -127,6 +134,7 @@ export const ImagePathOnly = {
     paragraphText: sampleText,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByRole("img")).toBeInTheDocument();
   },
 };
@@ -144,6 +152,7 @@ export const NoCaption = {
     paragraphText: sampleText,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByRole("img")).toBeInTheDocument();
   },
 };
@@ -159,6 +168,7 @@ export const WrapWithImagePath = {
     mediaCaption: "Path-based image caption",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("Path-based image caption"),
     ).toBeInTheDocument();
@@ -179,6 +189,7 @@ export const CenteredText = {
     paragraphText: sampleText,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByAltText("Centered text image"),
     ).toBeInTheDocument();
@@ -198,6 +209,7 @@ export const WrapRightNoCaption = {
     paragraphText: sampleText,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByAltText("No caption wrap right"),
     ).toBeInTheDocument();

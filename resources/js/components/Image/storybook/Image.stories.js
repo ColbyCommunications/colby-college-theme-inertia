@@ -23,6 +23,7 @@ export const Default = {
     caption: "An example image caption",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("An example image caption"),
     ).toBeInTheDocument();
@@ -40,6 +41,7 @@ export const Scaled75 = {
     caption: "Image at 75% scale",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Image at 75% scale")).toBeInTheDocument();
   },
 };
@@ -55,6 +57,7 @@ export const Scaled50 = {
     caption: "Image at 50% scale",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Image at 50% scale")).toBeInTheDocument();
   },
 };
@@ -71,6 +74,7 @@ export const Centered = {
     caption: "Centered image at 50% scale",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("Centered image at 50% scale"),
     ).toBeInTheDocument();
@@ -84,6 +88,7 @@ export const WithPath = {
     caption: "Image loaded via path",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Image loaded via path")).toBeInTheDocument();
   },
 };
@@ -99,6 +104,7 @@ export const Scaled25 = {
     caption: "Image at 25% scale",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Image at 25% scale")).toBeInTheDocument();
   },
 };
@@ -112,6 +118,7 @@ export const NoCaption = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByAltText("No caption image")).toBeInTheDocument();
   },
 };

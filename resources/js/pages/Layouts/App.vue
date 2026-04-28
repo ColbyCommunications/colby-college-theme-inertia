@@ -16,7 +16,7 @@
       :utilityMenuStyle="resolvedSiteData['utility_menu_style']"
       :utilityMenuButton="utilityButtonProps"
     />
-
+    <Breadcrumbs v-if="resolvedSiteData['breadcrumbs_menu'].length" :items="resolvedSiteData['breadcrumbs_menu']" />
     <main
       id="main"
       class="
@@ -59,6 +59,7 @@ import { usePage } from "@inertiajs/vue3";
 import Alert from "../../components/Alert/Alert.vue";
 import SiteHeader from "../../components/SiteHeader/SiteHeader.vue";
 import SiteFooter from "../../components/SiteFooter/SiteFooter.vue";
+import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs.vue";
 
 const props = defineProps({
   siteData: {
@@ -83,6 +84,8 @@ const resolvedSiteData = computed(() => ({
   ...(pageSiteData.value || {}),
   ...(props.siteData || {}),
 }));
+
+console.log(props.siteData);
 
 const resolvedMenus = computed(() => ({
   main: [],

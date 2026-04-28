@@ -32,6 +32,7 @@ export const Default = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("Faculty & Staff Directory"),
     ).toBeInTheDocument();

@@ -32,13 +32,14 @@
           <div class="glide__slides">
             <!-- BASIC mode uses local items image fields -->
             <div
-              v-for="(item, idx) in items"
+              v-for="(item, idx) in slides"
               :key="'basic-' + idx"
               class="carousel__slide glide__slide"
             >
               <Picture
+                v-if="item.image"
                 class="h-full w-full object-cover"
-                :src="item.image?.url"
+                :src="item.image?.src"
                 :alt="item.image?.alt || ''"
               />
             </div>
@@ -426,15 +427,56 @@ const apiLeftButtonItems = computed(() => {
   }));
 });
 
-const basicButtonItems = computed(() =>
-  props.buttons.map((btn) => ({
-    button: { url: btn.url, title: btn.title, target: btn.target || "" },
-  })),
-);
+const basicButtonItems = computed(() => {
+  let buttons = [];
+  if(props.buttons) {
+    buttons = props.buttons.map((btn) => ({
+      button: { url: btn.url, title: btn.title, target: btn.target || "" },
+    }));
+  }
+ return buttons;
+});
+
+function normalizeImage(image) {
+  if (!image || typeof image !== "object") {
+    return image;
+  }
+
+  return {
+    ...image,
+    src: image.src || image.url || "",
+  };
+}
+
+/**
+ * Normalize a single item object:
+ * - item.image.src guaranteed if image exists
+ */
+function normalizeItem(item) {
+  if (!item || typeof item !== "object") {
+    return item;
+  }
+
+  return {
+    ...item,
+    image: item.image ? normalizeImage(item.image) : item.image,
+  };
+}
+
+/**
+ * Normalize any items array
+ */
+function normalizeItems(items = []) {
+  if (!Array.isArray(items)) {
+    return [];
+  }
+
+  return items.map(normalizeItem);
+}
 
 // Simplified: slides come directly from props
 const slides = computed(() =>
-  mode.value === "basic" ? props.items : props.initial_items,
+  mode.value === "basic" ?  normalizeItems(props.items) : normalizeItems(props.initial_items)
 );
 
 const rootEl = ref(null);

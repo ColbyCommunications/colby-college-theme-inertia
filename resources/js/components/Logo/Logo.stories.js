@@ -13,6 +13,7 @@ export const Default = {
     url: "/",
   },
   play: async ({ canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const link = canvasElement.querySelector("a");
     await expect(link).toBeTruthy();
     await expect(link.getAttribute("href")).toBe("/");
@@ -33,6 +34,7 @@ export const White = {
     template: '<div class="bg-indigo p-10"><Logo v-bind="args" /></div>',
   }),
   play: async ({ canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const link = canvasElement.querySelector("a");
     await expect(link).toBeTruthy();
     await expect(link.getAttribute("href")).toBe("/");

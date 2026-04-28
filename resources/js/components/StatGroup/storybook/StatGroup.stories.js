@@ -23,6 +23,7 @@ export const Default = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Colby at a Glance")).toBeInTheDocument();
     await expect(canvas.getByText("2,000")).toBeInTheDocument();
     await expect(canvas.getByText("56")).toBeInTheDocument();
@@ -44,6 +45,7 @@ export const WithoutButtonTarget = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Quick Facts")).toBeInTheDocument();
     await expect(canvas.getByText("1,800")).toBeInTheDocument();
     await expect(canvas.getByText("Learn More")).toBeInTheDocument();

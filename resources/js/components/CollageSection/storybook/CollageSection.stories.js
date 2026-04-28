@@ -61,6 +61,7 @@ export const Primary = {
     ...globalArgs,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
     await expect(canvas.getByText(globalArgs.paragraph)).toBeInTheDocument();
   },
@@ -73,6 +74,7 @@ export const SingleImage = {
     images: [globalArgs.images[0]],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
   },
 };
@@ -84,6 +86,7 @@ export const TwoImages = {
     images: [globalArgs.images[0], globalArgs.images[1]],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
   },
 };

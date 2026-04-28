@@ -27,6 +27,7 @@ export const TwoColumns = {
     items: [sampleItem, sampleItem, sampleItem, sampleItem],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const headings = canvas.getAllByText("Lorem ipsum dolor sit amet");
     await expect(headings.length).toBe(4);
   },
@@ -39,6 +40,7 @@ export const ThreeColumns = {
     items: [sampleItem, sampleItem, sampleItem],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const headings = canvas.getAllByText("Lorem ipsum dolor sit amet");
     await expect(headings.length).toBe(3);
   },
@@ -51,6 +53,7 @@ export const FourColumns = {
     items: [sampleItem, sampleItem, sampleItem, sampleItem],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const headings = canvas.getAllByText("Lorem ipsum dolor sit amet");
     await expect(headings.length).toBe(4);
   },

@@ -30,6 +30,7 @@ export const Primary = {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Lorem ipsum")).toBeInTheDocument();
     await expect(canvas.getAllByText("100%").length).toBeGreaterThan(0);
   },

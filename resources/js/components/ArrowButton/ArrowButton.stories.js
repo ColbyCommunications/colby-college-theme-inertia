@@ -14,6 +14,7 @@ export const Primary = {
     onPrev: fn(),
   },
   play: async ({ canvas, userEvent, args }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const button = canvas.getByRole("button", { name: "Previous" });
     await expect(button).toBeInTheDocument();
     await userEvent.click(button);
@@ -29,6 +30,7 @@ export const Reverse = {
     onNext: fn(),
   },
   play: async ({ canvas, userEvent, args }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const button = canvas.getByRole("button", { name: "Next" });
     await expect(button).toBeInTheDocument();
     await userEvent.click(button);

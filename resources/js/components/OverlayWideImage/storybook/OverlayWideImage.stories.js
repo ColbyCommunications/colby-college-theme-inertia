@@ -30,6 +30,7 @@ export const Default = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Green Colby")).toBeInTheDocument();
     await expect(
       canvas.getByText("Sustainability and Stewardship"),

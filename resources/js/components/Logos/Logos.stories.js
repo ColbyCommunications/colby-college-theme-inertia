@@ -14,6 +14,7 @@ export const ColbyLogoDark = {
     template: '<ColbyLogo url="/" fillColor="--color-indigo" />',
   }),
   play: async ({ canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const link = canvasElement.querySelector("a");
     await expect(link).toBeTruthy();
   },
@@ -26,6 +27,7 @@ export const ColbyLogoWhite = {
     template: '<div class="bg-indigo p-10"><ColbyLogo url="/" fillColor="--color-white" /></div>',
   }),
   play: async ({ canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const link = canvasElement.querySelector("a");
     await expect(link).toBeTruthy();
   },
@@ -38,6 +40,7 @@ export const AthleticsLogoDefault = {
     template: '<div class="relative bg-indigo p-10 h-20"><AthleticsLogo /></div>',
   }),
   play: async ({ canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const svg = canvasElement.querySelector("svg");
     await expect(svg).toBeTruthy();
   },

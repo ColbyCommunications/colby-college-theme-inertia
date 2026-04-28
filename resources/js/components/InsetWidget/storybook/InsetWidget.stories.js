@@ -26,6 +26,7 @@ export const Default = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Get Involved")).toBeInTheDocument();
     await expect(canvas.getByText("Ready to Learn More?")).toBeInTheDocument();
     await expect(canvas.getByText("Request Information")).toBeInTheDocument();
@@ -40,6 +41,7 @@ export const Inset = {
     inset: true,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Ready to Learn More?")).toBeInTheDocument();
   },
 };
@@ -51,6 +53,7 @@ export const Small = {
     size: "small",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Ready to Learn More?")).toBeInTheDocument();
   },
 };
@@ -62,6 +65,7 @@ export const Large = {
     size: "large",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Ready to Learn More?")).toBeInTheDocument();
   },
 };
@@ -74,6 +78,7 @@ export const WithoutButtons = {
     paragraph: "No action buttons in this variant.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Information Only")).toBeInTheDocument();
   },
 };
@@ -87,6 +92,7 @@ export const WithoutButtonTarget = {
     buttons: [{ url: "#", title: "Click Here" }],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Take Action")).toBeInTheDocument();
     await expect(canvas.getByText("Click Here")).toBeInTheDocument();
   },

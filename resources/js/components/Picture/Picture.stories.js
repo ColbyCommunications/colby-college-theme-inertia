@@ -23,6 +23,7 @@ export const Primary = {
       `,
   }),
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByAltText("this is an alt")).toBeInTheDocument();
   },
 };

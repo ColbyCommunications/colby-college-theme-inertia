@@ -21,6 +21,7 @@ export const Primary = {
     `,
   }),
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const button = canvas.getByLabelText("Toggle menu");
     await expect(button).toBeInTheDocument();
     await expect(button).toHaveAttribute("aria-expanded", "false");

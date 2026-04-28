@@ -37,10 +37,12 @@
 
 <script setup>
 import Icon from "../Icon/Icon.vue";
-defineProps({
+const props = defineProps({
   items: {
     type: Array,
     default: () => [],
   },
 });
+
+console.log(props);
 </script>

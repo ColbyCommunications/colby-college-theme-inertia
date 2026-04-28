@@ -81,6 +81,7 @@ export const Person = {
   },
   render,
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Assert name is visible
     await expect(canvas.getByText("Dr. Jane Smith")).toBeVisible();
 
@@ -111,6 +112,7 @@ export const Office = {
   },
   render,
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Assert office name is visible
     await expect(canvas.getByText("Office of the Registrar")).toBeVisible();
 
@@ -140,6 +142,7 @@ export const NoImage = {
   },
   render,
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Assert name is visible
     await expect(canvas.getByText("John Doe")).toBeVisible();
 
@@ -171,6 +174,7 @@ export const RestrictedView = {
   },
   render,
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Assert name is visible even in restricted view
     await expect(canvas.getByText("Private Contact")).toBeVisible();
 

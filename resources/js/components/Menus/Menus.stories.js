@@ -50,6 +50,7 @@ export const MainMenuDefault = {
     template: '<MainMenu :menu="menu" :isCurrent="isCurrent" />',
   }),
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Academics")).toBeInTheDocument();
     await expect(canvas.getByText("Admissions")).toBeInTheDocument();
     await expect(canvas.getByText("Campus Life")).toBeInTheDocument();
@@ -75,6 +76,7 @@ export const MobileMenuDefault = {
     viewport: { defaultViewport: "mobile1" },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Academics")).toBeInTheDocument();
     await expect(canvas.getByText("Admissions")).toBeInTheDocument();
     await expect(canvas.getByText("Alumni")).toBeInTheDocument();
@@ -92,6 +94,7 @@ export const SocialMenuDefault = {
     template: '<div class="bg-indigo p-4"><SocialMenu :menu="menu" /></div>',
   }),
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Facebook")).toBeInTheDocument();
     await expect(canvas.getByText("Twitter")).toBeInTheDocument();
     await expect(canvas.getByText("Instagram")).toBeInTheDocument();
@@ -109,6 +112,7 @@ export const ActionMenuDefault = {
     template: '<div class="bg-indigo p-4"><ActionMenu :menu="menu" /></div>',
   }),
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Facebook")).toBeInTheDocument();
     await expect(canvas.getByText("Twitter")).toBeInTheDocument();
     await expect(canvas.getByText("Instagram")).toBeInTheDocument();

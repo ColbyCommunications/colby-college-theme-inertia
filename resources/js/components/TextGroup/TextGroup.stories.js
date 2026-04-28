@@ -41,6 +41,7 @@ export const Medium = {
     paragraph: "Colby offers more than 60 majors and minors across the liberal arts and sciences.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Academics")).toBeInTheDocument();
     await expect(canvas.getByText("Explore Our Programs")).toBeInTheDocument();
 
@@ -65,6 +66,7 @@ export const XLarge = {
     paragraph: "A leading liberal arts college in Waterville, Maine.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Colby College")).toBeInTheDocument();
 
     const subheading = canvas.getByText("Welcome");
@@ -87,6 +89,7 @@ export const Large = {
     paragraph: "Undergraduate research is a hallmark of the Colby experience.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Featured")).toBeInTheDocument();
     await expect(canvas.getByText("Student Research")).toBeInTheDocument();
   },
@@ -104,6 +107,7 @@ export const Small = {
     paragraph: "The latest news and events from around campus.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("News")).toBeInTheDocument();
     await expect(canvas.getByText("Campus Update")).toBeInTheDocument();
   },
@@ -121,6 +125,7 @@ export const XSmall = {
     paragraph: "A brief description of the article content.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Article Title")).toBeInTheDocument();
 
     const heading = canvas.getByText("Article Title");
@@ -141,6 +146,7 @@ export const Centered = {
     paragraph: "Colby is dedicated to the education of thoughtful, capable citizens of the world.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Mission")).toBeInTheDocument();
     await expect(canvas.getByText("Our Purpose")).toBeInTheDocument();
 
@@ -164,6 +170,7 @@ export const LightType = {
     paragraph: "Celebrating the accomplishments of our distinguished faculty.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Spotlight")).toBeInTheDocument();
     await expect(canvas.getByText("Faculty Achievements")).toBeInTheDocument();
 
@@ -188,6 +195,7 @@ export const SmallStatic = {
     paragraph: "This uses the small+static size branch.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Static Heading")).toBeInTheDocument();
   },
 };
@@ -206,6 +214,7 @@ export const HeroWithDate = {
     paragraph: "A special event on campus.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Campus Event")).toBeInTheDocument();
     await expect(canvas.getByText("January 15, 2025")).toBeInTheDocument();
   },
@@ -225,6 +234,7 @@ export const HeroNoDate = {
     paragraph: "A premier liberal arts college.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Colby College")).toBeInTheDocument();
   },
 };
@@ -239,6 +249,7 @@ export const HeadingOnly = {
     heading: "Just a Heading",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Just a Heading")).toBeInTheDocument();
   },
 };
@@ -255,6 +266,7 @@ export const WithHtmlParagraph = {
     paragraph: "<ul><li>Library</li><li>IT Support</li></ul>",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Helpful Links")).toBeInTheDocument();
     await expect(canvas.getByText("Library")).toBeInTheDocument();
   },

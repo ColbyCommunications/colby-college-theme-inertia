@@ -18,6 +18,7 @@ export const Primary = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Admissions")).toBeInTheDocument();
     await expect(canvas.getByText("Museum")).toBeInTheDocument();
     await expect(canvas.getByText("myColby")).toBeInTheDocument();

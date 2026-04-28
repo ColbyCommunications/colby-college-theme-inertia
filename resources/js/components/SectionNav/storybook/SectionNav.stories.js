@@ -22,6 +22,7 @@ export const Default = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Academics")).toBeInTheDocument();
     await expect(canvas.getByText("Majors & Minors")).toBeInTheDocument();
     await expect(canvas.getByText("Course Catalog")).toBeInTheDocument();
@@ -41,6 +42,7 @@ export const WithIcons = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Resources")).toBeInTheDocument();
     await expect(canvas.getByText("Library")).toBeInTheDocument();
     await expect(canvas.getByText("FAQ")).toBeInTheDocument();

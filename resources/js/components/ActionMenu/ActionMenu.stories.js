@@ -27,6 +27,7 @@ export const Default = {
   },
   render,
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Apply")).toBeInTheDocument();
     await expect(canvas.getByText("Visit")).toBeInTheDocument();
     await expect(canvas.getByText("Give")).toBeInTheDocument();

@@ -320,7 +320,6 @@ const props = defineProps({
   post_limit: { type: [Number, String], default: -1 },
   size: { type: String, default: "" },
   columns: { type: Number, default: 3 },
-  image_orientation: { type: String, default: "" },
   border: { type: [Boolean, Number, String], default: false },
   render_posts_category: { type: Number, default: 1 },
   cta: { type: String, default: "Read Story" },

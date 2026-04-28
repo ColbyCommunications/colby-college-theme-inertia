@@ -35,6 +35,7 @@ export const Square = {
     imageOrientation: "square",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByAltText("Placeholder 1")).toBeInTheDocument();
     await expect(canvas.getByAltText("Placeholder 2")).toBeInTheDocument();
   },
@@ -47,6 +48,7 @@ export const Landscape = {
     imageOrientation: "landscape",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByAltText("Placeholder 1")).toBeInTheDocument();
   },
 };
@@ -58,6 +60,7 @@ export const NoCaptions = {
     imageOrientation: "square",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByAltText("Placeholder 1")).toBeInTheDocument();
     await expect(canvas.getByAltText("Placeholder 2")).toBeInTheDocument();
   },
@@ -70,6 +73,7 @@ export const Rectangle = {
     imageOrientation: "rectangle",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByAltText("Placeholder 1")).toBeInTheDocument();
   },
 };
@@ -81,6 +85,7 @@ export const Portrait = {
     imageOrientation: "portrait",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByAltText("Placeholder 1")).toBeInTheDocument();
   },
 };
