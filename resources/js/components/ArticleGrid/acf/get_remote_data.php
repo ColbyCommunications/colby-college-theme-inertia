@@ -1,5 +1,21 @@
 <?php
 
+
+function get_image($image_orientation, $post_id) {
+    $newImage = '';
+
+    if (!empty($image_orientation)) {
+
+        if ($image_orientation === 'rectangle') {
+            $newImage = get_the_post_thumbnail_url($post_id, 'Landscape');
+        } elseif ($image_orientation === 'square') {
+                $newImage = get_the_post_thumbnail_url($post_id, 'Square');
+        } elseif ($image_orientation === 'portrait') {
+            $newImage = get_the_post_thumbnail_url($post_id, 'Portrait');
+        }
+    }
+}
+
 if (!function_exists('colby_block_article_grid_is_truthy')) {
     function colby_block_article_grid_is_truthy($value): bool
     {
@@ -223,19 +239,23 @@ if (!function_exists('colby_block_article_grid_fetch_internal_items')) {
 
         foreach ($query->posts as $post_obj) {
             $post_id = $post_obj->ID;
-            $thumb_id = get_post_thumbnail_id($post_id);
-
+            
+            $thumb_src = get_image($data['image_orientation'], $post_id);
+            $title = get_the_title($post_id);
             $normalized[] = [
                 'title' => [
-                    'rendered' => get_the_title($post_id),
+                    'rendered' => $title,
                 ],
+                'heading' => $title,
+                'subheading' => colby_block_article_grid_format_date(get_the_date('c', $post_id)),
+                'paragraph' => colby_block_article_grid_build_internal_summary($post_id),
                 'date' => colby_block_article_grid_format_date(get_the_date('c', $post_id)),
                 'post-meta-fields' => [
                     'summary' => colby_block_article_grid_build_internal_summary($post_id),
                 ],
                 'url' => get_permalink($post_id),
                 'image' => [
-                    'src' => get_the_post_thumbnail_url($post_id, 'large') ?: '',
+                    'src' => $thumb_src,
                     'alt' => $thumb_id ? (get_post_meta($thumb_id, '_wp_attachment_image_alt', true) ?: '') : '',
                 ],
             ];
