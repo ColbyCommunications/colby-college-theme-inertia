@@ -8,7 +8,7 @@
       class="carousel__context items-center md:col-span-4 md:flex lg:col-span-3"
     >
       <!-- BASIC (non-API) uses the shared Context component -->
-      <Context   
+      <Context
         size="small"
         :type="type"
         :arrow="true"
@@ -69,9 +69,7 @@
       </div>
 
       <!-- Controls (for basic + latest) -->
-      <div
-        class="carousel__controls-wrap flex justify-end"
-      >
+      <div class="carousel__controls-wrap flex justify-end">
         <div class="carousel__controls">
           <ArrowControls size="large" type="light" @prev="prev" @next="next" />
         </div>
@@ -79,65 +77,149 @@
     </div>
   </div>
   <div
-      v-if="render_api && mode == 'latest'"
-      class="carousel__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto"
+    v-if="render_api && mode == 'latest'"
+    class="carousel__inner mx-auto my-0 w-full max-w-screen-2xl gap-x-10 px-5 md:grid md:grid-cols-12"
   >
-      <div class="carousel__context md:col-span-4 lg:col-span-3 md:flex items-center">
+    <div
+      class="carousel__context items-center md:col-span-4 md:flex lg:col-span-3"
+    >
+      <div class="context space-y-5">
+        <TextGroup
+          :size="currentSize"
+          :subheading="currentSubheading"
+          :heading="heading"
+          :paragraph="paragraph"
+        />
+        <ButtonGroup :items="buttons" :size="currentSize" />
+      </div>
+    </div>
+    <div
+      class="carousel__main mt-12 md:col-span-8 md:col-start-5 md:mt-0"
+      @mouseenter="pauseCarousel"
+      @mouseleave="playCarousel"
+      ref="rootEl"
+    >
+      <div class="carousel__window w-full" data-glide-window ref="window">
+        <div class="glide__track" data-glide-el="track">
+          <div class="glide__slides">
+            <div
+              v-for="(it, idx) in slides"
+              class="carousel__slide glide__slide"
+              :key="'ctx-api-' + idx"
+            >
+              <div class="relative pb-[56.578947368421055%]">
+                <picture>
+                  <source
+                    media="(min-width:768px)"
+                    :srcset="firstOg(it)?.url || ''"
+                  />
+                  <img
+                    class="absolute top-0 left-0 h-full w-full object-cover"
+                    :srcset="buildSrcset(firstOg(it)?.src)"
+                    :sizes="'(max-width: 767px) 100vw, 50vw'"
+                    :alt="it.yoast_head_json?.og_description || ''"
+                  />
+                </picture>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel__slides-context relative mt-6 h-80 md:h-40">
+        <div
+          v-for="(it, idx) in slides"
+          :key="'ctx-api-' + idx"
+          class="carousel__slides-context-wrap invisible absolute top-0 left-0 w-full translate-y-[60px] opacity-0 transition-all duration-300 ease-in-out"
+          :class="{
+            '!visible !translate-y-0 opacity-100': activeSlide === idx,
+          }"
+        >
           <div class="context space-y-5">
             <TextGroup
-              :size="currentSize"
-              :subheading="currentSubheading"
-              :heading="heading"
-              :paragraph="paragraph"
+              size="small"
+              :static="true"
+              :subheading="primaryCategory(it)"
+              :heading="title(it)"
+              :paragraph="summary(it)"
             />
+
             <ButtonGroup
-              :items="buttons"
-              :size="currentSize"
+              :items="[
+                {
+                  button: {
+                    url: it.guid?.rendered || '#',
+                    title: cta,
+                    target: '_blank',
+                  },
+                },
+              ]"
+              size="small"
             />
           </div>
+        </div>
       </div>
+      <div class="carousel__controls-wrap flex justify-end">
+        <div class="carousel__controls">
+          <ArrowControls size="large" type="light" @prev="prev" @next="next" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    v-if="render_api && mode == 'academic'"
+    class="article-section__inner mx-auto my-0 w-full max-w-screen-2xl space-y-16 gap-x-10 px-5 md:grid md:grid-cols-12 md:space-y-0"
+  >
+    <div class="article-section__intro space-y-10 md:col-span-4 lg:col-span-3">
+      <div class="context w-full space-y-5">
+        <TextGroup
+          :size="currentSize"
+          :subheading="currentSubheading"
+          :heading="heading"
+          :paragraph="paragraph"
+        />
+        <ButtonGroup :items="buttons" :size="currentSize" />
+      </div>
+      <div class="carousel__controls">
+        <ArrowControls size="large" type="light" @prev="prev" @next="next" />
+      </div>
+    </div>
+    <div
+      class="article-section__grid md:col-span-8 md:col-start-5"
+      @mouseenter="pauseCarousel"
+      @mouseleave="playCarousel"
+      ref="rootEl"
+    >
       <div
-          class="carousel__main md:col-start-5 md:col-span-8 mt-12 md:mt-0"
-          @mouseenter="pauseCarousel"
-          @mouseleave="playCarousel"
-          ref="rootEl"
+        class="article-grid mx-auto my-0 max-w-screen-2xl"
+        data-glide-window
+        ref="window"
       >
-          <div class="carousel__window w-full" data-glide-window ref="window">
-              <div class="glide__track" data-glide-el="track">
-                  <div class="glide__slides">
-                      <div
-                          v-for="(it, idx) in slides"
-                          class="carousel__slide glide__slide"
-                          :key="'ctx-api-' + idx"
-                      >
-                          <div class="relative pb-[56.578947368421055%]">
-                            <picture>
-                              <source
-                                media="(min-width:768px)"
-                                :srcset="firstOg(it)?.url || ''"
-                              />
-                              <img
-                                class="absolute top-0 left-0 h-full w-full object-cover"
-                                :srcset="buildSrcset(firstOg(it)?.src)"
-                                :sizes="'(max-width: 767px) 100vw, 50vw'"
-                                :alt="it.yoast_head_json?.og_description || ''"
-                              />
-                            </picture>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="carousel__slides-context relative mt-6 h-80 md:h-40">
-              <div
-                  v-for="(it, idx) in slides"
-                   :key="'ctx-api-' + idx"
-                  class="carousel__slides-context-wrap absolute top-0 left-0 w-full invisible opacity-0 translate-y-[60px] transition-all duration-300 ease-in-out"
-                  :class="{
-                    '!visible !translate-y-0 opacity-100': activeSlide === idx,
-                  }"
-              >
-                <div class="context space-y-5">
+        <div class="glide__track" data-glide-el="track">
+          <div class="glide__slides">
+            <div
+              v-for="(it, idx) in slides"
+              :key="'ctx-api-' + idx"
+              class="article-grid__item glide__slide"
+            >
+              <article class="article space-y-4">
+                <a
+                  v-if="it.yoast_head_json.og_image[0].url"
+                  class="article__image relative block overflow-hidden"
+                  :href="it.guid.rendered"
+                >
+                  <picture>
+                    <source
+                      media="(min-width:768px)"
+                      :srcset="it.yoast_head_json.og_image[0].url"
+                    />
+                    <img
+                      class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
+                      :src="it.yoast_head_json.og_image[0].url"
+                      :alt="it.yoast_head_json.og_description"
+                    />
+                  </picture>
+                </a>
+                <div class="context w-full space-y-5">
                   <TextGroup
                     size="small"
                     :static="true"
@@ -147,174 +229,107 @@
                   />
 
                   <ButtonGroup
-                    :items="[{ button: { url: it.guid?.rendered || '#', title: cta, target: '_blank' } }]"
+                    :items="[
+                      {
+                        button: {
+                          url: it.guid?.rendered || '#',
+                          title: cta,
+                          target: '_blank',
+                        },
+                      },
+                    ]"
                     size="small"
                   />
                 </div>
-              </div>
-          </div>
-          <div class="carousel__controls-wrap flex justify-end">
-            <div class="carousel__controls">
-                <ArrowControls size="large" type="light" @prev="prev" @next="next" />
+              </article>
             </div>
           </div>
+        </div>
       </div>
+    </div>
   </div>
   <div
-      v-if="render_api && mode == 'academic'"
-      class="article-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto space-y-16 md:space-y-0"
+    v-else-if="render_api && mode == 'faculty'"
+    class="article-section__inner mx-auto my-0 w-full max-w-screen-2xl space-y-16 gap-x-10 px-5 md:grid md:grid-cols-12 md:space-y-0"
   >
-      <div class="article-section__intro md:col-span-4 lg:col-span-3 space-y-10">
-          <div class="context w-full space-y-5">
-              <TextGroup
-                :size="currentSize"
-                :subheading="currentSubheading"
-                :heading="heading"
-                :paragraph="paragraph"
-              />
-              <ButtonGroup
-                :items="buttons"
-                :size="currentSize"
-              />
-          </div>
-          <div class="carousel__controls">
-                <ArrowControls size="large" type="light" @prev="prev" @next="next" />
-          </div>
+    <div class="article-section__intro space-y-10 md:col-span-4 lg:col-span-3">
+      <div class="context w-full space-y-5">
+        <TextGroup
+          :size="currentSize"
+          :subheading="currentSubheading"
+          :heading="heading"
+          :paragraph="paragraph"
+        />
+        <ButtonGroup :items="apiLeftButtonItems" :size="currentSize" />
       </div>
+      <div class="carousel__controls">
+        <ArrowControls size="large" type="light" @prev="prev" @next="next" />
+      </div>
+    </div>
+    <div
+      class="article-section__grid md:col-span-8 md:col-start-5"
+      @mouseenter="pauseCarousel"
+      @mouseleave="playCarousel"
+      ref="rootEl"
+    >
       <div
-          class="article-section__grid md:col-start-5 md:col-span-8"
-          @mouseenter="pauseCarousel"
-          @mouseleave="playCarousel"
-          ref="rootEl"
+        class="article-grid mx-auto my-0 max-w-screen-2xl"
+        data-glide-window
+        ref="window"
       >
-          <div
-              class="article-grid max-w-screen-2xl my-0 mx-auto"
-              data-glide-window
-              ref="window"
-          >
-              <div class="glide__track" data-glide-el="track">
-                  <div class="glide__slides">
-                      <div
-                          v-for="(it, idx) in slides"
-                          :key="'ctx-api-' + idx"
-                          class="article-grid__item glide__slide"
-                      >
-                          <article class="article space-y-4">
-                              <a
-                                  v-if="it.yoast_head_json.og_image[0].url"
-                                  class="article__image relative block overflow-hidden"
-                                  :href="it.guid.rendered"
-                              >
-                                  <picture>
-                                      <source
-                                          media="(min-width:768px)"
-                                          :srcset="it.yoast_head_json.og_image[0].url"
-                                      />
-                                      <img
-                                          class="w-full object-cover hover:scale-105 transition-all duration-500 ease-in-out"
-                                          :src="it.yoast_head_json.og_image[0].url"
-                                          :alt="it.yoast_head_json.og_description"
-                                      />
-                                  </picture>
-                              </a>
-                              <div class="context w-full space-y-5">
-                                <TextGroup
-                                  size="small"
-                                  :static="true"
-                                  :subheading="primaryCategory(it)"
-                                  :heading="title(it)"
-                                  :paragraph="summary(it)"
-                                />
+        <div class="glide__track" data-glide-el="track">
+          <div class="glide__slides">
+            <div
+              v-for="(it, idx) in slides"
+              :key="'ctx-api-' + idx"
+              class="article-grid__item glide__slide"
+            >
+              <article class="article space-y-4">
+                <a
+                  v-if="it.yoast_head_json.og_image[0].url"
+                  class="article__image relative block overflow-hidden"
+                  :href="item.guid.rendered"
+                >
+                  <picture>
+                    <source
+                      media="(min-width:768px)"
+                      :srcset="it.yoast_head_json.og_image[0].url"
+                    />
+                    <img
+                      class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
+                      :src="it.yoast_head_json.og_image[0].url"
+                      :alt="it.yoast_head_json.og_description"
+                    />
+                  </picture>
+                </a>
+                <div class="context w-full space-y-5">
+                  <TextGroup
+                    size="small"
+                    :static="true"
+                    :subheading="primaryCategory(it)"
+                    :heading="title(it)"
+                    :paragraph="summary(it)"
+                  />
 
-                                <ButtonGroup
-                                  :items="[{ button: { url: it.guid?.rendered || '#', title: cta, target: '_blank' } }]"
-                                  size="small"
-                                />
-                              </div>
-                          </article>
-                      </div>
-                  </div>
-              </div>
+                  <ButtonGroup
+                    :items="[
+                      {
+                        button: {
+                          url: it.guid?.rendered || '#',
+                          title: cta,
+                          target: '_blank',
+                        },
+                      },
+                    ]"
+                    size="small"
+                  />
+                </div>
+              </article>
+            </div>
           </div>
+        </div>
       </div>
-  </div>
-  <div
-      v-else-if="render_api && mode == 'faculty'"
-      class="article-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto space-y-16 md:space-y-0"
-  >
-      <div class="article-section__intro md:col-span-4 lg:col-span-3 space-y-10">
-          <div class="context w-full space-y-5">
-            <TextGroup
-                :size="currentSize"
-                :subheading="currentSubheading"
-                :heading="heading"
-                :paragraph="paragraph"
-              />
-              <ButtonGroup
-                :items="apiLeftButtonItems"
-                :size="currentSize"
-              />
-          </div>
-          <div class="carousel__controls">
-                <ArrowControls size="large" type="light" @prev="prev" @next="next" />
-          </div>
-      </div>
-      <div
-          class="article-section__grid md:col-start-5 md:col-span-8"
-          @mouseenter="pauseCarousel"
-          @mouseleave="playCarousel"
-          ref="rootEl"
-      >
-          <div
-              class="article-grid max-w-screen-2xl my-0 mx-auto"
-              data-glide-window
-              ref="window"
-          >
-              <div class="glide__track" data-glide-el="track">
-                  <div class="glide__slides">
-                      <div
-                          v-for="(it, idx) in slides"
-                          :key="'ctx-api-' + idx"
-                          class="article-grid__item glide__slide"
-                      >
-                          <article class="article space-y-4">
-                              <a
-                                  v-if="it.yoast_head_json.og_image[0].url"
-                                  class="article__image relative block overflow-hidden"
-                                  :href="item.guid.rendered"
-                              >
-                                  <picture>
-                                      <source
-                                          media="(min-width:768px)"
-                                          :srcset="it.yoast_head_json.og_image[0].url"
-                                      />
-                                      <img
-                                          class="w-full object-cover hover:scale-105 transition-all duration-500 ease-in-out"
-                                          :src="it.yoast_head_json.og_image[0].url"
-                                          :alt="it.yoast_head_json.og_description"
-                                      />
-                                  </picture>
-                              </a>
-                              <div class="context w-full space-y-5">
-                                <TextGroup
-                                  size="small"
-                                  :static="true"
-                                  :subheading="primaryCategory(it)"
-                                  :heading="title(it)"
-                                  :paragraph="summary(it)"
-                                />
-
-                                <ButtonGroup
-                                  :items="[{ button: { url: it.guid?.rendered || '#', title: cta, target: '_blank' } }]"
-                                  size="small"
-                                />
-                              </div>
-                          </article>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+    </div>
   </div>
 </template>
 
@@ -419,7 +434,7 @@ const basicButtonItems = computed(() =>
 
 // Simplified: slides come directly from props
 const slides = computed(() =>
-  mode.value === "basic" ? props.items : props.initial_items
+  mode.value === "basic" ? props.items : props.initial_items,
 );
 
 const rootEl = ref(null);
@@ -519,7 +534,7 @@ watch(
   () => slides.value.length,
   async () => {
     await initializeCarousel();
-  }
+  },
 );
 
 watch([intervalMs], startAutoplay);

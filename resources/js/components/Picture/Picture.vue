@@ -1,6 +1,15 @@
 <template>
-    <img :class="class" :src="'https://www.colby.edu/cdn-cgi/image/width=320,quality=50/' +
-      processedSrc" :alt="alt" :loading="loading" :sizes="'(max-width: 767px) 100vw, 50vw'" media="(min-width:768px)" :fetchpriority="loading === 'eager' ? 'high' : 'auto'" :srcset="
+  <img
+    :class="class"
+    :src="
+      'https://www.colby.edu/cdn-cgi/image/width=320,quality=50/' + processedSrc
+    "
+    :alt="alt"
+    :loading="loading"
+    :sizes="'(max-width: 767px) 100vw, 50vw'"
+    media="(min-width:768px)"
+    :fetchpriority="loading === 'eager' ? 'high' : 'auto'"
+    :srcset="
       'https://www.colby.edu/cdn-cgi/image/width=320,quality=60/' +
       processedSrc +
       ' 320w,' +
@@ -13,13 +22,14 @@
       'https://www.colby.edu/cdn-cgi/image/width=1280,quality=60/' +
       processedSrc +
       ' 1280w,'
-    " width="2400" height="1320"/>
+    "
+    width="2400"
+    height="1320"
+  />
 </template>
 
 <script setup>
-import {
-  ref,
-} from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
   // The class to apply to the <img> element
@@ -50,8 +60,9 @@ const props = defineProps({
   fromApi: {
     type: Boolean,
     default: false,
-  }
+  },
 });
+console.log(props);
 const processedSrc = ref();
 const url = new URL(props.src);
 

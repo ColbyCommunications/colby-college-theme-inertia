@@ -1,10 +1,11 @@
 <template>
   <div
-    class="flex h-[calc(100vh_-_145px)] w-full flex-col justify-between md:hidden md:w-0"
+    class="fixed top-[145px] right-0 bottom-0 left-0 z-40 flex flex-col justify-between bg-white md:hidden"
   >
+    <!-- Main menu -->
     <div class="overflow-auto py-12">
       <ul
-        class="header__main flex w-full flex-col justify-center space-y-6 overflow-y-auto pl-16 md:h-auto md:w-auto md:flex-row md:justify-end md:space-y-0 md:space-x-12 md:px-4 md:px-6"
+        class="header__main flex w-full flex-col justify-center space-y-6 overflow-y-auto pl-16 md:h-auto md:w-auto md:flex-row md:justify-end md:space-y-0 md:space-x-12 md:px-6"
       >
         <li
           v-for="item in menus.main"
@@ -16,11 +17,14 @@
             :class="{ '!text-indigo md:border-azure': isCurrent(item) }"
             :href="item.url"
             :target="item.target || undefined"
-            >{{ item.title }}</a
           >
+            {{ item.title }}
+          </a>
         </li>
       </ul>
     </div>
+
+    <!-- Utility menu -->
     <div class="w-full bg-[#f9fbff] p-5 pb-20">
       <ul
         class="grid w-full grid-cols-3 grid-rows-2 gap-2 md:inline-flex md:w-auto md:grid-cols-none md:grid-rows-none md:gap-0 md:space-x-6"
@@ -41,6 +45,7 @@
     </div>
   </div>
 </template>
+
 <script setup>
 const props = defineProps({
   menus: {
@@ -53,3 +58,29 @@ const props = defineProps({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.mobile-menu-enter-from {
+  transform: translateX(-100%);
+}
+
+.mobile-menu-enter-to {
+  transform: translateX(0);
+}
+
+.mobile-menu-enter-active {
+  transition: transform 0.3s ease;
+}
+
+.mobile-menu-leave-from {
+  transform: translateX(0);
+}
+
+.mobile-menu-leave-to {
+  transform: translateX(-100%);
+}
+
+.mobile-menu-leave-active {
+  transition: transform 0.3s ease;
+}
+</style>
