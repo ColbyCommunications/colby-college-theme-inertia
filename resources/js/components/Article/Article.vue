@@ -11,7 +11,7 @@
         'flex-col space-y-4': apiSource !== 'media_coverage',
       }"
     >
-      <template v-if="image">
+      <template v-if="image && image.url">
         <a
           v-if="hasButtons"
           class="article__image relative block overflow-hidden"
@@ -27,14 +27,14 @@
             v-if="useDesktopMobile"
             class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
             :src="image.src"
-            :alt="image?.alt || ''"
+            :alt="image.alt || ''"
             :fromApi="fromApi"
           />
           <Picture
             v-else
             class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
             :src="image.src"
-            :alt="image?.alt || ''"
+            :alt="image.alt || ''"
             :fromApi="fromApi"
           />
         </a>
@@ -99,7 +99,6 @@ const props = defineProps({
   subheading: { type: String, default: "" },
   paragraph: { type: String, default: "" },
   size: { type: String, default: "small" },
-  imageSize: { type: String, default: "thumbnail" },
   fromApi: { type: Boolean, default: false },
 });
 
