@@ -11,7 +11,7 @@
         'flex-col space-y-4': apiSource !== 'media_coverage',
       }"
     >
-      <template v-if="image && image.url">
+      <template v-if="image && image.src">
         <a
           v-if="hasButtons"
           class="article__image relative block overflow-hidden"
@@ -26,15 +26,15 @@
           <Picture
             v-if="useDesktopMobile"
             class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
-            :src="image.src"
-            :alt="image.alt || ''"
+            :src="image?.src"
+            :alt="image?.alt || ''"
             :fromApi="fromApi"
           />
           <Picture
             v-else
             class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
-            :src="image.src"
-            :alt="image.alt || ''"
+            :src="image?.src"
+            :alt="image?.alt || ''"
             :fromApi="fromApi"
           />
         </a>
