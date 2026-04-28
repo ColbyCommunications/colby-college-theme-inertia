@@ -61,7 +61,7 @@ if (!function_exists('colby_block_context_article_grid_get_endpoint')) {
             case 'AI':
                 return 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=' . $per_page . '&categories=9&_embed=1';
 
-            default:
+            case 'people':
                 return 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=' . $per_page . '&tags=569&_embed=1';
         }
     }

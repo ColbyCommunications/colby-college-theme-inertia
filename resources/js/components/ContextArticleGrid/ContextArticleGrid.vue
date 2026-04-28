@@ -36,7 +36,7 @@
             />
           </div>
         </template>
-        <template>
+        <template v-else>
           <div
             v-for="(item, index) in normalizedApiItems"
             :key="item.id || index"
