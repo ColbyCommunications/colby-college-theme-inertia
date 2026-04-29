@@ -1,6 +1,5 @@
 import { expect } from "storybook/test";
 import ImageText from "../ImageText.vue";
-import { image } from "superagent/lib/node/parsers";
 
 export default {
   title: "Blocks/Image with Text",
