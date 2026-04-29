@@ -587,7 +587,7 @@ const decodeHtmlEntities = (input) => {
 };
 
 const firstOg = (it) => it?.yoast_head_json?.og_image?.[0] || null;
-const title = (it) => it?.title?.rendered;
+const title = (it) => decodeHtmlEntities(it?.title?.rendered);
 const summary = (it) =>
   decodeHtmlEntities(it?.["post-meta-fields"]?.summary?.[0] || "");
 const primaryCategory = (it) =>
