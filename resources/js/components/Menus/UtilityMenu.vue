@@ -167,7 +167,7 @@
   </nav>
 </template>
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import Modal from "../Modal/Modal.vue";
 // import Search from "../Search/Search.vue";
 import SearchIcon from "@/images/svg/icons/search.svg?component";
@@ -187,10 +187,4 @@ console.log(props);
 
 const showModal = ref(false);
 const searchRef = ref(null);
-
-// watch(showModal, (val) => {
-//   if (!val) {
-//     searchRef.value?.clearSearch();
-//   }
-// });
 </script>

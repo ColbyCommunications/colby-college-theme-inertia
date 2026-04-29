@@ -19,16 +19,14 @@
         </div>
       </div>
       <!-- Header Right -->
-      <Transition name="slide-right">
-        <div v-if="showMenus" class="header__right flex flex-col items-end">
-          <UtilityMenu
-            :menu="menus.utility"
-            :utilityMenuStyle="utilityMenuStyle"
-            :utilityMenuButton="utilityMenuButton"
-          />
-          <MainMenu :menu="menus.main" :isCurrent="isCurrent" />
-        </div>
-      </Transition>
+      <div class="header__right flex flex-col items-end">
+        <UtilityMenu
+          :menu="menus.utility"
+          :utilityMenuStyle="utilityMenuStyle"
+          :utilityMenuButton="utilityMenuButton"
+        />
+        <MainMenu :menu="menus.main" :isCurrent="isCurrent" />
+      </div>
       <!-- Mobile -->
       <div class="flex w-full justify-between pt-3 md:hidden md:pt-0">
         <ColbyLogo :url="url" fillColor="--color-indigo" />
@@ -42,7 +40,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref } from "vue";
 import ColbyLogo from "../Logos/ColbyLogo.vue";
 import Hamburger from "../Hamburger/Hamburger.vue";
 import UtilityMenu from "../Menus/UtilityMenu.vue";
@@ -59,44 +57,6 @@ const props = defineProps({
   logoStyle: { type: String, default: "" },
   utilityMenuStyle: { type: String, default: "" },
   utilityMenuButton: { type: Object, default: () => ({ text: "", url: "" }) },
-});
-
-const isMobile = ref(false);
-const showMenus = ref(false);
-
-const updateBreakpoint = () => {
-  isMobile.value = window.matchMedia("(max-width: 767px)").matches;
-};
-
-let lastState = null;
-
-const handleResize = () => {
-  const current = window.matchMedia("(max-width: 767px)").matches;
-
-  if (current !== lastState) {
-    showMenus.value = false;
-
-    requestAnimationFrame(() => {
-      showMenus.value = true;
-    });
-
-    lastState = current;
-  }
-
-  isMobile.value = current;
-};
-
-onMounted(() => {
-  handleResize();
-  window.addEventListener("resize", handleResize);
-
-  requestAnimationFrame(() => {
-    showMenus.value = true;
-  });
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("resize", handleResize);
 });
 
 // Reactive toggle for mobile menu
@@ -122,20 +82,3 @@ const isCurrent = (item) => {
   }
 };
 </script>
-<style lang="scss" scoped>
-.slide-right-enter-from {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-
-.slide-right-enter-to {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.slide-right-enter-active {
-  transition:
-    transform 0.3s ease,
-    opacity 0.3s ease;
-}
-</style>
