@@ -94,15 +94,15 @@
 
 <script setup>
 import { ref, defineExpose } from "vue";
-import { liteClient } from "algoliasearch/lite";
+// import { liteClient } from "algoliasearch/lite";
 import Searchbox from "./Searchbox.vue";
 import QuerySuggestions from "./QuerySuggestions.vue";
 import Button from "../Button/Button.vue";
 
-const searchClient = liteClient(
-  "2XJQHYFX2S",
-  "63c304c04c478fd0c4cb1fb36cd666cb",
-);
+// const searchClient = liteClient(
+//   "2XJQHYFX2S",
+//   "63c304c04c478fd0c4cb1fb36cd666cb",
+// );
 
 const query = ref("");
 const aisIS = ref(null);
