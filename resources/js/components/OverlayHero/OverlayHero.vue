@@ -64,17 +64,17 @@
       <Video
         :id="video.id"
         :play-icon="false"
-        :image="image || {}"
+        :image="posterImage || {}"
       />
     </template>
 
     <!-- Mode 2: Static image (fromPage or no video at all) -->
-    <template v-else-if="fromPage || (!video && !videoLoop)">
+    <template v-else-if="(!video && !videoLoop)">
       <Picture
         v-if="image"
         class="absolute top-0 left-0 z-[-10] h-full w-full object-cover"
-        :src="image.url"
-        :alt="image.alt || ''"
+        :src="posterImage.src"
+        :alt="posterImage.alt || ''"
       />
     </template>
 
@@ -95,15 +95,15 @@
             autoplay
             muted
             loop
-            :poster="posterUrl || undefined"
+            :poster="posterImage.src || undefined"
           >
             <source :src="videoLoop" type="video/mp4" />
           </video>
           <Picture
             v-else-if="image"
             class="absolute top-0 left-0 z-[-10] h-full w-full object-cover"
-            :src="image.url"
-            :alt="image.alt || ''"
+            :src="posterImage.src"
+            :alt="posterImage.alt || ''"
           />
         </div>
       </div>
@@ -151,22 +151,17 @@ const props = defineProps({
     type: String,
     default: "",
   },
-  fromPage: {
-    type: Boolean,
-    default: false,
-  },
 });
 
 const overlayHeroRef = ref(null);
 const active = ref(false);
 
-const posterUrl = computed(() => {
+const posterImage = computed(() => {
   if (props.image && props.image.sizes && props.image.sizes.Hero) {
-    return props.image.sizes.Hero;
+    return {src: props.image.sizes.Hero, alt:props.image.alt};
   }
   return "";
 });
-
 function setActive() {
   active.value = true;
   // Trigger the embedded Video component's play action
