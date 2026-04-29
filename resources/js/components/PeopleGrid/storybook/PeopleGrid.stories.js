@@ -68,6 +68,7 @@ export const Default = {
     people: samplePeople,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Dr. Jane Smith")).toBeInTheDocument();
     await expect(canvas.getByText("Dr. John Doe")).toBeInTheDocument();
     await expect(canvas.getByText("Dr. Emily Chen")).toBeInTheDocument();

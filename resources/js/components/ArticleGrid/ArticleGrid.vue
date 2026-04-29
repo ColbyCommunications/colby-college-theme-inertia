@@ -74,7 +74,7 @@
     <div v-if="props.display_posts_method === 'manual'">
       <div class="grid grid-cols-12 gap-10">
         <div
-          v-for="(item, index) in props.items"
+          v-for="(item, index) in normalizeItems(props.items)"
           :key="index"
           class="article-grid__item glide__slide"
           :class="{
@@ -320,7 +320,6 @@ const props = defineProps({
   post_limit: { type: [Number, String], default: -1 },
   size: { type: String, default: "" },
   columns: { type: Number, default: 3 },
-  image_orientation: { type: String, default: "" },
   border: { type: [Boolean, Number, String], default: false },
   render_posts_category: { type: Number, default: 1 },
   cta: { type: String, default: "Read Story" },
@@ -387,6 +386,43 @@ const showLoadMore = computed(() => {
   if (props.display_posts_method !== "internal") return false;
   return displayItems.value.length < allItems.value.length;
 });
+
+function normalizeImage(image) {
+  if (!image || typeof image !== "object") {
+    return image;
+  }
+
+  return {
+    ...image,
+    src: image.src || image.url || "",
+  };
+}
+
+/**
+ * Normalize a single item object:
+ * - item.image.src guaranteed if image exists
+ */
+function normalizeItem(item) {
+  if (!item || typeof item !== "object") {
+    return item;
+  }
+
+  return {
+    ...item,
+    image: item.image ? normalizeImage(item.image) : item.image,
+  };
+}
+
+/**
+ * Normalize any items array
+ */
+function normalizeItems(items = []) {
+  if (!Array.isArray(items)) {
+    return [];
+  }
+
+  return items.map(normalizeItem);
+}
 
 const loadMore = () => {
   visibleCount.value += 12;

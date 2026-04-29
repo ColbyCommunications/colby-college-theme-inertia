@@ -12,6 +12,7 @@ export const Primary = {
     quote: "The only thing we have to fear is fear itself",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("The only thing we have to fear is fear itself"),
     ).toBeInTheDocument();

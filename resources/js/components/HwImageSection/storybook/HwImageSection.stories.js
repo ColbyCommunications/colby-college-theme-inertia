@@ -31,6 +31,7 @@ export const Default = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Majors and Minors")).toBeInTheDocument();
     await expect(
       canvas.getByText("Majors and Minor at Colby"),
@@ -46,6 +47,7 @@ export const Reverse = {
     reverse: true,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Majors and Minors")).toBeInTheDocument();
   },
 };
@@ -57,6 +59,7 @@ export const Light = {
     type: "light",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Majors and Minors")).toBeInTheDocument();
   },
 };

@@ -17,8 +17,6 @@ export const Primary = {
       "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit",
     image: {
       src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
       alt: "this is an alt tag",
     },
     buttons: [
@@ -32,6 +30,7 @@ export const Primary = {
     ],
   },
   play: async ({ canvas, canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const first = canvasElement.querySelectorAll('.article')[0];
     const firstHeading = first.querySelectorAll('.text-group__heading')[0];
     await expect(firstHeading.textContent.slice(0, -1)).toBe('Lorem Ipsum');
@@ -45,3 +44,4 @@ export const Primary = {
     await expect(canvas.getByAltText("this is an alt tag")).toBeInTheDocument();
   },
 };
+

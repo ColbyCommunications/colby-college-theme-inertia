@@ -15,6 +15,7 @@ export const Primary = {
     onNext: fn(),
   },
   play: async ({ canvas, userEvent, args }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const prevButton = canvas.getByRole("button", { name: "Previous" });
     const nextButton = canvas.getByRole("button", { name: "Next" });
     await expect(prevButton).toBeInTheDocument();

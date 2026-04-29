@@ -116,6 +116,7 @@ export const Default = {
     items: mockItems,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Assert carousel heading renders
     const heading = await canvas.findByText("Featured Events");
     await expect(heading).toBeInTheDocument();
@@ -145,6 +146,7 @@ export const WithoutCarouselItems = {
     items: [],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const heading = await canvas.findByText("Upcoming Schedule");
     await expect(heading).toBeInTheDocument();
     await waitFor(() => {
@@ -164,6 +166,7 @@ export const Minimal = {
     items: [mockItems[0]],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const heading = await canvas.findByText("Events");
     await expect(heading).toBeInTheDocument();
     await waitFor(() => {

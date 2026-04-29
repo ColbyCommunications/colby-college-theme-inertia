@@ -23,6 +23,7 @@ export const Default = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("Dare Northward Overview"),
     ).toBeInTheDocument();
@@ -38,6 +39,7 @@ export const Inset = {
     size: "large",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("Dare Northward Overview"),
     ).toBeInTheDocument();

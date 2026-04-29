@@ -117,6 +117,7 @@ export const Default = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Latest from Colby")).toBeInTheDocument();
     await expect(canvas.getByText("Upcoming Events")).toBeInTheDocument();
     await expect(canvas.getByText("Plan Your Visit")).toBeInTheDocument();

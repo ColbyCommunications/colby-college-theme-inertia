@@ -14,6 +14,7 @@ export const Primary = {
     url: "https://www.colby.edu",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const link = canvas.getByRole("link", { name: "Button Title" });
     await expect(link).toBeInTheDocument();
     await expect(link).toHaveAttribute("href", "https://www.colby.edu");
@@ -28,6 +29,7 @@ export const small = {
     size: "small",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const link = canvas.getByRole("link", { name: "Button Title" });
     await expect(link).toBeInTheDocument();
   },
@@ -41,6 +43,7 @@ export const medium = {
     size: "medium",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const link = canvas.getByRole("link", { name: "Button Title" });
     await expect(link).toBeInTheDocument();
   },
@@ -54,6 +57,7 @@ export const large = {
     size: "large",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const link = canvas.getByRole("link", { name: "Button Title" });
     await expect(link).toBeInTheDocument();
   },
@@ -67,6 +71,7 @@ export const dark = {
     type: "dark",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const link = canvas.getByRole("link", { name: "Button Title" });
     await expect(link).toBeInTheDocument();
   },
@@ -80,6 +85,7 @@ export const withArrow = {
     arrow: true,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const link = canvas.getByRole("link", { name: "Button Title" });
     await expect(link).toBeInTheDocument();
     await expect(link.querySelector("svg")).not.toBeNull();
@@ -95,6 +101,7 @@ export const reverse = {
     reverse: true,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const link = canvas.getByRole("link", { name: "Button Title" });
     await expect(link).toBeInTheDocument();
     await expect(link.querySelector("svg")).not.toBeNull();
@@ -109,6 +116,7 @@ export const transparent = {
     transparentBg: true,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const link = canvas.getByRole("link", { name: "Button Title" });
     await expect(link).toBeInTheDocument();
   },

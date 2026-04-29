@@ -20,6 +20,7 @@ export const Primary = {
     items: globalItems,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("button1")).toBeInTheDocument();
     await expect(canvas.getByText("button2")).toBeInTheDocument();
     await expect(canvas.getByText("button3")).toBeInTheDocument();
@@ -35,6 +36,7 @@ export const AlignCol = {
     align: "column",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("button1")).toBeInTheDocument();
   },
 };
@@ -48,6 +50,7 @@ export const BigButtonGroup = {
     size: "large",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("button1")).toBeInTheDocument();
   },
 };
@@ -61,6 +64,7 @@ export const Dark = {
     type: "dark",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("button1")).toBeInTheDocument();
   },
 };

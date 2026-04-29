@@ -5,20 +5,12 @@ const mockItems = [
   {
     image: {
       src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
       alt: "this is an alt tag",
     },
     heading: "Future of Artificial Intelligence",
     subheading: "Technology",
     paragraph: "AI is reshaping industries at an unprecedented pace.",
     url: "#",
-    // Structure required for Accordion style images
-    //
-    sizes: {
-      desktop: "https://placehold.co/600x400",
-      mobile: "https://placehold.co/300x200",
-    },
     buttons: [
       {
         button: {
@@ -32,18 +24,12 @@ const mockItems = [
   {
     image: {
       src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
       alt: "this is an alt tag",
     },
     heading: "Sustainable Energy Solutions",
     subheading: "Environment",
     paragraph: "Solar and wind energy are becoming more accessible than ever.",
     url: "#",
-    sizes: {
-      desktop: "https://placehold.co/600x400",
-      mobile: "https://placehold.co/300x200",
-    },
     buttons: [
       {
         button: {
@@ -57,18 +43,12 @@ const mockItems = [
   {
     image: {
       src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
       alt: "this is an alt tag",
     },
     heading: "Modern Architecture Trends",
     subheading: "Design",
     paragraph: "Exploring the intersection of function and aesthetics in 2024.",
     url: "#",
-    sizes: {
-      desktop: "https://placehold.co/600x400",
-      mobile: "https://placehold.co/300x200",
-    },
     buttons: [
       {
         button: {
@@ -90,11 +70,132 @@ export default {
 export const Primary = {
   name: "Carousel",
   args: {
-    renderApi: true,
-    api: "Latest News",
-    perView: 1,
+    render_api: true,
+    api: "Academic News",
+    subheading: "Article Section subheading",
+    paragraph: "Discover recent updates from Colby College.",
+    initial_items: [
+      {
+          "yoast_head_json": {
+              "og_image": [
+                  {
+                      "url": "https://news.colby.edu/wp-content/uploads/2026/04/20230923_AI-hackathon_072.jpg?v=1777042346",
+                      "src": "https://news.colby.edu/wp-content/uploads/2026/04/20230923_AI-hackathon_072.jpg?v=1777042346"
+                  }
+              ],
+              "og_description": "Students put their data science skills to the test in a weekend-long marathon"
+          },
+          "title": {
+              "rendered": "Diving into the Messy Reality of Data"
+          },
+          "post-meta-fields": {
+              "primary_category": "Natural Sciences",
+              "summary": [
+                  "Students put their data science skills to the test in a weekend-long marathon\r\n"
+              ]
+          },
+          "guid": {
+              "rendered": "https://news.colby.edu/?p=56424"
+          }
+      },
+      {
+          "yoast_head_json": {
+              "og_image": [
+                  {
+                      "url": "https://news.colby.edu/wp-content/uploads/2026/04/Jose-Martinez-Performing-1600-x-1067.jpg?v=1776433869",
+                      "src": "https://news.colby.edu/wp-content/uploads/2026/04/Jose-Martinez-Performing-1600-x-1067.jpg?v=1776433869"
+                  }
+              ],
+              "og_description": "How the Music Department prepares students to succeed in a world where music is often relegated to extracurriculars"
+          },
+          "title": {
+              "rendered": "Starting Careers on a High Note"
+          },
+          "post-meta-fields": {
+              "primary_category": "Humanities",
+              "summary": [
+                  "How the Music Department prepares students to succeed in a world where music is often relegated to extracurriculars"
+              ]
+          },
+          "guid": {
+              "rendered": "https://news.colby.edu/?p=56351"
+          }
+      },
+      {
+          "yoast_head_json": {
+              "og_image": [
+                  {
+                      "url": "https://news.colby.edu/wp-content/uploads/2026/04/20260331_BessKoffmanTreeCoring_0107_web.jpg?v=1775148121",
+                      "src": "https://news.colby.edu/wp-content/uploads/2026/04/20260331_BessKoffmanTreeCoring_0107_web.jpg?v=1775148121"
+                  }
+              ],
+              "og_description": "Colby’s tree-dating research was instrumental in conserving a 172-acre parcel of old-growth forest on Long Pond in Maine"
+          },
+          "title": {
+              "rendered": "Protecting an Ancient Forest"
+          },
+          "post-meta-fields": {
+              "primary_category": "Natural Sciences",
+              "summary": [
+                  "Colby’s tree-dating research was instrumental in conserving a 172-acre parcel of old-growth forest on Long Pond in Maine"
+              ]
+          },
+          "guid": {
+              "rendered": "https://news.colby.edu/?p=56153"
+          }
+      },
+      {
+          "yoast_head_json": {
+              "og_image": [
+                  {
+                      "url": "https://news.colby.edu/wp-content/uploads/2026/03/20241011_GordonCenterProductionRoom_0503.jpg?v=1774375031",
+                      "src": "https://news.colby.edu/wp-content/uploads/2026/03/20241011_GordonCenterProductionRoom_0503.jpg?v=1774375031"
+                  }
+              ],
+              "og_description": "The Landay Cinema Studies Production Studio is revolutionizing how film and media are taught on campus"
+          },
+          "title": {
+              "rendered": "A Look Inside Colby’s Sound-and-Lightproof Creative Hub"
+          },
+          "post-meta-fields": {
+              "primary_category": "Arts",
+              "summary": [
+                  "The Landay Cinema Studies Production Studio is revolutionizing how film and media are taught on campus\r\n"
+              ]
+          },
+          "guid": {
+              "rendered": "https://news.colby.edu/?p=56024"
+          }
+      },
+      {
+          "yoast_head_json": {
+              "og_image": [
+                  {
+                      "url": "https://news.colby.edu/wp-content/uploads/2026/03/20260306_PedroSantosMath_0099.jpg?v=1773775503",
+                      "src": "https://news.colby.edu/wp-content/uploads/2026/03/20260306_PedroSantosMath_0099.jpg?v=1773775503"
+                  }
+              ],
+              "og_description": "Pedro Alves Silva Dos Santos ’26 teamed up with Associate Professor Evan Randles to crack a complex problem in numerical stability."
+          },
+          "title": {
+              "rendered": "A Major Math Breakthrough "
+          },
+          "post-meta-fields": {
+              "primary_category": "Natural Sciences",
+              "summary": [
+                  "Pedro Alves Silva Dos Santos ’26 teamed up with Associate Professor Evan Randles to crack a complex problem in numerical stability\r\n"
+              ]
+          },
+          "guid": {
+              "rendered": "https://news.colby.edu/?p=55780"
+          }
+      }
+  ],
+    hydrated_from_server: true,
+    should_client_refresh: false,
   },
   play: async ({ canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvasElement.querySelector(".article-section"),
     ).not.toBeNull();
@@ -104,14 +205,17 @@ export const Primary = {
 export const Manual = {
   name: "Manual",
   args: {
-    renderApi: false,
+    render_api: false,
     heading: "Article Section Title",
     subheading: "Article Section subheading",
     paragraph: "Discover recent updates from Colby College.",
     buttons: [{ button: { url: "#", title: "View All" } }],
-    gridProps: { items: mockItems },
+
+    display_posts_method: 'manual',
+    items: mockItems,
   },
   play: async ({ canvas, canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const first = canvasElement.querySelectorAll(".article-section__intro")[0];
     const firstHeading = first.querySelectorAll(".text-group__heading")[0];
     const firstSubHeading = first.querySelectorAll(
@@ -132,12 +236,15 @@ export const Manual = {
 export const ManualWithControls = {
   name: "Manual With Arrow Controls",
   args: {
-    renderApi: false,
+    render_api: false,
     heading: "Featured Stories",
     showCarouselControls: true,
-    gridProps: { items: mockItems },
+    display_posts_method: 'manual',
+    items: mockItems,
+    carousel: true,
   },
   play: async ({ canvas, canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const first = canvasElement.querySelectorAll(".article-section__intro")[0];
     const firstHeading = first.querySelectorAll(".text-group__heading")[0];
     await expect(firstHeading.textContent.slice(0, -1)).toBe(

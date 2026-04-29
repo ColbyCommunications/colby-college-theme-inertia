@@ -32,6 +32,7 @@ export const Dark = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Lorem ipsum")).toBeInTheDocument();
     await expect(
       canvas.getByText("Lorem ipsum dolor sit amet"),
@@ -47,6 +48,7 @@ export const Light = {
     type: "light",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("Lorem ipsum dolor sit amet"),
     ).toBeInTheDocument();
@@ -63,6 +65,7 @@ export const WithButtons = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Apply Now")).toBeInTheDocument();
     await expect(canvas.getByText("Learn More")).toBeInTheDocument();
   },
@@ -78,6 +81,7 @@ export const WithCaption = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("Colby College campus in winter"),
     ).toBeInTheDocument();
@@ -92,6 +96,7 @@ export const NoImage = {
     paragraph: "No image provided.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Text Only")).toBeInTheDocument();
   },
 };

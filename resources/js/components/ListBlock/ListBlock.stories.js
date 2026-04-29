@@ -28,6 +28,7 @@ export const Default = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Bylaws")).toBeInTheDocument();
     await expect(canvas.getByText("Read Bylaws")).toBeInTheDocument();
   },
@@ -40,6 +41,7 @@ export const Dark = {
     type: "dark",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Bylaws")).toBeInTheDocument();
   },
 };
@@ -51,6 +53,7 @@ export const Light = {
     type: "light",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Bylaws")).toBeInTheDocument();
   },
 };

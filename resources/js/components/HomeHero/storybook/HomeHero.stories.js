@@ -29,6 +29,7 @@ export const Primary = {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Lorem ipsum")).toBeInTheDocument();
     await expect(canvas.getByText("waterville maine")).toBeInTheDocument();
   },
@@ -57,6 +58,7 @@ export const Video = {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Lorem ipsum")).toBeInTheDocument();
     await expect(canvas.getByText("waterville maine")).toBeInTheDocument();
   },
@@ -83,6 +85,7 @@ export const WithoutCaption = {
     paragraph: "A top liberal arts college in Waterville, Maine.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Colby College")).toBeInTheDocument();
   },
 };
@@ -109,6 +112,7 @@ export const InComponentLibrary = {
     paragraph: "Experience everything Colby has to offer.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Campus Life")).toBeInTheDocument();
     await expect(canvas.getByText("waterville maine")).toBeInTheDocument();
   },

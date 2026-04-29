@@ -80,6 +80,7 @@ export const Default = {
   },
   render,
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const triggerButton = canvas.getByText("Open Modal");
     await expect(triggerButton).toBeInTheDocument();
 
@@ -106,6 +107,7 @@ export const FullScreen = {
   },
   render,
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Only verify the trigger renders; opening the full-screen modal triggers
     // a vue-final-modal focus-trap error in the test environment.
     const triggerButton = canvas.getByText("Open Full Screen");
@@ -125,6 +127,7 @@ export const OpenByDefault = {
   },
   render,
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Modal renders via a portal outside the story canvas, so use screen (global query) instead of canvas
     await waitFor(
       () => {

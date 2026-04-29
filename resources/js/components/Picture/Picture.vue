@@ -41,14 +41,6 @@ const props = defineProps({
     type: String,
     default: "",
   },
-  widthDesktop: {
-    type: String,
-    default: "",
-  },
-  widthMobile: {
-    type: String,
-    default: "",
-  },
   alt: {
     type: String,
     default: "",

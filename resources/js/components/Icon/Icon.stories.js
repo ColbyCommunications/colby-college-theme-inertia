@@ -25,6 +25,7 @@ export const Primary = {
       `,
   }),
   play: async ({ canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const iconContainers = canvasElement.querySelectorAll(
       'div[style*="width: 48px"]',
     );
@@ -39,6 +40,7 @@ export const InvalidName = {
     template: '<div style="width: 48px; height: 48px;"><Icon name="nonexistent-icon-xyz" /></div>',
   }),
   play: async ({ canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const container = canvasElement.querySelector("div");
     await expect(container).not.toBeNull();
   },
@@ -51,6 +53,7 @@ export const EmptyName = {
     template: '<div style="width: 48px; height: 48px;"><Icon name="" /></div>',
   }),
   play: async ({ canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const container = canvasElement.querySelector("div");
     await expect(container).not.toBeNull();
   },

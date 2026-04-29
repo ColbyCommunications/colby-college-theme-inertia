@@ -25,6 +25,7 @@ const globalArgs = {
 };
 
 const assertHeadingAndParagraph = async ({ canvas }) => {
+  if (import.meta.env.MODE !== 'test' ) return;
   await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
   await expect(canvas.getByText(globalArgs.paragraph)).toBeInTheDocument();
 };
@@ -77,6 +78,7 @@ export const Video = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
   },
 };

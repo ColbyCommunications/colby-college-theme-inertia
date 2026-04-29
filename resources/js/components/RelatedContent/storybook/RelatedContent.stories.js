@@ -69,6 +69,7 @@ export const Default = {
     items: sampleItems,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Related Content")).toBeInTheDocument();
     await expect(canvas.getByText("Campus Life at Colby")).toBeInTheDocument();
     await expect(

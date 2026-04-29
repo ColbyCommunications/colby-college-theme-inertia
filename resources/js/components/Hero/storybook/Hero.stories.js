@@ -26,6 +26,7 @@ export const Primary = {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Both subheading (h1) and heading (h2) are "Lorem ipsum", so use getAllByText
     const loremElements = canvas.getAllByText("Lorem ipsum");
     await expect(loremElements.length).toBeGreaterThanOrEqual(2);
@@ -57,6 +58,7 @@ export const Portrait = {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Both subheading (h1) and heading (h2) are "Lorem ipsum", so use getAllByText
     const loremElements = canvas.getAllByText("Lorem ipsum");
     await expect(loremElements.length).toBeGreaterThanOrEqual(2);
@@ -89,6 +91,7 @@ export const Center = {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const loremElements = canvas.getAllByText("Lorem ipsum");
     await expect(loremElements.length).toBeGreaterThanOrEqual(2);
   },
@@ -102,6 +105,7 @@ export const NoImage = {
     paragraph: "Content only, no side image.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Text Only Hero")).toBeInTheDocument();
   },
 };
@@ -157,6 +161,7 @@ export const CenterWithSecondaryImages = {
     ],
   },
   // play: async ({ canvas }) => {
+  //   if (import.meta.env.MODE !== 'test' ) return;
   //   await expect(canvas.getByText("Four Column Layout")).toBeInTheDocument();
   //   await expect(canvas.getByAltText("Image 1")).toBeInTheDocument();
   //   await expect(canvas.getByText("Image one caption")).toBeInTheDocument();
@@ -180,6 +185,7 @@ export const ImageWithCaption = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("Photo by Colby College"),
     ).toBeInTheDocument();

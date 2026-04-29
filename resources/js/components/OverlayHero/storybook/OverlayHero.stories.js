@@ -26,6 +26,7 @@ export const WithImage = {
     fromPage: true,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Welcome to")).toBeInTheDocument();
     await expect(canvas.getByText("Colby College")).toBeInTheDocument();
     await expect(canvas.getByAltText("Campus view")).toBeInTheDocument();
@@ -39,6 +40,7 @@ export const Medium = {
     size: "medium",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Colby College")).toBeInTheDocument();
   },
 };
@@ -59,6 +61,7 @@ export const WithVideo = {
     },
   },
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Watch")).toBeInTheDocument();
     await expect(canvas.getByText("Campus Tour")).toBeInTheDocument();
     const watchBtn = canvas.getByText("Watch").closest("button");
@@ -82,6 +85,7 @@ export const WithVideoLoop = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Colby in Motion")).toBeInTheDocument();
   },
 };
@@ -94,6 +98,7 @@ export const NoMedia = {
     fromPage: true,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Text Only Hero")).toBeInTheDocument();
   },
 };

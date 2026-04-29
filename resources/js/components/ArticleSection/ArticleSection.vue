@@ -10,7 +10,7 @@
     :subheading="subheading"
     :paragraph="paragraph"
     :buttons="buttons"
-    :initial_items="initial_items"
+    :initial_items="normalizedInitialItems"
     :hydrated_from_server="hydrated_from_server"
     :should_client_refresh="should_client_refresh"
   />
@@ -34,12 +34,13 @@
     </div>
 
     <div class="article-section__grid md:col-start-5 md:col-span-8">
-      <ArticleGrid v-bind="props" :columns="perView" :api_source="api" />
+      <ArticleGrid v-bind="props" :columns="perView" :api_source="api" :items="normalizedItems" />
     </div>
   </div>
 </template>
 
 <script setup>
+import { computed } from "vue";
 import Carousel from "../Carousel/Carousel.vue";
 import Context from "../Context/Context.vue";
 import ArrowControls from "../ArrowControls/ArrowControls.vue";
@@ -71,4 +72,51 @@ const props = defineProps({
   hydrated_from_server: { type: Boolean, default: false },
   should_client_refresh: { type: Boolean, default: false },
 });
+
+
+function normalizeImage(image) {
+  if (!image || typeof image !== "object") {
+    return image;
+  }
+
+  return {
+    ...image,
+    src: image.src || image.url || "",
+  };
+}
+
+/**
+ * Normalize a single item object:
+ * - item.image.src guaranteed if image exists
+ */
+function normalizeItem(item) {
+  if (!item || typeof item !== "object") {
+    return item;
+  }
+
+  return {
+    ...item,
+    image: item.image ? normalizeImage(item.image) : item.image,
+  };
+}
+
+/**
+ * Normalize any items array
+ */
+function normalizeItems(items = []) {
+  if (!Array.isArray(items)) {
+    return [];
+  }
+
+  return items.map(normalizeItem);
+}
+
+/**
+ * Use these everywhere downstream
+ */
+const normalizedItems = computed(() => normalizeItems(props.items));
+const normalizedInitialItems = computed(() =>
+  normalizeItems(props.initial_items)
+);
+
 </script>

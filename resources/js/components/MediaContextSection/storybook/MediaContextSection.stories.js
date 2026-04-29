@@ -48,6 +48,7 @@ export const Wide = {
     items: sampleItems,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("A World-Class Education"),
     ).toBeInTheDocument();
@@ -64,6 +65,7 @@ export const Narrow = {
     items: sampleItems,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("A World-Class Education"),
     ).toBeInTheDocument();

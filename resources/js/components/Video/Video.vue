@@ -31,7 +31,7 @@
       <Picture
         :alt="image.alt || ''"
         class="absolute top-0 left-0 h-full w-full object-cover"
-        :src="image.url"
+        :src="image.src"
       />
     </div>
 

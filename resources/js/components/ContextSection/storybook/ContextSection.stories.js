@@ -17,6 +17,7 @@ export const Default = {
       "As a semester-long project, students will create their own imaginary countries and give regular reports on their geography, folklore, education and political systems. Conducted in Russian.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
     await expect(canvas.getByText("Anthropology")).toBeInTheDocument();
   },
@@ -32,6 +33,7 @@ export const RightAlign = {
       "As a semester-long project, students will create their own imaginary countries and give regular reports on their geography, folklore, education and political systems. Conducted in Russian.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
     await expect(canvas.getByText("Anthropology")).toBeInTheDocument();
   },
@@ -48,6 +50,7 @@ export const Large = {
       "As a semester-long project, students will create their own imaginary countries and give regular reports on their geography, folklore, education and political systems. Conducted in Russian.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
     await expect(canvas.getByText("Anthropology")).toBeInTheDocument();
   },
@@ -79,6 +82,7 @@ export const WithButtons = {
       "As a semester-long project, students will create their own imaginary countries and give regular reports on their geography, folklore, education and political systems. Conducted in Russian.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
     await expect(canvas.getByText("button1")).toBeInTheDocument();
   },

@@ -82,6 +82,7 @@ export const Static = {
     };
   },
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await waitFor(() => {
       expect(canvas.getByText("Department Courses")).toBeInTheDocument();
     });
@@ -137,6 +138,7 @@ export const People = {
     ],
   },
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Jane Smith")).toBeInTheDocument();
     await expect(canvas.getByText("Professor of Biology")).toBeInTheDocument();
 
@@ -166,6 +168,7 @@ export const Offices = {
     ],
   },
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Office of Admissions")).toBeInTheDocument();
     await expect(canvas.getByText("Financial Aid Office")).toBeInTheDocument();
 
@@ -199,6 +202,7 @@ export const WithPagination = {
     };
   },
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await waitFor(() => {
       expect(canvas.getByText("Course Catalogue")).toBeInTheDocument();
     });
@@ -270,6 +274,7 @@ export const WithSearch = {
     };
   },
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await waitFor(() => {
       expect(canvas.getByText("Majors and Minors")).toBeInTheDocument();
     });

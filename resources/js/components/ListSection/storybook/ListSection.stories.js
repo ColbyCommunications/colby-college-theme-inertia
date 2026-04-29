@@ -41,6 +41,7 @@ export const Default = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Sciences")).toBeInTheDocument();
     await expect(canvas.getByText("Humanities")).toBeInTheDocument();
     await expect(canvas.getByText("Social Sciences")).toBeInTheDocument();
@@ -64,6 +65,7 @@ export const WithUrlFallback = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Resources")).toBeInTheDocument();
     await expect(canvas.getByText("Library")).toBeInTheDocument();
     await expect(canvas.getByText("IT Help Desk")).toBeInTheDocument();

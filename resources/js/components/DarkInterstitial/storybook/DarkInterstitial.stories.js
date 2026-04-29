@@ -17,6 +17,7 @@ export const Primary = {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Both subheading and heading are "Lorem ipsum", so use getAllByText
     const loremElements = canvas.getAllByText("Lorem ipsum");
     await expect(loremElements.length).toBeGreaterThanOrEqual(2);
@@ -41,6 +42,7 @@ export const Facts = {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Both subheading and heading are "Lorem ipsum", so use getAllByText
     const loremElements = canvas.getAllByText("Lorem ipsum");
     await expect(loremElements.length).toBeGreaterThanOrEqual(2);
@@ -95,6 +97,7 @@ export const Images = {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Both subheading and heading are "Lorem ipsum", so use getAllByText
     const loremElements = canvas.getAllByText("Lorem ipsum");
     await expect(loremElements.length).toBeGreaterThanOrEqual(2);
@@ -111,6 +114,7 @@ export const WithoutIcon = {
       "Colby is investing in state-of-the-art facilities for students.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Campus Update")).toBeInTheDocument();
     await expect(canvas.getByText("New Facilities")).toBeInTheDocument();
   },
@@ -125,6 +129,7 @@ export const WithoutFacts = {
     paragraph: "Check the academic calendar for important deadlines.",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Quick Info")).toBeInTheDocument();
     await expect(canvas.getByText("Important Dates")).toBeInTheDocument();
   },

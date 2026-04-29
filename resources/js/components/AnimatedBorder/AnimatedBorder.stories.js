@@ -29,6 +29,7 @@ export const Primary = {
     `,
   }),
   play: async ({ canvasElement }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const border = canvasElement.querySelector("[class*='col-span-12']");
     await expect(border).not.toBeNull();
   },

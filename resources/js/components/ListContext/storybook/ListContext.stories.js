@@ -31,6 +31,7 @@ export const Default = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("More from [Program]")).toBeInTheDocument();
     await expect(canvas.getByText("Majors and Minors")).toBeInTheDocument();
     await expect(canvas.getByText("Read More")).toBeInTheDocument();
@@ -45,6 +46,7 @@ export const Small = {
     buttons: [],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("More from [Program]")).toBeInTheDocument();
     await expect(canvas.getByText("Majors and Minors")).toBeInTheDocument();
   },

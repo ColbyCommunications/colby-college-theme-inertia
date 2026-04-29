@@ -20,6 +20,7 @@ export const Default = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Contact")).toBeInTheDocument();
     await expect(canvas.getByText("207-859-4000")).toBeInTheDocument();
     await expect(canvas.getByText("Download now")).toBeInTheDocument();
@@ -33,6 +34,7 @@ export const WithoutButtons = {
     text: "<p>Monday - Friday: 8am - 5pm</p><p>Saturday - Sunday: Closed</p>",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Hours")).toBeInTheDocument();
     await expect(
       canvas.getByText("Monday - Friday: 8am - 5pm"),
@@ -50,6 +52,7 @@ export const WithoutHeading = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Student Portal")).toBeInTheDocument();
   },
 };
@@ -64,6 +67,7 @@ export const WithoutButtonTarget = {
     ],
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(canvas.getByText("Links")).toBeInTheDocument();
     await expect(canvas.getByText("Visit Site")).toBeInTheDocument();
   },

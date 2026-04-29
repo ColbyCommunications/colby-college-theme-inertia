@@ -15,6 +15,7 @@ export const Default = {
       "<p>The regular decision deadline is January 1. Early Decision I is November 15 and Early Decision II is January 1.</p>",
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("What is the application deadline?"),
     ).toBeInTheDocument();
@@ -28,6 +29,7 @@ export const Open = {
     open: true,
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("What is the application deadline?"),
     ).toBeInTheDocument();
@@ -47,6 +49,7 @@ export const ToggleOpen = {
     open: false,
   },
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     const button = canvas.getByRole("button");
     await userEvent.click(button);
     await waitFor(() => {
@@ -65,6 +68,7 @@ export const ToggleClosed = {
     open: true,
   },
   play: async ({ canvas, userEvent }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     await expect(
       canvas.getByText("This content will be hidden."),
     ).toBeVisible();

@@ -30,6 +30,7 @@ export const Default = {
     },
   },
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // "Areas of Distinction" appears in both the heading and button, so use getAllByText
     const elements = canvas.getAllByText("Areas of Distinction");
     await expect(elements.length).toBeGreaterThanOrEqual(1);

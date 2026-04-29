@@ -76,6 +76,7 @@ export const Default = {
   },
   render,
   play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
     // Menu items appear in both desktop and mobile menus, so use getAllByText
     const directoryLinks = canvas.getAllByText("Directory");
     await expect(directoryLinks.length).toBeGreaterThan(0);
