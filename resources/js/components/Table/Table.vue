@@ -1,6 +1,68 @@
 <template>
   <div class="colby-table-block">
-    <slot v-if="!render_api && !externalItems" />
+      <table v-if="!render_api && !externalItems" class="block md:table overflow-scroll md:overflow-auto w-full">
+    <tbody>
+      
+      <tr v-if="headings && headings.length">
+        <th 
+          v-for="(heading, index) in headings" 
+          :key="`th-${index}`"
+          class="h-12 md:h-11 px-6 font-body text-18 md:text-14 font-semibold leading-120 text-indigo text-left bg-indigo-200 whitespace-nowrap"
+        >
+          {{ heading.heading }}
+        </th>
+      </tr>
+
+      <tr 
+        v-for="(item, itemIndex) in manualItems" 
+        :key="`row-${itemIndex}`"
+        class="w-full h-12 md:h-10 odd:bg-gray-100"
+      >
+        <td class="whitespace-nowrap md:whitespace-normal px-6 py-2">
+          <component 
+            :is="item.link ? 'a' : 'span'"
+            class="inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
+            :class="item.link ? 'text-indigo hover:underline' : 'text-indigo-800'"
+            :href="item.link ? item.link.url : null"
+          >
+            <div 
+              v-if="item.image" 
+              class="table__image hidden md:block relative mr-3 rounded-[50%] overflow-hidden"
+            >
+              <picture>
+                <source media="(min-width:768px)" :srcset="item.image.srcset">
+                <img
+                  class="w-6 h-6"
+                  :src="item.image.src"
+                  :alt="item.image.alt"
+                />
+              </picture>
+            </div>
+
+            {{ item.link ? item.link.title : item.title }}
+          </component>
+        </td>
+
+        <td 
+          v-for="(column, colIndex) in item.columns" 
+          :key="`col-${itemIndex}-${colIndex}`"
+          class="px-6 font-body text-16 md:text-12 font-normal leading-140 text-indigo-800 py-2"
+        >
+          <a 
+            v-if="column.link_or_text === 'link'" 
+            :href="column.link.url" 
+            class="inline-flex items-center font-body text-20 md:text-12 text-indigo !underline hover:!no-underline"
+          >
+            {{ column.link.title }}
+          </a>
+          <template v-else>
+            {{ column.column }}
+          </template>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
 
     <div
       v-if="render_api || externalItems"
@@ -331,6 +393,7 @@ const props = defineProps({
     type: Array,
     default: null,
   },
+  manualItems: { type: Array, default: () => [] },
 
   // NEW
   initial_items: {
@@ -358,6 +421,8 @@ const props = defineProps({
     default: false,
   },
 });
+
+console.log(props);
 
 const fuse = ref(null);
 const heading = ref(undefined);

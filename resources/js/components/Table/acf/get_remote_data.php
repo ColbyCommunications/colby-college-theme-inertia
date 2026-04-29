@@ -500,6 +500,9 @@ if (!function_exists('colby_block_table_get_remote_data')) {
         $render_api = $data['render_api'] ?? false;
 
         if (!colby_block_table_is_truthy($render_api)) {
+            if ($data['items']) {
+                $data['manualItems'] = $data['items'];
+            }
             return $data;
         }
 
