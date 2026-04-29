@@ -5,7 +5,6 @@ function get_image($image_orientation, $post_id) {
     $newImage = '';
 
     if (!empty($image_orientation)) {
-
         if ($image_orientation === 'rectangle') {
             $newImage = get_the_post_thumbnail_url($post_id, 'Landscape');
         } elseif ($image_orientation === 'square') {
@@ -273,6 +272,21 @@ if (!function_exists('colby_block_article_grid_get_remote_data')) {
         $method = $data['display_posts_method'] ?? 'internal';
 
         if ($method === 'manual') {
+            $newItems = [];
+
+            foreach ($data['items'] as $item) {
+                $newItem = $item;
+                if ($data['image_orientation'] === 'rectangle') {
+                    $newItem['image']['url'] = $newItem['image']['sizes']['Landscape'];
+                } elseif ($data['image_orientation'] === 'square') {
+                    $newItem['image']['url'] = $newItem['image']['sizes']['Square'];
+                } elseif ($data['image_orientation'] === 'portrait') {
+                    $newItem['image']['url'] = $newItem['image']['sizes']['Portrait'];
+                }
+                $newItems[] = $newItem;
+            }
+
+            $data['items'] = $newItems;
             return $data;
         }
 
