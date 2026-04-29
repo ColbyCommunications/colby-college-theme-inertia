@@ -1,4 +1,3 @@
-import { type } from "superagent/lib/utils";
 import BgInsetMediaContext from "../BgInsetMediaContext.vue";
 import { expect } from "storybook/test";
 
