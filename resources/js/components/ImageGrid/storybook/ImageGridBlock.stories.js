@@ -1,6 +1,5 @@
 import { expect } from "storybook/test";
 import ImageGrid from "../ImageGrid.vue";
-import { image } from "superagent/lib/node/parsers";
 
 export default {
   title: "Blocks/Image Grid",

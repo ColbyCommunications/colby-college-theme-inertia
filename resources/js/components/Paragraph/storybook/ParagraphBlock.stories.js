@@ -1,6 +1,5 @@
 import { expect } from "storybook/test";
 import Paragraph from "../Paragraph.vue";
-import { text } from "superagent/lib/node/parsers";
 
 export default {
   title: "Blocks/Paragraph",

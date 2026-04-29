@@ -1,4 +1,3 @@
-import { image } from "superagent/lib/node/parsers";
 import Hero from "../Hero.vue";
 import { expect } from "storybook/test";
 

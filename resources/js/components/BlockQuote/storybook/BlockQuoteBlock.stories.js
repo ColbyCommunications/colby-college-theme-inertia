@@ -13,7 +13,7 @@ export default {
 };
 
 export const Primary = {
-  name: "Block Quote",
+  name: "Block Quote Live Demo",
   args: {
     quote: "The only thing we have to fear is fear itself",
   },
