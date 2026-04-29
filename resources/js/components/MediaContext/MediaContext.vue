@@ -21,7 +21,7 @@
         <template v-else>
           <img
             class="w-full object-cover"
-            :src="image.src"
+            :src="image.url"
             :alt="image.alt || ''"
             loading="lazy"
           />
