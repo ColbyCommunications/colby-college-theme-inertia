@@ -323,6 +323,7 @@ function colby_process_single_block(array $block, int $index = 0, string $path =
                         $feat_image_url = 'https://www.colby.edu/wp-content/uploads/2022/11/directory-placeholder_E4E8F0_90_100-380x430_square.jpg';
                       }
                       $item['image'] = ['url' => $feat_image_url, 'alt' => 'Image of '. $item['post']->post_title];
+                      $item['buttons'][] = ['button' => ['title' => 'Read Bio', 'url' => '/people/people-directory/'. $item['post']->post_title]];
                   }
               }
           }
