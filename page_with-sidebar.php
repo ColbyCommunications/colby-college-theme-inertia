@@ -202,6 +202,46 @@ function get_people($segment1, $segment2, $segment3) {
     }
 }
 
+function colby_prepare_advanced_accordion_block(array $block, string $block_path): array
+{
+    $block['attrs'] = isset($block['attrs']) && is_array($block['attrs'])
+        ? $block['attrs']
+        : [];
+
+    $block['attrs']['data'] = isset($block['attrs']['data']) && is_array($block['attrs']['data'])
+        ? $block['attrs']['data']
+        : [];
+
+    $accordion_blocks = [];
+
+    foreach (array_values($block['innerBlocks'] ?? []) as $panel_index => $panel_block) {
+        if (is_null($panel_block['blockName'] ?? null)) {
+            continue;
+        }
+
+        $panel_block['attrs'] = isset($panel_block['attrs']) && is_array($panel_block['attrs'])
+            ? $panel_block['attrs']
+            : [];
+
+        $panel_block['attrs']['data'] = isset($panel_block['attrs']['data']) && is_array($panel_block['attrs']['data'])
+            ? $panel_block['attrs']['data']
+            : [];
+
+        $panel_children = $panel_block['innerBlocks'] ?? [];
+
+        $panel_block['attrs']['data']['blocks'] = colby_process_blocks(
+            colby_flatten_group_descendants($panel_children),
+            $block_path . '_accordion_' . $panel_index
+        );
+
+        $accordion_blocks[] = $panel_block;
+    }
+
+    $block['attrs']['data']['blocks'] = $accordion_blocks;
+
+    return $block;
+}
+
 
 function colby_process_single_block(array $block, int $index = 0, string $path = 'root'): array
 {
@@ -226,6 +266,8 @@ function colby_process_single_block(array $block, int $index = 0, string $path =
             $block['attrs']['data']['blocks'],
             $block_path . '_group'
         );
+    }  elseif (($block['blockName'] ?? null) === 'acf/advanced-accordion') {
+        $block = colby_prepare_advanced_accordion_block($block, $block_path);
     } else if (($block['blockName'] ?? null) === 'acf/people-grid') {
         // Split the URL path into segments
         $url_segments = explode('/', trim($_SERVER['REQUEST_URI'], '/'));

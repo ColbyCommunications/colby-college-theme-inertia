@@ -103,9 +103,9 @@ const paragraphWithClasses = computed(() => {
   const startsWithBlockTag = /^\s*<(p|ul|ol)\b/i.test(html.trim());
   if (!startsWithBlockTag) html = `<p>${html}</p>`;
   const pCls = `text-group__p font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-[1.75] ${textAlign.value} ${paragraphColor.value} mt-2`;
-  const ulCls = `list-disc font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2`;
+  const ulCls = `list-disc font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2 my-4`;
   const olCls = `list-decimal font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2`;
-  const liCls = `${paragraphColor.value}`;
+  const liCls = `${paragraphColor.value} mx-4 [&>ul]:pl-4 [&>ul>li]:list-[circle]`;
   return html.replaceAll("<p>", `<p class="${pCls}">`).replaceAll("<ul>", `<ul class="${ulCls}">`).replaceAll("<ol>", `<ol class="${olCls}">`).replaceAll("<li>", `<li class="${liCls}">`);
 });
 

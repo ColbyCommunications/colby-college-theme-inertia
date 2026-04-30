@@ -56,6 +56,9 @@ const blockRegistry = {
   "acf/accordion": () => import("../Accordion/Accordion.vue"),
   "acf/people-grid": () => import("../PeopleGrid/PeopleGrid.vue"),
   "acf/embed": () => import("../Embed/Embed.vue"),
+  "acf/image": () => import("../Image/Image.vue"),
+  "acf/image-text": () => import("../ImageText/ImageText.vue"),
+  "acf/advanced-accordion": () => import("../AdvancedAccordion/AdvancedAccordion.vue"),
 };
 
 function getLoader(blockName) {
@@ -114,6 +117,9 @@ function getPlaceholderHeight(item) {
     "acf/accordion": 350,
     "acf/paragraph": 350,
     "acf/embed": 200,
+    "acf/image": 200,
+    "acf/image-text": 200,
+    "acf/advanced-accordion": 200,
 
     "core/heading": 0,
     "core/group": 350,

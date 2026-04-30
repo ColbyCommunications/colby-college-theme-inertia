@@ -90,16 +90,7 @@
             :heading="item.heading"
             :border="normalizedBorder"
             :paragraph="item.paragraph"
-            :buttons="[
-              {
-                button: {
-                  url: item.url,
-                  title: cta,
-                  type: 'light',
-                  size: 'small',
-                },
-              },
-            ]"
+            :buttons="item.buttons"
             class="pt-4"
           />
         </div>

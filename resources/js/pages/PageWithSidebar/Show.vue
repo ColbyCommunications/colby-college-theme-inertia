@@ -56,6 +56,7 @@
             [&_h4]:font-normal
             
             [&>div>section:not(:first-child)]:mt-20
+            [&>div>section[data-block-name='core/heading']+section]:mt-[15px]
             "
             :class="
               !resolvedIsPost

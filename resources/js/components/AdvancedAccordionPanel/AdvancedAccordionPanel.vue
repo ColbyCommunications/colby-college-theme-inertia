@@ -8,6 +8,7 @@
         <h3 class="!text-18 leading-120 text-indigo">
           {{ heading }}
         </h3>
+
         <div
           class="flex h-9 w-11 shrink-0 items-center justify-center rounded-sm border border-gray-300 bg-gray-100"
         >
@@ -20,6 +21,7 @@
         </div>
       </button>
     </div>
+
     <div
       ref="windowEl"
       class="advanced-accordion__window overflow-hidden transition-all duration-250 ease-in-out"
@@ -32,8 +34,9 @@
       <div
         ref="contentEl"
         class="advanced-accordion__content pb-6 font-body text-indigo-900"
-        v-html="content"
-      ></div>
+      >
+        <ComponentRouter :components="blocks" />
+      </div>
     </div>
   </article>
 </template>
@@ -41,13 +44,15 @@
 <script setup>
 import { ref, watch, nextTick } from "vue";
 import Icon from "@/js/components/Icon/Icon.vue";
+import ComponentRouter from "../ComponentRouter/ComponentRouter.vue";
 
 const props = defineProps({
   heading: { type: String, default: "" },
-  content: { type: String, default: "" },
+  blocks: { type: Array, default: () => [] },
   open: { type: Boolean, default: false },
 });
 
+console.log(props);
 const emit = defineEmits(["toggle"]);
 
 const isOpen = ref(props.open);
@@ -62,15 +67,18 @@ const toggle = () => {
 
 watch(isOpen, async (open) => {
   await nextTick();
+
   if (open) {
     const h = contentEl.value?.offsetHeight || 0;
     windowHeight.value = `${h}px`;
+
     setTimeout(() => {
       windowHeight.value = "auto";
     }, 250);
   } else {
     const h = contentEl.value?.offsetHeight || 0;
     windowHeight.value = `${h}px`;
+
     requestAnimationFrame(() => {
       windowHeight.value = "0px";
     });

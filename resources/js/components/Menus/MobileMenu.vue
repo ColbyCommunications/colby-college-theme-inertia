@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed top-[145px] right-0 bottom-0 left-0 z-40 flex flex-col justify-between bg-white md:hidden"
+    class="fixed top-[145px] right-0 bottom-0 left-0 z-40 flex flex-col justify-between bg-white md:hidden border-t border-[#dfecfe]"
   >
     <div class="overflow-auto py-12">
       <ul
