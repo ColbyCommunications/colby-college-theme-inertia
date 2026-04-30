@@ -1,5 +1,7 @@
 import Carousel from "../Carousel.vue";
 
+const sharedButtons = [{ url: "https://www.colby.edu", title: "All News" }];
+
 const mockItems = [
   {
     image: {
@@ -91,5 +93,4 @@ export const Primary = {
     items: mockItems,
     buttons: sharedButtons,
   },
-  play: runBasicInteractions,
 };
