@@ -14,7 +14,7 @@
       v-if="buttons && buttons.length"
       size="small"
       align="column"
-      :items="buttonItems"
+      :items="buttons"
     />
   </div>
 </template>
@@ -29,13 +29,13 @@ const props = defineProps({
   buttons: { type: Array, default: () => [] },
 });
 
-const buttonItems = computed(() =>
-  props.buttons.map((btn) => ({
-    button: {
-      url: btn.url,
-      title: btn.title,
-      target: btn.target || "",
-    },
-  })),
-);
+// const buttonItems = computed(() =>
+//   props.buttons.map((btn) => ({
+//     button: {
+//       url: btn.url,
+//       title: btn.title,
+//       target: btn.target || "",
+//     },
+//   })),
+// );
 </script>

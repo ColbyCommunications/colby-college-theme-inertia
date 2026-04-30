@@ -182,8 +182,14 @@ add_action('template_redirect', function () {
   global $post;
   
   if(!is_front_page()) {
-    if (is_page()) {
-      // dd($post);
+    if(is_archive()){
+      // assumes people
+      $breadcrumbs_menu[] = array(
+          'title' => 'People',
+          'url'   => '/people/',
+      );
+    } elseif (is_page()) {
+
       // Logic for pages
       $ancestors = get_post_ancestors($post->ID);
 
