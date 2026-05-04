@@ -114,6 +114,116 @@ add_action('init', function () {
   Inertia::setRootView('app.php');
 });
 
+function colby_get_breadcrumbs_cached(): array {
+  if (is_front_page()) {
+      return [];
+  }
+
+  global $post;
+
+  $object_id = is_object($post) ? $post->ID : 0;
+  $cache_key = 'colby_breadcrumbs_' . md5(
+      implode('|', [
+          is_archive() ? 'archive' : '',
+          is_page() ? 'page' : '',
+          is_single() ? 'single' : '',
+          $object_id,
+          $_SERVER['REQUEST_URI'] ?? '',
+      ])
+  );
+
+  $cached = get_transient($cache_key);
+
+  if ($cached !== false && is_array($cached)) {
+      return $cached;
+  }
+
+  $breadcrumbs = [];
+
+  if (is_archive()) {
+      $breadcrumbs[] = [
+          'title' => 'People',
+          'url'   => '/people/',
+      ];
+  } elseif (is_page() && $object_id) {
+      $ancestors = array_reverse(get_post_ancestors($object_id));
+
+      foreach ($ancestors as $ancestor_id) {
+          $breadcrumbs[] = [
+              'title' => get_the_title($ancestor_id),
+              'url'   => get_permalink($ancestor_id),
+          ];
+      }
+
+      $breadcrumbs[] = [
+          'title' => get_the_title($object_id),
+          'url'   => get_permalink($object_id),
+      ];
+  } elseif (is_single() && $object_id) {
+      $categories = get_the_category($object_id);
+
+      if (!empty($categories)) {
+          $primary_category = $categories[0];
+          $category_ancestors = array_reverse(
+              get_ancestors($primary_category->term_id, 'category')
+          );
+
+          foreach ($category_ancestors as $ancestor_id) {
+              $ancestor = get_category($ancestor_id);
+              $category_link = get_category_link($ancestor->term_id);
+
+              $breadcrumbs[] = [
+                  'title' => $ancestor->name,
+                  'url'   => preg_replace('/\/category\//', '/', $category_link, 1),
+              ];
+          }
+
+          $primary_category_link = get_category_link($primary_category->term_id);
+
+          $breadcrumbs[] = [
+              'title' => $primary_category->name,
+              'url'   => preg_replace('/\/category\//', '/', $primary_category_link, 1),
+          ];
+      }
+
+      $current_url = $_SERVER['REQUEST_URI'] ?? '';
+      $news_url = rtrim(
+          str_replace(trailingslashit($post->post_name), '', $current_url),
+          '/'
+      );
+
+      $breadcrumbs[] = [
+          'title' => 'News',
+          'url'   => $news_url . '/',
+      ];
+
+      $breadcrumbs[] = [
+          'title' => get_the_title($object_id),
+          'url'   => get_permalink($object_id),
+      ];
+  }
+
+  set_transient($cache_key, $breadcrumbs, HOUR_IN_SECONDS * 12);
+
+  return $breadcrumbs;
+}
+
+function colby_get_menu_cached(string $location): array {
+  $cache_key = 'colby_menu_' . sanitize_key($location);
+
+  $cached = get_transient($cache_key);
+
+  if ($cached !== false && is_array($cached)) {
+      return $cached;
+  }
+
+  $menu = colby_get_menu($location);
+
+  set_transient($cache_key, $menu, HOUR_IN_SECONDS * 12);
+
+  return $menu;
+}
+
 add_action('template_redirect', function () {
   $global_site_data = [
     'site_data' => [
@@ -125,12 +235,12 @@ add_action('template_redirect', function () {
       'phone'   => get_field('phone', 'options'),
     ],
     'menus' => [
-      'main' => colby_get_menu('main'),
-      'utility' => colby_get_menu('utility'),
-      'footer'  => colby_get_menu('footer'),
-      'action'  => colby_get_menu('action'),
-      'people'  => colby_get_menu('people'),
-      'social'  => colby_get_menu('social'),
+      'main'    => colby_get_menu_cached('main'),
+      'utility' => colby_get_menu_cached('utility'),
+      'footer'  => colby_get_menu_cached('footer'),
+      'action'  => colby_get_menu_cached('action'),
+      'people'  => colby_get_menu_cached('people'),
+      'social'  => colby_get_menu_cached('social'),
     ],
   ];
 
@@ -172,100 +282,7 @@ add_action('template_redirect', function () {
   $utility_button_url = get_theme_mod( 'utility_menu_button_url', '' ); 
   $global_site_data['site_data']['utility_button_url'] = $utility_button_url;
 
-
-  // construct breadcrumb
-  // Get the current URL path
-  $current_url = $_SERVER['REQUEST_URI'];
-    
-  $breadcrumbs_menu = array();
-
-  global $post;
-  
-  if(!is_front_page()) {
-    if(is_archive()){
-      // assumes people
-      $breadcrumbs_menu[] = array(
-          'title' => 'People',
-          'url'   => '/people/',
-      );
-    } elseif (is_page()) {
-
-      // Logic for pages
-      $ancestors = get_post_ancestors($post->ID);
-
-      // Reverse the order of ancestors to go from the top-level ancestor to the direct parent
-      $ancestors = array_reverse($ancestors);
-
-      foreach ($ancestors as $ancestor) {
-          $title = get_the_title($ancestor);
-          $link = get_permalink($ancestor);
-          
-          $breadcrumbs_menu[] = array(
-              'title' => $title,
-              'url'   => $link,
-          );
-      }
-
-      // Add the current page to the breadcrumb array
-      $breadcrumbs_menu[] = array(
-          'title' => $post->post_title,
-          'url'   => get_the_permalink($post->ID),
-      );
-
-      } elseif (is_single()) {
-        
-      // Logic for posts
-
-      $categories = get_the_category($post->ID);
-
-      if (!empty($categories)) {
-        $primary_category = $categories[0];
-        
-        $category_ancestors = get_ancestors($primary_category->term_id, 'category');
-        $category_ancestors = array_reverse($category_ancestors);
-
-        // Add ancestor categories to breadcrumbs
-        foreach ($category_ancestors as $ancestor_id) {
-            $ancestor = get_category($ancestor_id);
-            $category_link = get_category_link($ancestor->term_id);
-
-            // Check if 'category' is the first segment after the domain
-            $cleaned_link = preg_replace('/\/category\//', '/', $category_link, 1);
-
-            $breadcrumbs_menu[] = array(
-                'title' => $ancestor->name,
-                'url'   => $cleaned_link,
-            );
-        }
-
-            $primary_category_link = get_category_link($primary_category->term_id);
-            $cleaned_primary_link = preg_replace('/\/category\//', '/', $primary_category_link, 1);
-
-            $breadcrumbs_menu[] = array(
-                'title' => $primary_category->name,
-                'url'   => $cleaned_primary_link,
-            );
-        }
-
-        // Construct the "News" breadcrumb
-        $current_url = $_SERVER['REQUEST_URI']; // Get the current URL path
-        $news_url = rtrim(str_replace(trailingslashit($post->post_name), '', $current_url), '/');
-
-        // Add the "News" breadcrumb
-        $breadcrumbs_menu[] = array(
-            'title' => 'News',
-            'url'   => $news_url . '/',
-        );
-
-
-        // Add the current post to the breadcrumb array
-        $breadcrumbs_menu[] = array(
-            'title' => $post->post_title,
-            'url'   => get_the_permalink($post->ID),
-        );
-      }
-    }
-    $global_site_data['site_data']['breadcrumbs_menu'] = $breadcrumbs_menu;
+  $global_site_data['site_data']['breadcrumbs_menu'] = colby_get_breadcrumbs_cached();
 
 
   // dd($global_site_data);
@@ -307,6 +324,36 @@ function colby_get_menu($location) {
     ];
   }, $items);
 }
+
+// purge breadcrumb transients
+function colby_delete_breadcrumb_transients(): void {
+  global $wpdb;
+
+  $wpdb->query(
+      "DELETE FROM {$wpdb->options}
+       WHERE option_name LIKE '_transient_colby_breadcrumbs_%'
+       OR option_name LIKE '_transient_timeout_colby_breadcrumbs_%'"
+  );
+}
+
+add_action('save_post', 'colby_delete_breadcrumb_transients');
+add_action('edited_category', 'colby_delete_breadcrumb_transients');
+add_action('created_category', 'colby_delete_breadcrumb_transients');
+add_action('delete_category', 'colby_delete_breadcrumb_transients');
+
+// purge menu transients
+function colby_delete_menu_transients(): void {
+  global $wpdb;
+
+  $wpdb->query(
+      "DELETE FROM {$wpdb->options}
+       WHERE option_name LIKE '_transient_colby_menu_%'
+       OR option_name LIKE '_transient_timeout_colby_menu_%'"
+  );
+}
+
+add_action('wp_update_nav_menu', 'colby_delete_menu_transients');
+add_action('customize_save_after', 'colby_delete_menu_transients');
 
 // Enqueue scripts.
 add_action('wp_enqueue_scripts', function () {
