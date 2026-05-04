@@ -1,2 +1,0 @@
-import{u as r,j as t,M as s}from"./blocks-CBNW1dJD.js";import"./preload-helper-PPVm8Dsz.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./iframe-o8pGYXWK.js";function e(o){return t.jsxs(t.Fragment,{children:[t.jsx(s,{title:"Blocks/Stat Group/Training Video"}),`
-`,t.jsx("video",{controls:!0,children:t.jsx("source",{src:"https://www.colby.edu/communications/training-videos/Blocks_Accordion_final.mp4",type:"video/mp4"})})]})}function m(o={}){const{wrapper:n}={...r(),...o.components};return n?t.jsx(n,{...o,children:t.jsx(e,{...o})}):e()}export{m as default};
