@@ -27,6 +27,8 @@
             class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
             :src="image?.src"
             :alt="image?.alt || ''"
+            :height="image?.height"
+            :width="image?.width"
             :fromApi="fromApi"
           />
         </a>

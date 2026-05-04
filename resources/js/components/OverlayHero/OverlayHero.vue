@@ -75,6 +75,8 @@
         class="absolute top-0 left-0 z-[-10] h-full w-full object-cover"
         :src="posterImage.src"
         :alt="posterImage.alt || ''"
+        :height="posterImage.height"
+        :width="posterImage.width"
       />
     </template>
 
