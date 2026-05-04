@@ -16,7 +16,8 @@ function custom_preload_fonts() {
 //   echo '<link rel="preload" href="'.get_stylesheet_directory() . '/resources/fonts/LibreFranklin-Regular.woff2" as="font" type="font/woff2" crossorigin >';
 //   echo '<link rel="preload" href="'.get_stylesheet_directory() . '/resources/fonts/LibreFranklin-SemiBold.woff2" as="font" type="font/woff2" crossorigin >';
 //   echo '<link rel="preload" href="'.get_stylesheet_directory() . '/resources/fonts/LibreFranklin-Bold.woff2" as="font" type="font/woff2" crossorigin >';
-//   // echo '<link rel="preload" href="/fonts/myfont.woff2" as="font" type="font/woff2" crossorigin>'
+  echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/libre-franklin-latin-wght-normal-CLTz0ja0.woff2" as="font" type="font/woff2" crossorigin>';
+  echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/noto-sans-cyrillic-ext-wght-normal-DSNfmdVt.woff2" as="font" type="font/woff2" crossorigin>';
 //   echo "<script> let cls = 0;
 // new PerformanceObserver((entryList) => {
 //   for (const entry of entryList.getEntries()) {
