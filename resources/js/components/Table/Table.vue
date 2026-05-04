@@ -70,7 +70,7 @@
     >
       <h2
         class="font-extended text-24 leading-110 -tracking-3 font-normal text-indigo"
-        v-text="heading"
+        v-text="initial_heading"
       />
     </div>
 

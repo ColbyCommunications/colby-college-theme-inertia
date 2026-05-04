@@ -411,6 +411,10 @@ if (!function_exists('colby_block_table_get_heading')) {
                 return 'Majors and Minors';
             case 'Departments':
                 return 'Departments and Programs';
+            case 'Departments':
+                return 'Departments and Programs';
+            case 'Offices':
+                return 'Offices';
             default:
                 return $data['api'] ?? '';
         }
@@ -428,6 +432,8 @@ if (!function_exists('colby_block_table_get_headings')) {
             case 'Majors and Minors':
                 return ['Name', 'Department', 'Type'];
             case 'Departments':
+                return ['Name'];
+            case 'Offices':
                 return ['Name'];
             default:
                 return [];
@@ -494,6 +500,45 @@ if (!function_exists('colby_block_table_fetch_department_items')) {
     }
 }
 
+if (!function_exists('colby_block_table_fetch_office_items')) {
+    function colby_block_table_fetch_office_items(array $data): array
+    {
+        $retrieved_offices = get_posts([
+            'post_type'      => 'page',
+            'posts_per_page' => -1,
+            'order'          => 'ASC',
+            'orderby'        => 'title',
+            'tax_query'      => [
+                [
+                    'taxonomy' => 'page-categories',
+                    'field'    => 'slug',
+                    'terms'    => 'office',
+                ],
+            ],
+        ]);
+
+        if (empty($retrieved_offices)) {
+            return [];
+        }
+
+        $items = [];
+
+        foreach ($retrieved_offices as $office) {
+
+            $items[] = [
+                'title' => $office->post_title,
+                'link' => [
+                    'title' => $office->post_title,
+                    'url' => '/people/offices-directory/' . $office->post_name . '/',
+                ],
+                'columns' => [],
+            ];
+        }
+
+        return $items;
+    }
+}
+
 if (!function_exists('colby_block_table_get_remote_data')) {
     function colby_block_table_get_remote_data(array $data, int $index, array $block = []): array
     {
@@ -511,6 +556,17 @@ if (!function_exists('colby_block_table_get_remote_data')) {
         // Special WordPress-backed case
         if ($api === 'Departments') {
             $items = colby_block_table_fetch_department_items($data);
+
+            $data['initial_items'] = $items;
+            $data['initial_heading'] = colby_block_table_get_heading($data);
+            $data['initial_headings'] = colby_block_table_get_headings($data);
+            $data['initial_filter_options'] = colby_block_table_get_filter_options($data);
+            $data['hydrated_from_server'] = !empty($items);
+            $data['should_client_refresh'] = false;
+
+            return $data;
+        } elseif ($api === 'Offices') {
+            $items = colby_block_table_fetch_office_items($data);
 
             $data['initial_items'] = $items;
             $data['initial_heading'] = colby_block_table_get_heading($data);
