@@ -4,11 +4,11 @@
     :class="{ 'flex justify-center': alignCenter }"
   >
     <figure class="inline-block" :style="figureStyle">
-      <img
+      <Picture
         v-if="image"
+        class="w-full"     
         :src="image.url"
         :alt="image.alt"
-        class="w-full"
       />
       <img
         v-else-if="imagePath"
@@ -16,10 +16,10 @@
         class="w-full"
       />
       <figcaption
-        v-if="caption"
+        v-if="media_caption || caption"
         class="text-center text-indigo text-12 pt-2"
       >
-        {{ caption }}
+        {{ media_caption ? image.caption : caption }}
       </figcaption>
     </figure>
   </div>
@@ -27,17 +27,38 @@
 
 <script setup>
 import { computed } from "vue";
+import Picture from "@/js/components/Picture/Picture.vue";
 
 const props = defineProps({
   image: { type: Object, default: null },
-  imagePath: { type: String, default: "" },
-  imageScale: { type: String, default: "100" },
+  image_path: { type: String, default: "" },
+  image_scale: { type: [String, Number], default: "100" },
   caption: { type: String, default: "" },
-  alignCenter: { type: Boolean, default: false },
+  align_center: { type: [Boolean, Array, String], default: false },
+  media_caption: { type: Boolean, default: false },
+});
+
+const alignCenter = computed(() => {
+  const val = props.align_center;
+  
+  if (typeof val === 'boolean') {
+    return val;
+  }
+  
+  if (Array.isArray(val) && val.length > 0) {
+    // Check if the first item in the array is 'yes' (case-insensitive just in case)
+    return String(val[0]).toLowerCase() === 'yes';
+  }
+  
+  if (typeof val === 'string') {
+    return val.toLowerCase() === 'yes';
+  }
+  
+  return false;
 });
 
 const figureStyle = computed(() => {
-  const scale = parseInt(props.imageScale) || 100;
+  const scale = parseInt(props.image_scale) || 100;
   if (scale < 100) {
     return { width: `${scale}%` };
   }

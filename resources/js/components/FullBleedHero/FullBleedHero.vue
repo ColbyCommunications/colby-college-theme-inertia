@@ -38,9 +38,6 @@
           <Picture
             class="absolute w-full h-full object-cover"
             :src="image.src"
-            :srcset="image.srcset"
-            :size-desktop="image.sizes?.Hero"
-            :size-mobile="image.sizes?.Rectangle"
             :alt="image.alt"
           />
         </div>

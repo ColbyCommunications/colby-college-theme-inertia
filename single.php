@@ -3,15 +3,30 @@ use BoxyBird\Inertia\Inertia;
 
 global $post;
 
-// 1. Ensure the post object actually exists before running ACF
 if (!$post) {
     return; 
 }
 
-// 2. Use a more robust check for ACF
+function get_structured_block_data($block, $index = 0) {
+
+  if ($block['blockName'] === 'core/heading' ) {
+    return ['heading' => str_replace(array("\r", "\n"), '', $block['innerHTML'])];
+  }
+
+  $meta_id = !empty($block['attrs']['id'])
+      ? 'block_' . $block['attrs']['id']
+      : 'block_' . $index . '_' . md5(wp_json_encode($block['attrs']['data'] ?? []));
+  
+
+  acf_setup_meta($block['attrs']['data'] ?? [], $meta_id, true);
+  $fields = get_fields($meta_id);
+  acf_reset_meta($meta_id);
+
+  return $fields ?: [];
+}
+
 $acf_data = [];
 
-// 3. Move the Logic
 if ($post->post_type === 'people') {
 
   $people_menu = wp_get_nav_menu_items('People Menu');
@@ -85,12 +100,40 @@ if ($post->post_type === 'people') {
       ],
   ]);
 } else {
+
+  $filtered_blocks = array_values(array_filter(
+    parse_blocks($post->post_content),
+    function ($block) {
+        return !is_null($block['blockName'] ?? null);
+    }
+  ));
+
+  foreach ($filtered_blocks as $index => &$block) {
+      $block['attrs']['data'] = get_structured_block_data($block, $index);
+  }
+  unset($block);
+
+  $thumbnail_id = get_post_thumbnail_id($post->ID);
+  $thumbnail_url = get_the_post_thumbnail_url($post->ID, "Rectangle");
+  $thumbnail_caption = get_the_post_thumbnail_caption($post->ID);
+
+  $image = ['src' => $thumbnail_url, 'caption' => $thumbnail_caption, 'alt' => get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true)];
+
+
+  // Post Template ACFs
+  $post_fields = get_fields($post->ID);
+
+  // dd($post_fields);
+
   Inertia::render('Post/Show', [
     'id'      => $post->ID,
     'title'   => get_the_title($post->ID),
-    'image'   => get_the_post_thumbnail_url($post->ID, 'full'),
+    'image'   => $image,
     'date'    => get_the_date('', $post->ID),
     'author'  => get_the_author_meta('display_name', $post->post_author),
     'acf'     => $acf,
+    'excerpt' => get_the_excerpt($post->ID),
+    'blocks' => $filtered_blocks,
+    'use_post_date' => $post_fields['use_post_date'],
   ]);
 }
