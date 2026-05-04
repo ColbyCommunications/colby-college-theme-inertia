@@ -7,7 +7,7 @@
         <th 
           v-for="(heading, index) in headings" 
           :key="`th-${index}`"
-          class="h-12 md:h-11 px-6 font-body text-18 md:text-14 font-semibold leading-120 text-indigo text-left bg-indigo-200 whitespace-nowrap"
+          class="h-12 md:h-11 px-6 font-body text-18 md:text-14 font-semibold leading-120 text-indigo text-left bg-[#eef4ff] whitespace-nowrap"
         >
           {{ heading.heading }}
         </th>
@@ -56,7 +56,7 @@
             {{ column.link.title }}
           </a>
           <template v-else>
-            {{ column.column }}
+            <span>{{ Array.isArray(column.column) ? column.column.join(', ') : column.column }}</span>
           </template>
         </td>
       </tr>
@@ -209,9 +209,9 @@
       class="colby-table-block block w-full overflow-scroll md:table md:overflow-auto"
     >
       <tbody>
-        <tr v-if="headings">
+        <tr v-if="currentHeadings">
           <th
-            v-for="(heading_item, index) in headings"
+            v-for="(heading_item, index) in currentHeadings"
             :key="index"
             class="h-12 whitespace-nowrap bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold text-indigo md:h-11 md:text-14"
           >
@@ -395,6 +395,11 @@ const props = defineProps({
   },
   manualItems: { type: Array, default: () => [] },
 
+  headings: {
+    type: Array,
+    default: () => [],
+  },
+
   // NEW
   initial_items: {
     type: Array,
@@ -422,11 +427,11 @@ const props = defineProps({
   },
 });
 
-console.log(props);
+
 
 const fuse = ref(null);
 const heading = ref(undefined);
-const headings = ref(undefined);
+const currentHeadings = ref(undefined);
 const items = ref([]);
 const currentPage = ref(1);
 const searchTerm = ref("");
@@ -696,8 +701,8 @@ onMounted(() => {
   }
 
   if (props.render_api) {
-    heading.value = props.initial_heading;
-    headings.value = props.initial_headings;
+    currentHeadings.value = props.initial_heading;
+    currentHeadings.value = props.initial_headings;
     filterOptions.value = props.initial_filter_options;
     items.value = props.initial_items || [];
     initFuse();
@@ -724,7 +729,7 @@ onMounted(() => {
           ],
           modalOpen: false,
         }));
-        headings.value = ["Name", "Title", "Department"];
+        currentHeadings.value = ["Name", "Title", "Department"];
         break;
 
       case "Offices":
@@ -737,7 +742,7 @@ onMounted(() => {
           columns: [],
           modalOpen: false,
         }));
-        headings.value = ["Name"];
+        currentHeadings.value = ["Name"];
         break;
 
       case "Departments":
@@ -752,7 +757,7 @@ onMounted(() => {
           department: item.department_code,
           modalOpen: false,
         }));
-        headings.value = ["Name"];
+        currentHeadings.value = ["Name"];
         break;
     }
 

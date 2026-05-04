@@ -79,7 +79,6 @@ const Hero = defineAsyncComponent(() => import("../../components/Hero/Hero.vue")
 const OverlayHero = defineAsyncComponent(() => import("../../components/OverlayHero/OverlayHero.vue"));
 const SubpageNav = defineAsyncComponent(() => import("../../components/SubpageNav/SubpageNav.vue"));
 const Widget = defineAsyncComponent(() => import("../../components/Widget/Widget.vue"));
-const Wysiwyg = defineAsyncComponent(() => import("../../components/Wysiwyg/Wysiwyg.vue"));
 
 const props = defineProps({
   title: String,
