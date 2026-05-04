@@ -23,13 +23,14 @@
       processedSrc +
       ' 1280w,'
     "
-    width="2400"
-    height="1320"
+    :width="width"
+    :height="height"
+    :style="imageStyle"
   />
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps({
   // The class to apply to the <img> element
@@ -44,6 +45,14 @@ const props = defineProps({
   alt: {
     type: String,
     default: "",
+  },
+  height: {
+    type: Number,
+    default: 1320,
+  },
+  width: {
+    type: Number,
+    default: 2400,
   },
   loading: {
     type: String,
@@ -63,4 +72,12 @@ if (window.colby.isLocal && !props.fromApi) {
 } else {
   processedSrc.value = props.src;
 }
+
+const imageStyle = computed(() => {
+  if (!props.width || !props.height) return {};
+
+  return {
+    aspectRatio: `${props.width} / ${props.height}`,
+  };
+});
 </script>

@@ -125,9 +125,9 @@ function getRootMargin(item, index) {
  */
 function getPlaceholderHeight(item) {
   const heights = {
-    "acf/article-grid": 500,
-    "acf/article-section": 300,
-    "acf/carousel": 450,
+    "acf/article-grid": 700,
+    "acf/article-section": 650,
+    "acf/carousel": 650,
     "acf/dark-interstitial": 250,
     "acf/facts-figures": 400,
     "acf/featured-post": 250,
@@ -142,17 +142,17 @@ function getPlaceholderHeight(item) {
     "acf/home-hero": 0,
     "acf/overlay-hero": 0,
     "acf/context-article-grid": 300,
-    "acf/table": 350,
+    "acf/table": 600,
     "acf/people-grid": 350,
     "acf/accordion": 350,
     "acf/paragraph": 350,
     "acf/embed": 200,
     "acf/image": 200,
     "acf/image-text": 200,
-    "acf/advanced-accordion": 200,
+    "acf/advanced-accordion": 500,
 
     "core/heading": 0,
-    "core/group": 350,
+    "core/group": 600,
   };
 
   return heights[item.blockName] ?? 0;

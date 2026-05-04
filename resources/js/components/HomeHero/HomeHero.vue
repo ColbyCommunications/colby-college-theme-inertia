@@ -55,6 +55,8 @@
             :src="image?.url"
             :alt="image?.alt || ''"
             loading="eager"
+            :width="image.width"
+            :height="image.height"
           />
        
     </div>
