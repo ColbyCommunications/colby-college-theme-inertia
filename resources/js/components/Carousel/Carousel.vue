@@ -109,21 +109,14 @@
               :key="'ctx-api-' + idx"
             >
               <div class="relative pb-[56.578947368421055%]">
-                <picture>
-                  <source
-                    media="(min-width:768px)"
-                    :srcset="firstOg(it)?.url || ''"
-                  />
-                  <img
-                    class="absolute top-0 left-0 h-full w-full object-cover"
-                    :srcset="buildSrcset(firstOg(it)?.url)"
-                    :src="firstOg(it)?.url"
-                    :sizes="'(max-width: 767px) 100vw, 50vw'"
-                    :alt="it.yoast_head_json?.og_description || ''"
-                    :height="firstOg(it)?.height"
-                    :width="firstOg(it)?.width"
-                  />
-                </picture>
+                <Picture
+                  class="absolute top-0 left-0 h-full w-full object-cover"
+                  :src="firstOg(it)?.url"
+                  :alt="it.yoast_head_json?.og_description || ''"
+                  :height="firstOg(it)?.height"
+                  :width="firstOg(it)?.width"
+                  :fromApi="true"
+                />
               </div>
             </div>
           </div>
