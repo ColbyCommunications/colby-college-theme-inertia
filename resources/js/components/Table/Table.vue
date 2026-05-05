@@ -22,7 +22,7 @@
           <component 
             :is="item.link ? 'a' : 'span'"
             class="inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
-            :class="item.link ? 'text-indigo hover:underline' : 'text-indigo-800'"
+            :class="item.link ? 'text-indigo hover:underline cursor-pointer' : 'text-indigo-800'"
             :href="item.link ? item.link.url : null"
           >
             <div 
@@ -51,7 +51,7 @@
           <a 
             v-if="column.link_or_text === 'link'" 
             :href="column.link.url" 
-            class="inline-flex items-center font-body text-20 md:text-12 text-indigo !underline hover:!no-underline"
+            class="inline-flex items-center font-body text-20 md:text-12 text-indigo !underline hover:!no-underline cursor-pointer"
           >
             {{ column.link.title }}
           </a>
@@ -226,7 +226,7 @@
           <td class="whitespace-normal px-6 py-2">
             <a
               v-if="item.link.url && !item.image"
-              class="inline-flex items-center font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12"
+              class="inline-flex items-center font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12 cursor-pointer"
               :href="item.link.url"
             >
               {{ item.link.title }}
