@@ -33,15 +33,6 @@
             />
           </div>
 
-          <div
-            :class="
-              !resolvedIsPost
-                ? 'sidebar-page__main xl:col-start-4 md:col-span-9'
-                : 'sidebar-page__main md:col-span-12'
-            "
-          >
-            <Wysiwyg :content="resolvedContent" />
-          </div>
         </div>
       </section>
     </template>
@@ -58,7 +49,6 @@ const Hero = defineAsyncComponent(() => import("../../components/Hero/Hero.vue")
 const OverlayHero = defineAsyncComponent(() => import("../../components/OverlayHero/OverlayHero.vue"));
 const SubpageNav = defineAsyncComponent(() => import("../../components/SubpageNav/SubpageNav.vue"));
 const Widget = defineAsyncComponent(() => import("../../components/Widget/Widget.vue"));
-const Wysiwyg = defineAsyncComponent(() => import("../../components/Wysiwyg/Wysiwyg.vue"));
 
 const props = defineProps({
   title: String,

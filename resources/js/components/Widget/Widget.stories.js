@@ -63,7 +63,21 @@ export const WithoutButtonTarget = {
     heading: "Links",
     text: "<p>Important resources.</p>",
     buttons: [
-      { url: "#", title: "Visit Site" },
+      {
+          title: "Office of the Registrar",
+          url: "https://www.colby.edu/people/offices-directory/registrar/",
+          target: ""
+      },
+      {
+          title: "Academic Calendar",
+          url: "https://www.colby.edu/academics/calendar/",
+          target: ""
+      },
+      {
+          title: "myColby",
+          url: "https://my.colby.edu/",
+          target: ""
+      }
     ],
   },
   play: async ({ canvas }) => {

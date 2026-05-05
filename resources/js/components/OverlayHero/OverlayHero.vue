@@ -63,7 +63,7 @@
       ></div>
       <Video
         :id="video.id"
-        :play-icon="false"
+        :playIcon="false"
         :image="posterImage || {}"
       />
     </template>
