@@ -103,23 +103,21 @@ if (!function_exists('colby_block_table_requirements')) {
 }
 
 if (!function_exists('colby_block_table_credit_hours')) {
-    function colby_block_table_credit_hours(string $crsno, int $minhrs, int $maxhrs): string
+    function colby_block_table_credit_hours(string $sec_crs_no, int $minhrs, int $maxhrs): string
     {
         $credit_hours = '';
 
         if ($maxhrs !== 0) {
-            if ($crsno !== 'MU193') {
+            if ($sec_crs_no !== 'MU193') {
                 $credit_hours = ' <em class="creditHours">' . colby_block_table_number_to_string($minhrs, true);
 
                 if ($minhrs !== $maxhrs) {
                     if ($minhrs + 1 === $maxhrs) {
                         $credit_hours .= ' or ';
+                    } elseif ($minhrs < $maxhrs) {
+                        $credit_hours .= ' to ';
                     } else {
-                        if ($minhrs < $maxhrs) {
-                            $credit_hours .= ' to ';
-                        } else {
-                            $credit_hours = ' Min hrs greater than Max hrs report to Registrar ';
-                        }
+                        return ' Min hrs greater than Max hrs report to Registrar ';
                     }
 
                     $credit_hours .= colby_block_table_number_to_string($maxhrs, false);
@@ -143,7 +141,6 @@ if (!function_exists('colby_block_table_credit_hours')) {
         return $credit_hours;
     }
 }
-
 if (!function_exists('colby_block_table_faculty')) {
     function colby_block_table_faculty(array $sections): string
     {
@@ -167,8 +164,10 @@ if (!function_exists('colby_block_table_faculty')) {
 if (!function_exists('colby_block_table_render_desc')) {
     function colby_block_table_render_desc(array $item): string
     {
+        $sec_crs_no = (string) ($item['secCrsNo'] ?? '');
+
         $credit_hours = colby_block_table_credit_hours(
-            (string) ($item['crsno'] ?? ''),
+            $sec_crs_no,
             (int) ($item['minhrs'] ?? 0),
             (int) ($item['maxhrs'] ?? 0)
         );
@@ -183,8 +182,7 @@ if (!function_exists('colby_block_table_render_desc')) {
                 '</span>';
         }
 
-        $crsno = (string) ($item['crsno'] ?? '');
-        if (substr($crsno, 0, 2) !== 'IS') {
+        if (substr($sec_crs_no, 0, 2) !== 'IS') {
             $reqs = colby_block_table_requirements(
                 (string) ($item['area'] ?? ''),
                 (string) ($item['labsci'] ?? ''),
@@ -221,13 +219,13 @@ if (!function_exists('colby_block_table_transform_dept')) {
             case 'chem': return 'chemistry';
             case 'clas': return 'classics';
             case 'comp': return 'computer-science';
+            case 'ersc': return 'earth-sciences';
             case 'east': return 'east-asian-studies';
             case 'econ': return 'economics';
             case 'educ': return 'education';
             case 'engl': return 'english';
             case 'envs': return 'environmental-studies';
             case 'frit': return 'french-and-italian';
-            case 'geol': return 'geology';
             case 'glst': return 'global-studies';
             case 'gmru': return 'german-and-russian';
             case 'govt': return 'government';
@@ -287,7 +285,7 @@ if (!function_exists('colby_block_table_get_endpoint')) {
         switch ($data['api'] ?? '') {
             case 'Department Courses':
             case 'Course Catalogue':
-                return 'https://www.colby.edu/endpoints/v1/courses/';
+                return 'https://www.colby.edu/endpoints/v2/courses/';
 
             case 'Majors and Minors':
                 return 'https://www.colby.edu/endpoints/v1/majorsminors/';
@@ -295,6 +293,104 @@ if (!function_exists('colby_block_table_get_endpoint')) {
             default:
                 return null;
         }
+    }
+}
+
+if (!function_exists('colby_block_table_group_v2_courses')) {
+    function colby_block_table_group_v2_courses(array $payload): array
+    {
+        $rows = $payload['data'] ?? [];
+
+        if (!is_array($rows)) {
+            return [];
+        }
+
+        $grouped = [];
+
+        foreach ($rows as $row) {
+            $course_number = $row['secCrsNo'] ?? '';
+
+            if ($course_number === '') {
+                continue;
+            }
+
+            if (!isset($grouped[$course_number])) {
+                $grouped[$course_number] = [];
+            }
+
+            $grouped[$course_number][] = $row;
+        }
+
+        $courses = [];
+
+        foreach ($grouped as $rows_for_course) {
+            $first = $rows_for_course[0] ?? [];
+
+            $course = [
+                'secCrsNo'    => $first['secCrsNo'] ?? '',
+                'dept'        => $first['dept'] ?? '',
+                'longTitle'   => $first['longTitle'] ?? '',
+                'maxhrs'      => (int) ($first['maxhrs'] ?? 0),
+                'minhrs'      => (int) ($first['minhrs'] ?? 0),
+                'area'        => $first['area'] ?? '',
+                'prereq'      => $first['prereq'] ?? '',
+                'diversity'   => $first['diversity'] ?? '',
+                'writing'     => $first['writing'] ?? '',
+                'abstr'       => $first['abstr'] ?? '',
+                'sessOffered' => $first['sessOffered'] ?? '',
+                'labsci'      => '',
+                'sections'    => [],
+            ];
+
+            foreach ($rows_for_course as $row) {
+                $course['sections'][] = [
+                    'sessOffered' => $row['sessOffered'] ?? '',
+                    'faculty' => [
+                        [
+                            'faculty_name' => $row['instructor'] ?? '',
+                        ],
+                    ],
+                ];
+            }
+
+            $courses[] = $course;
+        }
+
+        return $courses;
+    }
+}
+
+if (!function_exists('colby_block_table_session_types_from_sections')) {
+    function colby_block_table_session_types_from_sections(array $sections): array
+    {
+        $types = [];
+
+        foreach ($sections as $section) {
+            $raw = (string) ($section['sessOffered'] ?? '');
+
+            if ($raw === '') {
+                continue;
+            }
+
+            $code = substr($raw, 0, 2);
+
+            switch ($code) {
+                case 'FA':
+                    $types[] = 'Fall';
+                    break;
+                case 'SP':
+                    $types[] = 'Spring';
+                    break;
+                case 'JP':
+                    $types[] = 'January';
+                    break;
+                default:
+                    $types[] = $raw;
+                    break;
+            }
+        }
+
+        return array_values(array_unique(array_filter($types)));
     }
 }
 
@@ -306,61 +402,62 @@ if (!function_exists('colby_block_table_normalize_items')) {
 
         switch ($api) {
             case 'Department Courses':
-                $courses = $payload['courses'] ?? [];
-
-                $filtered = array_filter($courses, function ($item) use ($department_code) {
+                $courses = colby_block_table_group_v2_courses($payload);
+                $department_code = $data['departmentCode'] ?? '';
+            
+                $filtered = array_values(array_filter($courses, function ($item) use ($department_code) {
                     return ($item['dept'] ?? '') === $department_code && !empty($item['longTitle']);
+                }));
+            
+                usort($filtered, function ($a, $b) {
+                    return strcasecmp($a['longTitle'] ?? '', $b['longTitle'] ?? '');
                 });
-
+            
                 return array_map(function ($item) {
-                    $title = (!empty($item['secTitle']) && strpos($item['secTitle'], 'See ') === false)
-                        ? $item['secTitle']
-                        : ($item['longTitle'] ?? '');
-
+                    $title = $item['longTitle'] ?? '';
+            
                     return [
                         'title' => $title,
-                        'type' => colby_block_table_map_session_types((string) ($item['sessOffered'] ?? '')),
+                        'type' => colby_block_table_session_types_from_sections($item['sections'] ?? []),
                         'link' => [
                             'title' => $title,
                             'url' => null,
                         ],
                         'columns' => [
-                            $item['crsno'] ?? '',
+                            $item['secCrsNo'] ?? '',
                             colby_block_table_remove_tags($item['abstr'] ?? ''),
                         ],
                         'modalOpen' => false,
                     ];
-                }, array_values($filtered));
-
+                }, $filtered);
+            
             case 'Course Catalogue':
-                $courses = $payload['courses'] ?? [];
-
-                $filtered = array_filter($courses, function ($item) {
+                $courses = colby_block_table_group_v2_courses($payload);
+            
+                $filtered = array_values(array_filter($courses, function ($item) {
                     return !empty($item['longTitle']);
-                });
-
+                }));
+            
                 return array_map(function ($item) {
-                    $title = (!empty($item['secTitle']) && strpos($item['secTitle'], 'See ') === false)
-                        ? $item['secTitle']
-                        : ($item['longTitle'] ?? '');
-
+                    $title = $item['longTitle'] ?? '';
+            
                     return [
                         'title' => $title,
                         'description' => colby_block_table_render_desc($item),
-                        'type' => colby_block_table_map_session_types((string) ($item['sessOffered'] ?? '')),
+                        'type' => colby_block_table_session_types_from_sections($item['sections'] ?? []),
                         'department' => $item['dept'] ?? '',
                         'link' => [
                             'title' => $title,
                             'url' => null,
                         ],
                         'columns' => [
-                            $item['crsno'] ?? '',
+                            $item['secCrsNo'] ?? '',
                             $item['dept'] ?? '',
                         ],
                         'faculty' => colby_block_table_faculty($item['sections'] ?? []),
                         'modalOpen' => false,
                     ];
-                }, array_values($filtered));
+                }, $filtered);
 
             case 'Majors and Minors':
                 $majors = [];
@@ -409,8 +506,6 @@ if (!function_exists('colby_block_table_get_heading')) {
                 return 'Course Catalogue';
             case 'Majors and Minors':
                 return 'Majors and Minors';
-            case 'Departments':
-                return 'Departments and Programs';
             case 'Departments':
                 return 'Departments and Programs';
             case 'Offices':
@@ -545,15 +640,15 @@ if (!function_exists('colby_block_table_get_remote_data')) {
         $render_api = $data['render_api'] ?? false;
 
         if (!colby_block_table_is_truthy($render_api)) {
-            if ($data['items']) {
+            if (!empty($data['items'])) {
                 $data['manualItems'] = $data['items'];
             }
+
             return $data;
         }
 
         $api = $data['api'] ?? '';
 
-        // Special WordPress-backed case
         if ($api === 'Departments') {
             $items = colby_block_table_fetch_department_items($data);
 
@@ -565,7 +660,9 @@ if (!function_exists('colby_block_table_get_remote_data')) {
             $data['should_client_refresh'] = false;
 
             return $data;
-        } elseif ($api === 'Offices') {
+        }
+
+        if ($api === 'Offices') {
             $items = colby_block_table_fetch_office_items($data);
 
             $data['initial_items'] = $items;
@@ -578,25 +675,40 @@ if (!function_exists('colby_block_table_get_remote_data')) {
             return $data;
         }
 
-        // Remote endpoint-backed cases
         $endpoint = colby_block_table_get_endpoint($data);
 
         if (!$endpoint) {
             return $data;
         }
 
-        $cache_key = 'colby_block_table_' . md5($endpoint . '|' . $api . '|' . ($data['departmentCode'] ?? ''));
-        $payload = colby_block_table_get_cached_remote_json($cache_key, $endpoint, 1800);
+        $cache_key = 'colby_block_table2_' . md5(
+            implode('|', [
+                $endpoint,
+                $api,
+                $data['departmentCode'] ?? '',
+            ])
+        );
 
+        $payload = colby_block_table_get_cached_remote_json($cache_key, $endpoint, 1800);
+        // dd($payload['data'][0]);
         if (empty($payload)) {
+            $data['initial_items'] = [];
+            $data['initial_heading'] = colby_block_table_get_heading($data);
+            $data['initial_headings'] = colby_block_table_get_headings($data);
+            $data['initial_filter_options'] = colby_block_table_get_filter_options($data);
+            $data['hydrated_from_server'] = false;
+            $data['should_client_refresh'] = false;
+
             return $data;
         }
 
-        $data['initial_items'] = colby_block_table_normalize_items($payload, $data);
+        $items = colby_block_table_normalize_items($payload, $data);
+
+        $data['initial_items'] = $items;
         $data['initial_heading'] = colby_block_table_get_heading($data);
         $data['initial_headings'] = colby_block_table_get_headings($data);
         $data['initial_filter_options'] = colby_block_table_get_filter_options($data);
-        $data['hydrated_from_server'] = !empty($data['initial_items']);
+        $data['hydrated_from_server'] = !empty($items);
         $data['should_client_refresh'] = false;
 
         return $data;

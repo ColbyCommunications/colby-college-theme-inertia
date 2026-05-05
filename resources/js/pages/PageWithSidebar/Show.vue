@@ -58,8 +58,8 @@
             [&>div>section:not(:first-child)]:mt-20
             [&>div>section[data-block-name='core/heading']+section]:mt-[20px]
 
-            [&_a]:underline
-            [&_a:hover]:no-underline
+            [&>div>section[data-block-name='core/heading']_a]:underline
+            [&>div>section[data-block-name='core/heading']_a:hover]:no-underline
             "
             :class="
               !resolvedIsPost
