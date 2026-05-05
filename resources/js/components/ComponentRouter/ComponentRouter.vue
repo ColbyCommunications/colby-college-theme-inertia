@@ -127,7 +127,7 @@ function getPlaceholderHeight(item) {
   const heights = {
     "acf/article-grid": 700,
     "acf/article-section": 650,
-    "acf/carousel": 650,
+    "acf/carousel": 800,
     "acf/dark-interstitial": 250,
     "acf/facts-figures": 400,
     "acf/featured-post": 250,
