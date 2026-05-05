@@ -133,13 +133,13 @@
         <option value="CINE">Cinema Studies</option>
         <option value="CLAS">Classics</option>
         <option value="COMP">Computer Science</option>
+        <option value="ERSC">Earth Sciences</option>
         <option value="EAST">East Asian Studies</option>
         <option value="ECON">Economics</option>
         <option value="EDUC">Education</option>
         <option value="ENGL">English</option>
         <option value="ENVS">Environmental Studies</option>
         <option value="FRIT">French and Italian</option>
-        <option value="GEOL">Geology</option>
         <option value="GMRU">German and Russian</option>
         <option value="GLST">Global Studies</option>
         <option value="GOVT">Government</option>
@@ -627,7 +627,7 @@ function toggleTermDivision(event, runUpdate) {
         "BIOL",
         "CHEM",
         "COMP",
-        "GEOL",
+        "ERSC",
         "MATH",
         "STAT",
       ];
