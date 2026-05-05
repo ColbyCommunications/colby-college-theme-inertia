@@ -7,7 +7,7 @@
       {{ heading }}
     </h2>
     <div
-      class="widget__context [&>p]:font-body [&>p]:font-medium [&>p]:text-10 [&>p]:leading-140 [&>p>a]:no-underline hover:[&>p>a]:underline [&>p]:text-indigo-800 hover:[&>p>a]:text-indigo [&>ul>li]:font-body [&>ul>li]:font-medium [&>ul>li]:text-10 [&>ul>li]:leading-140 [&>ul>li>a]:no-underline hover:[&>ul>li>a]:underline [&>ul>li]:text-indigo-800 hover:[&>ul>li>a]:text-indigo [&>ul>li]:list-disc [&>ul>li]:ml-3 [&>ul>li+li]:mt-2 space-y-2"
+      class="widget__context [&>p]:font-body [&>p]:font-medium [&>p]:text-10 [&>p]:leading-140 [&>p>a]:no-underline hover:[&>p>a]:underline [&>p]:text-indigo-800 hover:[&>p>a]:text-indigo [&>ul>li]:font-body [&>ul>li]:font-medium [&>ul>li]:text-10 [&>ul>li]:leading-140 [&>ul>li>a]:no-underline [&>ul>li>a:hover]:underline [&>ul>li]:text-indigo-800 [&>ul>li>a:hover]:text-indigo [&>ul>li]:list-disc [&>ul>li]:ml-3 [&>ul>li+li]:mt-2 space-y-2"
       v-html="text"
     ></div>
     <ButtonGroup

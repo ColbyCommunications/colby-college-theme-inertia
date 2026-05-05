@@ -33,28 +33,6 @@
 
           <div
             class="
-            [&_h2]:leading-110
-            [&_h2]:-tracking-3
-            [&_h2]:font-extended
-            [&_h2]:font-normal
-            [&_h2]:text-indigo
-            [&_h2]:text-24
-
-            [&_h3]:text-20
-            [&_h3]:leading-110
-            [&_h3]:-tracking-3
-            [&_h3]:text-indigo
-            [&_h3]:font-extended
-            [&_h3]:font-normal
-            
-            
-            [&_h4]:text-16
-            [&_h4]:leading-110
-            [&_h4]:-tracking-3
-            [&_h4]:text-indigo
-            [&_h4]:font-extended
-            [&_h4]:font-normal
-            
             [&>div>section:not(:first-child)]:mt-20
             [&>div>section[data-block-name='core/heading']+section]:mt-[20px]
 
