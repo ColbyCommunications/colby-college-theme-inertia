@@ -86,7 +86,7 @@
         class="overlay-hero__screen absolute top-0 left-0 h-full w-full"
         :class="{ 'invisible opacity-0': active }"
       ></div>
-      <div class="video relative w-full overflow-hidden pb-[56.25%]">
+      <div class="video relative w-full overflow-hidden pb-[56.25%] h-full">
         <div
           class="video__overlay group absolute z-10 flex h-full w-full cursor-pointer items-center justify-center transition-all duration-200 ease-in-out"
         >
@@ -106,6 +106,7 @@
             class="absolute top-0 left-0 z-[-10] h-full w-full object-cover"
             :src="posterImage.src"
             :alt="posterImage.alt || ''"
+            quality="70"
           />
         </div>
       </div>

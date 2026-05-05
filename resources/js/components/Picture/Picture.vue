@@ -2,11 +2,10 @@
   <img
     :class="class"
     :src="
-      'https://www.colby.edu/cdn-cgi/image/width=320,quality=50/' + processedSrc
+      `https://www.colby.edu/cdn-cgi/image/width=320,format=auto,quality=${quality}/` + processedSrc
     "
     :alt="alt"
     :loading="loading"
-    :sizes="'(max-width: 767px) 100vw, 50vw'"
     :fetchpriority="loading === 'eager' ? 'high' : 'auto'"
     :srcset="srcset"
     :width="width"
@@ -74,20 +73,22 @@ const aspectRatio = computed(() => {
 function buildCdnUrl(targetWidth, quality = 60) {
   if (!processedSrc.value) return "";
 
-  const transforms = [`width=${targetWidth}`, `quality=${quality}`];
+  const transforms = [`width=${targetWidth}`, `quality=${quality}`, 'format=auto'];
 
-  if (aspectRatio.value) {
-    const targetHeight = Math.round(targetWidth / aspectRatio.value);
-    transforms.push(`height=${targetHeight}`);
-  }
+  // if (aspectRatio.value) {
+  //   const targetHeight = Math.round(targetWidth / aspectRatio.value);
+  //   transforms.push(`height=${targetHeight}`);
+  // }
 
   return `https://www.colby.edu/cdn-cgi/image/${transforms.join(",")}/${processedSrc.value}`;
 }
 
 const srcset = computed(() => {
   //widths
-  return [320, 640, 960, 1280]
-    .map((w) => `${buildCdnUrl(w, 60)} ${w}w`)
+
+  console.log(props);
+  return [320, 640, 960, 1280, 1600, 1920, 2240]
+    .map((w) => `${buildCdnUrl(w, props.quality)} ${w}w`)
     .join(", ");
 });
 

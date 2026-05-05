@@ -81,7 +81,6 @@
       <label
         class="relative mb-6 flex w-full max-w-sm shrink-0 text-[0] md:mb-0 md:shrink"
       >
-        Search
         <svg
           class="absolute top-3 left-3 w-2.5 fill-indigo-800"
           viewBox="0 0 9.6 9.6"
@@ -186,7 +185,7 @@
 
       <div v-if="filterOptions.length > 0" class="mb-6 flex md:mb-0">
         <button
-          class="mr-5 font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
+          class="mr-5 font-body text-10 leading-130 font-normal text-indigo-900 hover:underline cursor-pointer"
           :class="{ '!text-indigo font-bold': filters.term === 'all' }"
           @click="toggleTermType('All')"
         >
@@ -195,7 +194,7 @@
         <button
           v-for="(term, index) in filterOptions"
           :key="index"
-          class="mr-5 font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
+          class="mr-5 font-body text-10 leading-130 font-normal text-indigo-900 hover:underline cursor-pointer"
           :class="{ '!text-indigo font-bold': filters.term === term }"
           @click="toggleTermType(term)"
         >

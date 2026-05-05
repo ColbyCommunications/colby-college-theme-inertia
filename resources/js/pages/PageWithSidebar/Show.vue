@@ -56,7 +56,10 @@
             [&_h4]:font-normal
             
             [&>div>section:not(:first-child)]:mt-20
-            [&>div>section[data-block-name='core/heading']+section]:mt-[15px]
+            [&>div>section[data-block-name='core/heading']+section]:mt-[20px]
+
+            [&_a]:underline
+            [&_a:hover]:no-underline
             "
             :class="
               !resolvedIsPost

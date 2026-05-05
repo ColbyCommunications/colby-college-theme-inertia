@@ -59,6 +59,7 @@ const props = defineProps({
   static: { type: Boolean, default: false },
   hero: { type: Boolean, default: false },
   date: { type: Boolean, default: false },
+  disableAnimations: { type: Boolean, default: false },
 });
 
 
@@ -103,7 +104,7 @@ const paragraphWithClasses = computed(() => {
   const startsWithBlockTag = /^\s*<(p|ul|ol)\b/i.test(html.trim());
   if (!startsWithBlockTag) html = `<p>${html}</p>`;
   const pCls = `text-group__p font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-[1.75] ${textAlign.value} ${paragraphColor.value} mt-2`;
-  const ulCls = `list-disc font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2 my-4`;
+  const ulCls = `list-disc font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2 my-4 pl-6`;
   const olCls = `list-decimal font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2`;
   const liCls = `${paragraphColor.value} mx-4 [&>ul]:pl-4 [&>ul>li]:list-[circle]`;
   return html.replaceAll("<p>", `<p class="${pCls}">`).replaceAll("<ul>", `<ul class="${ulCls}">`).replaceAll("<ol>", `<ol class="${olCls}">`).replaceAll("<li>", `<li class="${liCls}">`);
@@ -115,7 +116,7 @@ const animateSubheading = async () => {
     const gsap = await getGsap();
     const target = container.value.querySelectorAll('.text-group__subheading > .word-wrap');
     gsap.to(target, {
-        duration: 0.7,
+        duration: 0.5,
         stagger: 0.1,
         opacity: 1,
         ease: 'power3.easeInOut',
@@ -142,12 +143,12 @@ const animateParagraph = async() => {
 
 // --- Lifecycle Hooks ---
 onMounted(() => {
-    isBot.value = window.colby.DISABLE_ANIMATIONS === true;
+    isBot.value = window.colby.DISABLE_ANIMATIONS === true || props.disableAnimations;
 
     if (!container.value) return;
 
     // 3. If it's a bot, exit early and do NOT split text into spans
-    if (isBot.value) return;
+    if (isBot.value || props.disableAnimations) return;
 
     const subheading = container.value.querySelector('.text-group__subheading');
     const paragraph = container.value.querySelector('.text-group__p');
