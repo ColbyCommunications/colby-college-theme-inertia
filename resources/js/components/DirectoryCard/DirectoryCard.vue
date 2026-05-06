@@ -4,11 +4,8 @@
       <div class="relative pb-[119.44444444444444%]">
         <Picture
           class="absolute h-full w-full object-cover"
-          :srcset="image.srcset"
-          :src="image.src"
-          :sizeDesktop="desktopSrc"
-          :sizeMobile="mobileSrc"
-          :alt="imageAlt"
+          :src="image"
+          :alt="`Image of ${props.name}`"
         />
       </div>
     </div>
@@ -233,8 +230,8 @@ const props = defineProps({
     default: () => ({}),
   },
   image: {
-    type: Object,
-    default: () => ({}),
+    type: String,
+    default: '',
   },
 
   // Configuration
@@ -249,29 +246,29 @@ const props = defineProps({
   title: { type: String, default: "" },
   department: { type: String, default: "" },
   phone: { type: String, default: "" },
-  curriculumVitae: { type: String, default: "" },
+  curriculum_itae: { type: String, default: "" },
   email: { type: String, default: "" },
   fax: { type: String, default: "" },
   location: { type: String, default: "" },
   address: { type: String, default: "" },
-  officeHours: { type: String, default: "" },
+  office_hours: { type: String, default: "" },
 
   // Visibility Flags
-  hidePhoto: { type: Boolean, default: false },
-  hidePronouns: { type: Boolean, default: false },
-  hideDepartment: { type: Boolean, default: false },
-  hidePhoneNumber: { type: Boolean, default: false },
-  hideCv: { type: Boolean, default: false },
-  hideEmail: { type: Boolean, default: false },
-  hideFax: { type: Boolean, default: false },
-  hideLocation: { type: Boolean, default: false },
-  hideOfficeHours: { type: Boolean, default: false },
+  hide_photo: { type: Boolean, default: false },
+  hide_pronouns: { type: Boolean, default: false },
+  hide_department: { type: Boolean, default: false },
+  hide_phone_number: { type: Boolean, default: false },
+  hide_cv: { type: Boolean, default: false },
+  hide_email: { type: Boolean, default: false },
+  hide_fax: { type: Boolean, default: false },
+  hide_location: { type: Boolean, default: false },
+  hide_office_hours: { type: Boolean, default: false },
 });
 
 // Computed Logic for Image Data
 // This handles the fallback logic seen in the Twig: (post.thumbnail or image)
 const hasImage = computed(() => {
-  return (props.post.thumbnail || props.image.src) && !props.hidePhoto;
+  return (props.image) && !props.hidePhoto;
 });
 
 const imageAlt = computed(() => {
@@ -282,15 +279,4 @@ const imageAlt = computed(() => {
   return "Directory Image";
 });
 
-// Helper to safely access nested post thumbnail properties if they exist
-const desktopSrc = computed(() =>
-  props.post?.thumbnail?.src
-    ? props.post.thumbnail.src("Square")
-    : props.image.src,
-);
-const mobileSrc = computed(() =>
-  props.post?.thumbnail?.src
-    ? props.post.thumbnail.src("Square_mobile")
-    : props.image.src,
-);
 </script>

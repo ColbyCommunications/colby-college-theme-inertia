@@ -7,7 +7,7 @@
         <th 
           v-for="(heading, index) in headings" 
           :key="`th-${index}`"
-          class="h-12 md:h-11 px-6 font-body text-18 md:text-14 font-semibold leading-120 text-indigo text-left bg-indigo-200 whitespace-nowrap"
+          class="h-12 md:h-11 px-6 font-body text-18 md:text-14 font-semibold leading-120 text-indigo text-left bg-[#eef4ff] whitespace-nowrap"
         >
           {{ heading.heading }}
         </th>
@@ -22,7 +22,7 @@
           <component 
             :is="item.link ? 'a' : 'span'"
             class="inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
-            :class="item.link ? 'text-indigo hover:underline' : 'text-indigo-800'"
+            :class="item.link ? 'text-indigo hover:underline cursor-pointer' : 'text-indigo-800'"
             :href="item.link ? item.link.url : null"
           >
             <div 
@@ -51,12 +51,12 @@
           <a 
             v-if="column.link_or_text === 'link'" 
             :href="column.link.url" 
-            class="inline-flex items-center font-body text-20 md:text-12 text-indigo !underline hover:!no-underline"
+            class="inline-flex items-center font-body text-20 md:text-12 text-indigo !underline hover:!no-underline cursor-pointer"
           >
             {{ column.link.title }}
           </a>
           <template v-else>
-            {{ column.column }}
+            <span>{{ Array.isArray(column.column) ? column.column.join(', ') : column.column }}</span>
           </template>
         </td>
       </tr>
@@ -70,7 +70,7 @@
     >
       <h2
         class="font-extended text-24 leading-110 -tracking-3 font-normal text-indigo"
-        v-text="heading"
+        v-text="initial_heading"
       />
     </div>
 
@@ -81,7 +81,6 @@
       <label
         class="relative mb-6 flex w-full max-w-sm shrink-0 text-[0] md:mb-0 md:shrink"
       >
-        Search
         <svg
           class="absolute top-3 left-3 w-2.5 fill-indigo-800"
           viewBox="0 0 9.6 9.6"
@@ -134,13 +133,13 @@
         <option value="CINE">Cinema Studies</option>
         <option value="CLAS">Classics</option>
         <option value="COMP">Computer Science</option>
+        <option value="ERSC">Earth Sciences</option>
         <option value="EAST">East Asian Studies</option>
         <option value="ECON">Economics</option>
         <option value="EDUC">Education</option>
         <option value="ENGL">English</option>
         <option value="ENVS">Environmental Studies</option>
         <option value="FRIT">French and Italian</option>
-        <option value="GEOL">Geology</option>
         <option value="GMRU">German and Russian</option>
         <option value="GLST">Global Studies</option>
         <option value="GOVT">Government</option>
@@ -186,7 +185,7 @@
 
       <div v-if="filterOptions.length > 0" class="mb-6 flex md:mb-0">
         <button
-          class="mr-5 font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
+          class="mr-5 font-body text-10 leading-130 font-normal text-indigo-900 hover:underline cursor-pointer"
           :class="{ '!text-indigo font-bold': filters.term === 'all' }"
           @click="toggleTermType('All')"
         >
@@ -195,7 +194,7 @@
         <button
           v-for="(term, index) in filterOptions"
           :key="index"
-          class="mr-5 font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
+          class="mr-5 font-body text-10 leading-130 font-normal text-indigo-900 hover:underline cursor-pointer"
           :class="{ '!text-indigo font-bold': filters.term === term }"
           @click="toggleTermType(term)"
         >
@@ -209,9 +208,9 @@
       class="colby-table-block block w-full overflow-scroll md:table md:overflow-auto"
     >
       <tbody>
-        <tr v-if="headings">
+        <tr v-if="currentHeadings">
           <th
-            v-for="(heading_item, index) in headings"
+            v-for="(heading_item, index) in currentHeadings"
             :key="index"
             class="h-12 whitespace-nowrap bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold text-indigo md:h-11 md:text-14"
           >
@@ -227,7 +226,7 @@
           <td class="whitespace-normal px-6 py-2">
             <a
               v-if="item.link.url && !item.image"
-              class="inline-flex items-center font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12"
+              class="inline-flex items-center font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12 cursor-pointer"
               :href="item.link.url"
             >
               {{ item.link.title }}
@@ -395,6 +394,11 @@ const props = defineProps({
   },
   manualItems: { type: Array, default: () => [] },
 
+  headings: {
+    type: Array,
+    default: () => [],
+  },
+
   // NEW
   initial_items: {
     type: Array,
@@ -422,11 +426,11 @@ const props = defineProps({
   },
 });
 
-console.log(props);
+
 
 const fuse = ref(null);
 const heading = ref(undefined);
-const headings = ref(undefined);
+const currentHeadings = ref(undefined);
 const items = ref([]);
 const currentPage = ref(1);
 const searchTerm = ref("");
@@ -623,7 +627,7 @@ function toggleTermDivision(event, runUpdate) {
         "BIOL",
         "CHEM",
         "COMP",
-        "GEOL",
+        "ERSC",
         "MATH",
         "STAT",
       ];
@@ -696,8 +700,8 @@ onMounted(() => {
   }
 
   if (props.render_api) {
-    heading.value = props.initial_heading;
-    headings.value = props.initial_headings;
+    currentHeadings.value = props.initial_heading;
+    currentHeadings.value = props.initial_headings;
     filterOptions.value = props.initial_filter_options;
     items.value = props.initial_items || [];
     initFuse();
@@ -724,7 +728,7 @@ onMounted(() => {
           ],
           modalOpen: false,
         }));
-        headings.value = ["Name", "Title", "Department"];
+        currentHeadings.value = ["Name", "Title", "Department"];
         break;
 
       case "Offices":
@@ -737,7 +741,7 @@ onMounted(() => {
           columns: [],
           modalOpen: false,
         }));
-        headings.value = ["Name"];
+        currentHeadings.value = ["Name"];
         break;
 
       case "Departments":
@@ -752,7 +756,7 @@ onMounted(() => {
           department: item.department_code,
           modalOpen: false,
         }));
-        headings.value = ["Name"];
+        currentHeadings.value = ["Name"];
         break;
     }
 

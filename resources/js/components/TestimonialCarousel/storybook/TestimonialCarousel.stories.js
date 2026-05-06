@@ -17,13 +17,8 @@ export const Default = {
     items: [
       {
         image: {
-          srcset: "https://placehold.co/860x400",
-          src: "https://placehold.co/600x600",
+          url: "https://placehold.co/600x600",
           alt: "Student photo",
-          sizes: {
-            Landscape: "https://placehold.co/860x400",
-            Square: "https://placehold.co/600x600",
-          },
         },
         testimonial: {
           quote:
@@ -33,13 +28,8 @@ export const Default = {
       },
       {
         image: {
-          srcset: "https://placehold.co/860x400",
-          src: "https://placehold.co/600x600",
+          url: "https://placehold.co/600x600",
           alt: "Alumni photo",
-          sizes: {
-            Landscape: "https://placehold.co/860x400",
-            Square: "https://placehold.co/600x600",
-          },
         },
         testimonial: {
           quote:
@@ -66,13 +56,8 @@ export const WithCaptions = {
     items: [
       {
         image: {
-          srcset: "https://placehold.co/860x400",
-          src: "https://placehold.co/600x600",
+          url: "https://placehold.co/600x600",
           alt: "Student in lab",
-          sizes: {
-            Landscape: "https://placehold.co/860x400",
-            Square: "https://placehold.co/600x600",
-          },
           caption: "A student conducting research in the biology lab.",
         },
         testimonial: {
@@ -82,13 +67,8 @@ export const WithCaptions = {
       },
       {
         image: {
-          srcset: "https://placehold.co/860x400",
-          src: "https://placehold.co/600x600",
+          url: "https://placehold.co/600x600",
           alt: "Campus event",
-          sizes: {
-            Landscape: "https://placehold.co/860x400",
-            Square: "https://placehold.co/600x600",
-          },
           caption: "Annual campus festival celebration.",
         },
         testimonial: {
@@ -114,13 +94,8 @@ export const SingleItem = {
     items: [
       {
         image: {
-          srcset: "https://placehold.co/860x400",
-          src: "https://placehold.co/600x600",
+          url: "https://placehold.co/600x600",
           alt: "Solo student",
-          sizes: {
-            Landscape: "https://placehold.co/860x400",
-            Square: "https://placehold.co/600x600",
-          },
         },
         testimonial: {
           quote: '"My four years at Colby were transformative."',

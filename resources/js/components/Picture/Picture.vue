@@ -2,34 +2,19 @@
   <img
     :class="class"
     :src="
-      'https://www.colby.edu/cdn-cgi/image/width=320,quality=50/' + processedSrc
+      `https://www.colby.edu/cdn-cgi/image/width=320,format=auto,quality=${quality}/` + processedSrc
     "
     :alt="alt"
     :loading="loading"
-    :sizes="'(max-width: 767px) 100vw, 50vw'"
-    media="(min-width:768px)"
     :fetchpriority="loading === 'eager' ? 'high' : 'auto'"
-    :srcset="
-      'https://www.colby.edu/cdn-cgi/image/width=320,quality=60/' +
-      processedSrc +
-      ' 320w,' +
-      'https://www.colby.edu/cdn-cgi/image/width=640,quality=60/' +
-      processedSrc +
-      ' 640w,' +
-      'https://www.colby.edu/cdn-cgi/image/width=960,quality=60/' +
-      processedSrc +
-      ' 960w,' +
-      'https://www.colby.edu/cdn-cgi/image/width=1280,quality=60/' +
-      processedSrc +
-      ' 1280w,'
-    "
-    width="2400"
-    height="1320"
+    :srcset="srcset"
+    :width="width"
+    :height="height"
   />
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps({
   // The class to apply to the <img> element
@@ -45,9 +30,21 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  height: {
+    type: Number,
+    default: 1320,
+  },
+  width: {
+    type: Number,
+    default: 2400,
+  },
   loading: {
     type: String,
     default: "lazy",
+  },
+  quality: {
+    type: String,
+    default: "60",
   },
   fromApi: {
     type: Boolean,
@@ -63,4 +60,36 @@ if (window.colby.isLocal && !props.fromApi) {
 } else {
   processedSrc.value = props.src;
 }
+
+const aspectRatio = computed(() => {
+  const w = Number(props.width);
+  const h = Number(props.height);
+
+  if (!w || !h) return null;
+
+  return w / h;
+});
+
+function buildCdnUrl(targetWidth, quality = 60) {
+  if (!processedSrc.value) return "";
+
+  const transforms = [`width=${targetWidth}`, `quality=${quality}`, 'format=auto'];
+
+  // if (aspectRatio.value) {
+  //   const targetHeight = Math.round(targetWidth / aspectRatio.value);
+  //   transforms.push(`height=${targetHeight}`);
+  // }
+
+  return `https://www.colby.edu/cdn-cgi/image/${transforms.join(",")}/${processedSrc.value}`;
+}
+
+const srcset = computed(() => {
+  //widths
+
+  console.log(props);
+  return [320, 640, 960, 1280, 1600, 1920, 2240]
+    .map((w) => `${buildCdnUrl(w, props.quality)} ${w}w`)
+    .join(", ");
+});
+
 </script>

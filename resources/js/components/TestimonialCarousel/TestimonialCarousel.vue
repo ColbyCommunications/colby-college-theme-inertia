@@ -40,10 +40,10 @@
                   />
                 </div>
                 <p
-                  v-if="item.caption"
+                  v-if="item.image?.caption"
                   class="mt-2 font-body text-10 leading-140 font-normal text-indigo-800"
                 >
-                  {{ item.caption }}
+                  {{ item.image?.caption }}
                 </p>
               </div>
             </div>

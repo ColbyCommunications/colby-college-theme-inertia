@@ -15,6 +15,7 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import LazyBlock from "../LazyBlockWrapper/LazyBlockWrapper.vue";
 
 const props = defineProps({
@@ -22,6 +23,23 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+});
+
+const isMobile = ref(false);
+let mediaQuery = null;
+
+function updateIsMobile() {
+  isMobile.value = mediaQuery?.matches ?? false;
+}
+
+onMounted(() => {
+  mediaQuery = window.matchMedia("(max-width: 767px)");
+  updateIsMobile();
+  mediaQuery.addEventListener("change", updateIsMobile);
+});
+
+onBeforeUnmount(() => {
+  mediaQuery?.removeEventListener("change", updateIsMobile);
 });
 
 const blockRegistry = {
@@ -58,7 +76,6 @@ const blockRegistry = {
   "acf/embed": () => import("../Embed/Embed.vue"),
   "acf/image": () => import("../Image/Image.vue"),
   "acf/image-text": () => import("../ImageText/ImageText.vue"),
-  "acf/advanced-accordion": () => import("../AdvancedAccordion/AdvancedAccordion.vue"),
 };
 
 function getLoader(blockName) {
@@ -70,15 +87,24 @@ function getBlockKey(item, index) {
 }
 
 function isEager(item, index) {
+  const blockName = item.blockName;
+
   if (index === 0) return true;
 
+  if (["acf/hero", "acf/home-hero", "acf/overlay-hero"].includes(blockName)) {
+    return true;
+  }
+
+  // Desktop: allow high homepage carousel to load eagerly.
+  // Mobile: keep carousel lazy because home hero occupies the first viewport.
+  if (blockName === "acf/carousel" && index === 1) {
+    return !isMobile.value;
+  }
+
   return [
-    "acf/hero",
-    "acf/home-hero",
-    "acf/overlay-hero",
     "acf/section-nav",
     "acf/subpage-nav",
-  ].includes(item.blockName);
+  ].includes(blockName);
 }
 
 function getRootMargin(item, index) {
@@ -86,7 +112,11 @@ function getRootMargin(item, index) {
     return "0px";
   }
 
-  return "50px 0px";
+  if (isMobile.value) {
+    return "200px 0px";
+  }
+
+  return "600px 0px";
 }
 
 /**
@@ -95,9 +125,9 @@ function getRootMargin(item, index) {
  */
 function getPlaceholderHeight(item) {
   const heights = {
-    "acf/article-grid": 500,
-    "acf/article-section": 300,
-    "acf/carousel": 450,
+    "acf/article-grid": 700,
+    "acf/article-section": 650,
+    "acf/carousel": 800,
     "acf/dark-interstitial": 250,
     "acf/facts-figures": 400,
     "acf/featured-post": 250,
@@ -112,17 +142,17 @@ function getPlaceholderHeight(item) {
     "acf/home-hero": 0,
     "acf/overlay-hero": 0,
     "acf/context-article-grid": 300,
-    "acf/table": 350,
+    "acf/table": 600,
     "acf/people-grid": 350,
     "acf/accordion": 350,
     "acf/paragraph": 350,
     "acf/embed": 200,
     "acf/image": 200,
     "acf/image-text": 200,
-    "acf/advanced-accordion": 200,
+    "acf/advanced-accordion": 500,
 
     "core/heading": 0,
-    "core/group": 350,
+    "core/group": 600,
   };
 
   return heights[item.blockName] ?? 0;

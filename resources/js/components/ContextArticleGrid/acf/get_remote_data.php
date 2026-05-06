@@ -80,15 +80,17 @@ if (!function_exists('colby_block_context_article_grid_normalize_items')) {
         $cta = $data['cta'] ?? 'Read Story';
 
         return array_map(function ($item) use ($cta) {
-            $og_image = $item['yoast_head_json']['og_image'][0]['url'] ?? '';
+            $og_image_url = $item['yoast_head_json']['og_image'][0]['url'] ?? '';
             $og_description = $item['yoast_head_json']['og_description'] ?? '';
 
             return [
                 'id' => $item['id'] ?? null,
-                'image' => $og_image
+                'image' => $og_image_url
                     ? [
-                        'src' => $og_image,
+                        'src' => $og_image_url,
                         'alt' => $og_description,
+                        'height' => $item['yoast_head_json']['og_image'][0]['height'],
+                        'width' => $item['yoast_head_json']['og_image'][0]['width'],
                     ]
                     : null,
                 'subheading' => $item['post-meta-fields']['primary_category'] ?? '',

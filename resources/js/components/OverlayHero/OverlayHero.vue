@@ -63,18 +63,20 @@
       ></div>
       <Video
         :id="video.id"
-        :play-icon="false"
+        :playIcon="false"
         :image="posterImage || {}"
       />
     </template>
 
     <!-- Mode 2: Static image (fromPage or no video at all) -->
-    <template v-else-if="(!video && !videoLoop)">
+    <template v-else-if="(!video && !video_loop)">
       <Picture
         v-if="image"
         class="absolute top-0 left-0 z-[-10] h-full w-full object-cover"
         :src="posterImage.src"
         :alt="posterImage.alt || ''"
+        :height="posterImage.height"
+        :width="posterImage.width"
       />
     </template>
 
@@ -84,12 +86,12 @@
         class="overlay-hero__screen absolute top-0 left-0 h-full w-full"
         :class="{ 'invisible opacity-0': active }"
       ></div>
-      <div class="video relative w-full overflow-hidden pb-[56.25%]">
+      <div class="video relative w-full overflow-hidden pb-[56.25%] h-full">
         <div
           class="video__overlay group absolute z-10 flex h-full w-full cursor-pointer items-center justify-center transition-all duration-200 ease-in-out"
         >
           <video
-            v-if="videoLoop"
+            v-if="video_loop"
             class="absolute top-0 right-0 bottom-0 left-0 z-[-10] h-auto min-h-full w-auto min-w-full bg-cover bg-repeat object-cover"
             playsinline
             autoplay
@@ -97,13 +99,14 @@
             loop
             :poster="posterImage.src || undefined"
           >
-            <source :src="videoLoop" type="video/mp4" />
+            <source :src="video_loop" type="video/mp4" />
           </video>
           <Picture
             v-else-if="image"
             class="absolute top-0 left-0 z-[-10] h-full w-full object-cover"
             :src="posterImage.src"
             :alt="posterImage.alt || ''"
+            quality="70"
           />
         </div>
       </div>
@@ -147,7 +150,7 @@ const props = defineProps({
     type: Object,
     default: null,
   },
-  videoLoop: {
+  video_loop: {
     type: String,
     default: "",
   },

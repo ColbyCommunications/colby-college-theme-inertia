@@ -14,7 +14,7 @@
             :aria-expanded="isActive(index)"
             @click="toggle(index)"
           >
-            <h3 class="font-body !text-18 leading-120 font-bold text-indigo">
+            <h3 class="!text-18 leading-120 text-indigo">
               {{ panel.heading }}
             </h3>
 
@@ -39,7 +39,7 @@
         >
           <div v-show="isActive(index)" class="accordion__window">
             <div class="accordion__content">
-              <div v-html="panel.content" class="text-indigo-800"></div>
+              <div v-html="panel.content" :class="WysiwygClasses"></div>
             </div>
           </div>
         </Transition>
@@ -52,6 +52,8 @@
 import { ref, onMounted } from "vue";
 import Icon from "@/js/components/Icon/Icon.vue";
 
+import { WysiwygClasses } from '../../utils/wysiwygClasses';
+
 const props = defineProps({
   panels: {
     type: Array,
@@ -62,7 +64,7 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  openByDefault: {
+  open_by_default: {
     type: Boolean,
     default: false,
   },
@@ -120,7 +122,7 @@ const onLeave = (el) => {
 
 // Handle Open By Default
 onMounted(() => {
-  if (props.openByDefault && props.panels.length > 0) {
+  if (props.open_by_default && props.panels.length > 0) {
     activePanels.value.push(0);
   }
 });

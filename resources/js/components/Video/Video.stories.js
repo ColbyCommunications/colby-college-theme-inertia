@@ -48,7 +48,7 @@ export const WithVideoLoop = {
   name: "With Video Loop",
   args: {
     ...Primary.args,
-    videoLoop: "https://example.com/video.mp4",
+    videoLoop: "https://www.colby.edu/communications/training-videos/flyover-rocky-east-shore.mp4",
   },
   play: async ({ canvas }) => {
     if (import.meta.env.MODE !== 'test' ) return;
@@ -58,12 +58,3 @@ export const WithVideoLoop = {
   },
 };
 
-export const ClickToPlay = {
-  name: "Click to Play",
-  args: Primary.args,
-  play: async ({ canvasElement, userEvent }) => {
-    if (import.meta.env.MODE !== 'test' ) return;
-    const overlay = canvasElement.querySelector(".video__overlay");
-    if (overlay) await userEvent.click(overlay);
-  },
-};

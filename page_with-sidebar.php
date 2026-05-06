@@ -413,6 +413,7 @@ if ($hero_type === 'overlay') {
 
 $sidebar = $is_post ? null : colby_sidebar_build_data($post);
 
+// dd($filtered_blocks);
 
 Inertia::render('PageWithSidebar/Show', [
   'id' => $post->ID,
