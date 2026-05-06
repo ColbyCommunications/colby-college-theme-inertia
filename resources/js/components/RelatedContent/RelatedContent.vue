@@ -1,16 +1,16 @@
 <template>
   <div class="related-content space-y-20">
-    <div class="related-content__inner grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
-      <h2 class="md:col-span-12 font-extended font-bold text-18 leading-120 text-indigo tracking-8 uppercase text-center">
+    <div
+      class="related-content__inner mx-auto my-0 grid w-full max-w-screen-2xl gap-x-10 px-5 md:grid-cols-12"
+    >
+      <h2
+        class="text-center font-extended text-18 leading-120 font-bold tracking-8 text-indigo uppercase md:col-span-12"
+      >
         {{ heading }}
       </h2>
     </div>
-    <div class="related-content__inner max-w-screen-2xl w-full px-5 mx-auto">
-      <ArticleGrid
-        display_posts_method="manual"
-        :columns="4"
-        :items="items"
-      />
+    <div class="related-content__inner mx-auto w-full max-w-screen-2xl px-5">
+      <ArticleGrid display_posts_method="manual" :columns="4" :items="items" />
     </div>
   </div>
 </template>

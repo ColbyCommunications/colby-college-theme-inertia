@@ -10,7 +10,6 @@
       data-name="Layer 2"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 960 625"
-      class="absolute top-[-14px] left-[-20px] hidden w-[125px] md:block md:w-[100px]"
     >
       <title>Colby Athletics logo</title>
       <desc>Go to colbyathletics.com homepage</desc>

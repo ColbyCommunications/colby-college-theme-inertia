@@ -1,17 +1,16 @@
 <template>
   <ul
-    class="mb-12 flex w-full justify-start md:col-span-4 md:mb-0 md:grid md:w-64 md:grid-cols-2"
+    class="mb-12 flex flex-wrap gap-x-4 gap-y-3 md:col-span-4 md:mb-0 md:gap-x-2"
   >
     <li
       v-for="item in menu"
       :key="item.id || item.url || item.title"
-      class="w-48 font-body text-18 leading-140 font-bold text-[#eef4ff] md:col-span-1 md:px-4 md:text-10"
+      class="flex-shrink-0 font-body text-18 leading-140 font-bold text-[#eef4ff] md:px-4 md:text-10"
     >
       <a
         :href="item.url"
-        class="mr-10 flex text-[#eef4ff] transition-all duration-200 ease-in-out hover:text-white hover:underline md:items-center min-w-[44px] min-h-[44px]"
+        class="flex min-h-[44px] min-w-[44px] items-center text-[#eef4ff] transition-all duration-200 ease-in-out hover:text-white hover:underline"
       >
-        <!-- Icon component -->
         <Icon
           :name="item.title"
           class="mr-2 h-4 w-4 fill-canary md:mr-1 md:h-3 md:w-3"

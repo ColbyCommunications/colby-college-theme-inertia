@@ -8,7 +8,7 @@
       :key="item.id || item.url || item.title"
       class="w-48 font-body text-18 leading-140 font-bold text-[#eef4ff] md:col-span-1 md:px-4 md:text-10"
       role="listitem"
-      >
+    >
       <a
         :href="item.url"
         class="mr-10 flex text-[#eef4ff] transition-all duration-200 ease-in-out hover:text-white hover:underline md:items-center"

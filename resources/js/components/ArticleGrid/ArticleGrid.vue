@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div v-if="props.display_posts_method === 'internal'">
-      <div class="grid grid-cols-12 gap-10">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-10">
         <div
           v-for="(item, index) in displayItems"
           :key="index"
@@ -36,7 +36,7 @@
     </div>
 
     <div v-if="props.display_posts_method === 'api'">
-      <div class="grid grid-cols-12 gap-10">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-10">
         <div
           v-for="(item, index) in displayItems"
           :key="index"
@@ -72,7 +72,7 @@
     </div>
 
     <div v-if="props.display_posts_method === 'manual'">
-      <div class="grid grid-cols-12 gap-10">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-10">
         <div
           v-for="(item, index) in normalizeItems(props.items)"
           :key="index"
