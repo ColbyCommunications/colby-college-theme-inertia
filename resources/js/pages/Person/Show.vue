@@ -87,6 +87,10 @@
                   [&_figure+figure]:mt-20 md:[&_figure+figure]:mt-[100px] [&_figure+div]:mt-20 md:[&_figure+div]:mt-[100px] [&_figure+h2]:mt-16 md:[&_figure+h2]:mt-20
                   [&_p+div]:mt-10 md:[&_p+div]:mt-[50px] [&_p+h2]:mt-20 [&_p+h3]:mt-6 [&_p+p]:mt-6 [&_p+ul]:mt-6 [&_p+table]:mt-10 md:[&_p+table]:mt-[50px]
                   [&_hr]:border-t [&_hr]:border-solid [&_hr]:border-indigo-300 [&_hr]:my-16
+                  [&_ul]:pl-6
+                  [&_ul]:mb-4
+                  [&_ol]:pl-6
+                  [&_ol]:mb-4
                 ">
                     <span v-if="!acf.hide_bio" v-html="acf.bio" />
                 </div>
