@@ -428,7 +428,8 @@ $args = [
 // dd($filtered_blocks);
 
 // dd($terms);
-if (!empty(array_filter($terms, fn($t) => $t->slug === 'office'))) {
+
+if ($terms && !empty(array_filter($terms, fn($t) => $t->slug === 'office'))) {
     $args['address'] = get_post_meta($post->ID, 'address')[0];
     $args['phone'] = get_post_meta($post->ID, 'phone')[0];
     $args['email'] = get_post_meta($post->ID, 'email')[0];
@@ -436,5 +437,6 @@ if (!empty(array_filter($terms, fn($t) => $t->slug === 'office'))) {
     $args['location'] = get_post_meta($post->ID, 'location')[0];
     $args['image']   = get_the_post_thumbnail_url($post->ID, 'Square');
 }
+
 
 Inertia::render('PageWithSidebar/Show', $args);

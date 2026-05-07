@@ -1,6 +1,6 @@
 <template>
   <AppLayout :site-data="resolvedSiteData" :menus="resolvedMenus">
-    <template v-if="page_categories.find(pc => pc.slug === 'office')">
+    <template v-if="page_categories && page_categories.find(pc => pc.slug === 'office')">
       <section class="sidebar-page">
         <div
           class="sidebar-page__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto md:mt-20 mt-16"
