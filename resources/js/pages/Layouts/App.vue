@@ -37,7 +37,6 @@
         Sorry, no content
       </slot>
     </main>
-    <div>footer goes here</div>
     <SiteFooter
       :url="resolvedSiteData.url"
       :address="resolvedSiteData.address"
