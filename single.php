@@ -89,7 +89,6 @@ if ($post->post_type === 'people') {
   return Inertia::render('Person/Show', [
       'id'      => $post->ID,
       'title'   => get_the_title($post->ID),
-      'content' => $content,
       'image'   => get_the_post_thumbnail_url($post->ID, 'Square'),
       'date'    => get_the_date('', $post->ID),
       'author'  => get_the_author_meta('display_name', $post->post_author),

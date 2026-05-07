@@ -21,14 +21,10 @@
         
                 <Widget
                     heading="Resources"
-                    :buttons="[
-                    {
-                        button: {
-                        url: '/directory-profile-update-form/',
-                        title: 'Update Your Directory Profile',
-                        },
-                    },
-                    ]"
+                    :buttons="[{
+                      url: '/directory-profile-update-form/',
+                      title: 'Update Your Directory Profile',
+                    }]"
                 />
                 </div>
         
