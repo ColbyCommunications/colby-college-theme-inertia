@@ -413,14 +413,28 @@ if ($hero_type === 'overlay') {
 
 $sidebar = $is_post ? null : colby_sidebar_build_data($post);
 
+$terms = get_the_terms($post->ID, 'page-categories');
+$args = [
+    'id' => $post->ID,
+    'title' => get_the_title($post->ID),
+    'layout' => 'with-sidebar',
+    'sidebar' => $sidebar,
+    'isPost' => $is_post,
+    'blocks' => $filtered_blocks,
+    'hero' => $hero,
+    'page_categories' => $terms,
+];
+
 // dd($filtered_blocks);
 
-Inertia::render('PageWithSidebar/Show', [
-  'id' => $post->ID,
-  'title' => get_the_title($post->ID),
-  'layout' => 'with-sidebar',
-  'sidebar' => $sidebar,
-  'isPost' => $is_post,
-  'blocks' => $filtered_blocks,
-  'hero' => $hero
-]);
+// dd($terms);
+if (!empty(array_filter($terms, fn($t) => $t->slug === 'office'))) {
+    $args['address'] = get_post_meta($post->ID, 'address')[0];
+    $args['phone'] = get_post_meta($post->ID, 'phone')[0];
+    $args['email'] = get_post_meta($post->ID, 'email')[0];
+    $args['fax'] = get_post_meta($post->ID, 'fax')[0];
+    $args['location'] = get_post_meta($post->ID, 'location')[0];
+    $args['image']   = get_the_post_thumbnail_url($post->ID, 'Square');
+}
+
+Inertia::render('PageWithSidebar/Show', $args);
