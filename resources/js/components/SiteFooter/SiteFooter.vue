@@ -24,6 +24,7 @@
           </a>
 
           <a
+            v-if="display_athletics_logo"
             class="relative block transition-all duration-200 ease-in-out hover:text-white hover:underline lg:hidden"
             href="https://colbyathletics.com"
             aria-label="Go to colbyathletics.com homepage"
@@ -48,6 +49,7 @@
         </address>
 
         <a
+          v-if="display_athletics_logo"
           class="relative hidden transition-all duration-200 ease-in-out hover:text-white hover:underline lg:block"
           href="https://colbyathletics.com"
           aria-label="Go to colbyathletics.com homepage"
@@ -230,6 +232,7 @@ import ActionMenu from "../Menus/ActionMenu.vue";
 import Button from "../Button/Button.vue";
 import SocialMenu from "../Menus/SocialMenu.vue";
 import Icon from "@/js/components/Icon/Icon.vue";
+import { useAttrs } from "vue";
 
 const props = defineProps({
   menus: { type: Object, default: () => ({}) },
@@ -239,6 +242,7 @@ const props = defineProps({
   logo: { type: String, default: "" },
   logoStyle: { type: String, default: "" },
   footerStyle: { type: String, default: "" },
+  display_athletics_logo: { type: Boolean },
 });
 
 console.log(props);
