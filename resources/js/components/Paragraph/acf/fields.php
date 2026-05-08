@@ -26,6 +26,28 @@ acf_add_local_field_group( array(
 			'media_upload' => 0,
 			'delay' => 0,
 		),
+		array(
+			'key' => 'field_680fc9a0b8a31',
+			'label' => 'Buttons (copy)',
+			'name' => 'buttons_copy',
+			'aria-label' => '',
+			'type' => 'clone',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'clone' => array(
+				0 => 'group_62efae3375c73',
+			),
+			'display' => 'seamless',
+			'layout' => 'block',
+			'prefix_label' => 0,
+			'prefix_name' => 0,
+		),
 	),
 	'location' => array(
 		array(

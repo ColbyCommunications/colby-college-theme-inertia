@@ -636,7 +636,277 @@ function colby_field_has_required_value(array $field, $value): bool {
 }
 
 // ---------------------------------------------------------------------------
-// 7. Recursive field-tree validation
+// 7. WYSIWYG content policy validation
+// ---------------------------------------------------------------------------
+
+function colby_wysiwyg_field_policy(array $field): array {
+    if (($field['type'] ?? '') !== 'wysiwyg') {
+        return ['mode' => 'none'];
+    }
+
+    $toolbar = strtolower((string) ($field['toolbar'] ?? ''));
+
+    if (in_array($toolbar, ['basic', 'limited'], true)) {
+        return [
+            'mode' => 'limited',
+            'forbidden_tags' => [
+                'audio',
+                'blockquote',
+                'button',
+                'canvas',
+                'col',
+                'colgroup',
+                'embed',
+                'figcaption',
+                'figure',
+                'form',
+                'h1',
+                'h2',
+                'h3',
+                'h4',
+                'h5',
+                'h6',
+                'iframe',
+                'img',
+                'input',
+                'math',
+                'object',
+                'picture',
+                'pre',
+                'script',
+                'select',
+                'source',
+                'style',
+                'svg',
+                'table',
+                'tbody',
+                'td',
+                'textarea',
+                'tfoot',
+                'th',
+                'thead',
+                'tr',
+                'video',
+            ],
+        ];
+    }
+
+    if ($toolbar === 'full' && empty($field['media_upload'])) {
+        return [
+            'mode' => 'no_media',
+            'forbidden_tags' => [
+                'audio',
+                'canvas',
+                'embed',
+                'figcaption',
+                'figure',
+                'iframe',
+                'img',
+                'math',
+                'object',
+                'picture',
+                'script',
+                'source',
+                'style',
+                'svg',
+                'video',
+            ],
+        ];
+    }
+
+    return ['mode' => 'none'];
+}
+
+function colby_wysiwyg_limited_allowed_html(): array {
+    return [
+        'a' => [
+            'href' => true,
+            'rel' => true,
+            'target' => true,
+            'title' => true,
+        ],
+        'b' => [],
+        'br' => [],
+        'em' => [],
+        'i' => [],
+        'li' => [],
+        'ol' => [],
+        'p' => [],
+        'strong' => [],
+        'u' => [],
+        'ul' => [],
+    ];
+}
+
+function colby_wysiwyg_find_html_tags(string $html): array {
+    if (!preg_match_all('/<\s*\/?\s*([a-zA-Z0-9:-]+)/', $html, $matches)) {
+        return [];
+    }
+
+    $tags = array_map('strtolower', $matches[1]);
+
+    return array_values(array_unique($tags));
+}
+
+function colby_wysiwyg_tag_label(string $tag): string {
+    if (in_array($tag, ['img', 'picture', 'source', 'figure', 'figcaption'], true)) {
+        return 'images';
+    }
+
+    if ($tag === 'blockquote') {
+        return 'block quotes';
+    }
+
+    if (in_array($tag, ['table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'col', 'colgroup'], true)) {
+        return 'tables';
+    }
+
+    if (in_array($tag, ['iframe', 'embed', 'object', 'video', 'audio', 'canvas', 'svg', 'math'], true)) {
+        return 'embedded media';
+    }
+
+    if (in_array($tag, ['script', 'style'], true)) {
+        return 'scripts or styles';
+    }
+
+    if (in_array($tag, ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], true)) {
+        return 'headings';
+    }
+
+    if (in_array($tag, ['form', 'input', 'button', 'select', 'textarea'], true)) {
+        return 'form controls';
+    }
+
+    return 'unsupported HTML';
+}
+
+function colby_wysiwyg_detect_forbidden_markup(string $html, array $policy): array {
+    $forbidden_tags = array_flip($policy['forbidden_tags'] ?? []);
+    $labels = [];
+
+    if (empty($forbidden_tags)) {
+        return [];
+    }
+
+    foreach (colby_wysiwyg_find_html_tags($html) as $tag) {
+        if (isset($forbidden_tags[$tag])) {
+            $labels[] = colby_wysiwyg_tag_label($tag);
+        }
+    }
+
+    return array_values(array_unique($labels));
+}
+
+function colby_wysiwyg_normalize_html_for_compare(string $html): string {
+    $html = trim($html);
+    $html = preg_replace('/>\s+</', '><', $html);
+    $html = preg_replace('/\s+/', ' ', $html);
+
+    return trim((string) $html);
+}
+
+function colby_wysiwyg_policy_violation(string $html, array $policy): string {
+    if (($policy['mode'] ?? 'none') === 'none' || trim($html) === '') {
+        return '';
+    }
+
+    $forbidden = colby_wysiwyg_detect_forbidden_markup($html, $policy);
+
+    if (!empty($forbidden)) {
+        return implode(', ', $forbidden) . ' are not allowed';
+    }
+
+    if (($policy['mode'] ?? '') !== 'limited') {
+        return '';
+    }
+
+    $sanitized = wp_kses(
+        $html,
+        colby_wysiwyg_limited_allowed_html(),
+        ['http', 'https', 'mailto', 'tel']
+    );
+
+    if (
+        colby_wysiwyg_normalize_html_for_compare($html)
+        !== colby_wysiwyg_normalize_html_for_compare($sanitized)
+    ) {
+        return 'only paragraphs, links, lists, bold, italic, and underline are allowed';
+    }
+
+    return '';
+}
+
+function colby_validate_wysiwyg_policy_list(
+    array $schema,
+    array $data,
+    string $block_label = '',
+    array $parent_scopes = []
+): array {
+    $errors = [];
+
+    foreach ($schema as $field) {
+        $name = $field['name'] ?? '';
+        $type = $field['type'] ?? '';
+
+        if ($type === 'clone' && !empty($field['_clone_seamless'])) {
+            $clone_fields = $field['_resolved_clone_fields'] ?? [];
+            $clone_errors = colby_validate_wysiwyg_policy_list($clone_fields, $data, $block_label, $parent_scopes);
+            $errors = array_merge($errors, $clone_errors);
+            continue;
+        }
+
+        if (!colby_evaluate_conditional_logic($field, $data, $schema, $parent_scopes)) {
+            continue;
+        }
+
+        $value = $data[$name] ?? null;
+
+        if ($type === 'wysiwyg' && is_string($value) && trim($value) !== '') {
+            $violation = colby_wysiwyg_policy_violation($value, colby_wysiwyg_field_policy($field));
+
+            if ($violation !== '') {
+                $label = $field['label'] ?? $name;
+                $errors[] = sprintf('%s: %s', $label, $violation);
+            }
+        }
+
+        $child_parent_scopes = array_merge(
+            [['schema' => $schema, 'data' => $data]],
+            $parent_scopes
+        );
+
+        if ($type === 'group' && is_array($value)) {
+            $sub_fields = $field['sub_fields'] ?? [];
+            $sub_errors = colby_validate_wysiwyg_policy_list($sub_fields, $value, $block_label, $child_parent_scopes);
+            $errors = array_merge($errors, $sub_errors);
+        }
+
+        if ($type === 'repeater' && is_array($value)) {
+            $sub_fields = $field['sub_fields'] ?? [];
+            foreach ($value as $row_index => $row_data) {
+                if (!is_array($row_data)) {
+                    continue;
+                }
+
+                $row_errors = colby_validate_wysiwyg_policy_list($sub_fields, $row_data, $block_label, $child_parent_scopes);
+                foreach ($row_errors as $row_error) {
+                    $errors[] = sprintf('%s (row %d)', $row_error, $row_index + 1);
+                }
+            }
+        }
+
+        if ($type === 'clone' && empty($field['_clone_seamless']) && is_array($value)) {
+            $clone_fields = $field['_resolved_clone_fields'] ?? [];
+            $clone_errors = colby_validate_wysiwyg_policy_list($clone_fields, $value, $block_label, $child_parent_scopes);
+            $errors = array_merge($errors, $clone_errors);
+        }
+    }
+
+    return $errors;
+}
+
+// ---------------------------------------------------------------------------
+// 8. Recursive field-tree validation
 // ---------------------------------------------------------------------------
 
 /**
@@ -746,7 +1016,7 @@ function colby_validate_field_list(
 }
 
 // ---------------------------------------------------------------------------
-// 8. Main validation entry point
+// 9. Main validation entry point
 // ---------------------------------------------------------------------------
 
 function colby_validate_blocks(array $blocks): array {
@@ -818,6 +1088,22 @@ function colby_validate_blocks(array $blocks): array {
             );
         }
 
+        $wysiwyg_errors = colby_validate_wysiwyg_policy_list($schema, $data, $block_title);
+
+        if (!empty($wysiwyg_errors)) {
+            $message = sprintf(
+                __('%s contains unsupported WYSIWYG content: %s.', 'colby'),
+                $block_title,
+                implode('; ', $wysiwyg_errors)
+            );
+
+            $errors[] = new WP_Error(
+                'colby_block_validation_failed',
+                $message,
+                ['status' => 400]
+            );
+        }
+
         if (!empty($block['innerBlocks'])) {
             $errors = array_merge($errors, colby_validate_blocks($block['innerBlocks']));
         }
@@ -827,7 +1113,7 @@ function colby_validate_blocks(array $blocks): array {
 }
 
 // ---------------------------------------------------------------------------
-// 9. Request content extraction (unchanged)
+// 10. Request content extraction (unchanged)
 // ---------------------------------------------------------------------------
 
 function colby_get_request_content(WP_REST_Request $request): string {
@@ -865,7 +1151,7 @@ function colby_get_request_content(WP_REST_Request $request): string {
 }
 
 // ---------------------------------------------------------------------------
-// 10. Validation error aggregation (unchanged)
+// 11. Validation error aggregation (unchanged)
 // ---------------------------------------------------------------------------
 
 function colby_get_block_validation_error(WP_REST_Request $request): ?WP_Error {
@@ -899,7 +1185,7 @@ function colby_get_block_validation_error(WP_REST_Request $request): ?WP_Error {
 }
 
 // ---------------------------------------------------------------------------
-// 11. Hook into WordPress save and autosave
+// 12. Hook into WordPress save and autosave
 // ---------------------------------------------------------------------------
 
 function colby_validate_blocks_on_save($prepared_post, WP_REST_Request $request) {

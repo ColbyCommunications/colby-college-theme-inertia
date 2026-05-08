@@ -25,13 +25,19 @@
         muted
         loop
         playsinline
+        preload="metadata"
+        :poster="posterUrl || undefined"
       >
         <source :src="videoLoop" type="video/mp4" />
       </video>
       <Picture
         :alt="image.alt || ''"
         class="absolute top-0 left-0 h-full w-full object-cover"
-        :src="image.src"
+        :src="image.url || image.src"
+        :loading="priority ? 'eager' : 'lazy'"
+        :fetch-priority="priority ? 'high' : 'auto'"
+        :progressive="!priority"
+        :sizes="sizes"
       />
     </div>
 
@@ -40,7 +46,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import YTPlayer from "youtube-player";
 import Icon from "../Icon/Icon.vue";
 import Picture from "../Picture/Picture.vue";
@@ -69,11 +75,44 @@ const props = defineProps({
       alt: "",
     }),
   },
+  priority: {
+    type: Boolean,
+    default: false,
+  },
+  sizes: {
+    type: String,
+    default: "(max-width: 767px) 100vw, 50vw",
+  },
 });
 
 const active = ref(false);
 const root = ref(null);
 let player = null;
+
+const posterUrl = computed(() => {
+  const source = props.image?.sizes?.Hero || props.image?.url || props.image?.src || "";
+  return normalizeMediaUrl(source);
+});
+
+function normalizeMediaUrl(src) {
+  if (!src) {
+    return "";
+  }
+
+  const rawSrc = String(src);
+  const colby = window.colby || {};
+
+  if (colby.isLocal && colby.PRIMARY_DOMAIN) {
+    try {
+      const url = new URL(rawSrc, window.location.origin);
+      return `https://${colby.PRIMARY_DOMAIN}${url.pathname}`;
+    } catch {
+      return rawSrc;
+    }
+  }
+
+  return rawSrc;
+}
 
 const play = () => {
   if (player && !active.value) {

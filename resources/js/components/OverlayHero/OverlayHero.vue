@@ -63,20 +63,23 @@
       ></div>
       <Video
         :id="video.id"
-        :playIcon="false"
-        :image="posterImage || {}"
+        :play-icon="false"
+        :image="image || {}"
+        :priority="priority"
+        sizes="100vw"
       />
     </template>
 
     <!-- Mode 2: Static image (fromPage or no video at all) -->
-    <template v-else-if="(!video && !video_loop)">
+    <template v-else-if="fromPage || (!video && !video_loop)">
       <Picture
         v-if="image"
         class="absolute top-0 left-0 z-[-10] h-full w-full object-cover"
-        :src="posterImage.src"
-        :alt="posterImage.alt || ''"
-        :height="posterImage.height"
-        :width="posterImage.width"
+        :src="image.url"
+        :alt="image.alt || ''"
+        :loading="priority ? 'eager' : 'lazy'"
+        :fetch-priority="priority ? 'high' : 'auto'"
+        sizes="100vw"
       />
     </template>
 
@@ -90,23 +93,33 @@
         <div
           class="video__overlay group absolute z-10 flex h-full w-full cursor-pointer items-center justify-center transition-all duration-200 ease-in-out"
         >
+          <Picture
+            v-if="showPosterImage && image"
+            class="absolute top-0 left-0 z-[-10] h-full w-full object-cover"
+            :src="image.url"
+            :alt="image.alt || ''"
+            :loading="priority ? 'eager' : 'lazy'"
+            :fetch-priority="priority ? 'high' : 'auto'"
+            :progressive="!priority"
+            sizes="100vw"
+          />
           <video
-            v-if="video_loop"
+            v-if="selectedVideoLoop && !selectedHlsVideoLoop"
             class="absolute top-0 right-0 bottom-0 left-0 z-[-10] h-auto min-h-full w-auto min-w-full bg-cover bg-repeat object-cover"
             playsinline
             autoplay
             muted
             loop
-            :poster="posterImage.src || undefined"
+            preload="metadata"
+            :poster="posterUrl || undefined"
           >
-            <source :src="video_loop" type="video/mp4" />
+            <source :src="selectedVideoLoop" type="video/mp4" />
           </video>
-          <Picture
-            v-else-if="image"
-            class="absolute top-0 left-0 z-[-10] h-full w-full object-cover"
-            :src="posterImage.src"
-            :alt="posterImage.alt || ''"
-            quality="70"
+          <HlsBackground
+            v-if="selectedHlsVideoLoop"
+            :src="selectedHlsVideoLoop"
+            :fallback-src="selectedMp4Fallback"
+            :poster="posterUrl"
           />
         </div>
       </div>
@@ -115,8 +128,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onBeforeUnmount, onMounted } from "vue";
 import Context from "@/js/components/Context/Context.vue";
+import HlsBackground from "@/js/components/HlsBackground/HlsBackground.vue";
 import Picture from "@/js/components/Picture/Picture.vue";
 import Video from "@/js/components/Video/Video.vue";
 import Icon from "@/js/components/Icon/Icon.vue";
@@ -154,17 +168,165 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  video_loop_tablet: {
+    type: String,
+    default: "",
+  },
+  video_loop_mobile: {
+    type: String,
+    default: "",
+  },
+  hls_video_loop: {
+    type: String,
+    default: "",
+  },
+  hls_video_loop_tablet: {
+    type: String,
+    default: "",
+  },
+  hls_video_loop_mobile: {
+    type: String,
+    default: "",
+  },
+  fromPage: {
+    type: Boolean,
+    default: false,
+  },
+  priority: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const overlayHeroRef = ref(null);
 const active = ref(false);
+const isMobile = ref(
+  typeof window !== "undefined" ? window.matchMedia("(max-width: 767px)").matches : false,
+);
+const isTablet = ref(
+  typeof window !== "undefined"
+    ? window.matchMedia("(min-width: 768px) and (max-width: 1023px)").matches
+    : false,
+);
+let mobileMediaQuery = null;
+let tabletMediaQuery = null;
+let mobileVideoTimer = null;
+const canLoadMobileVideo = ref(false);
 
-const posterImage = computed(() => {
+function updateViewport() {
+  isMobile.value = mobileMediaQuery?.matches ?? false;
+  isTablet.value = tabletMediaQuery?.matches ?? false;
+}
+
+const posterUrl = computed(() => {
   if (props.image && props.image.sizes && props.image.sizes.Hero) {
-    return {src: props.image.sizes.Hero, alt:props.image.alt};
+    return optimizedPosterUrl(props.image.sizes.Hero);
   }
   return "";
 });
+
+function normalizeMediaUrl(src) {
+  if (!src) {
+    return "";
+  }
+
+  const rawSrc = String(src);
+  const colby = window.colby || {};
+
+  if (colby.isLocal && colby.PRIMARY_DOMAIN) {
+    try {
+      const url = new URL(rawSrc, window.location.origin);
+      return `https://${colby.PRIMARY_DOMAIN}${url.pathname}`;
+    } catch {
+      return rawSrc;
+    }
+  }
+
+  return rawSrc;
+}
+
+function optimizedPosterUrl(src) {
+  const normalizedSrc = normalizeMediaUrl(src);
+  if (!normalizedSrc) {
+    return "";
+  }
+
+  const width = isMobile.value ? 640 : isTablet.value ? 1280 : 1920;
+  return `https://www.colby.edu/cdn-cgi/image/width=${width},format=auto,quality=60/${normalizedSrc}`;
+}
+
+onMounted(() => {
+  mobileMediaQuery = window.matchMedia("(max-width: 767px)");
+  tabletMediaQuery = window.matchMedia("(min-width: 768px) and (max-width: 1023px)");
+  updateViewport();
+  mobileMediaQuery.addEventListener("change", updateViewport);
+  tabletMediaQuery.addEventListener("change", updateViewport);
+
+  if (props.video_loop_mobile) {
+    const loadMobileVideo = () => {
+      mobileVideoTimer = window.setTimeout(() => {
+        canLoadMobileVideo.value = true;
+      }, 5000);
+    };
+
+    if (document.readyState === "complete") {
+      loadMobileVideo();
+    } else {
+      window.addEventListener("load", loadMobileVideo, { once: true });
+    }
+  }
+});
+
+onBeforeUnmount(() => {
+  mobileMediaQuery?.removeEventListener("change", updateViewport);
+  tabletMediaQuery?.removeEventListener("change", updateViewport);
+  if (mobileVideoTimer) {
+    window.clearTimeout(mobileVideoTimer);
+  }
+});
+
+const selectedVideoLoop = computed(() => {
+  if (selectedHlsVideoLoop.value) {
+    return "";
+  }
+
+  if (isMobile.value) {
+    return canLoadMobileVideo.value ? props.video_loop_mobile || "" : "";
+  }
+
+  if (isTablet.value) {
+    return props.video_loop_tablet || props.video_loop || "";
+  }
+
+  return props.video_loop || "";
+});
+
+const selectedMp4Fallback = computed(() => {
+  if (isMobile.value) {
+    return props.video_loop_mobile || "";
+  }
+
+  if (isTablet.value) {
+    return props.video_loop_tablet || props.video_loop || "";
+  }
+
+  return props.video_loop || "";
+});
+
+const selectedHlsVideoLoop = computed(() => {
+  if (isMobile.value) {
+    return props.hls_video_loop_mobile || props.hls_video_loop || "";
+  }
+
+  if (isTablet.value) {
+    return props.hls_video_loop_tablet || props.hls_video_loop || "";
+  }
+
+  return props.hls_video_loop || "";
+});
+
+const showPosterImage = computed(() => !selectedVideoLoop.value || isMobile.value || !!selectedHlsVideoLoop.value);
+
 function setActive() {
   active.value = true;
   // Trigger the embedded Video component's play action

@@ -3,10 +3,13 @@ use BoxyBird\Inertia\Inertia;
 
 // include __DIR__ . '/acf_fields.php';
 include __DIR__ . '/inc/block-validation.php';
+require_once __DIR__ . '/helpers/preload_assets.php';
 
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
   require_once __DIR__ . '/vendor/autoload.php';
 }
+
+add_filter('wp_preload_resources', 'colby_preload_hero_assets');
 
 function custom_preload_fonts() {
   // Keep for now
@@ -453,13 +456,38 @@ function theme_supports() {
 	}
 
   add_filter('acf/fields/wysiwyg/toolbars', function( $toolbars ) {
+    $limited_toolbar = array('bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist', 'undo', 'redo', 'removeformat');
+    $full_toolbar = array('formatselect', 'bold', 'italic', 'underline', 'bullist', 'numlist', 'blockquote', 'alignleft', 'aligncenter', 'alignright', 'link', 'unlink', 'undo', 'redo', 'removeformat');
+
+    $toolbars['Basic'] = array();
+    $toolbars['Basic'][1] = $limited_toolbar;
+
     $toolbars['limited'] = array();
-    $toolbars['limited'][1] = array('bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist');
+    $toolbars['limited'][1] = $limited_toolbar;
+
+    $toolbars['Full'] = array();
+    $toolbars['Full'][1] = $full_toolbar;
 
     $toolbars['full'] = array();
-    $toolbars['full'][1] = array('formatselect', 'bold', 'italic', 'underline', 'bullist', 'numlist', 'blockquote', 'alignleft', 'aligncenter', 'alignright', 'link', 'unlink', 'undo', 'redo', 'removeformat');
+    $toolbars['full'][1] = $full_toolbar;
 
     return $toolbars;
+});
+
+add_action('enqueue_block_editor_assets', function () {
+  $script_path = get_theme_file_path('resources/js/admin/acf-wysiwyg-paste-policy.js');
+
+  if (!file_exists($script_path)) {
+    return;
+  }
+
+  wp_enqueue_script(
+    'colby-acf-wysiwyg-paste-policy',
+    get_theme_file_uri('resources/js/admin/acf-wysiwyg-paste-policy.js'),
+    array('acf-input'),
+    filemtime($script_path),
+    true
+  );
 });
 
 add_action('wp_head', function() {
@@ -478,7 +506,11 @@ add_action('wp_head', function() {
   }
 
   // Output a small script to the head
-  echo '<script type="text/javascript">window.colby = window.colby || {}; window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';window.colby.PRIMARY_DOMAIN = "' . PRIMARY_DOMAIN . '";window.colby.isLocal = ' . ('ON' === getenv( 'LANDO' ) ? 'true' : 'false') .'</script>';
+  $primary_domain = defined('PRIMARY_DOMAIN')
+    ? PRIMARY_DOMAIN
+    : ('ON' === getenv('LANDO') ? 'www.colby.edu' : (wp_parse_url(home_url(), PHP_URL_HOST) ?: ''));
+
+  echo '<script type="text/javascript">window.colby = window.colby || {}; window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';window.colby.PRIMARY_DOMAIN = "' . esc_js($primary_domain) . '";window.colby.isLocal = ' . ('ON' === getenv( 'LANDO' ) ? 'true' : 'false') .'</script>';
 }, 1);
 
 if (!function_exists('dump')) {

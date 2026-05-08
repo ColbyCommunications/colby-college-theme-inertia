@@ -4,6 +4,7 @@
       ref="root"
       :class="`lazy-block`"
       :data-block-name="blockName"
+      :style="rootStyle"
     >
       <component
         v-if="resolvedComponent"
@@ -72,7 +73,7 @@
   let observer = null;
   let hasStartedLoading = false;
   
-  const placeholderStyle =
+  const reservedHeightStyle =
     props.placeholderMinHeight
       ? {
           minHeight:
@@ -81,6 +82,9 @@
               : props.placeholderMinHeight,
         }
       : {};
+
+  const rootStyle = reservedHeightStyle;
+  const placeholderStyle = reservedHeightStyle;
   
   async function loadComponent() {
     if (hasStartedLoading || resolvedComponent.value) {
@@ -103,8 +107,6 @@
     }
   }
 
-  console.log(props);
-  
   onMounted(() => {
     if (props.eager) {
       loadComponent();

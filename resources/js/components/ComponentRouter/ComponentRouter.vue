@@ -4,7 +4,7 @@
       v-for="(item, index) in components"
       :key="getBlockKey(item, index)"
       :loader="getLoader(item.blockName)"
-      :component-props="item.attrs?.data || {}"
+      :component-props="getComponentProps(item, index)"
       :eager="isEager(item, index)"
       :root-margin="getRootMargin(item, index)"
       :placeholder-min-height="getPlaceholderHeight(item)"
@@ -17,6 +17,9 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import LazyBlock from "../LazyBlockWrapper/LazyBlockWrapper.vue";
+import Hero from "../Hero/Hero.vue";
+import HomeHero from "../HomeHero/HomeHero.vue";
+import OverlayHero from "../OverlayHero/OverlayHero.vue";
 
 const props = defineProps({
   components: {
@@ -51,9 +54,9 @@ const blockRegistry = {
   "acf/dark-interstitial": () =>
     import("../DarkInterstitial/DarkInterstitial.vue"),
   "acf/facts-figures": () => import("../FactsFigures/FactsFigures.vue"),
-  "acf/hero": () => import("../Hero/Hero.vue"),
-  "acf/home-hero": () => import("../HomeHero/HomeHero.vue"),
-  "acf/overlay-hero": () => import("../OverlayHero/OverlayHero.vue"),
+  "acf/hero": () => Promise.resolve({ default: Hero }),
+  "acf/home-hero": () => Promise.resolve({ default: HomeHero }),
+  "acf/overlay-hero": () => Promise.resolve({ default: OverlayHero }),
   "acf/section-nav": () => import("../SectionNav/SectionNav.vue"),
   "acf/featured-post": () => import("../FeaturedPost/FeaturedPost.vue"),
   "acf/testimonial-carousel": () =>
@@ -84,6 +87,25 @@ function getLoader(blockName) {
 
 function getBlockKey(item, index) {
   return item?.attrs?.id || item?.id || `${item.blockName}-${index}`;
+}
+
+function isHeroMediaBlock(blockName) {
+  return ["acf/hero", "acf/home-hero", "acf/overlay-hero"].includes(blockName);
+}
+
+function getFirstHeroMediaBlockIndex() {
+  return props.components.findIndex((item) => isHeroMediaBlock(item?.blockName));
+}
+
+function isPriorityMediaBlock(item, index) {
+  return isHeroMediaBlock(item?.blockName) && index === getFirstHeroMediaBlockIndex();
+}
+
+function getComponentProps(item, index) {
+  return {
+    ...(item.attrs?.data || {}),
+    priority: isPriorityMediaBlock(item, index),
+  };
 }
 
 function isEager(item, index) {

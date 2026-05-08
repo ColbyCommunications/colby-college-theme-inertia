@@ -34,6 +34,10 @@
             class="absolute top-0 left-0 h-full w-full object-cover"
             :src="image.url"
             :alt="image.alt"
+            :loading="priority ? 'eager' : 'lazy'"
+            :fetch-priority="priority ? 'high' : 'auto'"
+            :progressive="!priority"
+            :sizes="primaryImageSizes"
           />
         </div>
         <p
@@ -67,7 +71,11 @@
           <Picture
             class="absolute top-0 left-0 h-full w-full object-cover"
             :src="secondaryImage.image.url"
-            :alt="secondaryImage.alt"
+            :alt="secondaryImage.image.alt || secondaryImage.alt || ''"
+            :loading="isPrioritySecondaryImage(index) ? 'eager' : 'lazy'"
+            :fetch-priority="isPrioritySecondaryImage(index) ? 'high' : 'auto'"
+            :progressive="!isPrioritySecondaryImage(index)"
+            :sizes="secondaryImageSizes"
           />
         </div>
         <p
@@ -116,9 +124,13 @@ const props = defineProps({
     type: Number,
     default: 3,
   },
+  priority: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-console.log(props);
+const primaryImageSizes = "(max-width: 767px) 100vw, 50vw";
 
 const imageClass = computed(() => {
   return props.imageOrientation === "portrait"
@@ -133,4 +145,13 @@ const secondaryImageClass = computed(() => {
 });
 
 const currentColumns = ref(parseInt(props.columns, 10));
+const secondaryImageSizes = computed(() =>
+  currentColumns.value === 4
+    ? "(max-width: 767px) 100vw, 25vw"
+    : "(max-width: 767px) 100vw, 33vw",
+);
+
+function isPrioritySecondaryImage(index) {
+  return props.priority && !props.image && index === 0;
+}
 </script>

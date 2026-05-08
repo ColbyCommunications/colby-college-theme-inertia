@@ -56,10 +56,12 @@
       <Hero
           v-if="resolvedHero && resolvedHero.type === 'default'"
           v-bind="resolvedHero.props"
+          :priority="true"
         />
         <OverlayHero
           v-else-if="resolvedHero && resolvedHero.type === 'overlay'"
           v-bind="resolvedHero.props"
+          :priority="true"
         />
         <section class="sidebar-page">
           <div

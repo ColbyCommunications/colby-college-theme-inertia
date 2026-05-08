@@ -37,8 +37,15 @@
         >
           <Picture
             class="absolute w-full h-full object-cover"
-            :src="image.src"
+            :src="imageSrc"
+            :srcset="image.srcset"
+            :size-desktop="image.sizes?.Hero"
+            :size-mobile="image.sizes?.Rectangle"
             :alt="image.alt"
+            :loading="priority ? 'eager' : 'lazy'"
+            :fetch-priority="priority ? 'high' : 'auto'"
+            :progressive="!priority"
+            sizes="100vw"
           />
         </div>
         <p
@@ -66,6 +73,7 @@ const props = defineProps({
   paragraph: { type: String, default: "" },
   buttons: { type: Array, default: () => [] },
   image: { type: Object, default: null },
+  priority: { type: Boolean, default: false },
 });
 
 const buttonItems = computed(() =>
@@ -73,4 +81,5 @@ const buttonItems = computed(() =>
     button: { url: btn.url, title: btn.title, target: btn.target || "" },
   })),
 );
+const imageSrc = computed(() => props.image?.url || props.image?.src || "");
 </script>

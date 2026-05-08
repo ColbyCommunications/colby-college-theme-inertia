@@ -1,20 +1,20 @@
 <template>
   <img
     :class="class"
-    :src="
-      `https://www.colby.edu/cdn-cgi/image/width=320,format=auto,quality=${quality}/` + processedSrc
-    "
+    :src="imageSrc"
     :alt="alt"
     :loading="loading"
-    :fetchpriority="loading === 'eager' ? 'high' : 'auto'"
-    :srcset="srcset"
+    :sizes="sizes"
+    media="(min-width:768px)"
+    :fetchpriority="resolvedFetchPriority"
+    :srcset="imageSrcset"
     :width="width"
     :height="height"
   />
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 
 const props = defineProps({
   // The class to apply to the <img> element
@@ -26,17 +26,25 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  widthDesktop: {
+    type: String,
+    default: "",
+  },
+  widthMobile: {
+    type: String,
+    default: "",
+  },
   alt: {
     type: String,
     default: "",
   },
-  height: {
-    type: Number,
-    default: 1320,
-  },
   width: {
     type: Number,
     default: 2400,
+  },
+  height: {
+    type: Number,
+    default: 1320,
   },
   loading: {
     type: String,
@@ -46,50 +54,97 @@ const props = defineProps({
     type: String,
     default: "60",
   },
+  sizes: {
+    type: String,
+    default: "(max-width: 767px) 100vw, 50vw",
+  },
+  fetchPriority: {
+    type: String,
+    default: "",
+  },
+  progressive: {
+    type: Boolean,
+    default: false,
+  },
   fromApi: {
     type: Boolean,
     default: false,
   },
 });
-console.log(props);
-const processedSrc = ref();
-const url = new URL(props.src);
 
-if (window.colby.isLocal && !props.fromApi) {
-  processedSrc.value = `https://${window.colby.PRIMARY_DOMAIN}${url.pathname}`;
-} else {
-  processedSrc.value = props.src;
+const isEnhanced = ref(false);
+
+function normalizeSrc(src) {
+  if (!src) {
+    return "";
+  }
+
+  const rawSrc = String(src);
+  const colby = window.colby || {};
+
+  if (colby.isLocal && colby.PRIMARY_DOMAIN && !props.fromApi) {
+    try {
+      const url = new URL(rawSrc, window.location.origin);
+      return `https://${colby.PRIMARY_DOMAIN}${url.pathname}`;
+    } catch {
+      return rawSrc;
+    }
+  }
+
+  return rawSrc;
 }
 
-const aspectRatio = computed(() => {
-  const w = Number(props.width);
-  const h = Number(props.height);
+const processedSrc = computed(() => normalizeSrc(props.src));
 
-  if (!w || !h) return null;
+function cdnImageUrl(width, quality) {
+  if (!processedSrc.value) {
+    return "";
+  }
 
-  return w / h;
-});
-
-function buildCdnUrl(targetWidth, quality = 60) {
-  if (!processedSrc.value) return "";
-
-  const transforms = [`width=${targetWidth}`, `quality=${quality}`, 'format=auto'];
-
-  // if (aspectRatio.value) {
-  //   const targetHeight = Math.round(targetWidth / aspectRatio.value);
-  //   transforms.push(`height=${targetHeight}`);
-  // }
-
-  return `https://www.colby.edu/cdn-cgi/image/${transforms.join(",")}/${processedSrc.value}`;
+  return `https://www.colby.edu/cdn-cgi/image/width=${width},format=auto,quality=${quality}/${processedSrc.value}`;
 }
 
-const srcset = computed(() => {
-  //widths
+function enhanceImage() {
+  if (!props.progressive) {
+    isEnhanced.value = true;
+    return;
+  }
 
-  console.log(props);
+  window.requestAnimationFrame(() => {
+    isEnhanced.value = true;
+  });
+}
+
+const imageSrc = computed(() =>
+  props.progressive && !isEnhanced.value
+    ? cdnImageUrl(64, 35)
+    : cdnImageUrl(320, 50),
+);
+
+const imageSrcset = computed(() => {
+  if (!processedSrc.value) {
+    return "";
+  }
+
+  if (props.progressive && !isEnhanced.value) {
+    return "";
+  }
+
   return [320, 640, 960, 1280, 1600, 1920, 2240]
-    .map((w) => `${buildCdnUrl(w, props.quality)} ${w}w`)
+    .map((width) => `${cdnImageUrl(width, props.quality)} ${width}w`)
     .join(", ");
 });
 
+const resolvedFetchPriority = computed(
+  () => props.fetchPriority || (props.loading === "eager" ? "high" : "auto"),
+);
+
+watch(processedSrc, () => {
+  isEnhanced.value = !props.progressive;
+  enhanceImage();
+});
+
+onMounted(() => {
+  enhanceImage();
+});
 </script>

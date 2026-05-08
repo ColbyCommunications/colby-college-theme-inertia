@@ -48,6 +48,9 @@ import 'waypoints/lib/noframework.waypoints';
 const container = ref(null);
 const isBot = ref(false); // 2. Bot state
 let waypointInstance = null;
+let hasEmittedAnimationComplete = false;
+
+const emit = defineEmits(["animation-complete"]);
 
 const props = defineProps({
   size: { type: String, default: "medium" },
@@ -71,6 +74,13 @@ async function getGsap() {
   gsapInstance = mod.gsap;
   return gsapInstance;
 }
+
+const emitAnimationComplete = () => {
+    if (hasEmittedAnimationComplete) return;
+
+    hasEmittedAnimationComplete = true;
+    emit("animation-complete");
+};
 
 
 /* ... All computed properties (sizes, textAlign, colors, tags, paragraphWithClasses) remain identical ... */
@@ -138,17 +148,27 @@ const animateParagraph = async() => {
     if (!container.value || isBot.value) return;
     const gsap = await getGsap();
     const target = container.value.querySelectorAll('.text-group__p');
-    gsap.to(target, { delay: 0.4, duration: 0.4, stagger: 0.08, opacity: 1, ease: 'Circ.easeIn' });
+    if (!target.length) {
+        emitAnimationComplete();
+        return;
+    }
+    gsap.to(target, { delay: 0.4, duration: 0.4, stagger: 0.08, opacity: 1, ease: 'Circ.easeIn', onComplete: emitAnimationComplete });
 };
 
 // --- Lifecycle Hooks ---
 onMounted(() => {
-    isBot.value = window.colby.DISABLE_ANIMATIONS === true || props.disableAnimations;
+    isBot.value = window?.colby?.DISABLE_ANIMATIONS === true || props.disableAnimations;
 
-    if (!container.value) return;
+    if (!container.value) {
+        emitAnimationComplete();
+        return;
+    }
 
     // 3. If it's a bot, exit early and do NOT split text into spans
-    if (isBot.value || props.disableAnimations) return;
+    if (isBot.value) {
+        emitAnimationComplete();
+        return;
+    }
 
     const subheading = container.value.querySelector('.text-group__subheading');
     const paragraph = container.value.querySelector('.text-group__p');
@@ -187,6 +207,8 @@ onMounted(() => {
                 animateParagraph();
             } else if (paragraph) {
                 animateParagraph();
+            } else {
+                emitAnimationComplete();
             }
             this.destroy(); 
         },
