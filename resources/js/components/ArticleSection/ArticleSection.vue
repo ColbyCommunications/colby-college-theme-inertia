@@ -10,6 +10,7 @@
     :subheading="subheading"
     :paragraph="paragraph"
     :buttons="buttons"
+    :items="normalizedInitialItems"
     :initial_items="normalizedInitialItems"
     :hydrated_from_server="hydrated_from_server"
     :should_client_refresh="should_client_refresh"
@@ -30,7 +31,6 @@
         :paragraph="paragraph"
         :buttons="{ items: buttons }"
       />
-      <ArrowControls v-if="carousel" size="large" type="light" />
     </div>
 
     <div class="article-section__grid md:col-start-5 md:col-span-8">
