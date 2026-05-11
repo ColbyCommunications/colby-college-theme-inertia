@@ -1,32 +1,31 @@
 <template>
-  <ais-index
-    index-name="prod_colbyedu_aggregated_query_suggestions"
-    index-id="colby-qs"
-  >
+  <ais-index index-name="prod_colbyedu_aggregated_query_suggestions" index-id="colby-qs">
     <ais-configure :hitsPerPage.camel="8" />
-
-    <ais-hits :transform-items="removeExactQueryQuerySuggestion">
-      <template v-slot="{ items, sendEvent }">
-        <ul class="button-group mb-10 flex flex-wrap justify-end gap-4">
+    <ais-hits :transform-items="transformItems">
+      <template #default="{ items } = {}">
+        <ul v-if="items && items.length > 0" class="button-group flex flex-wrap justify-end gap-4">
           <li
             v-for="item in items"
             :key="item.objectID"
-            :aria-label="item.query"
-            @click="search(item.query)"
-            class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 bg-indigo-100 px-3 py-1 font-body text-10 leading-130 font-normal text-indigo outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-[#eef4ff] focus:bg-[#eef4ff] focus:outline focus:outline-2 focus:outline-canary"
+            @click="$emit('select-suggestion', item.query)"
+            class="btn cursor-pointer rounded border border-[#dfecfe] bg-[#f9fbff] px-3 py-1 font-body text-10 text-indigo hover:bg-[#eef4ff]"
           >
-            <span class="btn__text">
-              <ais-highlight :hit="item" attribute="query" />
-            </span>
+            <ais-highlight :hit="item" attribute="query" />
           </li>
         </ul>
       </template>
     </ais-hits>
   </ais-index>
 </template>
+
 <script setup>
-defineProps({
-  search: Function,
-  removeExactQueryQuerySuggestion: Function,
-});
+import { AisIndex, AisConfigure, AisHits, AisHighlight } from "vue-instantsearch/vue3/es";
+const props = defineProps({ currentQuery: String });
+defineEmits(["select-suggestion"]);
+
+const transformItems = (items) => {
+  if (!items) return [];
+  const q = (props.currentQuery || "").toLowerCase();
+  return items.filter((item) => item.query.toLowerCase() !== q);
+};
 </script>
