@@ -1,7 +1,39 @@
 <template>
   <div class="relative">
-    <div v-if="props.display_posts_method === 'internal'">
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-10">
+    <div
+  v-if="isCarouselEnabled"
+  ref="rootEl"
+  class="article-grid article-grid--carousel mx-auto my-0 w-full max-w-screen-2xl"
+>
+  <div data-glide-window>
+    <div class="glide__track" data-glide-el="track">
+      <div class="glide__slides">
+        <div
+          v-for="(item, index) in carouselItems"
+          :key="index"
+          class="article-grid__item glide__slide"
+        >
+          <Article
+            size="small"
+            :image="item.image"
+            :subheading="item.subheading"
+            :heading="item.heading"
+            :border="normalizedBorder"
+            :paragraph="item.paragraph"
+            :buttons="item.buttons"
+            class="pt-4"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-grid__controls mt-8 flex justify-end">
+    <ArrowControls size="large" type="light" @prev="prev" @next="next" />
+  </div>
+</div>
+<div v-if="!isCarouselEnabled && props.display_posts_method === 'internal'">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-10" >
         <div
           v-for="(item, index) in displayItems"
           :key="index"
@@ -71,7 +103,7 @@
       </div>
     </div>
 
-    <div v-if="props.display_posts_method === 'manual'">
+    <div v-if="!isCarouselEnabled && props.display_posts_method === 'manual'">
       <div class="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-10">
         <div
           v-for="(item, index) in normalizeItems(props.items)"
@@ -297,10 +329,14 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
+  watch,
 } from "vue";
+import Glide from "@glidejs/glide";
 import TextGroup from "../TextGroup/TextGroup.vue";
 import Article from "../Article/Article.vue";
 import Picture from "../Picture/Picture.vue";
+import ArrowControls from "../ArrowControls/ArrowControls.vue";
+
 
 const props = defineProps({
   display_posts_method: { type: String, default: "internal" },
@@ -316,6 +352,7 @@ const props = defineProps({
   cta: { type: String, default: "Read Story" },
   style: { type: String, default: "" },
   items: { type: Array, default: () => [] },
+  carousel: { type: Boolean, default: false },
 
   initial_items: { type: Array, default: () => [] },
   initial_visible_count: { type: [Number, String], default: 12 },
@@ -350,6 +387,7 @@ const normalizedBorder = computed(() => {
   return Boolean(props.border);
 });
 
+
 const toSummaryText = (value) => {
   if (Array.isArray(value)) return value[0] || "";
   return value || "";
@@ -373,8 +411,25 @@ const displayItems = computed(() => {
   return allItems.value.slice(0, visibleCount.value);
 });
 
+const isCarouselEnabled = computed(() => {
+  return (
+    props.carousel === true &&
+    ["internal", "manual"].includes(props.display_posts_method)
+  );
+});
+
+const carouselItems = computed(() => {
+  if (props.display_posts_method === "manual") {
+    return normalizeItems(props.items);
+  }
+
+  return normalizeItems(displayItems.value);
+});
+
 const showLoadMore = computed(() => {
+  if (isCarouselEnabled.value) return false;
   if (props.display_posts_method !== "internal") return false;
+
   return displayItems.value.length < allItems.value.length;
 });
 
@@ -494,12 +549,84 @@ const calculateAccordionHeight = (index) => {
   return `${itemEl.offsetHeight}px`;
 };
 
-onMounted(() => {
+const rootEl = ref(null);
+const glide = ref(null);
+
+function destroyGlide() {
+  if (glide.value) {
+    glide.value.destroy();
+    glide.value = null;
+  }
+}
+
+function buildGlide() {
+  if (!isCarouselEnabled.value) return;
+
+  const win = rootEl.value?.querySelector("[data-glide-window]");
+  if (!win || carouselItems.value.length === 0) return;
+
+  destroyGlide();
+
+  glide.value = new Glide(win, {
+    type: "carousel",
+    gap: 40,
+    animationDuration: 600,
+    autoplay: false,
+    perView: Number(props.columns) || 3,
+    breakpoints: {
+      1024: {
+        perView: Math.min(Number(props.columns) || 3, 2),
+      },
+      767: {
+        perView: 1,
+      },
+    },
+  });
+
+  glide.value.mount();
+}
+
+function next() {
+  glide.value?.go(">");
+}
+
+function prev() {
+  glide.value?.go("<");
+}
+
+async function initializeArticleGridCarousel() {
+  await nextTick();
+
+  setTimeout(() => {
+    buildGlide();
+  }, 80);
+}
+
+onMounted(async () => {
   updateColumns();
   window.addEventListener("resize", updateColumns);
+
+  if (isCarouselEnabled.value) {
+    await initializeArticleGridCarousel();
+  }
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("resize", updateColumns);
+  destroyGlide();
 });
+
+watch(
+  () => [isCarouselEnabled.value, carouselItems.value.length, props.columns],
+  async () => {
+    if (isCarouselEnabled.value) {
+      await initializeArticleGridCarousel();
+    } else {
+      destroyGlide();
+    }
+  },
+);
 </script>
+<style lang="scss">
+@use "@glidejs/glide/src/assets/sass/glide.core" as *;
+</style>
