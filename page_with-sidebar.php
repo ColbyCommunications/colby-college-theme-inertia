@@ -438,5 +438,10 @@ if ($terms && !empty(array_filter($terms, fn($t) => $t->slug === 'office'))) {
     $args['image']   = get_the_post_thumbnail_url($post->ID, 'Square');
 }
 
-
-Inertia::render('PageWithSidebar/Show', $args);
+if ( post_password_required( $post->ID ) ) {
+	Inertia::render('Password/Show', [
+        'password_form' => get_the_password_form($post->ID),
+    ]);
+} else {
+    Inertia::render('PageWithSidebar/Show', $args);
+}
