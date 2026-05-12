@@ -19,10 +19,8 @@
                 heading="Resources"
                 :buttons="[
                 {
-                    button: {
-                    url: '/directory-profile-update-form/',
-                    title: 'Update Your Directory Profile',
-                    },
+                  url: '/directory-profile-update-form/',
+                  title: 'Update Your Directory Profile',
                 },
                 ]"
             />
@@ -54,8 +52,8 @@
 
                 :image="image"
             />
-            <h2 v-if="!acf.hide_courses" class="font-extended font-normal text-24 leading-110 -tracking-3 text-indigo mb-10">Current Courses</h2>
-            <Table v-if="!acf.hide_courses" :manualItems="acf.current_courses" :external_items="null" :render_api="false" :headings="[
+            <h2 v-if="!acf.hide_courses && acf.current_courses.length" class="font-extended font-normal text-24 leading-110 -tracking-3 text-indigo mb-10">Current Courses</h2>
+            <Table v-if="!acf.hide_courses && acf.current_courses.length" :manualItems="acf.current_courses" :external_items="null" :render_api="false" :headings="[
                 {
                     heading: 'Title',
                 },
