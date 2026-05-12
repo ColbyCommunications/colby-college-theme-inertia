@@ -94,6 +94,33 @@ acf_add_local_field_group( array(
 				),
 			),
 		),
+		array(
+			'key' => 'field_6a03833fe23c7',
+			'label' => 'Alignment',
+			'name' => 'alignment',
+			'aria-label' => '',
+			'type' => 'radio',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'choices' => array(
+				'left' => 'Left',
+				'center' => 'Center',
+				'right' => 'Right',
+			),
+			'default_value' => 'left',
+			'return_format' => 'value',
+			'allow_null' => 0,
+			'other_choice' => 0,
+			'allow_in_bindings' => 0,
+			'layout' => 'vertical',
+			'save_other_choice' => 0,
+		),
 	),
 	'location' => array(
 		array(
