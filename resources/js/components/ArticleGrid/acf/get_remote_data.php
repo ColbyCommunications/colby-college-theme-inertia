@@ -1,18 +1,33 @@
 <?php
 
 
-function get_image($image_orientation, $post_id) {
-    $newImage = '';
-
-    if (!empty($image_orientation)) {
-        if ($image_orientation === 'rectangle') {
-            $newImage = get_the_post_thumbnail_url($post_id, 'Landscape');
-        } elseif ($image_orientation === 'square') {
-                $newImage = get_the_post_thumbnail_url($post_id, 'Square');
-        } elseif ($image_orientation === 'portrait') {
-            $newImage = get_the_post_thumbnail_url($post_id, 'Portrait');
-        }
+function normalize_image($image, $image_orientation): ?array
+{
+    if (empty($image) || !is_array($image)) {
+        return null;
     }
+
+    $src = '';
+
+    switch ($image_orientation) {
+        case 'square':
+            $src = $image['sizes']['Square'] ?? '';
+            break;
+
+        case 'portrait':
+            $src = $image['sizes']['Portrait'] ?? '';
+            break;
+
+        case 'rectangle':
+        default:
+            $src = $image['sizes']['Landscape'] ?? '';
+            break;
+    }
+
+    return [
+        'src' => $src,
+        'alt' => $image['alt'] ?? '',
+    ];
 }
 
 if (!function_exists('colby_block_article_grid_is_truthy')) {
@@ -270,27 +285,46 @@ if (!function_exists('colby_block_article_grid_get_remote_data')) {
     function colby_block_article_grid_get_remote_data(array $data, int $index, array $block = []): array
     {
         $method = $data['display_posts_method'] ?? 'internal';
+        $orientation = $data['image_orientation'] ?? 'rectangle';
+
+        /*
+        |--------------------------------------------------------------------------
+        | MANUAL ITEMS
+        |--------------------------------------------------------------------------
+        */
 
         if ($method === 'manual') {
-            $newItems = [];
 
-            foreach ($data['items'] as $item) {
-                $newItem = $item;
-                if ($data['image_orientation'] === 'rectangle') {
-                    $newItem['image']['url'] = $newItem['image']['sizes']['Landscape'];
-                } elseif ($data['image_orientation'] === 'square') {
-                    $newItem['image']['url'] = $newItem['image']['sizes']['Square'];
-                } elseif ($data['image_orientation'] === 'portrait') {
-                    $newItem['image']['url'] = $newItem['image']['sizes']['Portrait'];
+            $normalized_items = [];
+
+            foreach (($data['items'] ?? []) as $item) {
+
+                $new_item = $item;
+
+                if (!empty($new_item['image'])) {
+                    $new_item['image'] = normalize_image(
+                        $new_item['image'],
+                        $orientation
+                    );
                 }
-                $newItems[] = $newItem;
+
+                $normalized_items[] = $new_item;
             }
 
-            $data['items'] = $newItems;
+            $data['items'] = $normalized_items;
+            $data['accordion_style'] = $data['style'] ?? 'default';
+
             return $data;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | API ITEMS
+        |--------------------------------------------------------------------------
+        */
+
         if ($method === 'api') {
+
             $items = colby_block_article_grid_fetch_external_items($data);
 
             $data['initial_items'] = $items;
@@ -301,12 +335,97 @@ if (!function_exists('colby_block_article_grid_get_remote_data')) {
             return $data;
         }
 
-        if ($method === 'internal') {
-            $items = colby_block_article_grid_fetch_internal_items($data);
+        /*
+        |--------------------------------------------------------------------------
+        | INTERNAL POSTS
+        |--------------------------------------------------------------------------
+        */
 
-            $data['initial_items'] = $items;
+        if ($method === 'internal') {
+
+            $category = (int) ($data['render_posts_category'] ?? 1);
+            $post_limit = (int) ($data['post_limit'] ?? -1);
+
+            $query_args = [
+                'post_type'           => 'post',
+                'post_status'         => 'publish',
+                'cat'                 => $category,
+                'posts_per_page'      => $post_limit === -1 ? -1 : $post_limit,
+                'ignore_sticky_posts' => true,
+                'no_found_rows'       => true,
+            ];
+
+            $query = new WP_Query($query_args);
+
+            $normalized = [];
+
+            if ($query->have_posts()) {
+
+                foreach ($query->posts as $post_obj) {
+
+                    $post_id = $post_obj->ID;
+
+                    $image_id = get_post_thumbnail_id($post_id);
+
+                    $acf_image = null;
+
+                    if ($image_id) {
+
+                        $acf_image = [
+                            'sizes' => [
+                                'Landscape' => get_the_post_thumbnail_url($post_id, 'Landscape'),
+                                'Square'    => get_the_post_thumbnail_url($post_id, 'Square'),
+                                'Portrait'  => get_the_post_thumbnail_url($post_id, 'Portrait'),
+                            ],
+                            'alt' => get_post_meta(
+                                $image_id,
+                                '_wp_attachment_image_alt',
+                                true
+                            ) ?: '',
+                        ];
+                    }
+
+                    $image = normalize_image($acf_image, $orientation);
+
+                    $title = get_the_title($post_id);
+
+                    $normalized[] = [
+                        'title' => [
+                            'rendered' => $title,
+                        ],
+
+                        'heading' => $title,
+
+                        'subheading' => colby_block_article_grid_format_date(
+                            get_the_date('c', $post_id)
+                        ),
+
+                        'paragraph' => colby_block_article_grid_build_internal_summary(
+                            $post_id
+                        ),
+
+                        'date' => colby_block_article_grid_format_date(
+                            get_the_date('c', $post_id)
+                        ),
+
+                        'post-meta-fields' => [
+                            'summary' => colby_block_article_grid_build_internal_summary(
+                                $post_id
+                            ),
+                        ],
+
+                        'url' => get_permalink($post_id),
+
+                        'image' => $image,
+                    ];
+                }
+            }
+
+            wp_reset_postdata();
+
+            $data['initial_items'] = $normalized;
             $data['initial_visible_count'] = 12;
-            $data['hydrated_from_server'] = !empty($items);
+            $data['hydrated_from_server'] = !empty($normalized);
             $data['should_client_refresh'] = false;
 
             return $data;

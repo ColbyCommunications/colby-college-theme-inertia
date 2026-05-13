@@ -19,7 +19,7 @@
         />
       </div>
       <div
-        v-if="image"
+        v-if="image && image.src"
         class="full-bleed-hero__main"
         :class="
           type === 'light'

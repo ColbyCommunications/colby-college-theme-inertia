@@ -177,12 +177,12 @@ if (!function_exists('colby_block_article_section_get_remote_data')) {
         } else if($data['display_posts_method'] === 'internal') {
             $items = get_posts([
                 'post_type' => 'post',
-                'post__not_in' => $data['internal_post_exclusions'] || [],
+                'post__not_in' => $data['internal_post_exclusions'] ?? [],
                 'posts_per_page' => 10,
                 'tax_query' => [
                     'taxonomy' => 'category',
                     'field' => 'term_id',
-                    'terms' => $data['render_posts_category']
+                    'terms'  => $data['render_posts_category'] ?? [],
                 ]
             ]);
             
@@ -191,6 +191,15 @@ if (!function_exists('colby_block_article_section_get_remote_data')) {
                 $post->heading = $post->post_title;
                 $post->subheading = $post->post_type == 'post' ? date("M d, Y", strtotime($post->post_date)) : null;
                 $post->paragraph = wp_trim_words(get_the_excerpt($post->ID), 50);
+                $post->buttons = [
+                    [
+                        'button' => [
+                            'size' => 'small',
+                            'title' => 'Read More',
+                            'url' => get_permalink($post->ID),
+                        ],
+                    ],
+                ];                
                 return $post;
             }, $items) : [];
             $data['hydrated_from_server'] = !empty($data['initial_items']);

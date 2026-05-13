@@ -16,21 +16,13 @@
       :utilityMenuStyle="resolvedSiteData['utility_menu_style']"
       :utilityMenuButton="utilityButtonProps"
     />
-    <Breadcrumbs v-if="resolvedSiteData['breadcrumbs_menu'].length" :items="resolvedSiteData['breadcrumbs_menu']" />
+    <Breadcrumbs
+      v-if="resolvedSiteData['breadcrumbs_menu'].length"
+      :items="resolvedSiteData['breadcrumbs_menu']"
+    />
     <main
       id="main"
-      class="
-        colby-page 
-        pb-20 
-        md:pb-[100px] 
-        [&>div+div]:mt-20
-        md:[&>div>section:not(section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel'])>div:not(.section-nav):not(.hero):not(.home-hero):not(.overlay-hero)]:mt-[100px]
-        md:[&>div>section[data-block-name='acf/context-article-grid']+section[data-block-name='acf/hero']>div]:mt-[100px]
-        md:[&>div>section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel']]:mt-[-50px]
-        [&>div>section>div.full-bleed]:w-full 
-        [&>div>section>div:not(.full-bleed)]:px-[10px]
-        md:[&>div>section>div:not(.full-bleed)]:max-w-screen-2xl
-        md:[&>div>section>div:not(.full-bleed)]:mx-auto"
+      class="colby-page pb-20 md:pb-[100px] [&>div+div]:mt-20 md:[&>div>section:not(section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel'])>div:not(.section-nav):not(.hero):not(.home-hero):not(.overlay-hero)]:mt-[100px] [&>div>section>div.full-bleed]:w-full [&>div>section>div:not(.full-bleed)]:px-[10px] md:[&>div>section>div:not(.full-bleed)]:mx-auto md:[&>div>section>div:not(.full-bleed)]:max-w-screen-2xl md:[&>div>section[data-block-name='acf/context-article-grid']+section[data-block-name='acf/hero']>div]:mt-[100px] md:[&>div>section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel']]:mt-[-50px]"
     >
       <slot>
         <!-- default fallback -->
@@ -49,6 +41,7 @@
       :logo="resolvedSiteData.footerlogo"
       :logoStyle="resolvedSiteData['footerlogo_styles']"
       :footerStyle="resolvedSiteData['footer_style']"
+      :display_athletics_logo="resolvedSiteData.display_athletics_logo"
     />
   </div>
 </template>
@@ -100,9 +93,7 @@ const resolvedMenus = computed(() => ({
 const globalAlert = computed(() => resolvedSiteData.value.alert || null);
 
 const utilityButtonProps = computed(() => ({
-    text: resolvedSiteData.value.utility_button_text,
-    url: resolvedSiteData.value.utility_button_url
-  }));
-
+  text: resolvedSiteData.value.utility_button_text,
+  url: resolvedSiteData.value.utility_button_url,
+}));
 </script>
-

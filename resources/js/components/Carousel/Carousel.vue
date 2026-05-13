@@ -426,9 +426,13 @@ const apiLeftButtonItems = computed(() => {
 const basicButtonItems = computed(() => {
   let buttons = [];
   if(props.buttons) {
-    buttons = props.buttons.map((btn) => ({
-      button: { url: btn.url, title: btn.title, target: btn.target || "" },
-    }));
+    buttons = props.buttons.map((btn) => {
+      if('button' in btn) {
+        return btn;
+      } else {
+        return { button: { url: btn.url, title: btn.title, target: btn.target || "" }};
+      }
+    });
   }
  return buttons;
 });
