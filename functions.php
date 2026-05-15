@@ -1,7 +1,6 @@
 <?php
 use BoxyBird\Inertia\Inertia;
 
-// include __DIR__ . '/acf_fields.php';
 include __DIR__ . '/inc/block-validation.php';
 require_once __DIR__ . '/helpers/preload_assets.php';
 
@@ -13,7 +12,6 @@ add_filter('wp_preload_resources', 'colby_preload_hero_assets');
 
 function custom_preload_fonts() {
   // Keep for now
-  echo '<link rel="preload" as="image" href="https://www.colby.edu/cdn-cgi/image/width=1280,quality=60/wp-content/uploads/2025/09/Untitled-2025-09-09T120218.701.jpeg" fetchpriority="high" />';
   echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/libre-franklin-latin-wght-normal-CLTz0ja0.woff2" as="font" type="font/woff2" crossorigin>';
   echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/noto-sans-cyrillic-ext-wght-normal-DSNfmdVt.woff2" as="font" type="font/woff2" crossorigin>';
 

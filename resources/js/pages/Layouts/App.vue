@@ -22,7 +22,19 @@
     />
     <main
       id="main"
-      class="colby-page pb-20 md:pb-[100px] [&>div+div]:mt-20 md:[&>div>section:not(section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel'])>div:not(.section-nav):not(.hero):not(.home-hero):not(.overlay-hero)]:mt-[100px] [&>div>section>div.full-bleed]:w-full [&>div>section>div:not(.full-bleed)]:px-[10px] md:[&>div>section>div:not(.full-bleed)]:mx-auto md:[&>div>section>div:not(.full-bleed)]:max-w-screen-2xl md:[&>div>section[data-block-name='acf/context-article-grid']+section[data-block-name='acf/hero']>div]:mt-[100px] md:[&>div>section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel']]:mt-[-50px]"
+      class="
+        colby-page 
+        pb-20 
+        md:pb-[100px] 
+        [&>div+div]:mt-20 
+        [&>div>section:not(section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel'])>div:not(.section-nav):not(.hero):not(.home-hero):not(.overlay-hero)]:mt-[50px]
+        md:[&>div>section:not(section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel'])>div:not(.section-nav):not(.hero):not(.home-hero):not(.overlay-hero)]:mt-[100px] 
+        [&>div>section>div.full-bleed]:w-full 
+        [&>div>section>div:not(.full-bleed)]:px-[10px] 
+        md:[&>div>section>div:not(.full-bleed)]:mx-auto 
+        md:[&>div>section>div:not(.full-bleed)]:max-w-screen-2xl 
+        md:[&>div>section[data-block-name='acf/context-article-grid']+section[data-block-name='acf/hero']>div]:mt-[100px] 
+        md:[&>div>section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel']]:mt-[-50px]"
     >
       <slot>
         <!-- default fallback -->

@@ -3,7 +3,7 @@
     <div
       class="testimonial-carousel__inner mx-auto my-0 w-full max-w-screen-2xl gap-x-10 px-5 md:grid md:grid-cols-12"
     >
-      <div class="testimonial-carousel__context md:col-span-5">
+      <div class="testimonial-carousel__context md:col-span-5 mb-6">
         <Context
           size="large"
           type="dark"
@@ -51,7 +51,7 @@
         </div>
       </div>
       <div
-        class="testimonial-carousel__quotes mt-12 self-end md:order-[-1] md:col-span-3 md:mt-0"
+        class="testimonial-carousel__quotes mt-6 self-end md:order-[-1] md:col-span-3 md:mt-0"
       >
         <div class="testimonial-carousel__quotes-wrap relative h-[150px]">
           <div

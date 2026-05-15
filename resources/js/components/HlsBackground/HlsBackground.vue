@@ -1,34 +1,23 @@
 <template>
   <video
     ref="videoRef"
-    class="absolute top-0 right-0 bottom-0 left-0 z-[-10] h-auto min-h-full w-auto min-w-full bg-cover bg-repeat object-cover"
+    class="absolute inset-0 z-[-10] h-full w-full object-cover"
     playsinline
     autoplay
     muted
     loop
-    preload="auto"
+    preload="metadata"
     :poster="poster || undefined"
-  >
-    <source v-if="fallbackSrc" :src="fallbackSrc" type="video/mp4" />
-  </video>
+  />
 </template>
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 
 const props = defineProps({
-  src: {
-    type: String,
-    default: "",
-  },
-  fallbackSrc: {
-    type: String,
-    default: "",
-  },
-  poster: {
-    type: String,
-    default: "",
-  },
+  src: { type: String, default: "" },
+  fallbackSrc: { type: String, default: "" },
+  poster: { type: String, default: "" },
 });
 
 const videoRef = ref(null);
@@ -41,54 +30,96 @@ function destroyHls() {
   }
 }
 
+function playVideo(video) {
+  video.play().catch(() => {});
+}
+
+function loadFallback(video) {
+  if (!props.fallbackSrc) return;
+
+  video.src = props.fallbackSrc;
+  video.load();
+  playVideo(video);
+}
+
 async function attachSource() {
   const video = videoRef.value;
-  if (!video) {
-    return;
-  }
+  if (!video) return;
 
   destroyHls();
 
-  if (!props.src) {
-    if (props.fallbackSrc) {
-      video.src = props.fallbackSrc;
-      video.load();
-      video.play().catch(() => {});
-    }
-    return;
-  }
+  video.removeAttribute("src");
+  video.load();
 
-  if (video.canPlayType("application/vnd.apple.mpegurl")) {
-    video.src = props.src;
-    video.load();
-    video.play().catch(() => {});
+  if (!props.src) {
+    loadFallback(video);
     return;
   }
 
   const { default: Hls } = await import("hls.js");
+
+  // Prefer hls.js anywhere it is supported so we control quality behavior.
   if (Hls.isSupported()) {
     hls = new Hls({
       autoStartLoad: true,
-      capLevelToPlayerSize: true,
-      maxBufferLength: 3,
-      maxMaxBufferLength: 5,
-      startFragPrefetch: false,
+
+      // Do not cap quality based on measured element size.
+      capLevelToPlayerSize: false,
+
+      // Let hls.js pick, but give it a strong initial bandwidth estimate.
+      startLevel: -1,
+      abrEwmaDefaultEstimate: 8_000_000,
+
+      // Give ABR enough buffer to ramp quality.
+      maxBufferLength: 30,
+      maxMaxBufferLength: 60,
+
+      // Helpful for VOD hero loops.
+      startFragPrefetch: true,
     });
+
     hls.loadSource(props.src);
     hls.attachMedia(video);
+
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      playVideo(video);
+    });
+
+    hls.on(Hls.Events.ERROR, (_, data) => {
+      if (data?.fatal) {
+        destroyHls();
+        loadFallback(video);
+      }
+    });
+
     return;
   }
 
-  if (props.fallbackSrc) {
-    video.src = props.fallbackSrc;
+  // Native HLS fallback, mainly Safari/iOS.
+  const nativeHlsSupport = video.canPlayType("application/vnd.apple.mpegurl");
+
+  if (nativeHlsSupport === "probably" || nativeHlsSupport === "maybe") {
+    video.src = props.src;
     video.load();
-    video.play().catch(() => {});
+    playVideo(video);
+    return;
   }
+
+  loadFallback(video);
 }
 
-watch(() => [props.src, props.fallbackSrc], attachSource);
+watch(
+  () => [props.src, props.fallbackSrc],
+  () => {
+    attachSource();
+  },
+);
 
-onMounted(attachSource);
+onMounted(() => {
+  attachSource();
+});
 
-onBeforeUnmount(destroyHls);
+onBeforeUnmount(() => {
+  destroyHls();
+});
 </script>

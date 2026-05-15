@@ -90,9 +90,6 @@
         hls_video_mobile: { type: String, default: '' },
         poster: { type: String, default: '' },
         priority: { type: Boolean, default: false },
-        // For images:
-        // - inComponentLibrary === true: { srcset, src, alt }
-        // - otherwise: { sizeDesktop, sizeMobile, src, alt }
         image: {
             type: Object,
             default: () => ({ src: '', srcset: '', sizeDesktop: '', sizeMobile: '', alt: '' }),
@@ -204,7 +201,7 @@
             const loadMobileVideo = () => {
                 mobileVideoTimer = window.setTimeout(() => {
                     canLoadMobileVideo.value = true;
-                }, 5000);
+                }, 2000);
             };
 
             if (document.readyState === 'complete') {
