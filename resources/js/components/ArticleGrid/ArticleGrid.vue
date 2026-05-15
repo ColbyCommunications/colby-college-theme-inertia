@@ -383,11 +383,13 @@ const gridContainer = ref(null);
 const visibleCount = ref(Number(props.initial_visible_count) || 12);
 
 const getColumnsFromBreakpoint = () => {
+  const selected = Number(props.columns) || 3;
   const w = window.innerWidth;
 
-  if (w >= 1280) return 4; // xl
-  if (w >= 1024) return 3; // lg
-  if (w >= 640) return 2; // md/sm
+  if (w >= 1280) return selected;
+  if (w >= 1024) return Math.min(selected, 3);
+  if (w >= 640) return Math.min(selected, 2);
+
   return 1;
 };
 
