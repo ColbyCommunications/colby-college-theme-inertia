@@ -48,7 +48,7 @@
       </div>
 
       <!-- Slide context under the window (shared) -->
-      <div class="carousel__slides-context relative mt-6 h-80 md:h-40">
+      <div class="carousel__slides-context relative mt-6 h-60 md:h-40">
         <!-- BASIC: use Context -->
         <div
           v-for="(item, idx) in items"
@@ -122,7 +122,7 @@
           </div>
         </div>
       </div>
-      <div class="carousel__slides-context relative mt-6 h-80 md:h-40">
+      <div class="carousel__slides-context relative mt-6 h-60 md:h-40">
         <div
           v-for="(it, idx) in slides"
           :key="'ctx-api-' + idx"

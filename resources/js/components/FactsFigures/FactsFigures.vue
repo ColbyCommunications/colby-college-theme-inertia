@@ -31,7 +31,7 @@
       >
         <Picture
           class="h-full w-full object-cover"
-          :src="image?.url"
+          :src="image?.sizes?.Square"
           :alt="image?.alt || ''"
         />
       </div>

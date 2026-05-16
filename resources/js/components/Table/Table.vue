@@ -299,7 +299,7 @@
 
     <div
       v-if="totalPages > 0"
-      class="pagination mt-10 flex items-center justify-between"
+      class="pagination mt-10 flex items-center justify-between overflow-hidden"
     >
       <span
         class="pagination__text font-body text-12 leading-140 font-normal text-indigo-800"
