@@ -12,7 +12,7 @@
         >
           <a
             :href="parentPermalink"
-            class="pointer-events-none md:pointer-events-auto"
+            class="pointer-events-none md:pointer-events-auto min-h-[44px] min-w-[44px] leading-[44px]"
           >
             {{ heading }}
             <div class="absolute top-6 right-8 md:hidden w-1.5">
@@ -40,10 +40,10 @@
         <li
           v-for="(item, index) in items"
           :key="index"
-          class="subpage-nav__item font-body text-14 md:text-10 font-normal md:font-medium leading-140 text-indigo-800 md:mt-2"
+          class="subpage-nav__item font-body text-14 md:text-10 font-normal md:font-medium leading-140 text-indigo-800"
         >
           <a
-            class="block py-1.5 md:py-1 px-6 md:px-0 md:pl-2.5 hover:bg-[#eef4ff] md:border-l-2 border-solid transition-all duration-200 ease-in-out"
+            class="block min-h-[44px] min-w-[44px] leading-[44px] px-6 md:px-0 md:pl-2.5 hover:bg-[#eef4ff] md:border-l-2 border-solid transition-all duration-200 ease-in-out"
             :class="{
               'text-gray-1000 border-indigo': item.active,
               'text-indigo-800 hover:text-indigo hover:underline border-transparent':

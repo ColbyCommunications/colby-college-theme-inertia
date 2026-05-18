@@ -63,7 +63,7 @@
               >
                 <li v-if="phone && !hidePhoneNumber" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline"
+                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="`tel:${phone}`"
                   >
                     <Icon name="phone" class="mr-1.5 h-3 fill-indigo-800" />
@@ -73,7 +73,7 @@
 
                 <li v-if="curriculumVitae && !hideCv" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline"
+                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="curriculumVitae"
                     target="_blank"
                   >
@@ -84,7 +84,7 @@
 
                 <li v-if="email && !hideEmail" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline"
+                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="`mailto:${email}`"
                   >
                     <Icon name="email" class="mr-1.5 h-3 fill-indigo-800" />
@@ -94,7 +94,7 @@
 
                 <li v-if="fax && !hideFax" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline"
+                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="`tel:${fax}`"
                   >
                     <Icon name="fax" class="mr-1.5 h-4 fill-indigo-800" />
@@ -163,7 +163,7 @@
               >
                 <li v-if="phone" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline"
+                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="`tel:${phone}`"
                   >
                     <Icon name="phone" class="mr-1.5 h-3 fill-indigo-800" />
@@ -173,7 +173,7 @@
 
                 <li v-if="curriculumVitae" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline"
+                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="curriculumVitae"
                     target="_blank"
                   >
@@ -184,7 +184,7 @@
 
                 <li v-if="email" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline"
+                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="`mailto:${email}`"
                   >
                     <Icon name="email" class="mr-1.5 h-3 fill-indigo-800" />
@@ -194,7 +194,7 @@
 
                 <li v-if="fax" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline"
+                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="`tel:${fax}`"
                   >
                     <Icon name="fax" class="mr-1.5 h-4 fill-indigo-800" />
