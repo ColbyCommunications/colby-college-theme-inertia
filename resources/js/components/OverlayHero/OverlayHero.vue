@@ -21,7 +21,7 @@
       }"
     >
       <div
-        class="overlay-hero__inner mx-auto my-0 grid w-full max-w-screen-2xl gap-x-10 px-5 md:grid-cols-12"
+        class="overlay-hero__inner mx-auto my-0 grid w-full max-w-screen-2xl gap-x-5 md:gap-x-10 px-5 md:grid-cols-12"
       >
         <div class="overlay-hero__main col-span-12 lg:col-span-5">
           <Context

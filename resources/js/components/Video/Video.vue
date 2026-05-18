@@ -1,7 +1,7 @@
 <template>
   <div
     ref="root"
-    class="video group relative w-full cursor-pointer overflow-hidden pb-[56.25%]"
+    class="video group relative w-full h-full cursor-pointer overflow-hidden pb-[56.25%]"
     @click="play"
   >
     <div
