@@ -67,15 +67,19 @@
           v-model="showModal"
         >
           <!-- Trigger button -->
-          <template #button>
+          <template #button="{ open, isOpen }">
             <button
               type="button"
-              class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo-800 transition-all duration-200 ease-in-out group-hover:text-indigo-1000 group-hover:underline"
+              class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
+              :class="{ 'text-indigo-1000 underline': isOpen }"
               aria-haspopup="dialog"
-              @click="showModal = true"
+              :aria-expanded="isOpen ? 'true' : 'false'"
+              @click="open"
             >
               <SearchIcon
-                class="mr-1.5 w-[16px] fill-[#b7c2d5] transition-all duration-200 ease-in-out group-hover:fill-indigo-700 md:w-[10px]"
+                class="mr-1.5 w-[16px] fill-[#b7c2d5] transition-all duration-200 ease-in-out md:w-[10px]"
+                aria-hidden="true"
+                focusable="false"
               />
               Search
             </button>
@@ -139,19 +143,23 @@
           v-model="showModal"
         >
           <!-- Trigger button -->
-          <template #button>
-            <button
-              type="button"
-              class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo-800 transition-all duration-200 ease-in-out group-hover:text-indigo-1000 group-hover:underline"
-              aria-haspopup="dialog"
-              @click="showModal = true"
-            >
-              <SearchIcon
-                class="mr-1.5 w-[16px] fill-[#b7c2d5] transition-all duration-200 ease-in-out group-hover:fill-indigo-700 md:w-[10px]"
-              />
-              Search
-            </button>
-          </template>
+          <template #button="{ open, isOpen }">
+              <button
+                type="button"
+                class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
+                :class="{ 'text-indigo-1000 underline': isOpen }"
+                aria-haspopup="dialog"
+                :aria-expanded="isOpen ? 'true' : 'false'"
+                @click="open"
+              >
+                <SearchIcon
+                  class="mr-1.5 w-[16px] fill-[#b7c2d5] transition-all duration-200 ease-in-out md:w-[10px]"
+                  aria-hidden="true"
+                  focusable="false"
+                />
+                Search
+              </button>
+            </template>
 
           <!-- Modal content -->
           <template #content>
