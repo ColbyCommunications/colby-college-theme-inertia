@@ -3,6 +3,7 @@
     <TextGroup
       :paragraph="paragraph_text"
       @animation-complete="showButtonGroup"
+      :disableAnimations="true"
     />
     <div
       v-if="buttonItems.length"

@@ -8,13 +8,16 @@
         <li
           class="font-body text-10 leading-140 font-bold whitespace-nowrap text-indigo-800"
         >
-          <a
-            class="text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo"
-            href="/"
-          >
+        <a
+          class="inline-flex h-[44px] w-[44px] items-center justify-center text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo"
+          href="/"
+        >
             <span class="sr-only">Homepage</span>
 
-            <div class="size-[10px] fill-indigo"><Icon :name="'home'" /></div>
+            <Icon
+              :name="'home'"
+              class="size-[10px] fill-indigo"
+            />
           </a>
         </li>
 
@@ -24,7 +27,7 @@
           class="font-body text-10 leading-140 font-bold whitespace-nowrap text-indigo-800"
         >
           <a
-            class="text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo"
+            class="text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo min-h-[44px] min-w-[44px] leading-[44px] inline-block"
             :href="item.url"
           >
             {{ item.title }}

@@ -113,10 +113,10 @@ const paragraphWithClasses = computed(() => {
   let html = String(props.paragraph || "");
   const startsWithBlockTag = /^\s*<(p|ul|ol)\b/i.test(html.trim());
   if (!startsWithBlockTag) html = `<p>${html}</p>`;
-  const pCls = `text-group__p font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-[1.75] ${textAlign.value} ${paragraphColor.value} mb-4 [&_a]:underline [&_a:hover]:no-underline`;
-  const ulCls = `list-disc font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2 my-4 pl-6`;
-  const olCls = `list-decimal font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2 pl-6`;
-  const liCls = `${paragraphColor.value} mx-4 [&>ul]:pl-4 [&>ul>li]:list-[circle]`;
+  const pCls = `text-group__p font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-[1.75] ${textAlign.value} ${paragraphColor.value} mb-4 [&_a]:inline-block [&_a]:min-h-[44px] [&_a]:min-w-[44px] [&_a]:underline [&_a:hover]:no-underline`;
+  const ulCls = `list-disc font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2 my-4 pl-6 [&_a]:inline-block [&_a]:min-h-[44px] [&_a]:min-w-[44px] [&_a]:underline [&_a:hover]:no-underline`;
+  const olCls = `list-decimal font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2 pl-6 [&_a]:inline-block [&_a]:min-h-[44px] [&_a]:min-w-[44px] [&_a]:underline [&_a:hover]:no-underline`;
+  const liCls = `${paragraphColor.value} mx-4 [&>ul]:pl-4 [&>ul>li]:list-[circle] [&_a]:inline-block [&_a]:min-h-[44px] [&_a]:min-w-[44px] [&_a]:underline [&_a:hover]:no-underline`;
   return html.replaceAll("<p>", `<p class="${pCls}">`).replaceAll("<ul>", `<ul class="${ulCls}">`).replaceAll("<ol>", `<ol class="${olCls}">`).replaceAll("<li>", `<li class="${liCls}">`);
 });
 
