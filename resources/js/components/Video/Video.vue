@@ -18,21 +18,33 @@
         />
       </div>
 
+      <HlsBackground
+        v-if="hlsVideoLoop"
+        :src="hlsVideoLoop"
+        :fallback-src="videoLoop"
+        :poster="posterUrl"
+        @ready="videoReady = true"
+      />
+
       <video
-        v-if="videoLoop"
-        class="absolute top-0 left-0 z-[1] hidden h-auto min-h-full w-auto min-w-full object-cover md:block"
+        v-else-if="videoLoop"
+        class="absolute top-0 left-0 z-[1] h-full w-full object-cover"
         autoplay
         muted
         loop
         playsinline
         preload="metadata"
         :poster="posterUrl || undefined"
+        @canplay="videoReady = true"
+        @playing="videoReady = true"
       >
         <source :src="videoLoop" type="video/mp4" />
       </video>
+
       <Picture
         :alt="image.alt || ''"
-        class="absolute top-0 left-0 h-full w-full object-cover"
+        class="absolute top-0 left-0 z-[2] h-full w-full object-cover transition-opacity duration-500 ease-in-out"
+        :class="showPoster ? 'opacity-100' : 'pointer-events-none opacity-0'"
         :src="image.url || image.src"
         :loading="priority ? 'eager' : 'lazy'"
         :fetch-priority="priority ? 'high' : 'auto'"
@@ -50,11 +62,11 @@ import { ref, onMounted, computed } from "vue";
 import YTPlayer from "youtube-player";
 import Icon from "../Icon/Icon.vue";
 import Picture from "../Picture/Picture.vue";
+import HlsBackground from "@/js/components/HlsBackground/HlsBackground.vue";
 
 const props = defineProps({
   id: {
     type: String,
-    required: true,
   },
   // Maps to 'video_loop' in Twig
   videoLoop: {
@@ -82,6 +94,14 @@ const props = defineProps({
   sizes: {
     type: String,
     default: "(max-width: 767px) 100vw, 50vw",
+  },
+  hlsVideoLoop: {
+    type: String,
+    default: "",
+  },
+  isBackgroundOnly: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -114,6 +134,13 @@ function normalizeMediaUrl(src) {
   return rawSrc;
 }
 
+const videoReady = ref(false);
+
+const showPoster = computed(() => {
+  if (!props.videoLoop && !props.hlsVideoLoop) return true;
+  return !videoReady.value;
+});
+
 const play = () => {
   if (player && !active.value) {
     active.value = true;
@@ -122,15 +149,13 @@ const play = () => {
 };
 
 onMounted(() => {
-  if (root.value) {
-    // ID of the div, or the DOM element itself
-    const container = root.value.querySelector(".iframe");
+  if (props.isBackgroundOnly || !props.id || !root.value) return;
 
-    // Initialize
-    player = YTPlayer(container, {
-      videoId: props.id,
-      // Optional: width/height vars if needed, usually handled by CSS
-    });
-  }
+  const container = root.value.querySelector(".iframe");
+  if (!container) return;
+
+  player = YTPlayer(container, {
+    videoId: props.id,
+  });
 });
 </script>

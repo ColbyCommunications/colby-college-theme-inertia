@@ -1,13 +1,16 @@
 <template>
   <video
     ref="videoRef"
-    class="absolute inset-0 z-[-10] h-full w-full object-cover"
+    class="absolute inset-0 z-[1] h-full w-full object-cover"
     playsinline
     autoplay
     muted
     loop
     preload="metadata"
     :poster="poster || undefined"
+    @canplay="emit('ready')"
+    @playing="emit('ready')"
+    @error="emit('error')"
   />
 </template>
 
@@ -22,6 +25,8 @@ const props = defineProps({
 
 const videoRef = ref(null);
 let hls = null;
+
+const emit = defineEmits(["ready", "error"]);
 
 function destroyHls() {
   if (hls) {
@@ -49,6 +54,9 @@ async function attachSource() {
   destroyHls();
 
   video.removeAttribute("src");
+  video.setAttribute("playsinline", "");
+  video.setAttribute("webkit-playsinline", "");
+  video.muted = true;
   video.load();
 
   if (!props.src) {
@@ -58,23 +66,25 @@ async function attachSource() {
 
   const { default: Hls } = await import("hls.js");
 
+  const isMobile =
+  typeof window !== "undefined" &&
+  window.matchMedia("(max-width: 767px)").matches;
+
   // Prefer hls.js anywhere it is supported so we control quality behavior.
   if (Hls.isSupported()) {
     hls = new Hls({
       autoStartLoad: true,
-
-      // Do not cap quality based on measured element size.
       capLevelToPlayerSize: false,
 
-      // Let hls.js pick, but give it a strong initial bandwidth estimate.
       startLevel: -1,
-      abrEwmaDefaultEstimate: 8_000_000,
 
-      // Give ABR enough buffer to ramp quality.
-      maxBufferLength: 30,
-      maxMaxBufferLength: 60,
+      abrEwmaDefaultEstimate: isMobile
+        ? 3_000_000
+        : 8_000_000,
 
-      // Helpful for VOD hero loops.
+      maxBufferLength: isMobile ? 10 : 30,
+      maxMaxBufferLength: isMobile ? 20 : 60,
+
       startFragPrefetch: true,
     });
 
@@ -87,6 +97,7 @@ async function attachSource() {
 
     hls.on(Hls.Events.ERROR, (_, data) => {
       if (data?.fatal) {
+        emit("error", data);
         destroyHls();
         loadFallback(video);
       }
@@ -109,7 +120,7 @@ async function attachSource() {
 }
 
 watch(
-  () => [props.src, props.fallbackSrc],
+  () => [props.src, props.fallbackSrc, props.poster],
   () => {
     attachSource();
   },

@@ -249,7 +249,19 @@ function colby_process_single_block(array $block, int $index = 0, string $path =
 
     $block['attrs']['data'] = get_structured_block_data($block, $block_path);
 
-    if (($block['blockName'] ?? null) === 'core/group') {
+    if (($block['blockName'] ?? null) === 'core/html') {
+        $block['attrs'] = isset($block['attrs']) && is_array($block['attrs'])
+            ? $block['attrs']
+            : [];
+    
+        $block['attrs']['data'] = isset($block['attrs']['data']) && is_array($block['attrs']['data'])
+            ? $block['attrs']['data']
+            : [];
+    
+        $block['attrs']['data']['html'] = wp_kses_post($block['innerHTML'] ?? '');
+    
+        return $block;
+    } elseif (($block['blockName'] ?? null) === 'core/group') {
         $block['attrs'] = isset($block['attrs']) && is_array($block['attrs'])
             ? $block['attrs']
             : [];

@@ -1,7 +1,7 @@
 <template>
   <div class="media-context mx-auto my-0 w-full max-w-screen-2xl px-5">
     <div
-      class="media-context__inner grid gap-10"
+      class="media-context__inner grid gap-x-5"
       :class="[inset ? 'grid-cols-12' : 'grid-cols-8']"
     >
       <div
@@ -29,7 +29,7 @@
       </div>
 
       <div
-        class="media-context__context md:flex md:items-center"
+        class="media-context__context md:flex md:items-center mt-4"
         :class="[
           reverse ? 'md:-order-1' : '',
           inset
