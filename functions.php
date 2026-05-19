@@ -755,3 +755,23 @@ function disable_h1_heading_level() {
     <?php
 }
 add_action('admin_footer', 'disable_h1_heading_level');
+
+function force_tinymce_underline_tags($init) {
+    $init['formats'] = json_encode([
+        'underline' => [
+            'inline' => 'u',
+            'exact'  => true
+        ]
+    ]);
+
+    $init['extended_valid_elements'] = 'u';
+
+    return $init;
+}
+add_filter('tiny_mce_before_init', 'force_tinymce_underline_tags');
+
+function custom_quicktags_buttons($qtInit, $editor_id) {
+    $qtInit['buttons'] = 'strong,em,ul,link,ul,ol,li';
+    return $qtInit;
+}
+add_filter('quicktags_settings', 'custom_quicktags_buttons', 10, 2);
