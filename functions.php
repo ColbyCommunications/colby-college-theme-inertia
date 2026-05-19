@@ -738,3 +738,20 @@ add_action( 'customize_register', 'mytheme_add_customizer_panels' );
 function mytheme_sanitize_checkbox( $checked ) {
   return ( ( isset( $checked ) && true == $checked ) ? true : false );
 }
+
+function disable_h1_heading_level() {
+    ?>
+    <script>
+    wp.domReady(function() {
+        wp.blocks.registerBlockVariation = function() {};
+        
+        const settings = wp.blocks.getBlockType('core/heading');
+
+        if (settings && settings.attributes.levelOptions) {
+            settings.attributes.levelOptions.default = [2,3,4,5,6];
+        }
+    });
+    </script>
+    <?php
+}
+add_action('admin_footer', 'disable_h1_heading_level');

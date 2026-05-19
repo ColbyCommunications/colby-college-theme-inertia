@@ -37,6 +37,7 @@
         [&>div>section:not(:first-child):not(section[data-block-name='acf/section-nav'])]:mt-[50px]
         "
     >
+      <h1 v-if="pageTitle" class="sr-only">{{ pageTitle }}</h1>
       <slot>
         <!-- default fallback -->
         Sorry, no content
@@ -74,6 +75,10 @@ const props = defineProps({
   },
   menus: {
     type: Object,
+    default: null,
+  },
+  pageTitle: {
+    type: String,
     default: null,
   },
 });

@@ -1,13 +1,21 @@
 <template>
-  <AppLayout :site-data="resolvedSiteData" :menus="resolvedMenus">
-    <template v-if="page_categories && page_categories.find(pc => pc.slug === 'office')">
+  <AppLayout
+    :site-data="resolvedSiteData"
+    :menus="resolvedMenus"
+    :page-title="props.title"
+  >
+    <template
+      v-if="
+        page_categories && page_categories.find((pc) => pc.slug === 'office')
+      "
+    >
       <section class="sidebar-page">
         <div
-          class="sidebar-page__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto md:mt-20 mt-16"
+          class="sidebar-page__inner mx-auto my-0 mt-16 w-full max-w-screen-2xl gap-x-10 px-5 md:mt-20 md:grid md:grid-cols-12"
         >
           <div
             v-if="!resolvedIsPost && resolvedSidebar"
-            class="sidebar-page__secondary md:col-span-3 xl:col-span-2 mb-16 md:mb-0 [&>div+div]:mt-7"
+            class="sidebar-page__secondary mb-16 md:col-span-3 md:mb-0 xl:col-span-2 [&>div+div]:mt-7"
           >
             <SubpageNav
               :heading="resolvedSidebar.nav?.heading"
@@ -22,87 +30,73 @@
               :text="widget.text"
               :buttons="widget.buttons"
             />
-            </div>
-            <div
-            class="
-            [&>div>section:not(:first-child)]:mt-20
-            [&>div>section[data-block-name='core/heading']+section]:mt-[20px]
-
-            [&>div>section[data-block-name='core/heading']_a]:underline
-            [&>div>section[data-block-name='core/heading']_a:hover]:no-underline
-            "
+          </div>
+          <div
+            class="[&>div>section:not(:first-child)]:mt-20 [&>div>section[data-block-name='core/heading']_a]:underline [&>div>section[data-block-name='core/heading']_a:hover]:no-underline [&>div>section[data-block-name='core/heading']+section]:mt-[20px]"
             :class="
               !resolvedIsPost
-                ? 'sidebar-page__main xl:col-start-4 md:col-span-9'
+                ? 'sidebar-page__main md:col-span-9 xl:col-start-4'
                 : 'sidebar-page__main md:col-span-12'
             "
           >
-            <DirectoryCard 
-                type="offices"
-                :name="title"
-                :address="address"
-                :phone="phone"
-                :email="email"
-                :fax="fax"
-                :location="location"
-                :image="image"
+            <DirectoryCard
+              type="offices"
+              :name="title"
+              :address="address"
+              :phone="phone"
+              :email="email"
+              :fax="fax"
+              :location="location"
+              :image="image"
             />
             <ComponentRouter :components="resolvedBlocks" />
           </div>
-          </div>
-        </section>
+        </div>
+      </section>
     </template>
     <template v-else>
       <Hero
-          v-if="resolvedHero && resolvedHero.type === 'default'"
-          v-bind="resolvedHero.props"
-          :priority="true"
-        />
-        <OverlayHero
-          v-else-if="resolvedHero && resolvedHero.type === 'overlay'"
-          v-bind="resolvedHero.props"
-          :priority="true"
-        />
-        <section class="sidebar-page">
+        v-if="resolvedHero && resolvedHero.type === 'default'"
+        v-bind="resolvedHero.props"
+      />
+      <OverlayHero
+        v-else-if="resolvedHero && resolvedHero.type === 'overlay'"
+        v-bind="resolvedHero.props"
+      />
+      <section class="sidebar-page">
+        <div
+          class="sidebar-page__inner mx-auto my-0 mt-16 w-full max-w-screen-2xl gap-x-10 px-5 md:mt-20 md:grid md:grid-cols-12"
+        >
           <div
-            class="sidebar-page__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto md:mt-20 mt-16"
+            v-if="!resolvedIsPost && resolvedSidebar"
+            class="sidebar-page__secondary mb-16 md:col-span-3 md:mb-0 xl:col-span-2 [&>div+div]:mt-7"
           >
-            <div
-              v-if="!resolvedIsPost && resolvedSidebar"
-              class="sidebar-page__secondary md:col-span-3 xl:col-span-2 mb-16 md:mb-0 [&>div+div]:mt-7"
-            >
-              <SubpageNav
-                :heading="resolvedSidebar.nav?.heading"
-                :items="resolvedSidebar.nav?.items"
-                :parent-permalink="resolvedSidebar.nav?.parentPermalink"
-              />
+            <SubpageNav
+              :heading="resolvedSidebar.nav?.heading"
+              :items="resolvedSidebar.nav?.items"
+              :parent-permalink="resolvedSidebar.nav?.parentPermalink"
+            />
 
-              <Widget
-                v-for="(widget, idx) in resolvedSidebar.widgets || []"
-                :key="idx"
-                :heading="widget.heading"
-                :text="widget.text"
-                :buttons="widget.buttons"
-              />
-            </div>
-
-            <div
-              class="
-              [&>div>section:not(:first-child)]:mt-20
-              [&>div>section[data-block-name='core/heading']+section]:mt-[20px]
-
-              [&>div>section[data-block-name='core/heading']_a]:underline
-              [&>div>section[data-block-name='core/heading']_a:hover]:no-underline
-              "
-              :class="
-                !resolvedIsPost
-                  ? 'sidebar-page__main xl:col-start-4 md:col-span-9'
-                  : 'sidebar-page__main md:col-span-12'
-              "
-            >
-            <ComponentRouter :components="resolvedBlocks" />
-            </div>
+            <Widget
+              v-for="(widget, idx) in resolvedSidebar.widgets || []"
+              :key="idx"
+              :heading="widget.heading"
+              :text="widget.text"
+              :buttons="widget.buttons"
+            />
           </div>
+
+          <div
+            class="[&>div>section:not(:first-child)]:mt-20 [&>div>section[data-block-name='core/heading']_a]:underline [&>div>section[data-block-name='core/heading']_a:hover]:no-underline [&>div>section[data-block-name='core/heading']+section]:mt-[20px]"
+            :class="
+              !resolvedIsPost
+                ? 'sidebar-page__main md:col-span-9 xl:col-start-4'
+                : 'sidebar-page__main md:col-span-12'
+            "
+          >
+            <ComponentRouter :components="resolvedBlocks" />
+          </div>
+        </div>
       </section>
     </template>
   </AppLayout>
@@ -112,10 +106,18 @@ import { computed, defineAsyncComponent } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import AppLayout from "../Layouts/App.vue";
 import ComponentRouter from "../../components/ComponentRouter/ComponentRouter.vue";
-const Hero = defineAsyncComponent(() => import("../../components/Hero/Hero.vue"));
-const OverlayHero = defineAsyncComponent(() => import("../../components/OverlayHero/OverlayHero.vue"));
-const SubpageNav = defineAsyncComponent(() => import("../../components/SubpageNav/SubpageNav.vue"));
-const Widget = defineAsyncComponent(() => import("../../components/Widget/Widget.vue"));
+const Hero = defineAsyncComponent(
+  () => import("../../components/Hero/Hero.vue"),
+);
+const OverlayHero = defineAsyncComponent(
+  () => import("../../components/OverlayHero/OverlayHero.vue"),
+);
+const SubpageNav = defineAsyncComponent(
+  () => import("../../components/SubpageNav/SubpageNav.vue"),
+);
+const Widget = defineAsyncComponent(
+  () => import("../../components/Widget/Widget.vue"),
+);
 import DirectoryCard from "../../components/DirectoryCard/DirectoryCard.vue";
 
 const props = defineProps({
@@ -176,18 +178,24 @@ const props = defineProps({
     type: String,
     default: "",
   },
-  image: String
+  image: String,
 });
 
 const page = usePage();
 
 console.log(props);
 
-const resolvedLayout = computed(() => props.layout || page.props?.layout || "default");
+const resolvedLayout = computed(
+  () => props.layout || page.props?.layout || "default",
+);
 const resolvedBlocks = computed(() => props.blocks || page.props?.blocks || []);
 const resolvedHero = computed(() => props.hero || page.props?.hero || null);
-const resolvedSidebar = computed(() => props.sidebar || page.props?.sidebar || null);
-const resolvedContent = computed(() => props.content || page.props?.content || "");
+const resolvedSidebar = computed(
+  () => props.sidebar || page.props?.sidebar || null,
+);
+const resolvedContent = computed(
+  () => props.content || page.props?.content || "",
+);
 const resolvedIsPost = computed(() => {
   if (props.isPost !== null) {
     return props.isPost;
@@ -195,6 +203,8 @@ const resolvedIsPost = computed(() => {
   return !!page.props?.isPost;
 });
 
-const resolvedSiteData = computed(() => props.siteData || page.props?.site_data || {});
+const resolvedSiteData = computed(
+  () => props.siteData || page.props?.site_data || {},
+);
 const resolvedMenus = computed(() => props.menus || page.props?.menus || {});
 </script>

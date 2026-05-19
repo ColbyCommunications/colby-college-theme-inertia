@@ -1,5 +1,9 @@
 <template>
-  <AppLayout :site-data="resolvedSiteData" :menus="resolvedMenus">
+  <AppLayout
+    :site-data="resolvedSiteData"
+    :menus="resolvedMenus"
+    :page-title="props.title"
+  >
     <template v-if="resolvedLayout === 'with-sidebar'">
       <Hero
         v-if="resolvedHero && resolvedHero.type === 'default'"
@@ -14,11 +18,11 @@
 
       <section class="sidebar-page">
         <div
-          class="sidebar-page__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto md:mt-20 mt-16"
+          class="sidebar-page__inner mx-auto my-0 mt-16 w-full max-w-screen-2xl gap-x-10 px-5 md:mt-20 md:grid md:grid-cols-12"
         >
           <div
             v-if="!resolvedIsPost && resolvedSidebar"
-            class="sidebar-page__secondary md:col-span-3 xl:col-span-2 mb-16 md:mb-0 [&>div+div]:mt-7"
+            class="sidebar-page__secondary mb-16 md:col-span-3 md:mb-0 xl:col-span-2 [&>div+div]:mt-7"
           >
             <SubpageNav
               :heading="resolvedSidebar.nav?.heading"
@@ -34,7 +38,6 @@
               :buttons="widget.buttons"
             />
           </div>
-
         </div>
       </section>
     </template>
@@ -47,10 +50,18 @@ import { computed, defineAsyncComponent } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import AppLayout from "../Layouts/App.vue";
 import ComponentRouter from "../../components/ComponentRouter/ComponentRouter.vue";
-const Hero = defineAsyncComponent(() => import("../../components/Hero/Hero.vue"));
-const OverlayHero = defineAsyncComponent(() => import("../../components/OverlayHero/OverlayHero.vue"));
-const SubpageNav = defineAsyncComponent(() => import("../../components/SubpageNav/SubpageNav.vue"));
-const Widget = defineAsyncComponent(() => import("../../components/Widget/Widget.vue"));
+const Hero = defineAsyncComponent(
+  () => import("../../components/Hero/Hero.vue"),
+);
+const OverlayHero = defineAsyncComponent(
+  () => import("../../components/OverlayHero/OverlayHero.vue"),
+);
+const SubpageNav = defineAsyncComponent(
+  () => import("../../components/SubpageNav/SubpageNav.vue"),
+);
+const Widget = defineAsyncComponent(
+  () => import("../../components/Widget/Widget.vue"),
+);
 
 const props = defineProps({
   title: String,
@@ -90,11 +101,17 @@ const props = defineProps({
 
 const page = usePage();
 
-const resolvedLayout = computed(() => props.layout || page.props?.layout || "default");
+const resolvedLayout = computed(
+  () => props.layout || page.props?.layout || "default",
+);
 const resolvedBlocks = computed(() => props.blocks || page.props?.blocks || []);
 const resolvedHero = computed(() => props.hero || page.props?.hero || null);
-const resolvedSidebar = computed(() => props.sidebar || page.props?.sidebar || null);
-const resolvedContent = computed(() => props.content || page.props?.content || "");
+const resolvedSidebar = computed(
+  () => props.sidebar || page.props?.sidebar || null,
+);
+const resolvedContent = computed(
+  () => props.content || page.props?.content || "",
+);
 const resolvedIsPost = computed(() => {
   if (props.isPost !== null) {
     return props.isPost;
@@ -102,6 +119,8 @@ const resolvedIsPost = computed(() => {
   return !!page.props?.isPost;
 });
 
-const resolvedSiteData = computed(() => props.siteData || page.props?.site_data || {});
+const resolvedSiteData = computed(
+  () => props.siteData || page.props?.site_data || {},
+);
 const resolvedMenus = computed(() => props.menus || page.props?.menus || {});
 </script>
