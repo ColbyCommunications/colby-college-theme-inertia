@@ -1188,27 +1188,27 @@ function colby_get_block_validation_error(WP_REST_Request $request): ?WP_Error {
 // 12. Hook into WordPress save and autosave
 // ---------------------------------------------------------------------------
 
-function colby_validate_blocks_on_save($prepared_post, WP_REST_Request $request) {
-    $validation_error = colby_get_block_validation_error($request);
+// function colby_validate_blocks_on_save($prepared_post, WP_REST_Request $request) {
+//     $validation_error = colby_get_block_validation_error($request);
 
-    if ($validation_error) {
-        return $validation_error;
-    }
+//     if ($validation_error) {
+//         return $validation_error;
+//     }
 
-    return $prepared_post;
-}
+//     return $prepared_post;
+// }
 
-add_action('init', function () {
-    $post_types = get_post_types(['show_in_rest' => true], 'names');
+// add_action('init', function () {
+//     $post_types = get_post_types(['show_in_rest' => true], 'names');
 
-    foreach ($post_types as $post_type) {
-        if (!post_type_supports($post_type, 'editor')) {
-            continue;
-        }
+//     foreach ($post_types as $post_type) {
+//         if (!post_type_supports($post_type, 'editor')) {
+//             continue;
+//         }
 
-        add_filter("rest_pre_insert_{$post_type}", 'colby_validate_blocks_on_save', 10, 2);
-    }
-});
+//         add_filter("rest_pre_insert_{$post_type}", 'colby_validate_blocks_on_save', 10, 2);
+//     }
+// });
 
 add_action('enqueue_block_editor_assets', function () {
     wp_register_style('colby-block-validation-editor', false);
