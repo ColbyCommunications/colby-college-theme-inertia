@@ -1,2 +1,0 @@
-import{u as r,k as t,f as s}from"./blocks-CB1DDdCs.js";import"./preload-helper-PPVm8Dsz.js";import"./_commonjsHelpers-DsqdWQfm.js";import"./iframe-D-PRYcM1.js";function n(o){return t.jsxs(t.Fragment,{children:[t.jsx(s,{title:"Blocks/Full Bleed Hero/Training Video"}),`
-`,t.jsx("video",{controls:!0,children:t.jsx("source",{src:"https://www.colby.edu/communications/training-videos/Blocks_Accordion_final.mp4",type:"video/mp4"})})]})}function l(o={}){const{wrapper:e}={...r(),...o.components};return e?t.jsx(e,{...o,children:t.jsx(n,{...o})}):n()}export{l as default};
