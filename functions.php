@@ -10,13 +10,31 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 
 add_filter('wp_preload_resources', 'colby_preload_hero_assets');
 
-function custom_preload_fonts() {
-  // Keep for now
-  echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/libre-franklin-latin-wght-normal-CLTz0ja0.woff2" as="font" type="font/woff2" crossorigin>';
-  echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/noto-sans-cyrillic-ext-wght-normal-DSNfmdVt.woff2" as="font" type="font/woff2" crossorigin>';
+function colby_preload_critical_assets() {
+  echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/libre-franklin-latin-wght-normal-CLTz0ja0.woff2" as="font" type="font/woff2" crossorigin="anonymous">' . "\n";
+echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/noto-sans-cyrillic-ext-wght-normal-DSNfmdVt.woff2" as="font" type="font/woff2" crossorigin="anonymous">' . "\n";
+
+  $manifest_path = get_stylesheet_directory() . '/dist/.vite/manifest.json';
+
+  if (!file_exists($manifest_path)) {
+    return;
+  }
+
+  $manifest = json_decode(file_get_contents($manifest_path), true);
+  $entry = $manifest['resources/js/app.js'] ?? null;
+
+  if (empty($entry['css'])) {
+    return;
+  }
+
+  foreach ($entry['css'] as $css) {
+    $css_url = get_stylesheet_directory_uri() . '/dist/' . $css;
+
+    echo '<link rel="preload" href="' . esc_url($css_url) . '" as="style">' . "\n";
+  }
 
 }
-add_action('wp_head', 'custom_preload_fonts', 1);
+add_action('wp_head', 'colby_preload_critical_assets', 1);
 
 // Register all ACF blocks in component folders from ACF directories
 add_action('init', function () {
@@ -376,6 +394,7 @@ add_action('wp_enqueue_scripts', function () {
     }
   }
 }, 20);
+
 
 add_action( 'after_setup_theme', 'theme_supports'  );
 
