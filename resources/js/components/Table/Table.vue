@@ -240,7 +240,7 @@
             class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
           >
             <span v-if="heading_item">{{ heading_item }}</span>
-            <span v-else class="sr-only">Column {{ index + 1 }}</span>
+            <span v-else >Column {{ index + 1 }}</span>
           </th>
         </tr>
 
