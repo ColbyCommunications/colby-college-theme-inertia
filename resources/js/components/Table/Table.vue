@@ -28,7 +28,7 @@
           >
             <component
               :is="item.link ? 'a' : 'span'"
-              class="inline-flex items-center font-body text-16 leading-140 font-semibold md:text-12"
+              class="inline-flex items-center font-body text-16 leading-140 font-semibold md:text-12 min-h-[44px] min-w-[44px] leading-[44px]"
               :class="
                 item.link
                   ? 'cursor-pointer text-indigo hover:underline'
@@ -238,7 +238,7 @@
         <tr
           v-for="(item, index) in paginatedItems"
           :key="index"
-          class="h-12 w-full odd:bg-gray-100 md:h-10"
+          class="h-12 w-full odd:bg-gray-100 md:h-10 min-h-[44px] min-w-[44px] leading-[44px]"
         >
           <th
             scope="row"
@@ -246,7 +246,7 @@
           >
             <a
               v-if="item.link.url && !item.image"
-              class="inline-flex cursor-pointer items-center font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12"
+              class="inline-flex cursor-pointer items-center font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12 min-h-[44px] min-w-[44px] leading-[44px]"
               :href="item.link.url"
             >
               {{ item.link.title }}
@@ -307,7 +307,7 @@
           <td
             v-for="(column, colIndex) in item.columns"
             :key="colIndex"
-            class="px-6 py-2 font-body text-16 leading-140 font-normal text-indigo-800 md:text-12"
+            class="px-6 py-2 font-body text-16 leading-140 font-normal text-indigo-800 md:text-12 min-h-[44px] min-w-[44px] leading-[44px]"
             v-text="column"
           />
         </tr>
