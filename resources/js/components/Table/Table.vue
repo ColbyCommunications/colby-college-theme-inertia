@@ -16,13 +16,21 @@
             <span v-else class="sr-only">Column {{ index + 1 }}</span>
           </th>
         </tr>
+        <tr v-else>
+          <th
+            scope="col"
+            class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
+          >
+            Column 1
+          </th>
+        </tr>
 
         <tr
           v-for="(item, itemIndex) in manualItems"
           :key="`row-${itemIndex}`"
           class="h-12 w-full odd:bg-gray-100 md:h-10"
         >
-          <th
+          <td
             scope="row"
             class="px-6 py-2 text-left font-normal whitespace-nowrap md:whitespace-normal"
           >
@@ -55,9 +63,10 @@
 
               {{ item.link ? item.link.title : item.title }}
             </component>
-          </th>
+          </td>
 
           <td
+            v-if="item.columns"
             v-for="(column, colIndex) in item.columns"
             :key="`col-${itemIndex}-${colIndex}`"
             class="px-6 py-2 font-body text-16 leading-140 font-normal text-indigo-800 md:text-12"
