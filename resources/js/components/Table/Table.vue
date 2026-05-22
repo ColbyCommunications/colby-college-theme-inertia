@@ -5,16 +5,15 @@
       class="block w-full overflow-scroll md:table md:overflow-auto"
     >
       <tbody>
-        <tr v-if="headings && headings.length">
-          <th
-            v-for="(heading, index) in headings"
-            :key="`th-${index}`"
-            scope="col"
-            class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
-          >
-            <span v-if="heading.heading">{{ heading.heading }}</span>
-            <span v-else>Column {{ index + 1 }}</span>
-          </th>
+          <tr v-if="normalizedHeadings.length">
+            <th
+              v-for="(heading, index) in normalizedHeadings"
+              :key="`th-${index}`"
+              scope="col"
+              class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
+            >
+              {{ heading }}
+            </th>
         </tr>
         <tr v-else>
           <th
@@ -232,15 +231,14 @@
       class="colby-table-block block w-full overflow-scroll md:table md:overflow-auto"
     >
       <tbody>
-        <tr v-if="currentHeadings">
+        <tr v-if="normalizedHeadings.length">
           <th
-            v-for="(heading_item, index) in currentHeadings"
-            :key="index"
+            v-for="(heading, index) in normalizedHeadings"
+            :key="`th-${index}`"
             scope="col"
             class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
           >
-            <span v-if="heading_item">{{ heading_item }}</span>
-            <span v-else>Column {{ index + 1 }}</span>
+            {{ heading }}
           </th>
         </tr>
 
@@ -540,6 +538,52 @@ function initFuse() {
     });
   }
 }
+const normalizedHeadings = computed(() => {
+  // console.log(currentHeadings);
+  const sourceHeadings = Array.isArray(currentHeadings.value)
+    ? currentHeadings.value
+    : props.headings || [];
+
+  const sourceItems =
+    props.render_api || props.externalItems ? items.value : props.manualItems;
+
+  // 1. Map headings to strings, keeping empty strings intact
+  const normalizedSourceHeadings = sourceHeadings.map((heading) => {
+    if (heading && typeof heading === "object") {
+      return heading.heading || "";
+    }
+    return heading || "";
+  });
+
+  // 2. Determine the maximum number of extra data columns
+  const maxColumnCount = sourceItems.reduce((max, item) => {
+    return Math.max(max, Array.isArray(item.columns) ? item.columns.length : 0);
+  }, 0);
+
+  // 4. Calculate the true total columns needed
+  let totalHeadingsNeeded = 0;
+
+  if (normalizedSourceHeadings.length !== maxColumnCount+1){
+    if (normalizedSourceHeadings.length > maxColumnCount+1) {
+      totalHeadingsNeeded = normalizedSourceHeadings.length - maxColumnCount+1;
+    } else {
+      totalHeadingsNeeded = maxColumnCount+1 - normalizedSourceHeadings.length;
+    }
+  }
+
+  // 5. Build up our array safely without breaking structural index alignment
+  let headings = [...normalizedSourceHeadings];
+
+  // If the CMS provided fewer headers than total columns, pad the end
+  for (let i = 0; i < totalHeadingsNeeded; i++) {
+    headings.push("");
+  }
+
+  // 6. Final backfill mapping
+  return headings.map((heading, index) => {
+    return heading.trim() !== "" ? heading : `Column ${index + 1}`;
+  });
+});
 
 function updateQueryParams() {
   const params = new URLSearchParams();
@@ -718,7 +762,7 @@ onMounted(() => {
   }
 
   if (props.render_api) {
-    currentHeadings.value = props.initial_heading;
+    heading.value = props.initial_heading;
     currentHeadings.value = props.initial_headings;
     filterOptions.value = props.initial_filter_options;
     items.value = props.initial_items || [];
