@@ -1,16 +1,18 @@
 <template>
-  <div class="accordion mx-auto w-full max-w-screen-2xl" role="accordion">
+  <div class="accordion mx-auto w-full max-w-screen-2xl">
     <div class="colby-accordion-block border-b border-gray-300">
       <div
         v-for="(panel, index) in panels"
         :key="index"
         class="accordion__panel border-t border-solid border-gray-300"
-        role="region"
       >
         <div class="accordion__header">
           <button
             class="accordion__button flex items-center justify-between gap-x-3 !px-0 !py-6"
             type="button"
+            role="button"
+            :aria-controls="`section${index+1}-content`"
+            :id="`section${index+1}-header`"
             :aria-expanded="isActive(index)"
             @click="toggle(index)"
           >
@@ -37,7 +39,7 @@
           @after-enter="onAfterEnter"
           @leave="onLeave"
         >
-          <div v-show="isActive(index)" class="accordion__window">
+          <div v-show="isActive(index)" class="accordion__window" role="region" :id="`section${index+1}-content`" :aria-labelledby="`section${index+1}-header`">
             <div class="accordion__content">
               <div v-html="panel.content" :class="WysiwygClasses"></div>
             </div>
