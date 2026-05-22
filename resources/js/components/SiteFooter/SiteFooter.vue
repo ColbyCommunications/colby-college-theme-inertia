@@ -12,7 +12,7 @@
       >
         <div>
           <a
-            class="mb-4 block transition-all duration-200 ease-in-out hover:text-white hover:underline"
+            class="mb-4 block transition-all duration-200 ease-in-out hover:text-white hover:underline "
             :href="address.url"
             aria-label="Go to colby.edu homepage"
           >
@@ -41,7 +41,7 @@
           <div v-html="address.text"></div>
 
           <a
-            class="block transition-all duration-200 ease-in-out hover:text-white hover:underline"
+            class="block transition-all duration-200 ease-in-out hover:text-white hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
             :href="`tel:${phone}`"
           >
             {{ phone }}
@@ -73,7 +73,7 @@
           >
             <a
               :href="item.url"
-              class="w-full transition-all duration-200 ease-in-out hover:text-white hover:underline"
+              class="w-full transition-all duration-200 ease-in-out hover:text-white hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
             >
               {{ item.title }}
             </a>

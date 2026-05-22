@@ -12,7 +12,7 @@
         >
           <a
             :href="parentPermalink"
-            class="pointer-events-none md:pointer-events-auto min-h-[44px] min-w-[44px] leading-[44px]"
+            class="pointer-events-none md:pointer-events-auto min-h-[44px] min-w-[44px] leading-[44px] inline-block"
           >
             {{ heading }}
             <div class="absolute top-6 right-8 md:hidden w-1.5">

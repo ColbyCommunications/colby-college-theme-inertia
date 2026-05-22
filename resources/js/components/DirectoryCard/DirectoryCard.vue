@@ -33,7 +33,7 @@
                 Title
               </h2>
               <p
-                class="font-body text-16 leading-130 font-normal text-indigo-800"
+                class="font-body text-16 leading-[1.5] font-normal text-indigo-800"
               >
                 {{ title }}
               </p>
@@ -46,7 +46,7 @@
                 Department
               </h2>
               <p
-                class="font-body text-16 leading-130 font-normal text-indigo-800"
+                class="font-body text-16 leading-[1.5] font-normal text-indigo-800"
               >
                 {{ department }}
               </p>

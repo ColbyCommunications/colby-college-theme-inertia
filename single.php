@@ -69,21 +69,25 @@ if ($post->post_type === 'people') {
 
   $current_courses = json_decode(stripslashes(get_field('current_courses', $post->ID)));
 
-  $acf_data['current_courses'] = array_map(function($i) {
-    return [
-        'title'   => $i->title,
-        'columns' => [
-            [
-                'link_or_text' => 'text',
-                'column' => $i->crs,
-            ],
-            [
-                'link_or_text' => 'text',
-                'column' => $i->sec,
-            ],
-        ]
-    ];
-  }, $current_courses);
+  if (is_array($current_courses)) {
+    $acf_data['current_courses'] = array_map(function($i) {
+      return [
+          'title'   => $i->title,
+          'columns' => [
+              [
+                  'link_or_text' => 'text',
+                  'column' => $i->crs,
+              ],
+              [
+                  'link_or_text' => 'text',
+                  'column' => $i->sec,
+              ],
+          ]
+      ];
+    }, $current_courses);
+  } else {
+    $acf_data['current_courses'] = [];
+  }
 
 
   return Inertia::render('Person/Show', [
