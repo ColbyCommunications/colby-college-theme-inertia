@@ -316,7 +316,7 @@
           <td
             v-for="(column, colIndex) in item.columns"
             :key="colIndex"
-            class="px-6 py-2 font-body text-16 leading-140 font-normal text-indigo-800 md:text-12 min-h-[44px] min-w-[44px] leading-[44px]"
+            class="px-6 py-2 font-body text-16 leading-140 font-normal text-indigo-800 md:text-12"
             v-text="column"
           />
         </tr>

@@ -398,12 +398,12 @@ if (!function_exists('colby_block_table_normalize_items')) {
     function colby_block_table_normalize_items(array $payload, array $data): array
     {
         $api = $data['api'] ?? '';
-        $department_code = $data['departmentCode'] ?? '';
+        $department_code = $data['department_code'] ?? '';
 
         switch ($api) {
             case 'Department Courses':
                 $courses = colby_block_table_group_v2_courses($payload);
-                $department_code = $data['departmentCode'] ?? '';
+                $department_code = $data['department_code'] ?? '';
             
                 $filtered = array_values(array_filter($courses, function ($item) use ($department_code) {
                     return ($item['dept'] ?? '') === $department_code && !empty($item['longTitle']);
@@ -433,7 +433,7 @@ if (!function_exists('colby_block_table_normalize_items')) {
             
             case 'Course Catalogue':
                 $courses = colby_block_table_group_v2_courses($payload);
-            
+                
                 $filtered = array_values(array_filter($courses, function ($item) {
                     return !empty($item['longTitle']);
                 }));
@@ -637,6 +637,7 @@ if (!function_exists('colby_block_table_fetch_office_items')) {
 if (!function_exists('colby_block_table_get_remote_data')) {
     function colby_block_table_get_remote_data(array $data, int $index, array $block = []): array
     {
+        // dd($data);
         $render_api = $data['render_api'] ?? false;
 
         if (!colby_block_table_is_truthy($render_api)) {
@@ -685,7 +686,7 @@ if (!function_exists('colby_block_table_get_remote_data')) {
             implode('|', [
                 $endpoint,
                 $api,
-                $data['departmentCode'] ?? '',
+                $data['department_code'] ?? '',
             ])
         );
 
