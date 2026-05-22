@@ -1,82 +1,99 @@
 <template>
   <div class="colby-table-block">
-      <table v-if="!render_api && !externalItems" class="block md:table overflow-scroll md:overflow-auto w-full">
-    <tbody>
-      
-      <tr v-if="headings && headings.length">
-        <th 
-          v-for="(heading, index) in headings" 
-          :key="`th-${index}`"
-          class="h-12 md:h-11 px-6 font-body text-18 md:text-14 font-semibold leading-120 text-indigo text-left bg-[#eef4ff] whitespace-nowrap"
-        >
-          {{ heading.heading }}
-        </th>
-      </tr>
-
-      <tr 
-        v-for="(item, itemIndex) in manualItems" 
-        :key="`row-${itemIndex}`"
-        class="w-full h-12 md:h-10 odd:bg-gray-100"
-      >
-        <td class="whitespace-nowrap md:whitespace-normal px-6 py-2">
-          <component 
-            :is="item.link ? 'a' : 'span'"
-            class="inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
-            :class="item.link ? 'text-indigo hover:underline cursor-pointer' : 'text-indigo-800'"
-            :href="item.link ? item.link.url : null"
+    <table
+      v-if="!render_api && !externalItems"
+      class="block w-full overflow-scroll md:table md:overflow-auto"
+    >
+      <tbody>
+        <tr v-if="headings && headings.length">
+          <th
+            v-for="(heading, index) in headings"
+            :key="`th-${index}`"
+            scope="col"
+            class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
           >
-            <div 
-              v-if="item.image" 
-              class="table__image hidden md:block relative mr-3 rounded-[50%] overflow-hidden"
+            <span v-if="heading.heading">{{ heading.heading }}</span>
+            <span v-else class="sr-only">Column {{ index + 1 }}</span>
+          </th>
+        </tr>
+
+        <tr
+          v-for="(item, itemIndex) in manualItems"
+          :key="`row-${itemIndex}`"
+          class="h-12 w-full odd:bg-gray-100 md:h-10"
+        >
+          <th
+            scope="row"
+            class="px-6 py-2 text-left font-normal whitespace-nowrap md:whitespace-normal"
+          >
+            <component
+              :is="item.link ? 'a' : 'span'"
+              class="inline-flex items-center font-body text-16 leading-140 font-semibold md:text-12"
+              :class="
+                item.link
+                  ? 'cursor-pointer text-indigo hover:underline'
+                  : 'text-indigo-800'
+              "
+              :href="item.link ? item.link.url : null"
             >
-              <picture>
-                <source media="(min-width:768px)" :srcset="item.image.srcset">
-                <img
-                  class="w-6 h-6"
-                  :src="item.image.src"
-                  :alt="item.image.alt"
-                />
-              </picture>
-            </div>
+              <div
+                v-if="item.image"
+                class="table__image relative mr-3 hidden overflow-hidden rounded-[50%] md:block"
+              >
+                <picture>
+                  <source
+                    media="(min-width:768px)"
+                    :srcset="item.image.srcset"
+                  />
+                  <img
+                    class="h-6 w-6"
+                    :src="item.image.src"
+                    :alt="item.image.alt"
+                  />
+                </picture>
+              </div>
 
-            {{ item.link ? item.link.title : item.title }}
-          </component>
-        </td>
+              {{ item.link ? item.link.title : item.title }}
+            </component>
+          </th>
 
-        <td 
-          v-for="(column, colIndex) in item.columns" 
-          :key="`col-${itemIndex}-${colIndex}`"
-          class="px-6 font-body text-16 md:text-12 font-normal leading-140 text-indigo-800 py-2"
-        >
-          <a 
-            v-if="column.link_or_text === 'link'" 
-            :href="column.link.url" 
-            class="inline-flex items-center font-body text-20 md:text-12 text-indigo !underline hover:!no-underline cursor-pointer"
+          <td
+            v-for="(column, colIndex) in item.columns"
+            :key="`col-${itemIndex}-${colIndex}`"
+            class="px-6 py-2 font-body text-16 leading-140 font-normal text-indigo-800 md:text-12"
           >
-            {{ column.link.title }}
-          </a>
-          <template v-else>
-            <span>{{ Array.isArray(column.column) ? column.column.join(', ') : column.column }}</span>
-          </template>
-        </td>
-      </tr>
-
-    </tbody>
-  </table>
+            <a
+              v-if="column.link_or_text === 'link'"
+              :href="column.link.url"
+              class="inline-flex cursor-pointer items-center font-body text-20 text-indigo !underline hover:!no-underline md:text-12"
+            >
+              {{ column.link.title }}
+            </a>
+            <template v-else>
+              <span>{{
+                Array.isArray(column.column)
+                  ? column.column.join(", ")
+                  : column.column
+              }}</span>
+            </template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
     <div
       v-if="render_api || externalItems"
       class="!mb-10 justify-between md:flex"
     >
       <h2
-        class="font-extended text-24 leading-110 -tracking-3 font-normal text-indigo"
+        class="-tracking-3 font-extended text-24 leading-110 font-normal text-indigo"
         v-text="initial_heading"
       />
     </div>
 
     <div
       v-if="render_api || externalItems"
-      class="!mb-8 mt-6 flex flex-wrap justify-between md:mt-0 md:flex-nowrap md:space-x-12"
+      class="mt-6 !mb-8 flex flex-wrap justify-between md:mt-0 md:flex-nowrap md:space-x-12"
     >
       <label
         class="relative mb-6 flex w-full max-w-sm shrink-0 text-[0] md:mb-0 md:shrink"
@@ -165,9 +182,7 @@
 
       <select
         v-if="
-          api !== 'Department Courses' &&
-          api !== 'Offices' &&
-          api !== 'People'
+          api !== 'Department Courses' && api !== 'Offices' && api !== 'People'
         "
         v-model="selectedDivision"
         @change="toggleTermDivision($event, true)"
@@ -185,8 +200,8 @@
 
       <div v-if="filterOptions.length > 0" class="mb-6 flex md:mb-0">
         <button
-          class="mr-5 font-body text-10 leading-130 font-normal text-indigo-900 hover:underline cursor-pointer"
-          :class="{ '!text-indigo font-bold': filters.term === 'all' }"
+          class="mr-5 cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
+          :class="{ 'font-bold !text-indigo': filters.term === 'all' }"
           @click="toggleTermType('All')"
         >
           All
@@ -194,8 +209,8 @@
         <button
           v-for="(term, index) in filterOptions"
           :key="index"
-          class="mr-5 font-body text-10 leading-130 font-normal text-indigo-900 hover:underline cursor-pointer"
-          :class="{ '!text-indigo font-bold': filters.term === term }"
+          class="mr-5 cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
+          :class="{ 'font-bold !text-indigo': filters.term === term }"
           @click="toggleTermType(term)"
         >
           {{ term }}
@@ -212,9 +227,11 @@
           <th
             v-for="(heading_item, index) in currentHeadings"
             :key="index"
-            class="h-12 whitespace-nowrap bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold text-indigo md:h-11 md:text-14"
+            scope="col"
+            class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
           >
-            {{ heading_item }}
+            <span v-if="heading_item">{{ heading_item }}</span>
+            <span v-else class="sr-only">Column {{ index + 1 }}</span>
           </th>
         </tr>
 
@@ -223,10 +240,13 @@
           :key="index"
           class="h-12 w-full odd:bg-gray-100 md:h-10"
         >
-          <td class="whitespace-normal px-6 py-2">
+          <th
+            scope="row"
+            class="px-6 py-2 text-left font-normal whitespace-normal"
+          >
             <a
               v-if="item.link.url && !item.image"
-              class="inline-flex items-center font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12 cursor-pointer"
+              class="inline-flex cursor-pointer items-center font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12"
               :href="item.link.url"
             >
               {{ item.link.title }}
@@ -257,10 +277,7 @@
               </a>
             </div>
 
-            <Modal
-              v-if="item.description"
-              v-model="item.modalOpen"
-            >
+            <Modal v-if="item.description" v-model="item.modalOpen">
               <template #content>
                 <h3
                   class="flex items-center bg-[#eef4ff] px-5 py-2 text-left font-body text-20 leading-120 font-semibold text-indigo md:text-14"
@@ -285,7 +302,7 @@
             >
               {{ item.link.title }}
             </span>
-          </td>
+          </th>
 
           <td
             v-for="(column, colIndex) in item.columns"
@@ -399,7 +416,6 @@ const props = defineProps({
     default: () => [],
   },
 
-  // NEW
   initial_items: {
     type: Array,
     default: () => [],
@@ -425,8 +441,6 @@ const props = defineProps({
     default: false,
   },
 });
-
-
 
 const fuse = ref(null);
 const heading = ref(undefined);
@@ -461,9 +475,7 @@ const filteredItems = computed(() => {
   }
 
   if (selectedDivision.value !== "All Divisions") {
-    g = g.filter((item) =>
-      filters.value.department.includes(item.department),
-    );
+    g = g.filter((item) => filters.value.department.includes(item.department));
   }
 
   if (fuse.value) {
@@ -678,10 +690,7 @@ onMounted(() => {
     if (params.has("division")) {
       selectedDivision.value = params.get("division");
       filters.value.division = params.get("division");
-      toggleTermDivision(
-        { target: { value: params.get("division") } },
-        false,
-      );
+      toggleTermDivision({ target: { value: params.get("division") } }, false);
     }
   }
 
