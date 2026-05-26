@@ -89,6 +89,12 @@
                   [&_ul]:mb-4
                   [&_ol]:pl-6
                   [&_ol]:mb-4
+
+                  [&_p>a:only-child]:min-h-[44px]
+   
+
+                  [&_li>a:only-child]:min-h-[44px]
+                  [&_li>a:only-child]:inline-block
                 ">
                     <span v-if="!acf.hide_bio" v-html="acf.bio" />
                 </div>
