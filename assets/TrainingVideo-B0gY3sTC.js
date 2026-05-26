@@ -1,0 +1,2 @@
+import{u as s,k as t,f as r}from"./blocks-D9Vq0FBG.js";import"./preload-helper-PPVm8Dsz.js";import"./_commonjsHelpers-DsqdWQfm.js";import"./iframe-50IdwWHA.js";function e(n){return t.jsxs(t.Fragment,{children:[t.jsx(r,{title:"Blocks/Facts and Figures/Training Video"}),`
+`,t.jsx("video",{controls:!0,children:t.jsx("source",{src:"https://www.colby.edu/communications/training-videos/Blocks_Accordion_final.mp4",type:"video/mp4"})})]})}function m(n={}){const{wrapper:o}={...s(),...n.components};return o?t.jsx(o,{...n,children:t.jsx(e,{...n})}):e()}export{m as default};
