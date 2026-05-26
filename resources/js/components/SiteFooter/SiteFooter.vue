@@ -23,16 +23,10 @@
             />
           </a>
 
-          <a
-            v-if="display_athletics_logo"
-            class="relative block transition-all duration-200 ease-in-out hover:text-white hover:underline lg:hidden"
-            href="https://colbyathletics.com"
-            aria-label="Go to colbyathletics.com homepage"
-          >
-            <AthleticsLogo
-              class="relative left-[-11px] w-[125px] md:w-[100px]"
+          <AthleticsLogo
+              v-if="display_athletics_logo"
+              class="relative left-[-11px] w-[125px] md:w-[100px] lg:hidden"
             />
-          </a>
         </div>
 
         <address
@@ -48,7 +42,8 @@
           </a>
         </address>
           <AthleticsLogo
-            class="absolute top-[-14px] left-[-20px] hidden w-[125px] md:block md:w-[100px]"
+            v-if="display_athletics_logo"
+            class="absolute top-[-14px] left-[-20px] hidden w-[125px] lg:block md:w-[100px]"
           />
       </div>
 
