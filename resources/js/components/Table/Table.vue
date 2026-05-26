@@ -145,7 +145,7 @@
         v-if="api === 'Course Catalogue'"
         v-model="selectedDepartment"
         @change="toggleDepartment($event)"
-        class="mr-5 mb-6 w-full max-w-[120px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline md:mb-0"
+        class="mr-5 mb-6 w-full max-w-[120px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline md:mb-0 min-h-[44px] min-w-[44px]"
         aria-label="Select a department"
       >
         <option value="All Departments">All Departments</option>
@@ -194,7 +194,7 @@
         "
         v-model="selectedDivision"
         @change="toggleTermDivision($event, true)"
-        class="mr-5 mb-6 w-full max-w-[120px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline md:mb-0"
+        class="mr-5 mb-6 w-full max-w-[120px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline md:mb-0 min-h-[44px] min-w-[44px] leading-[44px]"
         aria-label="Select a division"
       >
         <option value="All Divisions">All Divisions</option>
@@ -208,7 +208,7 @@
 
       <div v-if="filterOptions.length > 0" class="mb-6 flex md:mb-0">
         <button
-          class="mr-5 cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
+          class="mr-5 cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
           :class="{ 'font-bold !text-indigo': filters.term === 'all' }"
           @click="toggleTermType('All')"
         >
@@ -217,7 +217,7 @@
         <button
           v-for="(term, index) in filterOptions"
           :key="index"
-          class="mr-5 cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
+          class="mr-5 cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
           :class="{ 'font-bold !text-indigo': filters.term === term }"
           @click="toggleTermType(term)"
         >
@@ -359,7 +359,7 @@
             class="pagination__item"
           >
             <button
-              class="block p-2 py-1 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
+              class="block p-2 py-1 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10 min-h-[44px] min-w-[44px] leading-[44px]"
               :class="{ 'bg-[#eef4ff]': currentPage === pageIndex }"
               @click="navigateFn(pageIndex)"
             >
