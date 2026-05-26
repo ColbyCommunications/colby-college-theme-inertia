@@ -338,6 +338,7 @@
           v-if="currentPage !== 1"
           class="block p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
           @click="navigatePages('prev')"
+          aria-label="Previous"
         >
           <svg
             class="w-1 fill-indigo-800"
@@ -372,6 +373,7 @@
           v-if="currentPage !== totalPages"
           class="block p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
           @click="navigatePages('next')"
+          aria-label="Next"
         >
           <svg
             class="w-1 rotate-180 fill-indigo-800"
