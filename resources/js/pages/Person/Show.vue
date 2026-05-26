@@ -73,7 +73,7 @@
                   [&_h4]:font-extended [&_h4]:font-normal [&_h4]:text-20 [&_h4]:leading-110 [&_h4]:-tracking-3 [&_h4]:text-indigo [&_h4+p]:mt-2 [&_h4+ul]:mt-2 [&_h4+ol]:mt-2
                   [&_h5]:font-extended [&_h5]:font-bold [&_h5]:text-14 [&_h5]:leading-130 [&_h5]:tracking-8 [&_h5]:text-azure [&_h5]:uppercase [&_h5+p]:mt-2 [&_h5+ul]:mt-2 [&_h5+ol]:mt-2
                   [&_h6]:font-extended [&_h6]:font-bold [&_h6]:text-12 [&_h6]:tracking-8 [&_h6]:text-azure [&_h6]:uppercase [&_h6+p]:mt-2
-                  [&_p]:font-body [&_p]:font-normal [&_p]:text-16 [&_p]:leading-130 [&_p]:text-indigo-800
+                  [&_p]:font-body [&_p]:font-normal [&_p]:text-16 [&_p]:leading-[1.5] [&_p]:text-indigo-800
                   [&_p>a]:underline [&_p>a:hover]:no-underline [&_p>a:hover]:text-indigo
                   [&_ul+h2]:mt-20
                   [&_ul>li]:font-body [&_ul>li]:font-normal [&_ul>li]:text-16 [&_ul>li]:leading-130 [&_ul>li]:text-indigo-800 [&_ul>li]:list-disc [&_ul>li]:list-outside [&_ul>li]:ml-3 [&_ul>li+li]:mt-2

@@ -36,7 +36,7 @@ export const WysiwygClasses = [
     '[&_p]:font-body',
     '[&_p]:mb-4',
     '[&_p]:font-normal',
-    '[&_p]:leading-130',
+    '[&_p]:leading-[1.5]',
     '[&_p]:text-indigo-800',
     '[&_p>a]:underline',
     '[&_p>a:hover]:no-underline',
