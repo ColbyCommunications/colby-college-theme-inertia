@@ -47,17 +47,9 @@
             {{ phone }}
           </a>
         </address>
-
-        <a
-          v-if="display_athletics_logo"
-          class="relative hidden transition-all duration-200 ease-in-out hover:text-white hover:underline lg:block"
-          href="https://colbyathletics.com"
-          aria-label="Go to colbyathletics.com homepage"
-        >
           <AthleticsLogo
             class="absolute top-[-14px] left-[-20px] hidden w-[125px] md:block md:w-[100px]"
           />
-        </a>
       </div>
 
       <div
