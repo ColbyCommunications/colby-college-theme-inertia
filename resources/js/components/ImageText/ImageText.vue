@@ -29,7 +29,7 @@
         </figcaption>
       </div>
 
-      <div v-html="paragraph_text" class="font-body font-normal text-16 leading-[1.75] text-left text-indigo-800 mt-2 [&>p]:mb-2" ></div>
+      <div v-html="paragraph_text" class="font-body font-normal text-16 leading-[1.75] text-left text-indigo-800 mt-2 [&>p]:mb-2 [&_p>a:only-child]:min-h-[44px] [&_p>a:only-child]:inline-block" ></div>
     </div>
 
     <!-- Side-by-side mode -->

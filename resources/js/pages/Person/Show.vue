@@ -91,6 +91,7 @@
                   [&_ol]:mb-4
 
                   [&_p>a:only-child]:min-h-[44px]
+                  [&_p>a:only-child]:inline-block
    
 
                   [&_li>a:only-child]:min-h-[44px]
