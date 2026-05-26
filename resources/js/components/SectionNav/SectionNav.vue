@@ -8,7 +8,7 @@
       class="section-nav__inner flex space-x-10 px-5 lg:justify-center"
     >
       <h2
-        class="section-nav__heading font-extended text-14 font-bold tracking-8 whitespace-nowrap text-azure uppercase md:text-12"
+        class="section-nav__heading font-extended text-14 font-bold tracking-8 whitespace-nowrap text-azure uppercase md:text-12 flex items-center"
       >
         {{ title }}
       </h2>

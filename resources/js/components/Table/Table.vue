@@ -260,8 +260,8 @@
             </a>
 
             <div v-if="item.image">
-              <a :href="item.link.url" class="flex">
-                <picture>
+              <a :href="item.link.url" class="flex min-h-[44px] min-w-[44px] leading-[44px[]">
+                <picture class="flex items-center">
                   <source
                     media="(min-width:768px)"
                     :srcset="item.image.srcset || item.image.src"

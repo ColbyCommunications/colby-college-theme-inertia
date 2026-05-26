@@ -1,7 +1,7 @@
 <template>
   <nav
     aria-label="Breadcrumbs"
-    class="breadcrumbs flex h-9 items-center overflow-x-auto bg-gray-100"
+    class="breadcrumbs flex h-9 items-center overflow-x-auto bg-gray-100 min-h-[44px] min-w-[44px]"
   >
     <div class="breadcrumbs__inner mx-auto w-full max-w-screen-2xl px-5">
       <ul class="flex items-center [&>li+li]:ml-5">
