@@ -29,7 +29,7 @@
         </figcaption>
       </div>
 
-      <div v-html="paragraph_text" class="font-body font-normal text-16 leading-[1.75] text-left text-indigo-800 mt-2 [&>p]:mb-2 [&_p>a:only-child]:min-h-[44px] [&_p>a:only-child]:inline-block" ></div>
+      <div v-html="paragraph_text" class="font-body font-normal text-16 leading-[1.75] text-left text-indigo-800 mt-2 [&>p]:mb-2 [&_p>a:only-child]:min-h-[44px] [&_p>a:only-child]:inline-block [&_a]:underline [&_a:hover]:no-underline [&_a:hover]:text-indigo" ></div>
     </div>
 
     <!-- Side-by-side mode -->
@@ -64,7 +64,7 @@
       </div>
 
       <div
-        class="font-body font-normal text-16 leading-[1.75] text-left text-indigo-800 mt-2 md:mt-0 [&>p]:mb-4"
+        class="font-body font-normal text-16 leading-[1.75] text-left text-indigo-800 mt-2 md:mt-0 [&>p]:mb-4 [&_p>a:only-child]:min-h-[44px] [&_p>a:only-child]:inline-block"
         :class="align_text === 'center' ? 'flex flex-col items-center' : ''"
         :style="textStyle"
         v-html="paragraph_text"
@@ -75,6 +75,7 @@
 
 <script setup>
 import { computed } from "vue";
+
 
 const props = defineProps({
   image: { type: Object, default: null },

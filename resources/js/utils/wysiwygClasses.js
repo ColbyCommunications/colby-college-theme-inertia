@@ -100,11 +100,3 @@ export const WysiwygClasses = [
     '[&_hr]:border-indigo-300', 
     '[&_hr]:my-16',
   ].join(' ');
-
-
-  /*
-
-
-
-                 
-                */
