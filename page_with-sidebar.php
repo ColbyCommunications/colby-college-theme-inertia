@@ -426,6 +426,7 @@ if ($hero_type === 'overlay') {
 $sidebar = $is_post ? null : colby_sidebar_build_data($post);
 
 $terms = get_the_terms($post->ID, 'page-categories');
+
 $args = [
     'id' => $post->ID,
     'title' => get_the_title($post->ID),
@@ -435,20 +436,36 @@ $args = [
     'blocks' => $filtered_blocks,
     'hero' => $hero,
     'page_categories' => $terms,
+    'primary_category' => ''
 ];
 
-// dd($filtered_blocks);
+$primary_cat_id = get_post_meta($post->ID, '_yoast_wpseo_primary_page-categories')[0];
+$primary_category = '';
+if ($primary_cat_id) {
+    // Get the full term object (name, slug, link, etc.)
+    $category = get_term($primary_cat_id);
+    $primary_category = $category->name;
+    
+} else {
 
-// dd($terms);
-
-if ($terms && !empty(array_filter($terms, fn($t) => $t->slug === 'office'))) {
-    $args['address'] = get_post_meta($post->ID, 'address')[0];
-    $args['phone'] = get_post_meta($post->ID, 'phone')[0];
-    $args['email'] = get_post_meta($post->ID, 'email')[0];
-    $args['fax'] = get_post_meta($post->ID, 'fax')[0];
-    $args['location'] = get_post_meta($post->ID, 'location')[0];
-    $args['image']   = get_the_post_thumbnail_url($post->ID, 'Square');
+    if ($terms && $terms[0]->slug === 'office') {
+        $primary_category = 'Office';
+        $args['address'] = get_post_meta($post->ID, 'address')[0];
+        $args['phone'] = get_post_meta($post->ID, 'phone')[0];
+        $args['email'] = get_post_meta($post->ID, 'email')[0];
+        $args['fax'] = get_post_meta($post->ID, 'fax')[0];
+        $args['location'] = get_post_meta($post->ID, 'location')[0];
+        $args['image']   = get_the_post_thumbnail_url($post->ID, 'Square');
+    } else if ($terms && $terms[0]->slug === 'site') {
+        $primary_category = 'Site';
+    } else if ($terms && $terms[0]->slug === 'department') {
+        $primary_category = 'Department';
+    }
 }
+
+$args['primary_category'] = $primary_category;
+
+// dd($filtered_blocks);
 
 if ( post_password_required( $post->ID ) ) {
 	Inertia::render('Password/Show', [

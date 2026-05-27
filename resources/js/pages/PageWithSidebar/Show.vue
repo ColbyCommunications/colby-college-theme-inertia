@@ -5,9 +5,7 @@
     :page-title="props.title"
   >
     <template
-      v-if="
-        page_categories && page_categories.find((pc) => pc.slug === 'office')
-      "
+      v-if="primary_category === 'Office'"
     >
       <section class="sidebar-page">
         <div
@@ -175,6 +173,10 @@ const props = defineProps({
     default: "",
   },
   location: {
+    type: String,
+    default: "",
+  },
+  primary_category: {
     type: String,
     default: "",
   },
