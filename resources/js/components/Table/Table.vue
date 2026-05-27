@@ -90,7 +90,7 @@
     </table>
 
     <div
-      v-if="render_api || externalItems"
+      v-if="(render_api || externalItems) && initial_heading"
       class="!mb-10 justify-between md:flex"
     >
       <h2
