@@ -7,6 +7,7 @@
         :paragraph="excerpt"
         type="light"
         :image="image"
+        :hero="true"
       />
       <div
         class="post__inner mb-20 

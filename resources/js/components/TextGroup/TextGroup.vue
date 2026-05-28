@@ -171,9 +171,13 @@ const paragraphColor = computed(() =>
 const subheadingTag = computed(() => "h2");
 
 const headingTag = computed(() => {
-  // If subheading exists, this is a nested heading
-  // Otherwise it becomes the primary section heading
-  return props.subheading ? "h3" : "h2";
+  if (props.hero) {
+    return "h1";
+  } else if (props.subheading) {
+    return 'h3';
+  } else {
+    return "h2";
+  }
 });
 
 const subheadingSize = computed(() => sizes.value.sub);
