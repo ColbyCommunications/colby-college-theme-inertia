@@ -10,11 +10,24 @@ require_once __DIR__ . '/helpers/sidebar_data.php';
 global $post;
 
 // get block information ------------------
+// pre process for classic blocks
+$parsed_blocks = array_map(function ($block) {
+
+    if (
+        empty($block['blockName'])
+        && !empty(trim($block['innerHTML'] ?? ''))
+    ) {
+        $block['blockName'] = 'core/classic';
+    }
+
+    return $block;
+
+}, parse_blocks($post->post_content));
 
 $filtered_blocks = array_values(array_filter(
-    parse_blocks($post->post_content),
+    $parsed_blocks,
     function ($block) {
-        return !is_null($block['blockName'] ?? null);
+        return !empty($block['blockName']);
     }
 ));
 
@@ -249,7 +262,7 @@ function colby_process_single_block(array $block, int $index = 0, string $path =
 
     $block['attrs']['data'] = get_structured_block_data($block, $block_path);
 
-    if (($block['blockName'] ?? null) === 'core/html') {
+    if (($block['blockName'] ?? null) === 'core/html' || ($block['blockName'] ?? null) === 'core/classic') {
         $block['attrs'] = isset($block['attrs']) && is_array($block['attrs'])
             ? $block['attrs']
             : [];

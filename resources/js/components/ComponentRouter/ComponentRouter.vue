@@ -70,16 +70,18 @@ const blockRegistry = {
   "acf/media-context": () => import("../MediaContext/MediaContext.vue"),
   "acf/context-article-grid": () =>
     import("../ContextArticleGrid/ContextArticleGrid.vue"),
-  "core/heading": () => import("../Heading/Heading.vue"),
   "acf/table": () => import("../Table/Table.vue"),
-  "core/group": () => import("../Group/Group.vue"),
-  "core/html": () => import("../Html/Html.vue"),
   "acf/paragraph": () => import("../Paragraph/Paragraph.vue"),
   "acf/accordion": () => import("../Accordion/Accordion.vue"),
   "acf/people-grid": () => import("../PeopleGrid/PeopleGrid.vue"),
   "acf/embed": () => import("../Embed/Embed.vue"),
   "acf/image": () => import("../Image/Image.vue"),
   "acf/image-text": () => import("../ImageText/ImageText.vue"),
+
+  "core/heading": () => import("../Heading/Heading.vue"),
+  "core/group": () => import("../Group/Group.vue"),
+  "core/html": () => import("../Html/Html.vue"),
+  "core/classic": () => import("../Classic/Classic.vue"),
 };
 
 function getLoader(blockName) {
@@ -177,6 +179,7 @@ function getPlaceholderHeight(item) {
     "core/heading": 0,
     "core/group": 600,
     "core/html": 500,
+    "core/classic": 500,
   };
 
   return heights[item.blockName] ?? 0;
