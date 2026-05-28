@@ -15,6 +15,7 @@
     >
       <div class="directory-card__content">
         <h1 class="font-body text-24 leading-115 font-semibold text-indigo">
+          <span class="sr-only">Directory profile for </span>
           {{ name }}
         </h1>
         <div
