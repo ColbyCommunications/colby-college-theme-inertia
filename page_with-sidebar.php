@@ -356,7 +356,7 @@ function colby_process_single_block(array $block, int $index = 0, string $path =
   
       // Sort the merged_items array by last_name
       usort($final_people_items, function($a, $b) {
-      return strcmp(strtolower($a['last_name']), strtolower($b['last_name']));
+        return strcmp(strtolower($a['last_name']), strtolower($b['last_name']));
       });
   
       // Update context with merged items
@@ -454,14 +454,14 @@ $args = [
 
 $primary_cat_id = get_post_meta($post->ID, '_yoast_wpseo_primary_page-categories')[0];
 $primary_category = '';
+
+// dd($primary_cat_id);
 if ($primary_cat_id) {
     // Get the full term object (name, slug, link, etc.)
     $category = get_term($primary_cat_id);
     $primary_category = $category->name;
     
-} else {
-
-    if ($terms && $terms[0]->slug === 'office') {
+    if ($primary_category === 'Office') {
         $primary_category = 'Office';
         $args['address'] = get_post_meta($post->ID, 'address')[0];
         $args['phone'] = get_post_meta($post->ID, 'phone')[0];
@@ -469,12 +469,12 @@ if ($primary_cat_id) {
         $args['fax'] = get_post_meta($post->ID, 'fax')[0];
         $args['location'] = get_post_meta($post->ID, 'location')[0];
         $args['image']   = get_the_post_thumbnail_url($post->ID, 'Square');
-    } else if ($terms && $terms[0]->slug === 'site') {
+    } else if ($primary_category === 'Site') {
         $primary_category = 'Site';
-    } else if ($terms && $terms[0]->slug === 'department') {
+    } else if ($primary_category === 'Department') {
         $primary_category = 'Department';
     }
-}
+} 
 
 $args['primary_category'] = $primary_category;
 
