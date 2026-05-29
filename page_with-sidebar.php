@@ -406,6 +406,9 @@ $buttons = function_exists('get_field') ? (get_field('buttons', $post->ID) ?: []
 $align = function_exists('get_field') ? (get_field('align', $post->ID) ?: 'default') : 'default';
 $image_orientation = function_exists('get_field') ? (get_field('image_orientation', $post->ID) ?: 'square') : 'square';
 
+// strip "-scaled"
+$image['url'] = preg_replace('/-scaled(\.[a-zA-Z0-9]+)$/', '$1', $image['url']);
+
 $hero = null;
 if ($hero_type === 'overlay') {
   $hero = [

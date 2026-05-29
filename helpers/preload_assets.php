@@ -35,6 +35,10 @@ if (!function_exists('colby_preload_normalize_image_source')) {
     }
 
     $source = (string) ($image['url'] ?? $image['src'] ?? '');
+
+    // strip "-scaled"
+    $source = preg_replace('/-scaled(\.[a-zA-Z0-9]+)$/', '$1', $source);
+
     if ($source === '') {
       return '';
     }
@@ -60,6 +64,10 @@ if (!function_exists('colby_preload_normalize_poster_source')) {
     }
 
     $source = (string) ($image['sizes']['Hero'] ?? $image['url'] ?? $image['src'] ?? '');
+
+    // strip "-scaled" 
+    $source = preg_replace('/-scaled(\.[a-zA-Z0-9]+)$/', '$1', $source);
+
     if ($source === '') {
       return '';
     }
