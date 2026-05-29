@@ -142,12 +142,12 @@
           <template v-else-if="type === 'offices'">
             <div class="col-span-4">
               <h2
-                class="mb-3 font-body text-10 leading-140 font-bold tracking-8 text-indigo uppercase"
+                class="mb-3 font-body text-10 leading-[1.5] font-bold tracking-8 text-indigo uppercase"
               >
                 Address
               </h2>
               <p
-                class="font-body text-16 leading-130 font-normal text-indigo-800"
+                class="font-body text-16 leading-[1.5] font-normal text-indigo-800"
               >
                 {{ address }}
               </p>
