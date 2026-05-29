@@ -28,7 +28,7 @@
             :class="getItemClasses(index)"
           >
             <h3
-              class="font-extended font-normal text-36 leading-100 -tracking-3 text-indigo"
+              class="font-extended font-normal text-36 leading-[1.5] -tracking-3 text-indigo"
             >
               {{ item.heading }}
             </h3>
