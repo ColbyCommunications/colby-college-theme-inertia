@@ -429,7 +429,7 @@ if ($hero_type === 'overlay') {
       'paragraph' => $template_paragraph,
       'date' => $template_date_bool,
       'align' => $align,
-      'image' => ['url' => $image['sizes']['Square'], 'alt' => $image['alt']],
+      'image' => $image,
       'buttons' => $buttons,
       'imageOrientation' => $image_orientation === 'portrait' ? 'portrait' : 'landscape',
     ],
