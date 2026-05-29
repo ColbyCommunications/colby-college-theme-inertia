@@ -47,6 +47,28 @@ const props = defineProps({
 
 const embedContainer = ref(null);
 
+function getIframeTitle(iframe, index) {
+  const src = iframe.getAttribute("src") || "";
+
+  if (src.includes("youtube.com") || src.includes("youtu.be")) {
+    return `YouTube video ${index + 1}`;
+  }
+
+  if (src.includes("vimeo.com")) {
+    return `Vimeo video ${index + 1}`;
+  }
+
+  if (src.includes("calendar") || src.includes("events")) {
+    return `Calendar embed ${index + 1}`;
+  }
+
+  if (src.includes("map") || src.includes("google.com/maps")) {
+    return `Map embed ${index + 1}`;
+  }
+
+  return `${props.iframeTitle} ${index + 1}`;
+}
+
 const processedEmbed = computed(() => {
   if (!props.embed || typeof window === "undefined") {
     return props.embed || "";
@@ -55,9 +77,9 @@ const processedEmbed = computed(() => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(props.embed, "text/html");
 
-  doc.querySelectorAll("iframe").forEach((iframe) => {
+  doc.querySelectorAll("iframe").forEach((iframe, index) => {
     if (!iframe.getAttribute("title")) {
-      iframe.setAttribute("title", props.iframeTitle);
+      iframe.setAttribute("title", getIframeTitle(iframe, index));
     }
 
     if (!iframe.getAttribute("loading")) {
