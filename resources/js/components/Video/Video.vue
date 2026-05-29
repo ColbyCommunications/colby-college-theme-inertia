@@ -1,34 +1,46 @@
 <template>
   <div
     ref="root"
-    class="video group relative w-full h-full cursor-pointer overflow-hidden pb-[56.25%]"
-    @click="play"
+    class="video group relative h-full w-full overflow-hidden pb-[56.25%]"
+    :class="{ 'cursor-pointer': isInteractive }"
+    :aria-hidden="isDecorative ? 'true' : undefined"
+    :tabindex="isDecorative ? -1 : undefined"
+    @click="isInteractive ? play() : null"
   >
     <div
       class="video__overlay absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center transition-all duration-200 ease-in-out"
       :class="{ 'invisible opacity-0': active }"
     >
       <div
-        v-if="playIcon"
+        v-if="playIcon && isInteractive"
         class="z-10 w-12 transition-all duration-400 ease-in-out"
       >
         <Icon
           name="play"
           class="z-10 w-12 fill-indigo-800 transition-all duration-400 ease-in-out group-hover:fill-indigo"
+          aria-hidden="true"
+          focusable="false"
         />
       </div>
 
-      <HlsBackground
+      <div
         v-if="hlsVideoLoop"
-        :src="hlsVideoLoop"
-        :fallback-src="videoLoop"
-        :poster="posterUrl"
-        @ready="videoReady = true"
-      />
+        class="absolute inset-0 z-[1]"
+        :aria-hidden="isDecorative ? 'true' : undefined"
+      >
+        <HlsBackground
+          :src="hlsVideoLoop"
+          :fallback-src="videoLoop"
+          :poster="posterUrl"
+          @ready="videoReady = true"
+        />
+      </div>
 
       <video
         v-else-if="videoLoop"
         class="absolute top-0 left-0 z-[1] h-full w-full object-cover"
+        :aria-hidden="isDecorative ? 'true' : undefined"
+        :tabindex="isDecorative ? -1 : undefined"
         autoplay
         muted
         loop
@@ -42,7 +54,7 @@
       </video>
 
       <Picture
-        :alt="image.alt || ''"
+        :alt="isDecorative ? '' : image.alt || ''"
         class="absolute top-0 left-0 z-[2] h-full w-full object-cover transition-opacity duration-500 ease-in-out"
         :class="showPoster ? 'opacity-100' : 'pointer-events-none opacity-0'"
         :src="image.url || image.src"
@@ -53,7 +65,10 @@
       />
     </div>
 
-    <div class="iframe absolute top-0 left-0 h-full w-full"></div>
+    <div
+      v-if="!isBackgroundOnly && id"
+      class="iframe absolute top-0 left-0 h-full w-full"
+    />
   </div>
 </template>
 
@@ -67,8 +82,8 @@ import HlsBackground from "@/js/components/HlsBackground/HlsBackground.vue";
 const props = defineProps({
   id: {
     type: String,
+    default: "",
   },
-  // Maps to 'video_loop' in Twig
   videoLoop: {
     type: String,
     default: "",
@@ -77,7 +92,6 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-  // Maps to the 'image' object passed to macros.picture
   image: {
     type: Object,
     default: () => ({
@@ -103,21 +117,35 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  isDecorative: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const active = ref(false);
 const root = ref(null);
+const videoReady = ref(false);
+
 let player = null;
 
+const isInteractive = computed(() => Boolean(props.id && !props.isBackgroundOnly));
+
 const posterUrl = computed(() => {
-  const source = props.image?.sizes?.Hero || props.image?.url || props.image?.src || "";
+  const source =
+    props.image?.sizes?.Hero || props.image?.url || props.image?.src || "";
+
   return normalizeMediaUrl(source);
 });
 
+const showPoster = computed(() => {
+  if (!props.videoLoop && !props.hlsVideoLoop) return true;
+
+  return !videoReady.value;
+});
+
 function normalizeMediaUrl(src) {
-  if (!src) {
-    return "";
-  }
+  if (!src) return "";
 
   const rawSrc = String(src);
   const colby = window.colby || {};
@@ -134,22 +162,15 @@ function normalizeMediaUrl(src) {
   return rawSrc;
 }
 
-const videoReady = ref(false);
-
-const showPoster = computed(() => {
-  if (!props.videoLoop && !props.hlsVideoLoop) return true;
-  return !videoReady.value;
-});
-
-const play = () => {
+function play() {
   if (player && !active.value) {
     active.value = true;
-    player.playVideo(); // Note: 'playVideo' instead of 'play'
+    player.playVideo();
   }
-};
+}
 
 onMounted(() => {
-  if (props.isBackgroundOnly || !props.id || !root.value) return;
+  if (!isInteractive.value || !root.value) return;
 
   const container = root.value.querySelector(".iframe");
   if (!container) return;

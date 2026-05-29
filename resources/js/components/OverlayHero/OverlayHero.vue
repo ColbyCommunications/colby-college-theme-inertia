@@ -99,6 +99,7 @@
         :priority="priority"
         :play-icon="false"
         :is-background-only="true"
+        :is-decorative="isDecorativeBackgroundVideo"
         sizes="100vw"
       />
     </template>
@@ -197,6 +198,10 @@ const hasBackgroundLoopVideo = computed(() =>
 
 const hasAnyVideo = computed(() =>
   Boolean(props.video?.id || hasBackgroundLoopVideo.value),
+);
+
+const isDecorativeBackgroundVideo = computed(() =>
+  hasBackgroundLoopVideo.value && !props.video?.id
 );
 
 function setActive() {
