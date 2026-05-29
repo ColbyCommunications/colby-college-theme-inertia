@@ -197,8 +197,8 @@ const paragraphWithClasses = computed(() => {
 
   const pCls = `text-group__p font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-[1.75] ${textAlign.value} ${paragraphColor.value} mb-4 [&_a]:underline [&_a:hover]:no-underline [&_a:only-child]:inline-flex [&_a:only-child]:min-h-[44px] [&_a:only-child]:items-center`;
   const ulCls = `list-disc font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2 my-4 pl-6 [&_a]:underline [&_a:hover]:no-underline [&_li>a:only-child]:min-h-[44px] [&_li>a:only-child]:inline-block`;
-  const olCls = `list-decimal font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2 pl-6 [&_a]:underline [&_a:hover]:no-underlinem[&_li>a:only-child]:min-h-[44px] [&_li>a:only-child]:inline-block`;
-  const liCls = `${paragraphColor.value} mx-4 [&>ul]:pl-4 [&>ul>li]:list-[circle] [&>p]:leading-[1.5]`;
+  const olCls = `list-decimal font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2 my-4 pl-6 [&_a]:underline [&_a:hover]:no-underlinem[&_li>a:only-child]:min-h-[44px] [&_li>a:only-child]:inline-block`;
+  const liCls = `${paragraphColor.value} mx-4 list-disc [&>ul]:pl-4 [&>ul>li]:list-[circle] [&>p]:leading-[1.5] [&_a]:underline [&_a:hover]:no-underline [&_a]:min-h-[44px] [&_a]:inline-block`;
 
   return html
     .replaceAll("<p>", `<p class="${pCls}">`)
