@@ -7,6 +7,7 @@
         class="w-full h-full object-cover"
         :src="image.url"
         :alt="image.alt"
+        quality="75"
       />
     </div>
     <div
