@@ -1,12 +1,8 @@
 import { createApp, h } from "vue";
 import { createInertiaApp, Head, Link, router } from "@inertiajs/vue3";
-import { InertiaProgress } from "@inertiajs/progress";
-// import InstantSearch from "vue-instantsearch/vue3/es";
-import axios from "./plugins/axios"; // Import your configured instance, NOT the raw library
+import axios from "./plugins/axios";
 import "../css/app.css";
 import "@fontsource/material-symbols-sharp";
-
-InertiaProgress.init();
 
 createInertiaApp({
   resolve: (name) => {
@@ -22,5 +18,11 @@ createInertiaApp({
     app.component("Head", Head);
     app.component("Link", Link);
     app.mount(el);
+  },
+  progress: {
+    delay: 250,
+    color: "#29d",
+    includeCSS: true,
+    showSpinner: false,
   },
 });
