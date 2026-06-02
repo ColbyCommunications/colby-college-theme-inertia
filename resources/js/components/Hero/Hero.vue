@@ -22,7 +22,7 @@
         />
       </div>
 
-      <div v-if="image" class="hero__secondary md:col-span-4 mt-6">
+      <div v-if="image && image.url" class="hero__secondary md:col-span-4 mt-6">
         <div
           :class="[
             'hero__image relative',
@@ -129,6 +129,8 @@ const props = defineProps({
     default: false,
   },
 });
+
+console.log(props);
 
 const primaryImageSizes = "(max-width: 767px) 100vw, 50vw";
 
