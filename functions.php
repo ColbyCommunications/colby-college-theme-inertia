@@ -12,7 +12,7 @@ add_filter('wp_preload_resources', 'colby_preload_hero_assets');
 
 function colby_preload_critical_assets() {
   echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/libre-franklin-latin-wght-normal-CLTz0ja0.woff2" as="font" type="font/woff2" crossorigin="anonymous">' . "\n";
-echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/noto-sans-cyrillic-ext-wght-normal-DSNfmdVt.woff2" as="font" type="font/woff2" crossorigin="anonymous">' . "\n";
+  echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/noto-sans-cyrillic-ext-wght-normal-DSNfmdVt.woff2" as="font" type="font/woff2" crossorigin="anonymous">' . "\n";
 
   $manifest_path = get_stylesheet_directory() . '/dist/.vite/manifest.json';
 
@@ -23,16 +23,34 @@ echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/d
   $manifest = json_decode(file_get_contents($manifest_path), true);
   $entry = $manifest['resources/js/app.js'] ?? null;
 
-  if (empty($entry['css'])) {
+  if (!$entry) {
     return;
   }
 
-  foreach ($entry['css'] as $css) {
-    $css_url = get_stylesheet_directory_uri() . '/dist/' . $css;
+  $base_url = get_stylesheet_directory_uri() . '/dist/';
 
-    echo '<link rel="preload" href="' . esc_url($css_url) . '" as="style">' . "\n";
+  // 1. Preload Main App CSS
+  if (!empty($entry['css'])) {
+    foreach ($entry['css'] as $css) {
+      echo '<link rel="preload" href="' . esc_url($base_url . $css) . '" as="style">' . "\n";
+    }
   }
 
+  echo '<link rel="modulepreload" crossorigin href="' . esc_url($base_url . $entry['file']) . '">' . "\n";
+
+  $critical_keys = [
+    'vendor-gsap',
+    'resources/js/components/Hero/HomeHero.vue', 
+    'resources/js/components/HlsBackground/HlsBackground.vue' 
+  ];
+
+  if (is_front_page()) {
+    foreach ($critical_keys as $key) {
+      if (isset($manifest[$key]['file'])) {
+        echo '<link rel="modulepreload" crossorigin href="' . esc_url($base_url . $manifest[$key]['file']) . '">' . "\n";
+      }
+    }
+  }
 }
 add_action('wp_head', 'colby_preload_critical_assets', 1);
 
