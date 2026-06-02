@@ -8,6 +8,14 @@
       :eager="isEager(item, index)"
       :root-margin="getRootMargin(item, index)"
       :placeholder-min-height="getPlaceholderHeight(item)"
+      :wrapper-class="getWrapperClass(item.blockName)"
+      :class="
+        getSpacingClasses(
+          item.blockName,
+          index,
+          components[index - 1]?.blockName,
+        )
+      "
       @loaded="preloadNext(index + 1)"
       :blockName="item.blockName"
     />
@@ -51,14 +59,11 @@ const blockRegistry = {
   "acf/dark-interstitial": () =>
     import("../DarkInterstitial/DarkInterstitial.vue"),
   "acf/facts-figures": () => import("../FactsFigures/FactsFigures.vue"),
-
-  // Converted to true native dynamic imports to enable code-splitting
   "acf/hero": () => import("../Hero/Hero.vue"),
   "acf/home-hero": () => import("../HomeHero/HomeHero.vue"),
   "acf/overlay-hero": () => import("../OverlayHero/OverlayHero.vue"),
-
   "acf/section-nav": () => import("../SectionNav/SectionNav.vue"),
-  "acf/subpage-nav": () => import("../SubpageNav/SubpageNav.vue"), // Registered missing mapping
+  "acf/subpage-nav": () => import("../SubpageNav/SubpageNav.vue"),
   "acf/featured-post": () => import("../FeaturedPost/FeaturedPost.vue"),
   "acf/testimonial-carousel": () =>
     import("../TestimonialCarousel/TestimonialCarousel.vue"),
@@ -78,7 +83,6 @@ const blockRegistry = {
   "acf/embed": () => import("../Embed/Embed.vue"),
   "acf/image": () => import("../Image/Image.vue"),
   "acf/image-text": () => import("../ImageText/ImageText.vue"),
-
   "core/heading": () => import("../Heading/Heading.vue"),
   "core/group": () => import("../Group/Group.vue"),
   "core/html": () => import("../Html/Html.vue"),
@@ -125,8 +129,6 @@ function isEager(item, index) {
     return true;
   }
 
-  // Desktop: allow high homepage carousel to load eagerly.
-  // Mobile: keep carousel lazy because home hero occupies the first viewport.
   if (blockName === "acf/carousel" && index === 1) {
     return !isMobile.value;
   }
@@ -146,10 +148,54 @@ function getRootMargin(item, index) {
   return "600px 0px";
 }
 
-/**
- * Optional: helps reduce layout shift a little.
- * You can tune these values per block type.
- */
+function getWrapperClass(blockName) {
+  if (blockName === "acf/home-hero") {
+    return "h-[calc(100vh_-_145px)] md:h-[calc(100vh_-_100px)] w-full";
+  }
+  return "";
+}
+
+function getSpacingClasses(blockName, index, prevBlockName) {
+  const classes = [];
+
+  // General gap spacing translated from App.vue
+  if (index > 0) {
+    classes.push("mt-20");
+  }
+
+  // Margin for items not first child and not section-nav
+  if (index > 0 && blockName !== "acf/section-nav") {
+    classes.push("mt-[50px]");
+  }
+
+  // Specific Desktop Margins translated from App.vue
+  const isHeroOrNav = [
+    "acf/hero",
+    "acf/home-hero",
+    "acf/overlay-hero",
+    "acf/section-nav",
+  ].includes(blockName);
+  const isCarouselAfterHomeHero =
+    prevBlockName === "acf/home-hero" && blockName === "acf/carousel";
+
+  if (!isHeroOrNav && !isCarouselAfterHomeHero && index > 0) {
+    classes.push("md:mt-[100px]");
+  }
+
+  if (
+    prevBlockName === "acf/context-article-grid" &&
+    ["acf/hero", "acf/home-hero", "acf/overlay-hero"].includes(blockName)
+  ) {
+    classes.push("md:mt-[100px]");
+  }
+
+  if (isCarouselAfterHomeHero) {
+    classes.push("md:mt-[-50px]");
+  }
+
+  return classes.join(" ");
+}
+
 function getPlaceholderHeight(item) {
   const heights = {
     "acf/article-grid": 700,
@@ -178,7 +224,6 @@ function getPlaceholderHeight(item) {
     "acf/image": 200,
     "acf/image-text": 200,
     "acf/advanced-accordion": 500,
-
     "core/heading": 0,
     "core/group": 600,
     "core/html": 500,
@@ -188,10 +233,6 @@ function getPlaceholderHeight(item) {
   return heights[item.blockName] ?? 0;
 }
 
-/**
- * Optional micro-optimization:
- * after a block loads, warm the next one in idle time.
- */
 function preloadNext(nextIndex) {
   const nextItem = props.components[nextIndex];
 

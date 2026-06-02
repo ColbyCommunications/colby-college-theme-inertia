@@ -2,7 +2,7 @@
   <component
     :is="tag"
     ref="root"
-    :class="`lazy-block`"
+    :class="['lazy-block', wrapperClass]"
     :data-block-name="blockName"
   >
     <component
@@ -21,13 +21,7 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  shallowRef,
-  markRaw,
-  onMounted,
-  onBeforeUnmount,
-} from "vue";
+import { ref, shallowRef, markRaw, onMounted, onBeforeUnmount } from "vue";
 
 const props = defineProps({
   loader: {
@@ -61,9 +55,11 @@ const props = defineProps({
   blockName: {
     type: String,
   },
+  wrapperClass: {
+    type: String,
+    default: "",
+  },
 });
-
-
 
 const emit = defineEmits(["loaded"]);
 
@@ -72,15 +68,14 @@ const resolvedComponent = shallowRef(null);
 let observer = null;
 let hasStartedLoading = false;
 
-const placeholderStyle =
-  props.placeholderMinHeight
-    ? {
-        minHeight:
-          typeof props.placeholderMinHeight === "number"
-            ? `${props.placeholderMinHeight}px`
-            : props.placeholderMinHeight,
-      }
-    : {};
+const placeholderStyle = props.placeholderMinHeight
+  ? {
+      minHeight:
+        typeof props.placeholderMinHeight === "number"
+          ? `${props.placeholderMinHeight}px`
+          : props.placeholderMinHeight,
+    }
+  : {};
 
 async function loadComponent() {
   if (hasStartedLoading || resolvedComponent.value) {
@@ -102,8 +97,6 @@ async function loadComponent() {
     }
   }
 }
-
-console.log(props);
 
 onMounted(() => {
   if (props.eager) {

@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="home-hero full-bleed relative h-[calc(100vh_-_145px)] overflow-hidden md:h-[calc(100vh_-_100px)]"
-  >
-    <!-- Bottom overlay -->
+  <div class="home-hero full-bleed relative h-full w-full overflow-hidden">
     <div
       class="home-hero__bottom absolute bottom-0 left-0 w-full pt-24 pb-[50px]"
       :style="{
@@ -51,7 +48,6 @@
       sizes="100vw"
     />
 
-    <!-- Background media -->
     <video
       v-if="selectedVideo && !selectedHlsVideo"
       class="absolute top-0 right-0 bottom-0 left-0 z-[-10] h-auto min-h-full w-auto min-w-full bg-cover bg-repeat object-cover"
@@ -81,10 +77,9 @@ import Context from "../Context/Context.vue";
 import HlsBackground from "../HlsBackground/HlsBackground.vue";
 import Picture from "../Picture/Picture.vue";
 
-// Props mirror the Twig variables you used
 const props = defineProps({
   heading: { type: String, default: "" },
-  buttons: { type: Array, default: () => [] }, // array of button items
+  buttons: { type: Array, default: () => [] },
   caption: { type: String, default: "" },
   video: { type: String, default: "" },
   video_tablet: { type: String, default: "" },
