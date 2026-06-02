@@ -17,9 +17,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import LazyBlock from "../LazyBlockWrapper/LazyBlockWrapper.vue";
-import Hero from "../Hero/Hero.vue";
-import HomeHero from "../HomeHero/HomeHero.vue";
-import OverlayHero from "../OverlayHero/OverlayHero.vue";
 
 const props = defineProps({
   components: {
@@ -54,10 +51,14 @@ const blockRegistry = {
   "acf/dark-interstitial": () =>
     import("../DarkInterstitial/DarkInterstitial.vue"),
   "acf/facts-figures": () => import("../FactsFigures/FactsFigures.vue"),
-  "acf/hero": () => Promise.resolve({ default: Hero }),
-  "acf/home-hero": () => Promise.resolve({ default: HomeHero }),
-  "acf/overlay-hero": () => Promise.resolve({ default: OverlayHero }),
+
+  // Converted to true native dynamic imports to enable code-splitting
+  "acf/hero": () => import("../Hero/Hero.vue"),
+  "acf/home-hero": () => import("../HomeHero/HomeHero.vue"),
+  "acf/overlay-hero": () => import("../OverlayHero/OverlayHero.vue"),
+
   "acf/section-nav": () => import("../SectionNav/SectionNav.vue"),
+  "acf/subpage-nav": () => import("../SubpageNav/SubpageNav.vue"), // Registered missing mapping
   "acf/featured-post": () => import("../FeaturedPost/FeaturedPost.vue"),
   "acf/testimonial-carousel": () =>
     import("../TestimonialCarousel/TestimonialCarousel.vue"),
@@ -97,11 +98,15 @@ function isHeroMediaBlock(blockName) {
 }
 
 function getFirstHeroMediaBlockIndex() {
-  return props.components.findIndex((item) => isHeroMediaBlock(item?.blockName));
+  return props.components.findIndex((item) =>
+    isHeroMediaBlock(item?.blockName),
+  );
 }
 
 function isPriorityMediaBlock(item, index) {
-  return isHeroMediaBlock(item?.blockName) && index === getFirstHeroMediaBlockIndex();
+  return (
+    isHeroMediaBlock(item?.blockName) && index === getFirstHeroMediaBlockIndex()
+  );
 }
 
 function getComponentProps(item, index) {
@@ -126,10 +131,7 @@ function isEager(item, index) {
     return !isMobile.value;
   }
 
-  return [
-    "acf/section-nav",
-    "acf/subpage-nav",
-  ].includes(blockName);
+  return ["acf/section-nav", "acf/subpage-nav"].includes(blockName);
 }
 
 function getRootMargin(item, index) {
@@ -161,6 +163,7 @@ function getPlaceholderHeight(item) {
     "acf/hw-image-section": 250,
     "acf/related-content": 250,
     "acf/list-section": 250,
+    "acf/list-context": 250,
     "acf/stat-group": 250,
     "acf/media-context": 250,
     "acf/hero": 0,

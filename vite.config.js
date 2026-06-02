@@ -11,7 +11,6 @@ export default defineConfig(({ command, mode }) => {
         "@": path.resolve(__dirname, "resources"),
       },
     },
-    // Moved to root level
     css: {
       postcss: "./postcss.config.js",
     },
@@ -36,6 +35,14 @@ export default defineConfig(({ command, mode }) => {
         input: path.resolve(__dirname, "resources/js/app.js"),
         output: {
           format: "es",
+          manualChunks(id) {
+            if (id.includes("node_modules/hls.js")) {
+              return "vendor-hls";
+            }
+            if (id.includes("node_modules/gsap")) {
+              return "vendor-gsap";
+            }
+          },
         },
       },
     },
