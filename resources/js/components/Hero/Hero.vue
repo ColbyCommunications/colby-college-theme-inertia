@@ -22,7 +22,7 @@
         />
       </div>
 
-      <div v-if="image" class="hero__secondary md:col-span-4 mt-6">
+      <div v-if="image && image.url" class="hero__secondary md:col-span-4 mt-6">
         <div
           :class="[
             'hero__image relative',

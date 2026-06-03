@@ -101,7 +101,7 @@ function cdnImageUrl(width, quality) {
     return "";
   }
 
-  return `https://www.colby.edu/cdn-cgi/image/width=${width},format=auto,quality=${quality}/${processedSrc.value}`;
+  return `https://${colby.PRIMARY_DOMAIN}/cdn-cgi/image/width=${width},format=auto,quality=${quality}/${processedSrc.value}`;
 }
 
 function enhanceImage() {
