@@ -29,6 +29,38 @@
   body {
     margin: 0;
   }
+
+  h1 a,
+  h2 a,
+  h3 a,
+  h4 a,
+  h5 a,
+  h6 a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+
+@layer components {
+  /* 1. Ensure plain text list items still get the 44px visual rhythm */
+  .list-spacing li {
+    min-height: 44px;
+    align-content: center;
+  }
+
+  /* Prevent compounded spacing on nested lists */
+  .list-spacing li > ul,
+  .list-spacing li > ol {
+    margin-top: 0.5rem;
+  }
+
+  /* 2. Make the link ITSELF physically 44px tall */
+  .list-spacing li a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
 }
 
 /* libre-franklin-latin-wght-normal */

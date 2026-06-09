@@ -1,7 +1,7 @@
 <template>
   <div class="list-context">
     <div
-      class="list-context__inner md:grid grid-cols-8 gap-10 max-w-screen-2xl w-full space-y-8 md:space-y-0"
+      class="list-context__inner w-full max-w-screen-2xl grid-cols-8 gap-10 space-y-8 md:grid md:space-y-0"
     >
       <div class="list-context__context md:col-span-5">
         <Context
@@ -14,20 +14,20 @@
         />
       </div>
       <div class="list-context__main md:col-span-3">
-        <ul class="list-context__list space-y-2 ml-4">
+        <ul class="list-context__list list-spacing ml-4">
           <li
             v-for="(item, index) in items"
             :key="index"
-            class="font-body text-indigo-600 list-disc"
+            class="list-disc font-body text-indigo-600"
             :class="
               size === 'small'
-                ? 'font-semibold text-14 leading-130'
-                : 'font-bold text-20 leading-120'
+                ? 'text-14 leading-130 font-semibold'
+                : 'text-20 leading-120 font-bold'
             "
           >
             <a
               v-if="item.link?.url"
-              class="text-indigo hover:text-indigo-600 no-underline hover:underline transition-all duration-200 ease-in-out"
+              class="text-indigo no-underline transition-all duration-200 ease-in-out hover:text-indigo-600 hover:underline"
               :href="item.link.url"
             >
               {{ item.link.title }}
@@ -55,12 +55,11 @@ const props = defineProps({
 
 const buttonItems = computed(() => {
   if (props.buttons) {
-   return props.buttons.map((btn) => ({
+    return props.buttons.map((btn) => ({
       button: { url: btn.url, title: btn.title, target: btn.target || "" },
     }));
   } else {
     return [];
   }
-
 });
 </script>
