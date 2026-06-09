@@ -5,15 +5,15 @@
       class="block w-full overflow-scroll md:table md:overflow-auto"
     >
       <tbody>
-          <tr v-if="normalizedHeadings.length">
-            <th
-              v-for="(heading, index) in normalizedHeadings"
-              :key="`th-${index}`"
-              scope="col"
-              class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
-            >
-              {{ heading }}
-            </th>
+        <tr v-if="normalizedHeadings.length">
+          <th
+            v-for="(heading, index) in normalizedHeadings"
+            :key="`th-${index}`"
+            scope="col"
+            class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
+          >
+            {{ heading }}
+          </th>
         </tr>
         <tr v-else>
           <th
@@ -35,7 +35,7 @@
           >
             <component
               :is="item.link ? 'a' : 'span'"
-              class="inline-flex items-center font-body text-16 leading-140 font-semibold md:text-12 min-h-[44px] min-w-[44px] leading-[44px]"
+              class="inline-flex min-h-[44px] min-w-[44px] items-center font-body text-16 leading-140 leading-[44px] font-semibold md:text-12"
               :class="
                 item.link
                   ? 'cursor-pointer text-indigo hover:underline'
@@ -145,7 +145,7 @@
         v-if="api === 'Course Catalogue'"
         v-model="selectedDepartment"
         @change="toggleDepartment($event)"
-        class="mr-5 mb-6 w-full max-w-[120px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline md:mb-0 min-h-[44px] min-w-[44px]"
+        class="mr-5 mb-6 min-h-[44px] w-full max-w-[120px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline md:mb-0"
         aria-label="Select a department"
       >
         <option value="All Departments">All Departments</option>
@@ -194,7 +194,7 @@
         "
         v-model="selectedDivision"
         @change="toggleTermDivision($event, true)"
-        class="mr-5 mb-6 w-full max-w-[120px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline md:mb-0 min-h-[44px] min-w-[44px] leading-[44px]"
+        class="mr-5 mb-6 min-h-[44px] w-full max-w-[120px] min-w-[44px] cursor-pointer font-body text-10 leading-130 leading-[44px] font-normal text-indigo-900 hover:underline md:mb-0"
         aria-label="Select a division"
       >
         <option value="All Divisions">All Divisions</option>
@@ -208,7 +208,7 @@
 
       <div v-if="filterOptions.length > 0" class="mb-6 flex md:mb-0">
         <button
-          class="mr-5 cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 leading-[44px] font-normal text-indigo-900 hover:underline"
           :class="{ 'font-bold !text-indigo': filters.term === 'all' }"
           @click="toggleTermType('All')"
         >
@@ -217,7 +217,7 @@
         <button
           v-for="(term, index) in filterOptions"
           :key="index"
-          class="mr-5 cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 leading-[44px] font-normal text-indigo-900 hover:underline"
           :class="{ 'font-bold !text-indigo': filters.term === term }"
           @click="toggleTermType(term)"
         >
@@ -245,7 +245,7 @@
         <tr
           v-for="(item, index) in paginatedItems"
           :key="index"
-          class="h-12 w-full odd:bg-gray-100 md:h-10 min-h-[44px] min-w-[44px] leading-[44px]"
+          class="h-12 min-h-[44px] w-full min-w-[44px] leading-[44px] odd:bg-gray-100 md:h-10"
         >
           <th
             scope="row"
@@ -253,14 +253,17 @@
           >
             <a
               v-if="item.link.url && !item.image"
-              class="inline-flex cursor-pointer items-center font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12 min-h-[44px] min-w-[44px] leading-[44px]"
+              class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center font-body text-16 leading-140 leading-[44px] font-semibold text-indigo hover:underline md:text-12"
               :href="item.link.url"
             >
               {{ item.link.title }}
             </a>
 
             <div v-if="item.image">
-              <a :href="item.link.url" class="flex min-h-[44px] min-w-[44px] leading-[44px[]">
+              <a
+                :href="item.link.url"
+                class="flex min-h-[44px] min-w-[44px] leading-[44px[]"
+              >
                 <picture class="flex items-center">
                   <source
                     media="(min-width:768px)"
@@ -336,7 +339,7 @@
       >
         <button
           v-if="currentPage !== 1"
-          class="block p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
+          class="block cursor-pointer p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
           @click="navigatePages('prev')"
           aria-label="Previous"
         >
@@ -360,7 +363,7 @@
             class="pagination__item"
           >
             <button
-              class="block p-2 py-1 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10 min-h-[44px] min-w-[44px] leading-[44px]"
+              class="block min-h-[44px] min-w-[44px] cursor-pointer p-2 py-1 font-body text-14 leading-140 leading-[44px] font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
               :class="{ 'bg-[#eef4ff]': currentPage === pageIndex }"
               @click="navigateFn(pageIndex)"
             >
@@ -371,7 +374,7 @@
 
         <button
           v-if="currentPage !== totalPages"
-          class="block p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
+          class="block cursor-pointer p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
           @click="navigatePages('next')"
           aria-label="Next"
         >
@@ -565,11 +568,13 @@ const normalizedHeadings = computed(() => {
   // 4. Calculate the true total columns needed
   let totalHeadingsNeeded = 0;
 
-  if (normalizedSourceHeadings.length !== maxColumnCount+1){
-    if (normalizedSourceHeadings.length > maxColumnCount+1) {
-      totalHeadingsNeeded = normalizedSourceHeadings.length - maxColumnCount+1;
+  if (normalizedSourceHeadings.length !== maxColumnCount + 1) {
+    if (normalizedSourceHeadings.length > maxColumnCount + 1) {
+      totalHeadingsNeeded =
+        normalizedSourceHeadings.length - maxColumnCount + 1;
     } else {
-      totalHeadingsNeeded = maxColumnCount+1 - normalizedSourceHeadings.length;
+      totalHeadingsNeeded =
+        maxColumnCount + 1 - normalizedSourceHeadings.length;
     }
   }
 
