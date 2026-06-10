@@ -316,15 +316,20 @@ const animateParagraph = async () => {
     stagger: 0.08,
     opacity: 1,
     ease: "Circ.easeIn",
+    onComplete: () => emit("animation-complete"),
   });
 };
 
 onMounted(() => {
   isBot.value =
-    window.colby.DISABLE_ANIMATIONS === true || props.disableAnimations;
+    window.colby?.DISABLE_ANIMATIONS === true || props.disableAnimations;
 
   if (!container.value) return;
-  if (isBot.value || props.disableAnimations) return;
+
+  if (isBot.value || props.disableAnimations) {
+    emit("animation-complete");
+    return;
+  }
 
   const subheading = container.value.querySelector(".text-group__subheading");
   const paragraph = container.value.querySelector(".text-group__p");
