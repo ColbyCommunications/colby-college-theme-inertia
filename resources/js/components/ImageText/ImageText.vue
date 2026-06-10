@@ -1,13 +1,12 @@
 <template>
-  <div class="colby-image-text-block overflow-auto mx-auto">
-    <!-- Wrap mode -->
+  <div class="colby-image-text-block mx-auto overflow-auto">
     <div v-if="wrapping_text === 'wrap'" class="flex flex-col md:block">
       <div
-        class="self-center !mb-4"
+        class="!mb-4 self-center"
         :class="[
           align_image === 'left'
-            ? 'md:!mr-4 float-left'
-            : 'md:!ml-4 float-right',
+            ? 'float-left md:!mr-4'
+            : 'float-right md:!ml-4',
           resolvedCaption ? '!mb-4' : '',
         ]"
       >
@@ -22,28 +21,28 @@
 
         <figcaption
           v-if="resolvedCaption"
-          class="text-center text-indigo text-12 pt-2"
+          class="pt-2 text-center text-12 text-indigo"
           :style="captionStyle"
         >
           {{ resolvedCaption }}
         </figcaption>
       </div>
 
-      <div v-html="paragraph_text" class="font-body font-normal text-16 leading-[1.75] text-left text-indigo-800 mt-2 [&>p]:mb-2 [&_p>a:only-child]:min-h-[44px] [&_p>a:only-child]:inline-block [&_a]:underline [&_a:hover]:no-underline [&_a:hover]:text-indigo [&>p]:mb-4" ></div>
+      <TextGroup
+        class="mt-2"
+        :paragraph="paragraph_text"
+        :disableAnimations="true"
+      />
     </div>
 
-    <!-- Side-by-side mode -->
     <div
       v-else
       class="flex flex-col md:flex-wrap"
       :class="align_image === 'right' ? 'md:flex-row-reverse' : 'md:flex-row'"
     >
       <div
-        class="mb-4 flex flex-col items-center shrink-0"
-        :class="[
-          align_image === 'left' ? 'md:mr-4' : 'md:ml-4',
-          scaleClass,
-        ]"
+        class="mb-4 flex shrink-0 flex-col items-center"
+        :class="[align_image === 'left' ? 'md:mr-4' : 'md:ml-4', scaleClass]"
         :style="imageWrapperStyle"
       >
         <img
@@ -57,25 +56,30 @@
 
         <figcaption
           v-if="resolvedCaption"
-          class="text-center text-indigo text-12 pt-2"
+          class="pt-2 text-center text-12 text-indigo"
         >
           {{ resolvedCaption }}
         </figcaption>
       </div>
 
       <div
-        class="font-body font-normal text-16 leading-[1.75] text-left text-indigo-800 mt-2 md:mt-0 [&>p]:mb-4 [&_p>a:only-child]:min-h-[44px] [&_p>a:only-child]:inline-block [&_a]:underline [&_a:hover]:no-underline [&_a:hover]:text-indigo"
+        class="mt-2 md:mt-0"
         :class="align_text === 'center' ? 'flex flex-col items-center' : ''"
         :style="textStyle"
-        v-html="paragraph_text"
-      ></div>
+      >
+        <TextGroup
+          :paragraph="paragraph_text"
+          :align="align_text"
+          :disableAnimations="true"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed } from "vue";
-
+import TextGroup from "../TextGroup/TextGroup.vue";
 
 const props = defineProps({
   image: { type: Object, default: null },
@@ -110,7 +114,8 @@ const fallbackImage = computed(() => {
     return {
       src: props.image.url || props.image.src || "",
       alt: props.image.alt || "",
-      caption: props.media_caption || props.caption || props.image.caption || "",
+      caption:
+        props.media_caption || props.caption || props.image.caption || "",
       width: props.image.width || 0,
       height: props.image.height || 0,
       caption_width: props.image.width || 0,
@@ -137,10 +142,7 @@ const normalizedImage = computed(() => {
 
 const resolvedCaption = computed(() => {
   return (
-    normalizedImage.value.caption ||
-    props.media_caption ||
-    props.caption ||
-    ""
+    normalizedImage.value.caption || props.media_caption || props.caption || ""
   );
 });
 
