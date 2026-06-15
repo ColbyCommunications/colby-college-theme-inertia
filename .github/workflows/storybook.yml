@@ -3,9 +3,8 @@ name: Deploy Branch Storybook
 on:
   push:
     branches:
-      - master
-  pull_request:
-    types: [opened, synchronize, reopened]
+      - '**' # Matches master, feature/xyz, hotfix-123, etc.
+  workflow_dispatch:
 
 # Cancel previous builds on the same branch to save action minutes
 concurrency:
@@ -35,9 +34,12 @@ jobs:
       - name: Determine Target Subdirectory
         id: branch-info
         run: |
-          # Fetch branch name and sanitize slashes or special characters into dots
-          RAW_BRANCH="${{ github.head_ref || github.ref_name }}"
-          SAFE_BRANCH=$(echo "$RAW_BRANCH" | sed 's/[^a-zA-Z0-9_]/./g')
+          # Since we only trigger on push, ref_name gives us the clean branch name (e.g., feature/login)
+          RAW_BRANCH="${{ github.ref_name }}"
+          
+          # Replace slashes and special characters with dashes instead of dots
+          SAFE_BRANCH=$(echo "$RAW_BRANCH" | sed 's/[^a-zA-Z0-9_-]/-/g')
+          
           echo "folder_name=$SAFE_BRANCH" >> $GITHUB_OUTPUT
 
       - name: Build Storybook
