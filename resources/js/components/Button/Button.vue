@@ -139,7 +139,7 @@ const focusBackgroundColor = computed(() =>
   isDark.value ? "" : "focus:bg-cloud",
 );
 const borderBackground = computed(() =>
-  props.transparentBg ? "bg-indigo" : isDark.value ? "bg-white" : "bg-indigo",
+  "bg-indigo",
 );
 const arrowColor = computed(() =>
   props.transparentBg ? "fill-gold" : isDark.value ? "fill-gold" : "fill-azure",
