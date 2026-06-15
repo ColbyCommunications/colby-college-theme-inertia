@@ -2,7 +2,7 @@
     <AppLayout>
       <section class="sidebar-page">
         <div class="sidebar-page__inner max-w-screen-2xl w-full px-5 my-0 mx-auto mt-8">
-          <a class="inline-flex items-center font-body text-14 md:text-10 font-normal md:font-medium leading-140 text-indigo-800 py-1.5 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]" href="/people/people-directory">
+          <a class="inline-flex items-center font-body text-14 md:text-10 font-normal md:font-medium leading-140 text-coal py-1.5 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]" href="/people/people-directory">
             <Icon  name="chevron" class="w-1 fill-indigo-800 mr-2" /> Back to Index
           </a>
         </div>
@@ -73,13 +73,13 @@
                   [&_h4]:font-extended [&_h4]:font-normal [&_h4]:text-20 [&_h4]:leading-110 [&_h4]:-tracking-3 [&_h4]:text-indigo [&_h4+p]:mt-2 [&_h4+ul]:mt-2 [&_h4+ol]:mt-2
                   [&_h5]:font-extended [&_h5]:font-bold [&_h5]:text-14 [&_h5]:leading-130 [&_h5]:tracking-8 [&_h5]:text-azure [&_h5]:uppercase [&_h5+p]:mt-2 [&_h5+ul]:mt-2 [&_h5+ol]:mt-2
                   [&_h6]:font-extended [&_h6]:font-bold [&_h6]:text-12 [&_h6]:tracking-8 [&_h6]:text-azure [&_h6]:uppercase [&_h6+p]:mt-2
-                  [&_p]:font-body [&_p]:font-normal [&_p]:text-16 [&_p]:leading-[1.5] [&_p]:text-indigo-800
+                  [&_p]:font-body [&_p]:font-normal [&_p]:text-16 [&_p]:leading-[1.5] [&_p]:text-coal
                   [&_p>a]:underline [&_p>a:hover]:no-underline [&_p>a:hover]:text-indigo
                   [&_ul+h2]:mt-20
-                  [&_ul>li]:font-body [&_ul>li]:font-normal [&_ul>li]:text-16 [&_ul>li]:leading-130 [&_ul>li]:text-indigo-800 [&_ul>li]:list-disc [&_ul>li]:list-outside [&_ul>li]:ml-3 [&_ul>li+li]:mt-2
+                  [&_ul>li]:font-body [&_ul>li]:font-normal [&_ul>li]:text-16 [&_ul>li]:leading-130 [&_ul>li]:text-coal [&_ul>li]:list-disc [&_ul>li]:list-outside [&_ul>li]:ml-3 [&_ul>li+li]:mt-2
                   [&_ul>li>a]:underline [&_ul>li>a:hover]:no-underline [&_ul>li>a:hover]:text-indigo
                   [&_ol+h2]:mt-20
-                  [&_ol>li]:font-body [&_ol>li]:font-normal [&_ol>li]:text-16 [&_ol>li]:leading-130 [&_ol>li]:text-indigo-800 [&_ol>li]:list-decimal [&_ol>li]:list-outside [&_ol>li]:ml-3 [&_ol>li+li]:mt-2
+                  [&_ol>li]:font-body [&_ol>li]:font-normal [&_ol>li]:text-16 [&_ol>li]:leading-130 [&_ol>li]:text-coal [&_ol>li]:list-decimal [&_ol>li]:list-outside [&_ol>li]:ml-3 [&_ol>li+li]:mt-2
                   [&_ol>li>a]:underline [&_ol>li>a:hover]:no-underline [&_ol>li>a:hover]:text-indigo
                   [&_div+div]:mt-20 md:[&_div+div]:mt-[100px] [&_div+figure]:mt-20 md:[&_div+figure]:mt-[100px] [&_div+h2]:mt-16 md:[&_div+h2]:mt-20
                   [&_figure+figure]:mt-20 md:[&_figure+figure]:mt-[100px] [&_figure+div]:mt-20 md:[&_figure+div]:mt-[100px] [&_figure+h2]:mt-16 md:[&_figure+h2]:mt-20

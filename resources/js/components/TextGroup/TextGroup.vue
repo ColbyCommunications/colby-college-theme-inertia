@@ -153,7 +153,7 @@ const textAlign = computed(() =>
 );
 
 const subheadingColor = computed(() =>
-  props.type === "light" ? "text-canary" : "text-azure",
+  props.type === "light" ? "text-gold" : "text-azure",
 );
 
 const headingColor = computed(() =>
@@ -161,7 +161,7 @@ const headingColor = computed(() =>
 );
 
 const paragraphColor = computed(() =>
-  props.type === "light" ? "text-[#eef4ff]" : "text-indigo-800",
+  props.type === "light" ? "text-[#eef4ff]" : "text-coal",
 );
 
 /* ----------------------------

@@ -2,7 +2,7 @@
   <div class="endpoint-filter">
     <div
       v-if="filters"
-      class="section-nav full-bleed !mt-0 overflow-x-auto bg-gray-100 py-6"
+      class="section-nav full-bleed !mt-0 overflow-x-auto bg-cloud py-6"
     >
       <div class="section-nav__inner flex space-x-10 px-5 lg:justify-center">
         <h2
@@ -14,10 +14,10 @@
           <li
             v-for="(filter, index) in filters"
             :key="index"
-            class="font-body text-14 leading-130 font-medium whitespace-nowrap text-indigo-800 md:text-10"
+            class="font-body text-14 leading-130 font-medium whitespace-nowrap text-coal md:text-10"
           >
             <button
-              class="text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
+              class="text-coal transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
               :class="{
                 '!text-indigo underline': currentEndpoint === filter.url,
               }"

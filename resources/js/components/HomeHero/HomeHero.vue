@@ -21,6 +21,7 @@
                         :reverse="true"
                         :date="true"
                         :heading="heading"
+                        :buttonTransparentBg="true"
                         :buttons="{ items: buttons }"
                     />
                 </div>
@@ -28,7 +29,7 @@
 
             <div v-if="caption" class="home-hero__inner max-w-screen-2xl w-full px-5 my-0 mx-auto mt-24">
                 <div
-                    class="font-extended font-bold text-12 tracking-8 text-canary uppercase text-right md:text-left"
+                    class="font-extended font-bold text-12 tracking-8 text-gold uppercase text-right md:text-left"
                 >
                     {{ caption }}
                 </div>

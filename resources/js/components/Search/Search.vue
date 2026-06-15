@@ -46,7 +46,7 @@
                             <h2 class="text-group__heading -tracking-3 mt-2 text-left font-extended text-20 leading-110 font-normal text-indigo">
                               <ais-highlight attribute="cleaned_title" :hit="item" />
                             </h2>
-                            <p class="text-group__p mt-2 text-left font-body text-12 leading-130 font-normal break-words text-indigo-800">
+                            <p class="text-group__p mt-2 text-left font-body text-12 leading-130 font-normal break-words text-coal">
                               <ais-snippet attribute="content" :hit="item" />
                             </p>
                           </div>

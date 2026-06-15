@@ -1,7 +1,7 @@
 <template>
   <div
     class="hw-image-section full-bleed md:flex [&+.hw-image-section]:mt-0"
-    :class="type === 'light' ? 'bg-indigo' : 'bg-[#f9fbff]'"
+    :class="type === 'light' ? 'bg-indigo' : 'bg-cloud'"
   >
     <div class="hw-image-section__image relative md:w-1/2">
       <Picture

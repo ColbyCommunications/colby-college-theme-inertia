@@ -48,6 +48,6 @@
     );
 
     const headingClass = computed(() =>
-        props.type === 'emergency' ? 'text-black underline' : 'text-canary'
+        props.type === 'emergency' ? 'text-black underline' : 'text-gold'
     );
 </script>

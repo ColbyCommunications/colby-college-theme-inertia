@@ -20,7 +20,7 @@
         </h1>
         <div
           v-if="pronouns && !hidePronouns"
-          class="mt-2 font-body text-12 leading-140 font-semibold text-indigo-800"
+          class="mt-2 font-body text-12 leading-140 font-semibold text-coal"
         >
           {{ pronouns }}
         </div>
@@ -34,7 +34,7 @@
                 Title
               </h2>
               <p
-                class="font-body text-16 leading-[1.5] font-normal text-indigo-800"
+                class="font-body text-16 leading-[1.5] font-normal text-coal"
               >
                 {{ title }}
               </p>
@@ -47,7 +47,7 @@
                 Department
               </h2>
               <p
-                class="font-body text-16 leading-[1.5] font-normal text-indigo-800"
+                class="font-body text-16 leading-[1.5] font-normal text-coal"
               >
                 {{ department }}
               </p>
@@ -64,7 +64,7 @@
               >
                 <li v-if="phone && !hidePhoneNumber" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex items-center text-coal hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="`tel:${phone}`"
                   >
                     <Icon name="phone" class="mr-1.5 h-3 fill-indigo-800" />
@@ -74,7 +74,7 @@
 
                 <li v-if="curriculumVitae && !hideCv" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex items-center text-coal hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="curriculumVitae"
                     target="_blank"
                   >
@@ -85,7 +85,7 @@
 
                 <li v-if="email && !hideEmail" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex items-center text-coal hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="`mailto:${email}`"
                   >
                     <Icon name="email" class="mr-1.5 h-3 fill-indigo-800" />
@@ -95,7 +95,7 @@
 
                 <li v-if="fax && !hideFax" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex items-center text-coal hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="`tel:${fax}`"
                   >
                     <Icon name="fax" class="mr-1.5 h-4 fill-indigo-800" />
@@ -104,7 +104,7 @@
                 </li>
 
                 <li v-if="location && !hideLocation" class="col-span-2 mb-3">
-                  <div class="flex items-center text-indigo-800">
+                  <div class="flex items-center text-coal">
                     <Icon name="location" class="mr-1.5 h-3 fill-indigo-800" />
                     {{ location }}
                   </div>
@@ -119,7 +119,7 @@
                 Address
               </h2>
               <p
-                class="font-body text-12 leading-130 font-normal text-indigo-800"
+                class="font-body text-12 leading-130 font-normal text-coal"
               >
                 {{ address }}
               </p>
@@ -132,7 +132,7 @@
                 Office Hours
               </h2>
               <p
-                class="font-body text-12 leading-130 font-normal text-indigo-800"
+                class="font-body text-12 leading-130 font-normal text-coal"
               >
                 {{ officeHours }}
               </p>
@@ -147,7 +147,7 @@
                 Address
               </h2>
               <p
-                class="font-body text-16 leading-[1.5] font-normal text-indigo-800"
+                class="font-body text-16 leading-[1.5] font-normal text-coal"
               >
                 {{ address }}
               </p>
@@ -164,7 +164,7 @@
               >
                 <li v-if="phone" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex items-center text-coal hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="`tel:${phone}`"
                   >
                     <Icon name="phone" class="mr-1.5 h-3 fill-indigo-800" />
@@ -174,7 +174,7 @@
 
                 <li v-if="curriculumVitae" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex items-center text-coal hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="curriculumVitae"
                     target="_blank"
                   >
@@ -185,7 +185,7 @@
 
                 <li v-if="email" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex items-center text-coal hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="`mailto:${email}`"
                   >
                     <Icon name="email" class="mr-1.5 h-3 fill-indigo-800" />
@@ -195,7 +195,7 @@
 
                 <li v-if="fax" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo-800 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex items-center text-coal hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
                     :href="`tel:${fax}`"
                   >
                     <Icon name="fax" class="mr-1.5 h-4 fill-indigo-800" />
@@ -204,7 +204,7 @@
                 </li>
 
                 <li v-if="location" class="col-span-2 mb-3">
-                  <div class="flex items-center text-indigo-800">
+                  <div class="flex items-center text-coal">
                     <Icon name="location" class="mr-1.5 h-3 fill-indigo-800" />
                     {{ location }}
                   </div>

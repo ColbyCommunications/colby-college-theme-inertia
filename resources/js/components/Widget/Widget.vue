@@ -1,5 +1,5 @@
 <template>
-  <div class="widget space-y-3 bg-gray-100 p-5">
+  <div class="widget space-y-3 bg-cloud p-5">
     <h2
       v-if="heading"
       class="font-extended text-14 leading-130 font-bold tracking-8 text-azure uppercase md:text-12"
@@ -7,7 +7,7 @@
       {{ heading }}
     </h2>
     <div
-      class="list-spacing widget__context space-y-2 [&>p]:font-body [&>p]:text-10 [&>p]:leading-[1.5] [&>p]:font-medium [&>p]:text-indigo-800 [&>p>a]:no-underline hover:[&>p>a]:text-indigo hover:[&>p>a]:underline [&>ul>li]:ml-3 [&>ul>li]:list-disc [&>ul>li]:font-body [&>ul>li]:text-10 [&>ul>li]:leading-140 [&>ul>li]:font-medium [&>ul>li]:text-indigo-800 [&>ul>li>a]:no-underline [&>ul>li>a:hover]:text-indigo [&>ul>li>a:hover]:underline"
+      class="list-spacing widget__context space-y-2 [&>p]:font-body [&>p]:text-10 [&>p]:leading-[1.5] [&>p]:font-medium [&>p]:text-coal [&>p>a]:no-underline hover:[&>p>a]:text-indigo hover:[&>p>a]:underline [&>ul>li]:ml-3 [&>ul>li]:list-disc [&>ul>li]:font-body [&>ul>li]:text-10 [&>ul>li]:leading-140 [&>ul>li]:font-medium [&>ul>li]:text-coal [&>ul>li>a]:no-underline [&>ul>li>a:hover]:text-indigo [&>ul>li>a:hover]:underline"
       v-html="text"
     ></div>
     <ButtonGroup

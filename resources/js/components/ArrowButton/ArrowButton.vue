@@ -1,13 +1,13 @@
 <template>
   <button
-    class="arrow-btn inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded border border-solid border-[#dfecfe] bg-[#f9fbff] transition-all duration-200 ease-in-out hover:bg-[#eef4ff] focus:bg-[#eef4ff]"
+    class="arrow-btn inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded border-[0.75px] border-solid border-indigo bg-white transition-all duration-200 ease-in-out hover:bg-cloud focus:bg-cloud hover:border-snow"
     @click="handleClick"
   >
     <span class="sr-only">
       {{ reverse ? "Next" : "Previous" }}
     </span>
     <svg
-      class="arrow-btn__arrow h-5 w-5"
+      class="arrow-btn__arrow h-5 w-5 fill-indigo"
       :class="{ 'rotate-180': reverse }"
       viewBox="0 0 26.9 26.5"
     >

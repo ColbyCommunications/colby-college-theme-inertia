@@ -1,6 +1,6 @@
 <template>
   <div
-    class="collage-section full-bleed space-y-16 bg-gray-100 pt-16 pb-[100%] md:pt-24 md:pb-40"
+    class="collage-section full-bleed space-y-16 bg-snow pt-16 pb-[100%] md:pt-24 md:pb-40"
   >
     <div
       class="collage-section__inner mx-auto my-0 w-full max-w-screen-2xl gap-x-10 px-5 md:grid md:grid-cols-12"

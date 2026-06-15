@@ -18,7 +18,7 @@
             <input
               type="search"
               placeholder="Search"
-              class="h-[34px] w-full max-w-sm rounded-md border border-solid border-indigo-400 bg-white p-2.5 pl-7 font-body text-10 text-indigo-800"
+              class="h-[34px] w-full max-w-sm rounded-md border border-solid border-stone bg-white p-2.5 pl-7 font-body text-10 text-coal"
               :value="currentRefinement"
               @input="onInput($event.target.value, refine)"
             />

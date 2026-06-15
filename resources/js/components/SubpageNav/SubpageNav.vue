@@ -41,13 +41,13 @@
         <li
           v-for="(item, index) in items"
           :key="index"
-          class="subpage-nav__item font-body text-14 leading-140 font-normal text-indigo-800 md:text-10 md:font-medium"
+          class="subpage-nav__item font-body text-14 leading-140 font-normal text-coal md:text-10 md:font-medium"
         >
           <a
-            class="block flex min-h-[44px] min-w-[44px] items-center border-solid px-6 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] md:border-l-2 md:px-0 md:pl-2.5"
+            class="block flex min-h-[44px] min-w-[44px] items-center border-solid px-6 transition-all duration-200 ease-in-out hover:bg-cloud md:border-l-2 md:px-0 md:pl-2.5"
             :class="{
               'border-indigo text-gray-1000': item.active,
-              'border-transparent text-indigo-800 hover:text-indigo hover:underline':
+              'border-transparent text-coal hover:text-indigo hover:underline':
                 !item.active,
             }"
             :href="item.url"

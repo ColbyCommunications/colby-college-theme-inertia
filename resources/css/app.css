@@ -137,31 +137,16 @@
   --color-white: #ffffff;
 
   --color-indigo: #012169;
-  --color-canary: #ffb500;
-  --color-azure: #1f4da4;
+  --color-gold: #EEB808;
+  --color-azure: #3f99e8;
+  --color-snow: #f2f6f9;
+  --color-cloud: #eef4ff;
+  --color-stone: #B5B5B5;
+  --color-slate: #666666;
+  --color-coal: #0F0F0F;
+  
   --color-notification-red: #dc3924;
 
-  --color-indigo-100: #595959;
-  --color-indigo-200: #575e75;
-  --color-indigo-300: #525d7d;
-  --color-indigo-400: #4c5a8a;
-  --color-indigo-500: #455582;
-  --color-indigo-600: #3d4d75;
-  --color-indigo-700: #364569;
-  --color-indigo-800: #2b3754;
-  --color-indigo-900: #1c2436;
-  --color-indigo-1000: #012169;
-
-  --color-gray-100: #f9fbff;
-  --color-gray-200: #f2f3f8;
-  --color-gray-300: #e4e8f0;
-  --color-gray-400: #d8dce3;
-  --color-gray-500: #c3c8d0;
-  --color-gray-600: #aaafb8;
-  --color-gray-700: #8d929b;
-  --color-gray-800: #707682;
-  --color-gray-900: #4d535f;
-  --color-gray-1000: #232b3b;
 
   /* --- Typography --- */
   --font-display: "Noto Sans Extended Variable", sans-serif;

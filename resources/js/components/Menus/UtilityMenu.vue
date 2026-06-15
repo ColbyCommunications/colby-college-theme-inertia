@@ -1,7 +1,7 @@
 <template>
   <nav
     v-if="utilityMenuStyle === 'colby.edu'"
-    class="float-right block bg-[#f9fbff] px-5 md:flex md:h-auto md:w-full md:justify-between md:pt-0"
+    class="float-right block bg-snow px-5 md:flex md:h-auto md:w-full md:justify-between md:pt-0"
     aria-label="Utility menu"
   >
     <!-- Left side: Utility links -->
@@ -31,7 +31,7 @@
         class="flex list-none items-center font-body text-16 leading-110 font-normal md:text-12"
       >
         <a
-          class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center py-2 text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
+          class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
           :href="item.url"
         >
           {{ item.title }}
@@ -40,14 +40,14 @@
     </ul>
     <!-- Right side: Action links (myColby, Search) -->
     <ul
-      class="flex space-x-6 bg-[#f9fbff] px-5 md:static md:float-right md:block md:bg-transparent md:px-0"
+      class="flex space-x-6 bg-snow px-5 md:static md:float-right md:block md:bg-transparent md:px-0"
     >
       <!-- myColby -->
       <li
         class="group inline-block items-center font-body text-14 leading-110 font-normal md:text-12"
       >
         <a
-          class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center py-2 text-indigo-800 transition-all duration-200 ease-in-out group-hover:text-indigo-1000 group-hover:underline"
+          class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out group-hover:text-indigo-1000 group-hover:underline"
           href="https://my.colby.edu/"
         >
           <MyColbyIcon
@@ -70,7 +70,7 @@
           <template #button="{ open, isOpen }">
             <button
               type="button"
-              class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
+              class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
               :class="{ 'text-indigo-1000 underline': isOpen }"
               aria-haspopup="dialog"
               :aria-expanded="isOpen ? 'true' : 'false'"
@@ -99,7 +99,7 @@
   </nav>
   <nav
     v-else
-    class="header__utility flex h-[118px] justify-end bg-[#f9fbff] px-5 pt-4 lg:h-auto lg:pt-0"
+    class="header__utility flex h-[118px] justify-end bg-snow px-5 pt-4 lg:h-auto lg:pt-0"
   >
     <ul
       class="hidden w-0 md:grid md:inline-flex md:w-auto md:grid-cols-3 md:grid-cols-none md:grid-rows-2 md:grid-rows-none md:gap-0 md:gap-x-5 md:space-x-6"
@@ -127,7 +127,7 @@
         class="flex list-none items-center font-body text-16 leading-110 font-normal md:text-12"
       >
         <a
-          class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center py-2 text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
+          class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
           :href="item.url"
         >
           {{ item.title }}
@@ -146,7 +146,7 @@
           <template #button="{ open, isOpen }">
               <button
                 type="button"
-                class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
+                class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
                 :class="{ 'text-indigo-1000 underline': isOpen }"
                 aria-haspopup="dialog"
                 :aria-expanded="isOpen ? 'true' : 'false'"

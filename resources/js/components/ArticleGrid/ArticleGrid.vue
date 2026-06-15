@@ -206,7 +206,7 @@
             <div class="button-group mt-4 flex flex-wrap gap-4">
               <button
                 type="button"
-                class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-[#dfecfd] bg-[#fafbff] px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-[#EEF4FF] focus:bg-[#EEF4FF] focus:outline focus:outline-2 focus:outline-canary"
+                class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-[#dfecfd] bg-[#fafbff] px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-cloud focus:bg-cloud focus:outline focus:outline-2 focus:outline-gold"
                 @click="toggleAccordion(i)"
               >
                 <span class="btn__text">
@@ -229,12 +229,12 @@
         >
           <div
             v-if="expandedIndex === i"
-            class="mt-4 flex w-full flex-col border-[1px] border-[#d2dbea] bg-[#eef4ff] text-14 text-indigo-800"
+            class="mt-4 flex w-full flex-col border-[1px] border-[#d2dbea] bg-cloud text-14 text-coal"
             :style="{ maxHeight: '80vh' }"
           >
             <div class="flex w-full justify-end pt-4 pr-4 pl-4">
               <button @click="toggleAccordion(i)" class="cursor-pointer">
-                <span class="material-symbols-sharp text-indigo-800"
+                <span class="material-symbols-sharp text-coal"
                   >close</span
                 >
               </button>
@@ -254,7 +254,7 @@
                 :key="buttonIndex"
                 :href="buttonObj.button.url"
                 :target="buttonObj.button.target || '_self'"
-                class="btn group ml-2 inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-[#e7f0fe] bg-[#fafbff] px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-[#EEF4FF] focus:bg-[#EEF4FF] focus:outline focus:outline-2 focus:outline-canary"
+                class="btn group ml-2 inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-[#e7f0fe] bg-[#fafbff] px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-cloud focus:bg-cloud focus:outline focus:outline-2 focus:outline-gold"
               >
                 {{ buttonObj.button.title }}
               </a>
@@ -274,7 +274,7 @@
         >
           <div
             v-if="expandedIndex === i"
-            class="absolute top-0 flex flex-col border-[1px] border-[#d2dbea] bg-[#eef4ff] text-14 text-indigo-800"
+            class="absolute top-0 flex flex-col border-[1px] border-[#d2dbea] bg-cloud text-14 text-coal"
             :class="
               accordionDirection(i) === 'right'
                 ? 'left-full ml-4'
@@ -294,7 +294,7 @@
               ]"
             >
               <button @click="toggleAccordion(i)" class="cursor-pointer">
-                <span class="material-symbols-sharp text-indigo-800"
+                <span class="material-symbols-sharp text-coal"
                   >close</span
                 >
               </button>
@@ -320,7 +320,7 @@
                 :href="buttonObj.button.url"
                 :target="buttonObj.button.target || '_self'"
                 :class="[
-                  'btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-[#e8f1fe] bg-[#fafbff] px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-[#EEF4FF] focus:bg-[#EEF4FF] focus:outline focus:outline-2 focus:outline-canary',
+                  'btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-[#e8f1fe] bg-[#fafbff] px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-cloud focus:bg-cloud focus:outline focus:outline-2 focus:outline-gold',
                   accordionDirection(i) === 'left' ? 'mr-2' : 'ml-2',
                 ]"
               >

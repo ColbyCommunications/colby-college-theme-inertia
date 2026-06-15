@@ -33,20 +33,14 @@
             :buttons="{ items: buttons }"
           />
 
-          <button
-            v-if="video?.id"
-            class="btn group mt-4 inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-800 bg-indigo/20 px-3.5 py-1 font-body text-12 leading-130 font-normal text-white outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-canary"
-            @click="setActive"
-          >
+          <button v-if="video?.id" class="btn group inline-flex flex-row items-center rounded border-[0.75px] border-solid font-body leading-130 font-normal !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-gold min-w-[44px] min-h-[44px] space-x-1.5 text-12 py-1 px-3.5 border-white text-white hover:text-indigo hover:bg-white" @click="setActive">
             <Icon
               name="play"
-              class="w-3 fill-canary transition-all duration-400 ease-in-out group-hover:fill-white"
+              class="w-3 fill-gold transition-all duration-400 ease-in-out group-hover:fill-gold"
             />
             <span class="btn__text">
               Watch
-              <div
-                class="btn__border block h-px w-0 bg-white transition-all duration-200 ease-in-out group-hover:w-full"
-              />
+              <div class="btn__border block h-px w-0 transition-all duration-200 ease-in-out group-hover:w-full bg-indigo" />
             </span>
           </button>
         </div>

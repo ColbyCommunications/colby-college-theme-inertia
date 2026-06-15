@@ -21,7 +21,7 @@
             </h3>
 
             <div
-              class="flex h-9 w-11 shrink-0 items-center justify-center rounded-sm border border-gray-300 bg-gray-100"
+              class="flex h-9 w-11 shrink-0 items-center justify-center rounded-sm border border-gray-300 bg-cloud"
             >
               <div
                 class="icon-container transition-all duration-200 ease-in-out"

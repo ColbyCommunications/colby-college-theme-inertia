@@ -86,7 +86,7 @@ export const DarkMode = {
       return { args };
     },
     template: `
-      <div class="bg-indigo-900 py-10">
+      <div class="bg-indigo py-10">
         <EndpointFilter v-bind="args" />
       </div>
     `,

@@ -5,7 +5,7 @@
         class="inset-widget__main"
         :class="inset ? 'md:col-span-10 md:col-start-2' : 'md:col-span-12'"
       >
-        <div class="inset-widget__widget md:flex justify-between items-center p-10 bg-gray-100 border border-solid border-azure rounded-lg space-y-5 md:space-y-0">
+        <div class="inset-widget__widget md:flex justify-between items-center p-10 bg-cloud border border-solid border-azure rounded-lg space-y-5 md:space-y-0">
           <Context
             :size="size || 'medium'"
             :subheading="subheading"

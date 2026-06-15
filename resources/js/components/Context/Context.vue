@@ -20,6 +20,7 @@
             :items="buttons.items"
             :arrow="arrow"
             :reverse="reverse"
+            :transparentBg="buttonTransparentBg"
         />
     </div>
 </template>
@@ -45,6 +46,7 @@
             type: Object,
             default: () => ({ items: [] }),
         },
+        buttonTransparentBg: { type: Boolean, default: false },
         arrow: { type: Boolean, default: false },
         reverse: { type: Boolean, default: false },
     });

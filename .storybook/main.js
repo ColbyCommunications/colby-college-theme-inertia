@@ -1,5 +1,6 @@
 /** @type { import('@storybook/vue3-vite').StorybookConfig } */
 import tailwindcss from "@tailwindcss/vite";
+
 const config = {
   stories: [
     "../resources/js/components/**/*.mdx",
@@ -16,7 +17,8 @@ const config = {
     config.plugins.push(tailwindcss());
 
     if (configType === "PRODUCTION") {
-      config.base = "./";
+      // Use the environment variable set by GitHub Actions, or fallback to your relative path
+      config.base = process.env.STORYBOOK_BASE || "./";
     }
     return config;
   },
