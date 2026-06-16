@@ -6,13 +6,14 @@
     >
       {{ heading }}
     </h2>
-    <div
-      class="list-spacing widget__context space-y-2 [&>p]:font-body [&>p]:text-10 [&>p]:leading-[1.5] [&>p]:font-medium [&>p]:text-indigo-800 [&>p>a]:no-underline hover:[&>p>a]:text-indigo hover:[&>p>a]:underline [&>ul>li]:ml-3 [&>ul>li]:list-disc [&>ul>li]:font-body [&>ul>li]:text-10 [&>ul>li]:leading-140 [&>ul>li]:font-medium [&>ul>li]:text-indigo-800 [&>ul>li>a]:no-underline [&>ul>li>a:hover]:text-indigo [&>ul>li>a:hover]:underline"
-      v-html="text"
-    ></div>
+    <TextGroup
+      v-if="text"
+      class="list-spacing widget__context"
+      :paragraph="text"
+      size="xsmall"
+    />
     <ButtonGroup
       v-if="buttons && buttons.length"
-      size="small"
       align="column"
       :items="buttonItems"
     />
@@ -22,6 +23,7 @@
 <script setup>
 import { computed } from "vue";
 import ButtonGroup from "@/js/components/ButtonGroup/ButtonGroup.vue";
+import TextGroup from "@/js/components/TextGroup/TextGroup.vue";
 
 const props = defineProps({
   heading: { type: String, default: "" },

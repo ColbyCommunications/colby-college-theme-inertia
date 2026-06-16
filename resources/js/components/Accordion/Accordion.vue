@@ -11,8 +11,8 @@
             class="accordion__button flex items-center justify-between gap-x-3 !px-0 !py-6"
             type="button"
             role="button"
-            :aria-controls="`section${index+1}-content`"
-            :id="`section${index+1}-header`"
+            :aria-controls="`section${index + 1}-content`"
+            :id="`section${index + 1}-header`"
             :aria-expanded="isActive(index)"
             @click="toggle(index)"
           >
@@ -39,9 +39,19 @@
           @after-enter="onAfterEnter"
           @leave="onLeave"
         >
-          <div v-show="isActive(index)" class="accordion__window" role="region" :id="`section${index+1}-content`" :aria-labelledby="`section${index+1}-header`">
+          <div
+            v-show="isActive(index)"
+            class="accordion__window"
+            role="region"
+            :id="`section${index + 1}-content`"
+            :aria-labelledby="`section${index + 1}-header`"
+          >
             <div class="accordion__content">
-              <div v-html="panel.content" :class="WysiwygClasses"></div>
+              <TextGroup
+                v-if="panel.content"
+                :paragraph="panel.content"
+                disable-animations
+              />
             </div>
           </div>
         </Transition>
@@ -53,8 +63,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import Icon from "@/js/components/Icon/Icon.vue";
-
-import { WysiwygClasses } from '../../utils/wysiwygClasses';
+import TextGroup from "@/js/components/TextGroup/TextGroup.vue";
 
 const props = defineProps({
   panels: {
@@ -98,7 +107,7 @@ const toggle = (index) => {
 // Animation Hooks for smooth height transition
 const onEnter = (el) => {
   el.style.height = "0";
-  el.style.visibility = "hidden"; // Match original CSS logic
+  el.style.visibility = "hidden";
 
   // Force reflow
   el.offsetHeight;
@@ -108,7 +117,7 @@ const onEnter = (el) => {
 };
 
 const onAfterEnter = (el) => {
-  el.style.height = "auto"; // Allow resizing if content changes
+  el.style.height = "auto";
 };
 
 const onLeave = (el) => {
@@ -131,11 +140,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-/* We define the transition class locally.
-   The base styles from _accordion.scss are included below, 
-   but cleaned up to remove dependencies on external variables/mixins 
-*/
-
 .accordion {
   &__panel + &__panel {
     // border-top: 1px solid #dcdcdc; // Handled by Tailwind classes in template
@@ -160,7 +164,6 @@ onMounted(() => {
   &__window {
     margin: 0;
     overflow: hidden;
-    /* The transition property is critical for the JS hooks to animate smoothly */
     transition:
       height 0.2s ease-in-out,
       visibility 0.2s ease-in-out;
@@ -170,7 +173,6 @@ onMounted(() => {
     padding: 20px 14px;
   }
 
-  // Styles for content injected via v-html
   :deep(p:nth-child(1)) {
     margin-top: 0;
   }
