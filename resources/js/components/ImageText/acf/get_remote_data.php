@@ -73,7 +73,7 @@ if (!function_exists('colby_block_image_text_get_base_image')) {
             return [
                 'src' => $image['url'],
                 'alt' => $image['alt'] ?? '',
-                'caption' => $data['media_caption'] ?? ($image['caption'] ?? ''),
+                'caption' => $data['media_caption'] ? $image['caption'] : '',
                 'width' => (int) ($image['width'] ?? 0),
                 'height' => (int) ($image['height'] ?? 0),
                 'source' => 'image',
