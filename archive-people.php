@@ -21,7 +21,7 @@ $people = array_map(function ($post) {
         'thumbnail'      => $thumbnail,
         'post_title'     => get_the_title($post->ID),
         'post_name'      => $post->post_name,
-        'business_title' => get_post_meta($post->ID, 'business_title', true),
+        'business_title' => get_post_meta($post->ID, 'title', true),
         'department'     => get_post_meta($post->ID, 'department', true),
     ];
 }, $query->posts);
