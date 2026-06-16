@@ -247,7 +247,7 @@
                   v-text="item.title"
                 />
                 <p
-                  class="p-5 font-body text-20 leading-140 font-normal text-indigo-800 md:text-12"
+                  class="p-5 font-body text-20 leading-[1.5rem] font-normal text-indigo-800 md:text-12"
                   v-html="item.description"
                 />
               </template>

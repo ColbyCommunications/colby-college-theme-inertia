@@ -15,8 +15,8 @@
   >
     <button
       type="button"
-      class="absolute cursor-pointer pt-1"
-      :class="{ 'top-7 right-5': full, 'top-3 right-3': !full }"
+      class="absolute flex h-8 w-10 cursor-pointer items-center justify-center"
+      :class="{ 'top-7 right-5': full, 'right-3': !full }"
       aria-label="Close modal"
       @click="isOpen = false"
     >
