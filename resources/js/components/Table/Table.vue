@@ -12,30 +12,20 @@
             scope="col"
             class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
           >
-            {{ heading }}
+            <span class="sr-only">{{ heading }}</span>
           </th>
         </tr>
-        <tr v-else>
-          <th
-            scope="col"
-            class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
-          >
-            Column 1
-          </th>
-        </tr>
-
         <tr
           v-for="(item, itemIndex) in manualItems"
           :key="`row-${itemIndex}`"
           class="h-12 w-full odd:bg-gray-100 md:h-10"
         >
           <td
-            scope="row"
             class="px-6 py-2 text-left font-normal whitespace-nowrap md:whitespace-normal"
           >
             <component
               :is="item.link ? 'a' : 'span'"
-              class="inline-flex min-h-[44px] min-w-[44px] items-center font-body text-16 leading-140 leading-[44px] font-semibold md:text-12"
+              class="inline-flex min-h-[44px] min-w-[44px] items-center font-body text-16 leading-140 font-semibold md:text-12"
               :class="
                 item.link
                   ? 'cursor-pointer text-indigo hover:underline'
@@ -124,7 +114,7 @@
           @input="onSearchChange"
         />
         <svg
-          xmlns="https://www.w3.org/2000/svg"
+          xmlns="http://www.w3.org/2000/svg"
           height="12"
           width="12"
           class="absolute top-3 right-3 cursor-pointer fill-indigo-800"
@@ -149,43 +139,6 @@
         aria-label="Select a department"
       >
         <option value="All Departments">All Departments</option>
-        <option value="AFAM">African American Studies</option>
-        <option value="AMER">American Studies</option>
-        <option value="ANTH">Anthropology</option>
-        <option value="ART">Art</option>
-        <option value="BIOL">Biology</option>
-        <option value="CHEM">Chemistry</option>
-        <option value="CINE">Cinema Studies</option>
-        <option value="CLAS">Classics</option>
-        <option value="COMP">Computer Science</option>
-        <option value="ERSC">Earth Sciences</option>
-        <option value="EAST">East Asian Studies</option>
-        <option value="ECON">Economics</option>
-        <option value="EDUC">Education</option>
-        <option value="ENGL">English</option>
-        <option value="ENVS">Environmental Studies</option>
-        <option value="FRIT">French and Italian</option>
-        <option value="GMRU">German and Russian</option>
-        <option value="GLST">Global Studies</option>
-        <option value="GOVT">Government</option>
-        <option value="HIST">History</option>
-        <option value="INDP">Independent Major</option>
-        <option value="ISP">Integrated Studies</option>
-        <option value="JWST">Jewish Studies</option>
-        <option value="LTAM">Latin American Studies</option>
-        <option value="MATH">Mathematics</option>
-        <option value="MUSI">Music</option>
-        <option value="THEA">Performance, Theater, and Dance</option>
-        <option value="PHIL">Philosophy</option>
-        <option value="PHYS">Physics and Astronomy</option>
-        <option value="PSYC">Psychology</option>
-        <option value="RELG">Religious Studies</option>
-        <option value="SCIT">Science, Technology, and Society</option>
-        <option value="SOCY">Sociology</option>
-        <option value="SPAN">Spanish</option>
-        <option value="STAT">Statistics</option>
-        <option value="WGST">Women's, Gender, and Sexuality Studies</option>
-        <option value="WRTG">Writing Department</option>
       </select>
 
       <select
@@ -194,7 +147,7 @@
         "
         v-model="selectedDivision"
         @change="toggleTermDivision($event, true)"
-        class="mr-5 mb-6 min-h-[44px] w-full max-w-[120px] min-w-[44px] cursor-pointer font-body text-10 leading-130 leading-[44px] font-normal text-indigo-900 hover:underline md:mb-0"
+        class="mr-5 mb-6 min-h-[44px] w-full max-w-[120px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline md:mb-0"
         aria-label="Select a division"
       >
         <option value="All Divisions">All Divisions</option>
@@ -208,7 +161,7 @@
 
       <div v-if="filterOptions.length > 0" class="mb-6 flex md:mb-0">
         <button
-          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 leading-[44px] font-normal text-indigo-900 hover:underline"
+          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
           :class="{ 'font-bold !text-indigo': filters.term === 'all' }"
           @click="toggleTermType('All')"
         >
@@ -217,7 +170,7 @@
         <button
           v-for="(term, index) in filterOptions"
           :key="index"
-          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 leading-[44px] font-normal text-indigo-900 hover:underline"
+          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
           :class="{ 'font-bold !text-indigo': filters.term === term }"
           @click="toggleTermType(term)"
         >
@@ -253,7 +206,7 @@
           >
             <a
               v-if="item.link.url && !item.image"
-              class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center font-body text-16 leading-140 leading-[44px] font-semibold text-indigo hover:underline md:text-12"
+              class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12"
               :href="item.link.url"
             >
               {{ item.link.title }}
@@ -262,7 +215,7 @@
             <div v-if="item.image">
               <a
                 :href="item.link.url"
-                class="flex min-h-[44px] min-w-[44px] leading-[44px[]"
+                class="flex min-h-[44px] min-w-[44px] leading-[44px]"
               >
                 <picture class="flex items-center">
                   <source
@@ -326,7 +279,7 @@
 
     <div
       v-if="totalPages > 0"
-      class="pagination mt-10 flex items-center justify-between overflow-hidden"
+      class="pagination mt-10 flex flex-wrap items-center justify-between gap-y-4"
     >
       <span
         class="pagination__text font-body text-12 leading-140 font-normal text-indigo-800"
@@ -335,10 +288,10 @@
       </span>
 
       <div
-        class="inline-flex h-8 items-center space-x-1 rounded-md bg-gray-100 px-5 py-0.5"
+        class="inline-flex h-8 items-center space-x-1 rounded-md bg-gray-100 px-2 py-0.5 md:px-5"
       >
         <button
-          v-if="currentPage !== 1"
+          v-if="currentPage > 1"
           class="block cursor-pointer p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
           @click="navigatePages('prev')"
           aria-label="Previous"
@@ -358,13 +311,13 @@
 
         <ul class="pagination__container inline-flex space-x-1">
           <li
-            v-for="pageIndex in totalPages"
+            v-for="pageIndex in visiblePages"
             :key="pageIndex"
             class="pagination__item"
           >
             <button
-              class="block min-h-[44px] min-w-[44px] cursor-pointer p-2 py-1 font-body text-14 leading-140 leading-[44px] font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
-              :class="{ 'bg-[#eef4ff]': currentPage === pageIndex }"
+              class="block min-h-[36px] min-w-[36px] cursor-pointer p-1 py-1 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:min-h-[44px] md:min-w-[44px] md:p-2 md:text-10"
+              :class="{ 'bg-[#eef4ff] font-bold': currentPage === pageIndex }"
               @click="navigateFn(pageIndex)"
             >
               {{ pageIndex }}
@@ -373,7 +326,7 @@
         </ul>
 
         <button
-          v-if="currentPage !== totalPages"
+          v-if="currentPage < totalPages"
           class="block cursor-pointer p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
           @click="navigatePages('next')"
           aria-label="Next"
@@ -396,7 +349,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import Fuse from "fuse.js";
 import Modal from "@/js/components/Modal/Modal.vue";
 
@@ -463,11 +416,19 @@ const searchTerm = ref("");
 const filterOptions = ref([]);
 const selectedDepartment = ref("All Departments");
 const selectedDivision = ref("All Divisions");
+const windowWidth = ref(
+  typeof window !== "undefined" ? window.innerWidth : 1024,
+);
+
 const filters = ref({
   term: "all",
   department: "all",
   division: "all",
 });
+
+const handleResize = () => {
+  windowWidth.value = window.innerWidth;
+};
 
 const filteredItems = computed(() => {
   let f = [];
@@ -531,6 +492,40 @@ const totalPages = computed(() => {
   return Math.ceil(inputFilteredItems.value.length / props.itemsPerPage);
 });
 
+const visiblePages = computed(() => {
+  const total = totalPages.value;
+  const current = currentPage.value;
+
+  // Set dynamic max bounds based on window width
+  let maxVisible = 15;
+  if (windowWidth.value < 500) {
+    maxVisible = 5;
+  } else if (windowWidth.value < 768) {
+    maxVisible = 8;
+  } else if (windowWidth.value < 1024) {
+    maxVisible = 10;
+  }
+
+  if (total <= maxVisible) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  let start = current - Math.floor(maxVisible / 2);
+  let end = current + Math.floor(maxVisible / 2);
+
+  if (start < 1) {
+    start = 1;
+    end = maxVisible;
+  }
+
+  if (end > total) {
+    end = total;
+    start = total - maxVisible + 1;
+  }
+
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+});
+
 function initFuse() {
   if (filteredItems.value) {
     fuse.value = new Fuse(filteredItems.value, {
@@ -543,8 +538,8 @@ function initFuse() {
     });
   }
 }
+
 const normalizedHeadings = computed(() => {
-  // console.log(currentHeadings);
   const sourceHeadings = Array.isArray(currentHeadings.value)
     ? currentHeadings.value
     : props.headings || [];
@@ -552,7 +547,6 @@ const normalizedHeadings = computed(() => {
   const sourceItems =
     props.render_api || props.externalItems ? items.value : props.manualItems;
 
-  // 1. Map headings to strings, keeping empty strings intact
   const normalizedSourceHeadings = sourceHeadings.map((heading) => {
     if (heading && typeof heading === "object") {
       return heading.heading || "";
@@ -560,12 +554,10 @@ const normalizedHeadings = computed(() => {
     return heading || "";
   });
 
-  // 2. Determine the maximum number of extra data columns
   const maxColumnCount = sourceItems.reduce((max, item) => {
     return Math.max(max, Array.isArray(item.columns) ? item.columns.length : 0);
   }, 0);
 
-  // 4. Calculate the true total columns needed
   let totalHeadingsNeeded = 0;
 
   if (normalizedSourceHeadings.length !== maxColumnCount + 1) {
@@ -578,15 +570,12 @@ const normalizedHeadings = computed(() => {
     }
   }
 
-  // 5. Build up our array safely without breaking structural index alignment
   let headings = [...normalizedSourceHeadings];
 
-  // If the CMS provided fewer headers than total columns, pad the end
   for (let i = 0; i < totalHeadingsNeeded; i++) {
     headings.push("");
   }
 
-  // 6. Final backfill mapping
   return headings.map((heading, index) => {
     return heading.trim() !== "" ? heading : `Column ${index + 1}`;
   });
@@ -621,16 +610,11 @@ function navigateFn(index) {
 }
 
 function navigatePages(dir) {
-  if (dir === "prev") {
-    if (currentPage.value !== 1) {
-      currentPage.value -= 1;
-    }
-  } else {
-    if (currentPage.value !== totalPages.value) {
-      currentPage.value += 1;
-    }
+  if (dir === "prev" && currentPage.value > 1) {
+    currentPage.value -= 1;
+  } else if (dir === "next" && currentPage.value < totalPages.value) {
+    currentPage.value += 1;
   }
-
   updateQueryParams();
 }
 
@@ -728,6 +712,8 @@ function onSearchChange() {
 }
 
 onMounted(() => {
+  window.addEventListener("resize", handleResize);
+
   const params = new URLSearchParams(window.location.search);
 
   if (
@@ -831,5 +817,9 @@ onMounted(() => {
 
     initFuse();
   }
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", handleResize);
 });
 </script>
