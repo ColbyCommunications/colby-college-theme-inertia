@@ -1,2 +1,0 @@
-import{u as s,j as t,M as i}from"./blocks-CoeEcqrs.js";import"./preload-helper-PPVm8Dsz.js";import"./_commonjsHelpers-CE1G-McA.js";import"./iframe-DNw3Q2l1.js";function e(o){return t.jsxs(t.Fragment,{children:[t.jsx(i,{title:"Blocks/Testimonial Carousel/Training Video"}),`
-`,t.jsx("video",{controls:!0,children:t.jsx("source",{src:"https://www.colby.edu/communications/training-videos/Blocks_Accordion_final.mp4",type:"video/mp4"})})]})}function u(o={}){const{wrapper:n}={...s(),...o.components};return n?t.jsx(n,{...o,children:t.jsx(e,{...o})}):e()}export{u as default};
