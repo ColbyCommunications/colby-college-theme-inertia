@@ -10,15 +10,20 @@
             v-for="(heading, index) in normalizedHeadings"
             :key="`th-${index}`"
             scope="col"
-            class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
+            class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap md:h-11 md:text-14"
+            :class="{
+              'bg-transparent': heading.generated,
+            }"
           >
-            <span class="sr-only">{{ heading }}</span>
+            <span :class="{ 'sr-only': heading.generated }">
+              {{ heading.text }}
+            </span>
           </th>
         </tr>
         <tr
           v-for="(item, itemIndex) in manualItems"
           :key="`row-${itemIndex}`"
-          class="h-12 w-full odd:bg-gray-100 md:h-10"
+          class="h-12 w-full even:bg-gray-100 md:h-10"
         >
           <td
             class="px-6 py-2 text-left font-normal whitespace-nowrap md:whitespace-normal"
@@ -578,9 +583,10 @@ const normalizedHeadings = computed(() => {
     headings.push("");
   }
 
-  return headings.map((heading, index) => {
-    return heading.trim() !== "" ? heading : `Column ${index + 1}`;
-  });
+  return headings.map((heading, index) => ({
+    text: heading.trim() !== "" ? heading : `Column ${index + 1}`,
+    generated: heading.trim() === "",
+  }));
 });
 
 function updateQueryParams() {
