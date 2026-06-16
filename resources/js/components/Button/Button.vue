@@ -3,7 +3,7 @@
   <a
     :href="url"
     :target="target || undefined"
-    class="btn group inline-flex flex-row items-center rounded border border-solid font-body leading-130 font-normal !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-canary min-w-[44px] min-h-[44px]"
+    class="btn group inline-flex min-h-[44px] min-w-[44px] flex-row items-center rounded border border-solid font-body leading-130 font-normal !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-canary"
     :class="[
       space,
       textSize,
@@ -31,7 +31,7 @@
     </svg>
 
     <span class="btn__text">
-      {{ title }}
+      <span v-html="title"></span>
       <div
         class="btn__border block h-px w-0 transition-all duration-200 ease-in-out group-hover:w-full"
         :class="borderBackground"
@@ -138,6 +138,4 @@ const borderBackground = computed(() =>
 const arrowColor = computed(() =>
   isDark.value ? "fill-canary" : "fill-azure",
 );
-
-
 </script>
