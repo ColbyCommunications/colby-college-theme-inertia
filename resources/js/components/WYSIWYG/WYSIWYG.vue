@@ -36,14 +36,11 @@ const paragraphColor = computed(() =>
   props.type === "light" ? "text-[#eef4ff]" : "text-indigo-800",
 );
 
-// Hoisted constants & pre-compiled RegEx to prevent recreation on every render
 const blockStartsRegex = /^\s*<(p|ul|ol)\b/i;
 const loneClasses = "inline-flex items-center min-h-[44px]";
 const blockBoundariesRegex =
   /<p[^>]*>|<\/p>|<li[^>]*>|<\/li>|<br\s*\/?>|<ul[^>]*>|<\/ul>|<ol[^>]*>|<\/ol>|<div[^>]*>|<\/div>/i;
 const anchorRegex = /<a\b[^>]*>.*?<\/a>/gi;
-const liOpenRegex = /<li[^>]*>/gi;
-const liCloseRegex = /<\/li>/gi;
 const stripTagsRegex = /<[^>]+>/g;
 const classAttrRegex = /class\s*=\s*["']/i;
 const classInjectionRegex = /(class\s*=\s*["'])/i;
@@ -59,14 +56,8 @@ const processedHtml = computed(() => {
     if (anchor.includes("min-h-[44px]")) return anchor;
 
     const before = fullString.slice(0, offset);
-    const liOpenCount = (before.match(liOpenRegex) || []).length;
-    const liCloseCount = (before.match(liCloseRegex) || []).length;
-
-    if (liOpenCount > liCloseCount) {
-      return anchor;
-    }
-
     const after = fullString.slice(offset + anchor.length);
+
     const beforeFragment = before.split(blockBoundariesRegex).pop() || "";
     const afterFragment = after.split(blockBoundariesRegex).shift() || "";
 
@@ -75,6 +66,7 @@ const processedHtml = computed(() => {
     const hasTextAfter =
       afterFragment.replace(stripTagsRegex, "").trim().length > 0;
 
+    // If there is NO text around the link (even inside an <li>), it gets the 44px classes
     if (!hasTextBefore && !hasTextAfter) {
       if (classAttrRegex.test(anchor)) {
         return anchor.replace(classInjectionRegex, `$1${loneClasses} `);
@@ -86,20 +78,20 @@ const processedHtml = computed(() => {
     return anchor;
   });
 
-  // Cached proxy accesses
   const pSizeMob = sizes.value.pMobile || "";
   const pSize = sizes.value.p;
   const pAlign = textAlign.value;
   const pColor = paragraphColor.value;
 
-  // Consolidated repetitive template strings
   const sharedLinkCls = "[&_a]:underline [&_a:hover]:no-underline";
-  const sharedListCls = `list-spacing font-body font-normal ${pSizeMob} ${pSize} leading-130 ${pColor} mt-2 my-4 pl-6 ${sharedLinkCls}`;
+  const sharedListCls = `list-spacing font-body font-normal ${pSizeMob} ${pSize} leading-[1.75] ${pColor} mb-4 pl-6 ${sharedLinkCls}`;
 
   const pCls = `text-group__p font-body font-normal ${pSizeMob} ${pSize} leading-[1.75] ${pAlign} ${pColor} mb-4 ${sharedLinkCls}`;
   const ulCls = `${sharedListCls} list-disc`;
   const olCls = `${sharedListCls} list-decimal`;
-  const liCls = `${pColor} mx-4 list-disc [&>ul]:pl-4 [&>ul>li]:list-[circle] [&>p]:leading-[1.5] ${sharedLinkCls}`;
+
+  // Replaced explicit 44px bottom margin with mb-2 to normalize spacing between list items
+  const liCls = `${pColor} list-outside mb-2 last:mb-0 [&>ul]:pl-4 [&>ul>li]:list-[circle] ${sharedLinkCls}`;
 
   const injectClasses = (htmlString, tagName, classNames) => {
     const regex = new RegExp(`<${tagName}\\b([^>]*)>`, "gi");
@@ -120,3 +112,24 @@ const processedHtml = computed(() => {
   return content;
 });
 </script>
+
+<style scoped>
+/* Strip margins from WYSIWYG paragraphs inside list items so they match the single-line behavior */
+.wysiwyg-content :deep(li > p) {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Force inline links surrounded by text back to standard inline behavior, stripping the 44px hit area */
+.wysiwyg-content :deep(a:not(.inline-flex)) {
+  display: inline !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+}
+
+/* Preserve block dimensions for lone links (both standalone and inside list items) */
+.wysiwyg-content :deep(a.inline-flex) {
+  display: inline-flex !important;
+  min-height: 44px !important;
+}
+</style>
