@@ -51,8 +51,8 @@
                 !item.active,
             }"
             :href="item.url"
+            v-html="item.title"
           >
-            {{ item.title }}
           </a>
         </li>
       </ul>
