@@ -15,10 +15,7 @@
       </div>
       <Picture
         class="absolute top-0 left-0 md:top-auto md:left-auto w-full h-full object-cover"
-        :src="image.src"
-        :srcset="image.srcset"
-        :size-desktop="image.sizes?.Landscape"
-        :size-mobile="image.sizes?.Landscape"
+        :src="image.url"
         :alt="image.alt"
       />
     </div>
@@ -38,9 +35,14 @@ const props = defineProps({
   image: { type: Object, default: () => ({}) },
 });
 
-const buttonItems = computed(() =>
-  props.buttons.map((btn) => ({
-    button: { url: btn.url, title: btn.title, target: btn.target || "" },
-  })),
-);
+const buttonItems = computed(() => {
+  if (props.buttons) {
+    return props.buttons.map((btn) => ({
+      button: { url: btn.url, title: btn.title, target: btn.target || "" },
+    }));
+  } else {
+    return [];
+  }
+});
+
 </script>
