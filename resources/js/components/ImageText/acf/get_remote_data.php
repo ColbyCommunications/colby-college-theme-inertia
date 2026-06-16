@@ -39,8 +39,9 @@ if (!function_exists('colby_block_image_text_get_path_dimensions')) {
     function colby_block_image_text_get_path_dimensions(string $image_path): array
     {
         $path = colby_block_image_text_resolve_local_path($image_path);
+       
+        if (!$path ) {
 
-        if (!$path || !file_exists($path)) {
             return [
                 'width' => 0,
                 'height' => 0,
