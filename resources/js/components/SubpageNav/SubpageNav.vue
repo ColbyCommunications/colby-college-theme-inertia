@@ -35,7 +35,7 @@
       </h2>
       <ul
         v-if="items.length > 0"
-        class="subpage-nav__items mt-0 border-t border-solid border-[#eef4ff] py-4 md:mt-6 md:block md:border-t-0 md:py-0"
+        class="subpage-nav__items mt-0 border-t border-solid border-[#eef4ff] py-4 md:block md:border-t-0 md:py-0"
         :class="{ hidden: !menuOpen && !isBot }"
       >
         <li
