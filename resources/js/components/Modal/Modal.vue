@@ -15,7 +15,7 @@
   >
     <button
       type="button"
-      class="absolute cursor-pointer py-2.5"
+      class="absolute cursor-pointer pt-1"
       :class="{ 'top-7 right-5': full, 'top-3 right-3': !full }"
       aria-label="Close modal"
       @click="isOpen = false"

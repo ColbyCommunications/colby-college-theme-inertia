@@ -252,10 +252,12 @@
                 />
               </template>
               <template #button>
-                <span
-                  class="inline-flex items-center font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12"
-                  v-html="item.link.title"
-                />
+                <button
+                  type="button"
+                  class="inline-flex cursor-pointer items-center text-left font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12"
+                  v-html="item.link?.title || item.title"
+                  @click.stop="item.modalOpen = true"
+                ></button>
               </template>
             </Modal>
 
