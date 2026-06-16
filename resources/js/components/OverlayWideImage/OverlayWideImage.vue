@@ -1,8 +1,8 @@
 <template>
-  <div class="overlay-wide-image max-w-screen-2xl my-0 mx-auto">
+  <div class="overlay-wide-image mx-auto my-0 max-w-screen-2xl">
     <div class="overlay-wide-image__inner relative md:pb-[45.45454545454545%]">
       <div
-        class="overlay-wide-image__overlay z-10 relative md:absolute top-0 left-0 flex items-center w-full h-full p-9 md:p-24 bg-gray-1000/40"
+        class="overlay-wide-image__overlay relative top-0 left-0 z-10 flex h-full w-full items-center bg-gray-1000/40 p-9 md:absolute md:p-24"
       >
         <Context
           size="medium"
@@ -10,11 +10,11 @@
           :subheading="subheading"
           :heading="heading"
           :paragraph="paragraph"
-          :buttons="{ items: buttonItems }"
+          :buttons="buttonData"
         />
       </div>
       <Picture
-        class="absolute top-0 left-0 md:top-auto md:left-auto w-full h-full object-cover"
+        class="absolute top-0 left-0 h-full w-full object-cover md:top-auto md:left-auto"
         :src="image.url"
         :alt="image.alt"
       />
@@ -35,14 +35,29 @@ const props = defineProps({
   image: { type: Object, default: () => ({}) },
 });
 
-const buttonItems = computed(() => {
-  if (props.buttons) {
-    return props.buttons.map((btn) => ({
-      button: { url: btn.url, title: btn.title, target: btn.target || "" },
-    }));
-  } else {
-    return [];
+const buttonData = computed(() => {
+  if (!props.buttons || !Array.isArray(props.buttons)) {
+    return { items: [] };
   }
-});
 
+  return {
+    items: props.buttons.map((btn) => {
+      // If the ACF repeater row already contains the nested 'button' link array
+      if (btn.button && btn.button.url) {
+        return btn;
+      }
+
+      // Fallback if ACF returns the link array directly on the row, or flat fields
+      const linkObj = btn.link || btn;
+
+      return {
+        button: {
+          url: linkObj.url || "",
+          title: linkObj.title || "",
+          target: linkObj.target || "",
+        },
+      };
+    }),
+  };
+});
 </script>
