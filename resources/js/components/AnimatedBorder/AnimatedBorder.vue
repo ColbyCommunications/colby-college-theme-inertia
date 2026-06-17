@@ -1,5 +1,5 @@
 <template>
-  <div ref="container" class="border--animated block col-span-12 h-px" :class="[colorClass, widthClass]" />
+  <div ref="container" class="border--animated block col-span-12 h-[0.75px]" :class="[colorClass, widthClass]" />
 </template>
 
 <script setup>

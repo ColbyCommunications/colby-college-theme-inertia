@@ -20,7 +20,7 @@
         class="featured-post__caption md:z-[-1] md:absolute top-0 right-[20px] md:w-1/2 pb-3.5 md:pb-0 font-extended font-bold text-12 tracking-8 text-azure uppercase text-right border-b md:border-b-0 border-indigo border-solid mt-14 md:mt-0"
       >
         <AnimatedBorder
-          class="featured-post__border hidden md:block w-0 h-px md:mb-3.5 bg-indigo transition-all duration-200 ease-in-out"
+          class="featured-post__border hidden md:block w-0 md:mb-3.5 bg-indigo transition-all duration-200 ease-in-out"
         />
         {{ caption }}
       </div>

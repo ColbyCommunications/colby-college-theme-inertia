@@ -4,7 +4,7 @@
     <div
       class="facts-figures__inner relative mx-auto my-0 w-full max-w-screen-2xl gap-x-10 md:grid md:grid-cols-12"
     >
-      <AnimatedBorder class="col-span-12 block h-px w-0 bg-azure" />
+      <AnimatedBorder class="col-span-12 block w-0 bg-azure" />
     </div>
 
     <!-- main row -->

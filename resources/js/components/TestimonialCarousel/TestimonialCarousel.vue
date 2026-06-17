@@ -56,7 +56,7 @@
           <div
             v-for="(item, index) in items"
             :key="index"
-            class="testimonial-carousel__quote invisible absolute top-0 left-0 w-full space-y-2 border-t border-solid border-indigo pt-2 opacity-0 transition-all duration-300 ease-in-out md:top-auto md:bottom-0"
+            class="testimonial-carousel__quote invisible absolute top-0 left-0 w-full space-y-2 border-t-[0.75px] border-solid border-indigo pt-2 opacity-0 transition-all duration-300 ease-in-out md:top-auto md:bottom-0"
             :class="{
               '!visible !translate-y-0 opacity-100': activeSlide === index,
             }"
