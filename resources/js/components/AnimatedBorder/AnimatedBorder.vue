@@ -12,7 +12,7 @@ let waypoint = null;
 const widthClass = ref('w-0');
 
 defineProps({
-  colorClass: { type: String, default: 'bg-azure' },
+  colorClass: { type: String, default: 'bg-indigo' },
 });
 
 const animateBorder = () => {
