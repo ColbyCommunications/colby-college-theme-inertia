@@ -9,7 +9,6 @@
         <Context
           size="large"
           type="dark"
-          :arrow="true"
           :reverse="true"
           :heading="heading"
           :paragraph="paragraph"

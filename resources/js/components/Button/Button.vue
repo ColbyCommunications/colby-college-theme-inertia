@@ -142,6 +142,6 @@ const borderBackground = computed(() =>
   "bg-indigo",
 );
 const arrowColor = computed(() =>
-  props.transparentBg ? "fill-gold" : isDark.value ? "fill-gold" : "fill-azure",
+  props.transparentBg ? "fill-gold" : isDark.value ? "fill-gold" : "fill-indigo",
 );
 </script>

@@ -20,7 +20,6 @@
                 <Context
                     size="medium"
                     type="light"
-                    :arrow="true"
                     :reverse="true"
                     align="center"
                     :subheading="subheading"
