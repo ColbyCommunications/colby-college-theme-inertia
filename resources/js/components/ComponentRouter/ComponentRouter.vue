@@ -77,6 +77,7 @@ const blockRegistry = {
   "acf/embed": () => import("../Embed/Embed.vue"),
   "acf/image": () => import("../Image/Image.vue"),
   "acf/image-text": () => import("../ImageText/ImageText.vue"),
+  "acf/overlay-wide-image": () => import("../OverlayWideImage/OverlayWideImage.vue"),
 
   "core/heading": () => import("../Heading/Heading.vue"),
   "core/group": () => import("../Group/Group.vue"),
@@ -175,6 +176,7 @@ function getPlaceholderHeight(item) {
     "acf/image": 200,
     "acf/image-text": 200,
     "acf/advanced-accordion": 500,
+    "acf/overlay-wide-image": 500,
 
     "core/heading": 0,
     "core/group": 600,

@@ -33,7 +33,7 @@
     </svg>
 
     <span class="btn__text">
-      {{ title }}
+      <span v-html="title"></span>
       <div
         class="btn__border block h-px w-0 transition-all duration-200 ease-in-out group-hover:w-full"
         :class="borderBackground"
@@ -144,6 +144,4 @@ const borderBackground = computed(() =>
 const arrowColor = computed(() =>
   props.transparentBg ? "fill-gold" : isDark.value ? "fill-gold" : "fill-azure",
 );
-
-
 </script>

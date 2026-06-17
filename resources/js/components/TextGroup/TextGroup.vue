@@ -8,7 +8,7 @@
       <component
         v-if="subheading"
         :is="subheadingTag"
-        class="text-group__subheading mb-2 font-extended font-bold whitespace-nowrap uppercase md:mb-0"
+        class="text-group__subheading mb-2 font-extended font-bold uppercase md:mb-0"
         :class="[
           subheadingSize,
           'leading-130',
@@ -35,19 +35,26 @@
         v-html="strippedHeading"
       />
 
-      <div v-if="paragraph" v-html="paragraphWithClasses" />
+      <WYSIWYG
+        v-if="paragraph"
+        :html="paragraph"
+        :size="size"
+        :align="align"
+        :type="type"
+        :static="static"
+      />
     </section>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed } from "vue";
+import { ref, onMounted, onBeforeUnmount, computed, nextTick } from "vue";
+import WYSIWYG from "@/js/components/WYSIWYG/WYSIWYG.vue";
 import "waypoints/lib/noframework.waypoints";
 
 const container = ref(null);
 const isBot = ref(false);
 let waypointInstance = null;
-let hasEmittedAnimationComplete = false;
 
 const emit = defineEmits(["animation-complete"]);
 
@@ -73,7 +80,6 @@ async function getGsap() {
   return gsapInstance;
 }
 
-/* --- sizing system unchanged --- */
 const sizes = computed(() => {
   const s = props.size;
   const isStatic = props.static === true;
@@ -84,8 +90,6 @@ const sizes = computed(() => {
       head: "md:text-48",
       headMobile: "text-48",
       weight: "font-normal",
-      p: "md:text-20",
-      pMobile: "text-20",
     };
 
   if (s === "large")
@@ -94,8 +98,6 @@ const sizes = computed(() => {
       head: "md:text-36",
       headMobile: "text-28",
       weight: "font-normal",
-      p: "md:text-18",
-      pMobile: "text-18",
     };
 
   if (s === "medium")
@@ -104,8 +106,6 @@ const sizes = computed(() => {
       head: "md:text-24",
       headMobile: "text-28",
       weight: "font-normal",
-      p: "md:text-16",
-      pMobile: "text-18",
     };
 
   if (s === "small" && isStatic)
@@ -114,8 +114,6 @@ const sizes = computed(() => {
       head: "text-20",
       headMobile: "",
       weight: "font-normal",
-      p: "text-14",
-      pMobile: "",
     };
 
   if (s === "small")
@@ -124,8 +122,6 @@ const sizes = computed(() => {
       head: "md:text-20",
       headMobile: "text-28",
       weight: "font-normal",
-      p: "md:text-14",
-      pMobile: "text-18",
     };
 
   if (s === "xsmall")
@@ -134,8 +130,6 @@ const sizes = computed(() => {
       head: "md:text-18",
       headMobile: "text-24",
       weight: "font-bold",
-      p: "md:text-12",
-      pMobile: "text-12",
     };
 
   return {
@@ -143,8 +137,6 @@ const sizes = computed(() => {
     head: "",
     headMobile: "",
     weight: "font-normal",
-    p: "",
-    pMobile: "",
   };
 });
 
@@ -184,93 +176,7 @@ const subheadingSize = computed(() => sizes.value.sub);
 const headingSize = computed(() => sizes.value.head);
 const headingSizeMobile = computed(() => sizes.value.headMobile || "");
 const headingWeight = computed(() => sizes.value.weight);
-const paragraphSize = computed(() => sizes.value.p);
-const paragraphSizeMobile = computed(() => sizes.value.pMobile || "");
-
 const strippedHeading = computed(() => props.heading || "");
-
-const paragraphWithClasses = computed(() => {
-  let html = String(props.paragraph || "");
-
-  const startsWithBlockTag = /^\s*<(p|ul|ol)\b/i.test(html.trim());
-  if (!startsWithBlockTag) html = `<p>${html}</p>`;
-
-  // 1. Identify and inject classes into "lone links"
-  const loneClasses = "inline-flex items-center min-h-[44px]";
-
-  // Define structural boundaries that separate lines/blocks
-  const blockBoundaries =
-    /<p[^>]*>|<\/p>|<li[^>]*>|<\/li>|<br\s*\/?>|<ul[^>]*>|<\/ul>|<ol[^>]*>|<\/ol>|<div[^>]*>|<\/div>/i;
-
-  // Find every anchor tag in the HTML string
-  html = html.replace(/<a\b[^>]*>.*?<\/a>/gi, (anchor, offset, fullString) => {
-    // Safety check to prevent duplicate class injection
-    if (anchor.includes("min-h-[44px]")) return anchor;
-
-    const before = fullString.slice(0, offset);
-
-    // Check if the link is inside an <li> tag.
-    // If the number of opening <li> tags is greater than closing </li> tags, we are inside a list.
-    const liOpenCount = (before.match(/<li[^>]*>/gi) || []).length;
-    const liCloseCount = (before.match(/<\/li>/gi) || []).length;
-    if (liOpenCount > liCloseCount) {
-      return anchor;
-    }
-
-    const after = fullString.slice(offset + anchor.length);
-
-    // Isolate the fragment between the previous block boundary and this anchor
-    const beforeFragment = before.split(blockBoundaries).pop() || "";
-
-    // Isolate the fragment between this anchor and the next block boundary
-    const afterFragment = after.split(blockBoundaries).shift() || "";
-
-    // Strip HTML tags from those fragments to check for actual text characters
-    const hasTextBefore =
-      beforeFragment.replace(/<[^>]+>/g, "").trim().length > 0;
-    const hasTextAfter =
-      afterFragment.replace(/<[^>]+>/g, "").trim().length > 0;
-
-    // If there is no standard text on either side, it qualifies as a lone link
-    if (!hasTextBefore && !hasTextAfter) {
-      if (/class\s*=\s*["']/i.test(anchor)) {
-        return anchor.replace(/(class\s*=\s*["'])/i, `$1${loneClasses} `);
-      } else {
-        return anchor.replace(/<a\b/i, `<a class="${loneClasses}"`);
-      }
-    }
-
-    // If text was found, return the inline link unmodified
-    return anchor;
-  });
-
-  // 2. Base Typography Classes (ADDED list-spacing to ulCls and olCls)
-  const pCls = `text-group__p font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-[1.75] ${textAlign.value} ${paragraphColor.value} mb-4 [&_a]:underline [&_a:hover]:no-underline`;
-  const ulCls = `list-spacing list-disc font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2 my-4 pl-6 [&_a]:underline [&_a:hover]:no-underline`;
-  const olCls = `list-spacing list-decimal font-body font-normal ${paragraphSizeMobile.value} ${paragraphSize.value} leading-130 ${paragraphColor.value} mt-2 my-4 pl-6 [&_a]:underline [&_a:hover]:no-underline`;
-  const liCls = `${paragraphColor.value} mx-4 list-disc [&>ul]:pl-4 [&>ul>li]:list-[circle] [&>p]:leading-[1.5] [&_a]:underline [&_a:hover]:no-underline`;
-
-  // Helper function to safely inject classes into tags, preserving existing CMS attributes
-  const injectClasses = (htmlString, tagName, classNames) => {
-    const regex = new RegExp(`<${tagName}\\b([^>]*)>`, "gi");
-    return htmlString.replace(regex, (match, attributes) => {
-      if (/class\s*=\s*["']/i.test(attributes)) {
-        return match.replace(/(class\s*=\s*["'])/i, `$1${classNames} `);
-      } else {
-        return `<${tagName} class="${classNames}"${attributes}>`;
-      }
-    });
-  };
-
-  html = injectClasses(html, "p", pCls);
-  html = injectClasses(html, "ul", ulCls);
-  html = injectClasses(html, "ol", olCls);
-  html = injectClasses(html, "li", liCls);
-
-  return html;
-});
-
-/* --- animations unchanged --- */
 
 const animateSubheading = async () => {
   if (!container.value || isBot.value) return;
@@ -308,7 +214,13 @@ const animateHeading = async () => {
 const animateParagraph = async () => {
   if (!container.value || isBot.value) return;
   const gsap = await getGsap();
-  const target = container.value.querySelectorAll(".text-group__p");
+
+  const target = container.value.querySelectorAll(".text-group__p, ul, ol");
+
+  if (!target.length) {
+    emit("animation-complete");
+    return;
+  }
 
   gsap.to(target, {
     delay: 0.4,
@@ -320,7 +232,7 @@ const animateParagraph = async () => {
   });
 };
 
-onMounted(() => {
+onMounted(async () => {
   isBot.value =
     window.colby?.DISABLE_ANIMATIONS === true || props.disableAnimations;
 
@@ -331,9 +243,11 @@ onMounted(() => {
     return;
   }
 
+  await nextTick();
+
   const subheading = container.value.querySelector(".text-group__subheading");
-  const paragraph = container.value.querySelector(".text-group__p");
   const heading = container.value.querySelector(".text-group__heading");
+  const paragraph = container.value.querySelector(".text-group__p, ul, ol");
 
   if (subheading) {
     let words = subheading.innerHTML.split(" ");
@@ -361,12 +275,12 @@ onMounted(() => {
   waypointInstance = new window.Waypoint({
     element: container.value,
     handler: function () {
-      if (subheading) {
+      if (props.subheading) {
         animateSubheading();
-      } else if (heading) {
+      } else if (props.heading) {
         animateHeading();
         animateParagraph();
-      } else if (paragraph) {
+      } else if (props.paragraph) {
         animateParagraph();
       }
       this.destroy();
@@ -397,7 +311,9 @@ onBeforeUnmount(() => {
     transform: translate(0, 10px);
   }
 
-  .text-group__p {
+  .text-group__p,
+  ul,
+  ol {
     opacity: 0;
   }
 }
@@ -406,6 +322,8 @@ onBeforeUnmount(() => {
   .text-group__subheading,
   .text-group__heading,
   .text-group__p,
+  ul,
+  ol,
   .text-group__heading span,
   .text-group__subheading span {
     opacity: 1 !important;

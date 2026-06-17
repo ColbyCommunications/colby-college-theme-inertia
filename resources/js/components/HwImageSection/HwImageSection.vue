@@ -17,7 +17,7 @@
       <Context
         :hero="hero"
         :type="type"
-        :size="size || 'medium'"
+        size="large"
         :subheading="subheading"
         :heading="heading"
         :paragraph="paragraph"

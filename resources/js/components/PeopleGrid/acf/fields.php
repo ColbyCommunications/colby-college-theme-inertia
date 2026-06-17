@@ -72,7 +72,7 @@ acf_add_local_field_group( array(
 					'name' => 'post',
 					'aria-label' => '',
 					'type' => 'post_object',
-					'required' => 0,
+					'required' => 1,
 					'conditional_logic' => 0,
 					'wrapper' => array(
 						'width' => '',
@@ -125,8 +125,8 @@ acf_add_local_field_group( array(
 					'name' => 'post',
 					'aria-label' => '',
 					'type' => 'post_object',
+					'required' => 1,
 					'instructions' => '',
-					'required' => 0,
 					'conditional_logic' => 0,
 					'wrapper' => array(
 						'width' => '',

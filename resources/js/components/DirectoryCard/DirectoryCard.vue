@@ -1,5 +1,5 @@
 <template>
-  <div class="directory-card grid w-full max-w-screen-2xl grid-cols-8 gap-10 mb-6">
+  <div class="directory-card grid w-full max-w-screen-2xl grid-cols-8 gap-10 mb-20">
     <div v-if="hasImage" class="directory-card__image col-span-8 md:col-span-4">
       <div class="relative pb-[119.44444444444444%]">
         <Picture

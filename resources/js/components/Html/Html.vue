@@ -1,17 +1,13 @@
 <template>
-    <div
-      class="html-block"
-      :class="WysiwygClasses"
-      v-html="html"
-    />
-  </template>
+  <TextGroup :paragraph="html" />
+</template>
   
-  <script setup>
-  import { WysiwygClasses } from '../../utils/wysiwygClasses';
+<script setup>
+  import TextGroup from '../TextGroup/TextGroup.vue';
   defineProps({
     html: {
       type: String,
       default: "",
     },
   });
-  </script>
+</script>
