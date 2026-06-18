@@ -27,7 +27,7 @@
           headingWeight,
           headingSizeMobile,
           headingSize,
-          'leading-110',
+          'leading-[1.5]',
           '-tracking-3',
           textAlign,
           headingColor,
