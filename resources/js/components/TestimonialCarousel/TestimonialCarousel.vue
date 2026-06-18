@@ -62,7 +62,7 @@
             }"
           >
             <p
-              class="font-extended text-20 leading-110 font-normal -tracking-[0.01em] text-indigo"
+              class="font-extended text-20 leading-110 font-semibold -tracking-[0.01em] text-indigo"
             >
               {{ item.testimonial.quote }}
             </p>

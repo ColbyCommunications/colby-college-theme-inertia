@@ -41,7 +41,7 @@
                     class="dark-interstitial__fact col-span-4 space-y-3"
                 >
                     <div class="dark-interstitial__fact--animated" ref="factContainers">
-                        <h3 class="font-extended font-normal text-36 text-gold leading-[1.5]">
+                        <h3 class="font-extended font-semibold text-36 text-gold leading-[1.5]">
                             {{ fact.figure }}
                         </h3>
                         <p class="font-body font-normal text-14 text-[#eef4ff] leading-[1.5]">
