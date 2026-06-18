@@ -52,7 +52,7 @@
             class="facts-figures__figure col-span-2"
           >
             <h3
-              class="font-extended text-24 leading-115 font-normal text-indigo"
+              class="font-extended text-36 leading-115 font-normal text-indigo"
             >
               {{ fact.figure }}
             </h3>

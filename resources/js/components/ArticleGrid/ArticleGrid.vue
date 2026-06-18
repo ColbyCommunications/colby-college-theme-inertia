@@ -196,7 +196,7 @@
                   {{ item.subheading }}
                 </div>
                 <h2
-                  class="text-group__heading -tracking-3 text-left font-extended text-20 leading-110 font-normal text-indigo"
+                  class="text-group__heading -tracking-3 text-left font-extended text-20 leading-[1.5] font-normal text-indigo"
                   :class="{ 'lg:text-16': columns == 4 }"
                   v-html="item.heading"
                 />

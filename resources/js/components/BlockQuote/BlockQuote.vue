@@ -1,6 +1,6 @@
 <template>
   <div
-    class="block-quote -tracking-3 relative pl-16 font-extended text-28 leading-110 font-normal text-indigo md:text-24"
+    class="block-quote -tracking-3 relative pl-16 font-extended text-28 leading-[1.5] font-normal text-indigo md:text-24"
   >
     <svg
       class="block-quote__icon absolute top-0 left-0 w-8 fill-indigo"
