@@ -52,7 +52,6 @@ const props = defineProps({
   open: { type: Boolean, default: false },
 });
 
-console.log(props);
 const emit = defineEmits(["toggle"]);
 
 const isOpen = ref(props.open);
@@ -64,6 +63,16 @@ const toggle = () => {
   isOpen.value = !isOpen.value;
   emit("toggle", isOpen.value);
 };
+
+// Sync local state when the parent component changes the 'open' prop
+watch(
+  () => props.open,
+  (newVal) => {
+    if (isOpen.value !== newVal) {
+      isOpen.value = newVal;
+    }
+  },
+);
 
 watch(isOpen, async (open) => {
   await nextTick();
