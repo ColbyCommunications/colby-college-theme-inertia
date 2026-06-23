@@ -3,7 +3,7 @@
       <section class="sidebar-page">
         <div class="sidebar-page__inner max-w-screen-2xl w-full px-5 my-0 mx-auto mt-8">
           <a class="inline-flex items-center font-body text-14 md:text-10 font-normal md:font-medium leading-140 text-coal py-1.5 hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]" href="/people/people-directory">
-            <Icon  name="chevron" class="w-1 fill-indigo-800 mr-2" /> Back to Index
+            <Icon  name="chevron" class="w-1 fill-indigo mr-2" /> Back to Index
           </a>
         </div>
         <div class="sidebar-page__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto mt-16">
@@ -84,7 +84,7 @@
                   [&_div+div]:mt-20 md:[&_div+div]:mt-[100px] [&_div+figure]:mt-20 md:[&_div+figure]:mt-[100px] [&_div+h2]:mt-16 md:[&_div+h2]:mt-20
                   [&_figure+figure]:mt-20 md:[&_figure+figure]:mt-[100px] [&_figure+div]:mt-20 md:[&_figure+div]:mt-[100px] [&_figure+h2]:mt-16 md:[&_figure+h2]:mt-20
                   [&_p+div]:mt-10 md:[&_p+div]:mt-[50px] [&_p+h2]:mt-20 [&_p+h3]:mt-6 [&_p+p]:mt-6 [&_p+ul]:mt-6 [&_p+table]:mt-10 md:[&_p+table]:mt-[50px]
-                  [&_hr]:border-t [&_hr]:border-solid [&_hr]:border-indigo-300 [&_hr]:my-16
+                  [&_hr]:border-t-[0.75px] [&_hr]:border-solid [&_hr]:border-indigo [&_hr]:my-16
                   [&_ul]:pl-6
                   [&_ul]:mb-4
                   [&_ol]:pl-6

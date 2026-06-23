@@ -12,7 +12,7 @@
           class="!ml-8 font-extended text-20 leading-110 font-normal md:text-14 lg:!ml-12 md:[&:first-child]:!ml-0"
         >
           <a
-            class="block border-transparent text-coal transition-all duration-200 ease-in-out hover:text-indigo-1000 md:py-7 md:outline-0 md:hover:border-indigo md:focus:border-indigo"
+            class="block border-transparent text-coal transition-all duration-200 ease-in-out hover:text-indigo md:py-7 md:outline-0 md:hover:border-indigo md:focus:border-indigo"
             :class="{ '!text-indigo md:border-indigo': isCurrent(item) }"
             :href="item.url"
             :target="item.target || undefined"
@@ -31,7 +31,7 @@
           class="font-body text-16 leading-110 font-normal md:text-10"
         >
           <a
-            class="block py-2 text-coal transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
+            class="block py-2 text-coal transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
             :href="item.url"
           >
             {{ item.title }}

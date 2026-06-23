@@ -108,7 +108,7 @@
         class="relative mb-6 flex w-full max-w-sm shrink-0 text-[0] md:mb-0 md:shrink"
       >
         <svg
-          class="absolute top-3 left-3 w-2.5 fill-indigo-800"
+          class="absolute top-3 left-3 w-2.5 fill-indigo"
           viewBox="0 0 9.6 9.6"
         >
           <path
@@ -128,7 +128,7 @@
           xmlns="http://www.w3.org/2000/svg"
           height="12"
           width="12"
-          class="absolute top-3 right-3 cursor-pointer fill-indigo-800"
+          class="absolute top-3 right-3 cursor-pointer fill-indigo"
           :class="{
             block: searchTerm.length > 0,
             hidden: searchTerm.length === 0,
@@ -172,7 +172,7 @@
 
       <div v-if="filterOptions.length > 0" class="mb-6 flex md:mb-0">
         <button
-          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
+          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo hover:underline"
           :class="{ 'font-bold !text-indigo': filters.term === 'all' }"
           @click="toggleTermType('All')"
         >
@@ -312,7 +312,7 @@
           aria-label="Previous"
         >
           <svg
-            class="w-1 fill-indigo-800"
+            class="w-1 fill-indigo"
             viewBox="0 0 4.2 7"
             style="enable-background: new 0 0 4.2 7"
             xml:space="preserve"
@@ -347,7 +347,7 @@
           aria-label="Next"
         >
           <svg
-            class="w-1 rotate-180 fill-indigo-800"
+            class="w-1 rotate-180 fill-indigo"
             viewBox="0 0 4.2 7"
             style="enable-background: new 0 0 4.2 7"
             xml:space="preserve"

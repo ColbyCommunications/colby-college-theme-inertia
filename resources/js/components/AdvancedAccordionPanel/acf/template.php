@@ -38,7 +38,7 @@ $allowed_blocks = [
         </div>
 
         <div class="advanced-accordion__window overflow-hidden transition-all duration-250 ease-in-out" style="height: 0px; visibility: hidden;">
-            <div class="advanced-accordion__content pb-6 font-body text-indigo-900">
+            <div class="advanced-accordion__content pb-6 font-body text-coal">
                 <InnerBlocks allowedBlocks="<?php echo esc_attr( wp_json_encode( $allowed_blocks ) ); ?>" />
             </div>
         </div>

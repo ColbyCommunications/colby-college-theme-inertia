@@ -14,7 +14,7 @@
         :href="prevUrl"
         class="block p-2 font-body font-normal text-14 md:text-10 leading-140 text-coal hover:text-indigo hover:underline hover:bg-cloud transition-all duration-200 ease-in-out"
       >
-        <Icon name="small-arrow" class="w-1 fill-indigo-800" />
+        <Icon name="small-arrow" class="w-1 fill-indigo" />
       </a>
 
       <ul class="pagination__container inline-flex space-x-1">
@@ -38,7 +38,7 @@
         :href="nextUrl"
         class="block p-2 font-body font-normal text-14 md:text-10 leading-140 text-coal hover:text-indigo hover:underline hover:bg-cloud transition-all duration-200 ease-in-out"
       >
-        <Icon name="small-arrow" class="w-1 fill-indigo-800 rotate-180" />
+        <Icon name="small-arrow" class="w-1 fill-indigo rotate-180" />
       </a>
     </div>
   </div>

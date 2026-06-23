@@ -138,7 +138,7 @@
     <div v-if="showLoadMore" class="mt-10 flex justify-center">
       <button
         @click="loadMore"
-        class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-indigo-600 bg-indigo-600 px-6 py-3 font-body text-14 leading-130 font-bold text-white !no-underline transition-all duration-200 ease-in-out hover:bg-indigo-700"
+        class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border-[0.75px] border-solid border-indigo bg-cloud px-6 py-3 font-body text-14 leading-130 font-bold text-white !no-underline transition-all duration-200 ease-in-out hover:bg-cloud"
       >
         <span class="btn__text">See More</span>
       </button>
@@ -167,7 +167,7 @@
       >
         <article
           class="article space-y-4"
-          :class="{ 'border-t-2 border-solid border-indigo-600 pt-1': border }"
+          :class="{ 'border-t-[0.75px] border-solid border-indigo pt-1': border }"
         >
           <a
             v-if="item.image?.src"

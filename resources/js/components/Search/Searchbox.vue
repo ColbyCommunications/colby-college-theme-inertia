@@ -13,7 +13,7 @@
           <label class="relative flex w-full max-w-sm text-[0]">
             <Icon
               name="search"
-              class="absolute top-3 left-3 w-2.5 fill-indigo-800"
+              class="absolute top-3 left-3 w-2.5 fill-indigo"
             />
             <input
               type="search"

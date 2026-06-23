@@ -31,7 +31,7 @@
         class="flex list-none items-center font-body text-16 leading-110 font-normal md:text-12"
       >
         <a
-          class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
+          class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
           :href="item.url"
         >
           {{ item.title }}
@@ -47,11 +47,11 @@
         class="group inline-block items-center font-body text-14 leading-110 font-normal md:text-12"
       >
         <a
-          class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out group-hover:text-indigo-1000 group-hover:underline"
+          class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out group-hover:fill-indigo group-hover:underline"
           href="https://my.colby.edu/"
         >
           <MyColbyIcon
-            class="mr-1.5 w-[16px] fill-[#b7c2d5] transition-all duration-200 ease-in-out group-hover:fill-indigo-700 md:w-[10px]"
+            class="mr-1.5 w-[16px] fill-[#b7c2d5] transition-all duration-200 ease-in-out group-hover:fill-indigo md:w-[10px]"
           />
           myColby
         </a>
@@ -70,8 +70,8 @@
           <template #button="{ open, isOpen }">
             <button
               type="button"
-              class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
-              :class="{ 'text-indigo-1000 underline': isOpen }"
+              class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:fill-indigo hover:underline"
+              :class="{ 'fill-indigo underline': isOpen }"
               aria-haspopup="dialog"
               :aria-expanded="isOpen ? 'true' : 'false'"
               @click="open"
@@ -127,7 +127,7 @@
         class="flex list-none items-center font-body text-16 leading-110 font-normal md:text-12"
       >
         <a
-          class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
+          class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:fill-indigo hover:underline"
           :href="item.url"
         >
           {{ item.title }}
@@ -146,8 +146,8 @@
           <template #button="{ open, isOpen }">
               <button
                 type="button"
-                class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
-                :class="{ 'text-indigo-1000 underline': isOpen }"
+                class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:fill-indigo hover:underline"
+                :class="{ 'fill-indigo underline': isOpen }"
                 aria-haspopup="dialog"
                 :aria-expanded="isOpen ? 'true' : 'false'"
                 @click="open"

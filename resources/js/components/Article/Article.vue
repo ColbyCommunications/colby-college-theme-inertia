@@ -2,7 +2,7 @@
   <article
     :class="[
       'article space-y-4',
-      { 'border-t-2 border-solid border-indigo-600 pt-1': !!border },
+      { 'border-t-[0.075] border-solid border-indigo pt-1': !!border },
     ]"
   >
     <div

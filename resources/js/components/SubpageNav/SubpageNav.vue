@@ -1,6 +1,6 @@
 <template>
   <div
-    class="subpage-nav rounded-md border border-solid border-indigo-300 bg-white md:space-y-5 md:border-0 md:bg-transparent"
+    class="subpage-nav rounded-md border-[0.75px] border-solid border-indigo bg-white md:space-y-5 md:border-0 md:bg-transparent"
     :class="{ 'is-bot-visitor': isBot }"
     @click.self="toggleMenu"
   >

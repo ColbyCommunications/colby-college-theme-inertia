@@ -5,7 +5,7 @@
     <div
       v-for="(item, index) in items"
       :key="item.id || index"
-      class="article-grid__item border-t-2 border-solid border-indigo-600 pt-3 md:col-span-3"
+      class="article-grid__item border-t-[0.75px] border-solid border-indigo pt-3 md:col-span-3"
     >
       <Article v-bind="item" align="column" />
     </div>
