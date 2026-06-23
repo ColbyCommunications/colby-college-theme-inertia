@@ -4,20 +4,11 @@
     :class="{ 'flex justify-center': alignCenter }"
   >
     <figure class="inline-block" :style="figureStyle">
-      <Picture
-        v-if="image"
-        class="w-full"     
-        :src="image.url"
-        :alt="image.alt"
-      />
-      <img
-        v-else-if="imagePath"
-        :src="imagePath"
-        class="w-full"
-      />
+      <Picture v-if="image" class="w-full" :src="image.url" :alt="image.alt" />
+      <img v-else-if="image_path" :src="image_path" class="w-full" />
       <figcaption
         v-if="media_caption || caption"
-        class="text-center text-indigo text-12 pt-2"
+        class="pt-2 text-center text-12 text-indigo"
       >
         {{ media_caption ? image.caption : caption }}
       </figcaption>
@@ -40,20 +31,20 @@ const props = defineProps({
 
 const alignCenter = computed(() => {
   const val = props.align_center;
-  
-  if (typeof val === 'boolean') {
+
+  if (typeof val === "boolean") {
     return val;
   }
-  
+
   if (Array.isArray(val) && val.length > 0) {
     // Check if the first item in the array is 'yes' (case-insensitive just in case)
-    return String(val[0]).toLowerCase() === 'yes';
+    return String(val[0]).toLowerCase() === "yes";
   }
-  
-  if (typeof val === 'string') {
-    return val.toLowerCase() === 'yes';
+
+  if (typeof val === "string") {
+    return val.toLowerCase() === "yes";
   }
-  
+
   return false;
 });
 
