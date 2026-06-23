@@ -1,9 +1,8 @@
-<!-- resources/js/components/Button.vue -->
 <template>
   <a
     :href="url"
     :target="target || undefined"
-    class="btn group inline-flex min-h-[44px] min-w-[44px] flex-row items-center rounded border-[0.75px] border-solid font-body leading-130 font-normal !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-gold"
+    class="btn group/btn inline-flex min-h-[44px] min-w-[44px] flex-row items-center rounded border-[0.75px] border-solid font-body leading-130 font-normal !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-gold"
     :class="[
       space,
       textSize,
