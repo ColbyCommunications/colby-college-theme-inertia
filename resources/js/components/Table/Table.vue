@@ -303,7 +303,7 @@
       </span>
 
       <div
-        class="inline-flex h-8 items-center space-x-1 rounded-md bg-cloud px-5 py-0.5"
+        class="inline-flex h-8 items-center space-x-1 rounded-md bg-cloud px-5 py-0.5 min-h-[44px] min-w-[44px]"
       >
         <button
           v-if="currentPage !== 1"
@@ -331,7 +331,7 @@
             class="pagination__item"
           >
             <button
-              class="block min-h-[44px] min-w-[44px] cursor-pointer p-2 py-1 font-body text-14 leading-140 leading-[44px] font-normal text-coal transition-all duration-200 ease-in-out hover:bg-cloud hover:text-indigo hover:underline md:text-10"
+              class="block min-h-[44px] min-w-[44px] cursor-pointer font-body text-14 leading-140 leading-[44px] font-normal text-coal transition-all duration-200 ease-in-out hover:bg-indigo hover:text-white hover:underline md:text-10"
               :class="{ 'bg-cloud': currentPage === pageIndex }"
               @click="navigateFn(pageIndex)"
             >
