@@ -3,14 +3,52 @@ use BoxyBird\Inertia\Inertia;
 
 global $post;
 
+// Pre-process for classic blocks (matching sidebar logic)
+$parsed_blocks = array_map(function ($block) {
+    if (
+        empty($block['blockName'])
+        && !empty(trim($block['innerHTML'] ?? ''))
+    ) {
+        $block['blockName'] = 'core/classic';
+    }
+    return $block;
+}, parse_blocks($post->post_content));
+
 $filtered_blocks = array_values(array_filter(
-    parse_blocks($post->post_content),
+    $parsed_blocks,
     function ($block) {
-        return !is_null($block['blockName'] ?? null);
+        return !empty($block['blockName']);
     }
 ));
 
+function colby_flatten_group_descendants(array $blocks): array
+{
+    $flattened = [];
+
+    foreach ($blocks as $block) {
+        $block_name = $block['blockName'] ?? null;
+
+        if ($block_name === 'core/group') {
+            $flattened = array_merge(
+                $flattened,
+                colby_flatten_group_descendants($block['innerBlocks'] ?? [])
+            );
+            continue;
+        }
+
+        if (!is_null($block_name)) {
+            $flattened[] = $block;
+        }
+    }
+
+    return $flattened;
+}
+
 function get_structured_block_data($block, $index = 0) {
+    if ($block['blockName'] === 'core/heading' ) {
+        return ['heading' => str_replace(array("\r", "\n"), '', $block['innerHTML'])];
+    }
+
     $meta_id = !empty($block['attrs']['id'])
         ? 'block_' . $block['attrs']['id']
         : 'block_' . $index . '_' . md5(wp_json_encode($block['attrs']['data'] ?? []));
@@ -86,18 +124,105 @@ function enrich_block_data(array $block, int $index): array
     return $block;
 }
 
-foreach ($filtered_blocks as $index => &$block) {
-    $block['attrs']['data'] = get_structured_block_data($block, $index);
-    $block = enrich_block_data($block, $index);
+function colby_prepare_advanced_accordion_block(array $block, string $block_path): array
+{
+    $block['attrs'] = isset($block['attrs']) && is_array($block['attrs'])
+        ? $block['attrs']
+        : [];
+
+    $block['attrs']['data'] = isset($block['attrs']['data']) && is_array($block['attrs']['data'])
+        ? $block['attrs']['data']
+        : [];
+
+    $accordion_blocks = [];
+
+    foreach (array_values($block['innerBlocks'] ?? []) as $panel_index => $panel_block) {
+        if (is_null($panel_block['blockName'] ?? null)) {
+            continue;
+        }
+
+        $panel_block['attrs'] = isset($panel_block['attrs']) && is_array($panel_block['attrs'])
+            ? $panel_block['attrs']
+            : [];
+
+        $panel_block['attrs']['data'] = isset($panel_block['attrs']['data']) && is_array($panel_block['attrs']['data'])
+            ? $panel_block['attrs']['data']
+            : [];
+
+        $panel_children = $panel_block['innerBlocks'] ?? [];
+
+        $panel_block['attrs']['data']['blocks'] = colby_process_blocks(
+            colby_flatten_group_descendants($panel_children),
+            $block_path . '_accordion_' . $panel_index
+        );
+
+        $accordion_blocks[] = $panel_block;
+    }
+
+    $block['attrs']['data']['blocks'] = $accordion_blocks;
+
+    return $block;
 }
-unset($block);
 
-// dd(post_password_required( $post->ID ));
+function colby_process_single_block(array $block, int $index = 0, string $path = 'root'): array
+{
+    $block_path = $path . '_' . $index;
 
-// last block on the HP
-// dd($filtered_blocks[10]['innerBlocks'][0]['innerBlocks']);
+    $block['attrs']['data'] = get_structured_block_data($block, $block_path);
+
+    if (($block['blockName'] ?? null) === 'core/html' || ($block['blockName'] ?? null) === 'core/classic') {
+        $block['attrs'] = isset($block['attrs']) && is_array($block['attrs'])
+            ? $block['attrs']
+            : [];
+    
+        $block['attrs']['data'] = isset($block['attrs']['data']) && is_array($block['attrs']['data'])
+            ? $block['attrs']['data']
+            : [];
+    
+        $block['attrs']['data']['html'] = wp_kses_post($block['innerHTML'] ?? '');
+    
+        return $block;
+    } elseif (($block['blockName'] ?? null) === 'core/group') {
+        $block['attrs'] = isset($block['attrs']) && is_array($block['attrs'])
+            ? $block['attrs']
+            : [];
+
+        $block['attrs']['data'] = isset($block['attrs']['data']) && is_array($block['attrs']['data'])
+            ? $block['attrs']['data']
+            : [];
+
+        $block['attrs']['data']['blocks'] = colby_flatten_group_descendants(
+            $block['innerBlocks'] ?? []
+        );
+
+        $block['attrs']['data']['blocks'] = colby_process_blocks(
+            $block['attrs']['data']['blocks'],
+            $block_path . '_group'
+        );
+    } elseif (($block['blockName'] ?? null) === 'acf/advanced-accordion') {
+        $block = colby_prepare_advanced_accordion_block($block, $block_path);
+    }
+
+    $block = enrich_block_data($block, $index);
+
+    return $block;
+}
+
+function colby_process_blocks(array $blocks, string $path = 'root'): array
+{
+    $processed = [];
+
+    foreach (array_values($blocks) as $index => $block) {
+        $processed[] = colby_process_single_block($block, $index, $path);
+    }
+
+    return $processed;
+}
+
+$filtered_blocks = colby_process_blocks($filtered_blocks);
+
 if ( post_password_required( $post->ID ) ) {
-	Inertia::render('Password/Show', [
+    Inertia::render('Password/Show', [
         'password_form' => get_the_password_form($post->ID),
     ]);
 } else {
