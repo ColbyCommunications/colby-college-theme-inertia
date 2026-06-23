@@ -13,12 +13,12 @@
           <label class="relative flex w-full max-w-sm text-[0]">
             <Icon
               name="search"
-              class="absolute top-3 left-3 w-2.5 fill-indigo-800"
+              class="absolute top-3 left-3 w-2.5 fill-indigo"
             />
             <input
               type="search"
               placeholder="Search"
-              class="h-[34px] w-full max-w-sm rounded-md border border-solid border-indigo-400 bg-white p-2.5 pl-7 font-body text-10 text-indigo-800"
+              class="h-[34px] w-full max-w-sm rounded-md border border-solid border-stone bg-white p-2.5 pl-7 font-body text-10 text-coal"
               :value="currentRefinement"
               @input="onInput($event.target.value, refine)"
             />

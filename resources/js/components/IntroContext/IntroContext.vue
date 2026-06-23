@@ -4,7 +4,7 @@
       class="intro-context__inner mx-auto w-full max-w-screen-2xl gap-10 px-5 md:grid md:grid-cols-12"
     >
       <div
-        class="intro-context__main border-t border-azure pt-5"
+        class="intro-context__main border-t border-indigo pt-5"
         :class="inset ? 'md:col-span-5 md:col-start-2' : 'md:col-span-6'"
       >
         <Context :size="size" :subheading="subheading" :heading="heading" />
@@ -14,7 +14,7 @@
         :class="inset ? 'md:col-span-5' : 'md:col-span-6'"
       >
         <div
-          class="font-body text-18 leading-130 font-normal text-indigo-800"
+          class="font-body text-18 leading-130 font-normal text-coal"
           v-html="text"
         ></div>
         <ButtonGroup

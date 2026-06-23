@@ -55,7 +55,7 @@ const render = (args) => ({
             </p>
             <div class="mt-6 flex justify-end">
               <button
-                class="text-indigo-600 hover:text-indigo-800 font-semibold"
+                class="text-indigo-600 hover:text-coal font-semibold"
                 @click="args.modelValue = false"
               >
                 Close (Custom Action)

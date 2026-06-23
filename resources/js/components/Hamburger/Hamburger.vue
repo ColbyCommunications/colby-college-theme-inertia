@@ -1,9 +1,9 @@
 <template>
   <div class="flex items-center space-x-4 md:hidden">
-    <label class="font-body text-20 font-normal text-indigo-800">Menu</label>
+    <label class="font-body text-20 font-normal text-coal">Menu</label>
 
     <button
-      class="flex h-[52px] w-[56px] cursor-pointer items-center justify-center rounded-sm border border-solid border-[#dfecfe] bg-[#f9fbff] text-[0px]"
+      class="flex h-[52px] w-[56px] cursor-pointer items-center justify-center rounded-sm border border-solid border-[#dfecfe] bg-cloud text-[0px]"
       @click="toggleActive"
       aria-label="Toggle menu"
       :aria-expanded="active ? 'true' : 'false'"

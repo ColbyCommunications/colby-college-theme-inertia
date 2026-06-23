@@ -12,8 +12,8 @@
           class="!ml-8 font-extended text-20 leading-110 font-normal md:text-14 lg:!ml-12 md:[&:first-child]:!ml-0"
         >
           <a
-            class="block border-transparent text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo-1000 md:py-7 md:outline-0 md:hover:border-azure md:focus:border-canary"
-            :class="{ '!text-indigo md:border-azure': isCurrent(item) }"
+            class="block border-transparent text-coal transition-all duration-200 ease-in-out hover:text-indigo md:py-7 md:outline-0 md:hover:border-indigo md:focus:border-indigo"
+            :class="{ '!text-indigo md:border-indigo': isCurrent(item) }"
             :href="item.url"
             :target="item.target || undefined"
             >{{ item.title }}</a
@@ -21,7 +21,7 @@
         </li>
       </ul>
     </div>
-    <div class="w-full bg-[#f9fbff] p-5 pb-20">
+    <div class="w-full bg-snow p-5 pb-20">
       <ul
         class="grid w-full grid-cols-3 grid-rows-2 gap-2 md:inline-flex md:w-auto md:grid-cols-none md:grid-rows-none md:gap-0 md:space-x-6"
       >
@@ -31,7 +31,7 @@
           class="font-body text-16 leading-110 font-normal md:text-10"
         >
           <a
-            class="block py-2 text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo-1000 hover:underline"
+            class="block py-2 text-coal transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
             :href="item.url"
           >
             {{ item.title }}

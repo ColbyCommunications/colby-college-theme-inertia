@@ -8,7 +8,7 @@
     >
         <template v-if="icon">
             <div class="relative hidden md:flex justify-end max-w-screen-2xl w-full px-5 my-0 mx-auto mb-16">
-                <svg class="w-5 fill-canary" viewBox="0 0 20.83 30" aria-hidden="true">
+                <svg class="w-5 fill-gold" viewBox="0 0 20.83 30" aria-hidden="true">
                     <path d="m1.76 30 2.47-4.16 2.32-1.09.43-1.27 1.57 1.18 1.96-.88.49-3.54 1.08.98.39 1.77 1.76-2.41 1.58.74 1.18-2.06.89.39 1.17-.88 1.68.2.1-1.38-2.07-1.28-.53-1.88.24-2.25-2.17.1.4-9.92L13.85.2l-1.76 1.19h-1.87L10.13 0H8.64L5.41 7.08 4.32 9.5l.39 1.3-1.47.59-.29 1.87-.69 1.47-2.16-.2L0 28.39 1.76 30Z" />
                 </svg>
             </div>
@@ -20,7 +20,6 @@
                 <Context
                     size="medium"
                     type="light"
-                    :arrow="true"
                     :reverse="true"
                     align="center"
                     :subheading="subheading"
@@ -42,7 +41,7 @@
                     class="dark-interstitial__fact col-span-4 space-y-3"
                 >
                     <div class="dark-interstitial__fact--animated" ref="factContainers">
-                        <h3 class="font-extended font-normal text-36 text-canary leading-[1.5]">
+                        <h3 class="font-extended font-semibold text-36 text-gold leading-[1.5]">
                             {{ fact.figure }}
                         </h3>
                         <p class="font-body font-normal text-14 text-[#eef4ff] leading-[1.5]">

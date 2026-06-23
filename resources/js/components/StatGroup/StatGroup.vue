@@ -33,7 +33,7 @@
               {{ item.heading }}
             </h3>
 
-            <p class="font-body font-normal text-14 leading-[1.5] text-indigo-900">
+            <p class="font-body font-normal text-14 leading-[1.5] text-coal">
               {{ item.paragraph }}
             </p>
           </div>

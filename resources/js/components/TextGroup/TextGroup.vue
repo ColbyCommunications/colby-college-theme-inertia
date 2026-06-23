@@ -22,12 +22,12 @@
       <component
         v-if="heading"
         :is="headingTag"
-        class="text-group__heading my-2 font-extended"
+        class="text-group__heading my-2 font-stretch-semi-expanded"
         :class="[
           headingWeight,
           headingSizeMobile,
           headingSize,
-          'leading-110',
+          'leading-[1.5]',
           '-tracking-3',
           textAlign,
           headingColor,
@@ -89,7 +89,7 @@ const sizes = computed(() => {
       sub: "text-24",
       head: "md:text-48",
       headMobile: "text-48",
-      weight: "font-normal",
+      weight: "font-semibold",
     };
 
   if (s === "large")
@@ -97,7 +97,7 @@ const sizes = computed(() => {
       sub: "text-18",
       head: "md:text-36",
       headMobile: "text-28",
-      weight: "font-normal",
+      weight: "font-semibold",
     };
 
   if (s === "medium")
@@ -105,7 +105,7 @@ const sizes = computed(() => {
       sub: "text-14",
       head: "md:text-24",
       headMobile: "text-28",
-      weight: "font-normal",
+      weight: "font-semibold",
     };
 
   if (s === "small" && isStatic)
@@ -113,7 +113,7 @@ const sizes = computed(() => {
       sub: "text-12",
       head: "text-20",
       headMobile: "",
-      weight: "font-normal",
+      weight: "font-semibold",
     };
 
   if (s === "small")
@@ -121,7 +121,7 @@ const sizes = computed(() => {
       sub: "text-12",
       head: "md:text-20",
       headMobile: "text-28",
-      weight: "font-normal",
+      weight: "font-semibold",
     };
 
   if (s === "xsmall")
@@ -129,14 +129,14 @@ const sizes = computed(() => {
       sub: "text-12",
       head: "md:text-18",
       headMobile: "text-24",
-      weight: "font-bold",
+      weight: "font-semibold",
     };
 
   return {
     sub: "",
     head: "",
     headMobile: "",
-    weight: "font-normal",
+    weight: "font-medium",
   };
 });
 
@@ -145,12 +145,20 @@ const textAlign = computed(() =>
 );
 
 const subheadingColor = computed(() =>
-  props.type === "light" ? "text-canary" : "text-azure",
+  props.type === "light" ? "text-gold" : "text-azure",
 );
 
 const headingColor = computed(() =>
   props.type === "light" ? "text-white" : "text-indigo",
 );
+
+const paragraphColor = computed(() =>
+  props.type === "light" ? "text-[#eef4ff]" : "text-coal",
+);
+
+/* ----------------------------
+   SEMANTIC FIX (core change)
+----------------------------- */
 
 const subheadingTag = computed(() => "h2");
 

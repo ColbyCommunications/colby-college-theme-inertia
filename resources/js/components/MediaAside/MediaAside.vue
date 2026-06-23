@@ -23,7 +23,7 @@
                   />
                   <p
                     v-if="item.image?.caption"
-                    class="media-aside__caption font-body font-normal text-12 text-indigo-800 leading-140 mt-2"
+                    class="media-aside__caption font-body font-normal text-12 text-coal leading-140 mt-2"
                   >
                     {{ item.image.caption }}
                   </p>
@@ -47,7 +47,7 @@
           </div>
           <p
             v-if="image?.caption"
-            class="media-aside__caption font-body font-normal text-12 text-indigo-800 leading-140 mt-2"
+            class="media-aside__caption font-body font-normal text-12 text-coal leading-140 mt-2"
           >
             {{ image.caption }}
           </p>
@@ -92,14 +92,14 @@
           </div>
           <div class="inline-flex self-end gap-4 md:pb-6">
             <button
-              class="inline-flex items-center justify-center w-10 h-8 bg-indigo-100 hover:bg-[#eef4ff] focus:bg-[#eef4ff] rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
+              class="inline-flex items-center justify-center w-10 h-8 bg-snow hover:bg-cloud focus:bg-cloud rounded border-[0.75px] border-solid border-indigo transition-all duration-200 ease-in-out"
               @click="changeSlide('prev')"
             >
               <span class="sr-only">Previous</span>
               <Icon name="chevron" class="fill-azure w-1.5" />
             </button>
             <button
-              class="inline-flex items-center justify-center w-10 h-8 bg-indigo-100 hover:bg-[#eef4ff] focus:bg-[#eef4ff] rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
+              class="inline-flex items-center justify-center w-10 h-8 bg-snow hover:bg-cloud focus:bg-cloud rounded border-[0.75px] border-solid border-indigo transition-all duration-200 ease-in-out"
               @click="changeSlide('next')"
             >
               <span class="sr-only">Next</span>

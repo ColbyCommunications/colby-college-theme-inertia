@@ -8,7 +8,7 @@
             v-for="item in items"
             :key="item.objectID"
             @click="$emit('select-suggestion', item.query)"
-            class="btn cursor-pointer rounded border border-[#dfecfe] bg-[#f9fbff] px-3 py-1 font-body text-10 text-indigo hover:bg-[#eef4ff]"
+            class="btn cursor-pointer rounded border border-[#dfecfe] bg-cloud px-3 py-1 font-body text-10 text-indigo hover:bg-cloud"
           >
             <ais-highlight :hit="item" attribute="query" />
           </li>

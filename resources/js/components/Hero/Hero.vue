@@ -42,7 +42,7 @@
         </div>
         <p
           v-if="image.caption"
-          class="hero__caption mt-2 font-body text-12 leading-[1.5] font-normal text-indigo-800"
+          class="hero__caption mt-2 font-body text-12 leading-[1.5] font-normal text-coal"
         >
           {{ image.caption }}
         </p>
@@ -80,7 +80,7 @@
         </div>
         <p
           v-if="secondaryImage.caption"
-          class="hero__caption mt-2 font-body text-12 leading-140 font-normal text-indigo-800"
+          class="hero__caption mt-2 font-body text-12 leading-140 font-normal text-coal"
         >
           {{ secondaryImage.caption }}
         </p>

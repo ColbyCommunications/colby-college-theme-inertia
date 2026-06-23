@@ -1,6 +1,6 @@
 <template>
   <div
-    class="section-nav full-bleed !mt-0 overflow-x-auto bg-gray-100 py-6"
+    class="section-nav full-bleed !mt-0 overflow-x-auto py-6"
     :class="{ 'is-bot-visitor': isBot }"
   >
     <div
@@ -16,10 +16,10 @@
         <li
           v-for="(item, index) in items"
           :key="index"
-          class="section-nav__item font-body text-14 font-medium whitespace-nowrap text-indigo-800 md:text-12"
+          class="section-nav__item font-body text-14 font-medium whitespace-nowrap text-indigo md:text-12"
         >
           <a
-            class="inline-flex min-h-[44px] min-w-[44px] items-center text-indigo-800 transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
+            class="inline-flex min-h-[44px] min-w-[44px] items-center text-indigo transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
             :href="item.link.url"
           >
             <span class="material-symbols-sharp mr-1 !text-14">{{

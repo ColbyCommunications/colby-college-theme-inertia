@@ -33,7 +33,7 @@ const textAlign = computed(() =>
 );
 
 const paragraphColor = computed(() =>
-  props.type === "light" ? "text-[#eef4ff]" : "text-indigo-800",
+  props.type === "light" ? "text-[#eef4ff]" : "text-coal",
 );
 
 const blockStartsRegex = /^\s*<(p|ul|ol)\b/i;

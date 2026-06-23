@@ -76,6 +76,20 @@ export const dark = {
     await expect(link).toBeInTheDocument();
   },
 };
+export const darkWithArrow = {
+  name: "Dark with Arrow",
+  args: {
+    title: "Button Title",
+    url: "https://www.colby.edu",
+    type: "dark",
+    arrow: true
+  },
+  play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
+    const link = canvas.getByRole("link", { name: "Button Title" });
+    await expect(link).toBeInTheDocument();
+  },
+};
 
 export const withArrow = {
   name: "With Arrow",
@@ -115,6 +129,31 @@ export const transparent = {
     url: "https://www.colby.edu",
     transparentBg: true,
   },
+  decorators: [
+    () => ({
+      template: '<div class="bg-indigo p-20"><story /></div>',
+    }),
+  ],
+  play: async ({ canvas }) => {
+    if (import.meta.env.MODE !== 'test' ) return;
+    const link = canvas.getByRole("link", { name: "Button Title" });
+    await expect(link).toBeInTheDocument();
+  },
+};
+
+export const transparentWithArrow = {
+  name: "Transparent Background with Arrow",
+  args: {
+    title: "Button Title",
+    url: "https://www.colby.edu",
+    transparentBg: true,
+    arrow: true,
+  },
+  decorators: [
+    () => ({
+      template: '<div class="bg-indigo p-20"><story /></div>',
+    }),
+  ],
   play: async ({ canvas }) => {
     if (import.meta.env.MODE !== 'test' ) return;
     const link = canvas.getByRole("link", { name: "Button Title" });

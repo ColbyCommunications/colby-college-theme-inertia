@@ -11,14 +11,14 @@
       />
     </div>
     <div
-      class="full-bleed-image__context md:absolute right-0 bottom-0 md:w-[520px] md:max-w-[50%] py-8 px-10 bg-[#eef4ff] space-y-4"
+      class="full-bleed-image__context md:absolute right-0 bottom-0 md:w-[520px] md:max-w-[50%] py-8 px-10 bg-cloud space-y-4"
     >
       <h2
         class="font-extended font-bold text-14 leading-130 text-azure tracking-8 uppercase"
       >
         {{ heading }}
       </h2>
-      <p class="font-body font-normal text-16 leading-130 text-indigo-800 !mt-2">
+      <p class="font-body font-normal text-16 leading-130 text-coal !mt-2">
         {{ paragraph }}
       </p>
       <ButtonGroup

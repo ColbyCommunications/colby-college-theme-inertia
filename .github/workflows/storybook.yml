@@ -1,43 +1,57 @@
-name: Deploy Storybook
+name: Deploy Branch Storybook
 
-# Trigger the workflow on pushes to the main branch
 on:
   push:
     branches:
-      - master # Change this to 'master' if your default branch is master
+      - '**' # Matches master, feature/xyz, hotfix-123, etc.
+  workflow_dispatch:
+
+# Cancel previous builds on the same branch to save action minutes
+concurrency:
+  group: storybook-deploy-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 
 permissions:
-  contents: write # Required to push to the gh-pages branch
+  contents: write # Required to push assets to the gh-pages branch
 
 jobs:
-  build-and-deploy:
+  deploy-storybook:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout the repository
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Use a version compatible with your project
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
-      # 3. Install Dependencies
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm ci
 
-      # 4. Build Storybook
+      - name: Determine Target Subdirectory
+        id: branch-info
+        run: |
+          # Since we only trigger on push, ref_name gives us the clean branch name (e.g., feature/login)
+          RAW_BRANCH="${{ github.ref_name }}"
+          
+          # Replace slashes and special characters with dashes instead of dots
+          SAFE_BRANCH=$(echo "$RAW_BRANCH" | sed 's/[^a-zA-Z0-9_-]/-/g')
+          
+          echo "folder_name=$SAFE_BRANCH" >> $GITHUB_OUTPUT
+
       - name: Build Storybook
         run: npm run build-storybook
-        # By default, this outputs to 'storybook-static'
+        env:
+          # Injects absolute asset routing: /repo-name/branch-name/
+          STORYBOOK_BASE: /${{ github.event.repository.name }}/${{ steps.branch-info.outputs.folder_name }}/
 
-      # 5. Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
+      - name: Deploy Subdirectory to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: storybook-static # The folder the build step outputted
-          branch: gh-pages # The branch the action should deploy to
-          clean: true # Automatically remove deleted files from the deploy branch
+          branch: gh-pages
+          folder: storybook-static
+          target-folder: ${{ steps.branch-info.outputs.folder_name }} # Places build inside branch folder
+          clean: false # Prevents overwriting other active branch builds

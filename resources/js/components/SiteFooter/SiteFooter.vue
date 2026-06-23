@@ -30,7 +30,7 @@
         </div>
 
         <address
-          class="footer__address w-[225px] space-y-2 font-body text-20 leading-140 font-normal text-[#b7c2d5] not-italic md:w-[120px] md:text-12"
+          class="footer__address w-[225px] space-y-2 font-body text-20 leading-140 font-normal text-white not-italic md:w-[120px] md:text-12"
         >
           <div v-html="address.text"></div>
 
@@ -56,7 +56,7 @@
           <li
             v-for="(item, index) in menus.footer"
             :key="index"
-            class="mb-4 flex min-h-[44px] min-w-[44px] basis-1/2 items-center font-body text-16 leading-130 font-normal text-[#b7c2d5] md:text-14 lg:basis-1/4"
+            class="mb-4 flex min-h-[44px] min-w-[44px] basis-1/2 items-center font-body text-16 leading-130 font-normal text-white md:text-14 lg:basis-1/4"
           >
             <a
               :href="item.url"
@@ -92,14 +92,14 @@
       </div>
     </div>
 
-    <div class="nondescrimination-message hidden space-y-4 bg-[#eef4ff]">
+    <div class="nondescrimination-message hidden space-y-4 bg-cloud">
       <div class="mx-auto max-w-screen-2xl px-5 py-8 font-normal">
         <div>
           <b class="text-indigo">
             NOTICE OF NONDISCRIMINATORY POLICY AS TO STUDENTS
           </b>
         </div>
-        <div class="text-indigo-800">
+        <div class="text-coal">
           Colby College admits students of any race, color, national and ethnic
           origin to all the rights, privileges, programs, and activities
           generally accorded or made available to students at the school. It
@@ -110,7 +110,7 @@
           <a
             href="https://afa.colby.edu/nondiscrimination-policy/"
             target="_blank"
-            class="text-indigo italic underline hover:text-indigo-800 hover:no-underline"
+            class="text-indigo italic underline hover:text-coal hover:no-underline"
           >
             Colby's Nondiscrimination Policy and Compliance Information.
           </a>
@@ -175,7 +175,7 @@
             class="inline-block"
           >
             <a
-              class="btn group inline-flex min-h-[44px] min-w-[44px] flex-row items-center space-x-1.5 rounded border border-solid border-white bg-indigo px-4 py-1.5 font-body text-14 leading-130 font-normal text-white !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-canary"
+              class="btn group inline-flex min-h-[44px] min-w-[44px] flex-row items-center space-x-1.5 rounded border border-solid border-white bg-indigo px-4 py-1.5 font-body text-14 leading-130 font-normal text-white !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-gold"
               :href="item.url"
             >
               <Icon

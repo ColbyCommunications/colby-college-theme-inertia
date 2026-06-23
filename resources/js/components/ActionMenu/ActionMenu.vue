@@ -15,7 +15,7 @@
       >
         <Icon
           :name="item.title"
-          class="mr-2 h-4 w-4 fill-canary md:mr-1 md:h-3 md:w-3"
+          class="mr-2 h-4 w-4 fill-gold md:mr-1 md:h-3 md:w-3"
         />
         {{ item.title }}
       </a>

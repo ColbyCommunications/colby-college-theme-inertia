@@ -7,7 +7,6 @@
         <Context
           size="large"
           type="dark"
-          :arrow="true"
           :reverse="true"
           :heading="heading"
           :subheading="subheading"
@@ -41,7 +40,7 @@
                 </div>
                 <p
                   v-if="item.image?.caption"
-                  class="mt-2 font-body text-10 leading-140 font-normal text-indigo-800"
+                  class="mt-2 font-body text-10 leading-140 font-normal text-coal"
                 >
                   {{ item.image?.caption }}
                 </p>
@@ -57,18 +56,18 @@
           <div
             v-for="(item, index) in items"
             :key="index"
-            class="testimonial-carousel__quote invisible absolute top-0 left-0 w-full space-y-2 border-t border-solid border-canary pt-2 opacity-0 transition-all duration-300 ease-in-out md:top-auto md:bottom-0"
+            class="testimonial-carousel__quote invisible absolute top-0 left-0 w-full space-y-2 border-t-[0.75px] border-solid border-indigo pt-2 opacity-0 transition-all duration-300 ease-in-out md:top-auto md:bottom-0"
             :class="{
               '!visible !translate-y-0 opacity-100': activeSlide === index,
             }"
           >
             <p
-              class="font-extended text-20 leading-110 font-normal -tracking-[0.01em] text-indigo"
+              class="font-extended text-20 leading-110 font-semibold -tracking-[0.01em] text-indigo"
             >
               {{ item.testimonial.quote }}
             </p>
             <div
-              class="font-body text-14 leading-130 font-normal text-indigo-800"
+              class="font-body text-14 leading-130 font-normal text-coal"
             >
               {{ item.testimonial.name }}
             </div>

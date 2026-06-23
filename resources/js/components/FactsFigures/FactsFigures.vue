@@ -4,7 +4,7 @@
     <div
       class="facts-figures__inner relative mx-auto my-0 w-full max-w-screen-2xl gap-x-10 md:grid md:grid-cols-12"
     >
-      <AnimatedBorder class="col-span-12 block h-px w-0 bg-azure" />
+      <AnimatedBorder class="col-span-12 block w-0 bg-azure" />
     </div>
 
     <!-- main row -->
@@ -17,7 +17,6 @@
         <Context
           size="large"
           type="dark"
-          :arrow="true"
           :reverse="true"
           :heading="heading"
           :paragraph="paragraph"
@@ -53,12 +52,12 @@
             class="facts-figures__figure col-span-2"
           >
             <h3
-              class="font-extended text-24 leading-115 font-normal text-indigo"
+              class="font-extended text-36 leading-115 font-semibold text-indigo"
             >
               {{ fact.figure }}
             </h3>
             <p
-              class="font-body text-12 leading-140 font-normal text-indigo-800"
+              class="font-body text-12 leading-140 font-normal text-coal"
             >
               {{ fact.paragraph }}
             </p>

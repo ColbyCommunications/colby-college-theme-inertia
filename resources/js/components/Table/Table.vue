@@ -10,20 +10,26 @@
             v-for="(heading, index) in normalizedHeadings"
             :key="`th-${index}`"
             scope="col"
-            class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap md:h-11 md:text-14"
-            :class="{
-              'bg-transparent': heading.generated,
-            }"
+            class="h-12 bg-cloud px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
           >
             <span :class="{ 'sr-only': heading.generated }">
               {{ heading.text }}
             </span>
           </th>
         </tr>
+        <tr v-else>
+          <th
+            scope="col"
+            class="h-12 bg-cloud px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
+          >
+            Column 1
+          </th>
+        </tr>
+
         <tr
           v-for="(item, itemIndex) in manualItems"
           :key="`row-${itemIndex}`"
-          class="h-12 w-full even:bg-gray-100 md:h-10"
+          class="h-12 w-full odd:bg-cloud md:h-10"
         >
           <td
             class="px-6 py-2 text-left font-normal whitespace-nowrap md:whitespace-normal"
@@ -34,7 +40,7 @@
               :class="
                 item.link
                   ? 'cursor-pointer text-indigo hover:underline'
-                  : 'text-indigo-800'
+                  : 'text-coal'
               "
               :href="item.link ? item.link.url : null"
             >
@@ -63,7 +69,7 @@
             v-if="item.columns"
             v-for="(column, colIndex) in item.columns"
             :key="`col-${itemIndex}-${colIndex}`"
-            class="px-6 py-2 font-body text-16 leading-140 font-normal text-indigo-800 md:text-12"
+            class="px-6 py-2 font-body text-16 leading-140 font-normal text-coal md:text-12"
           >
             <a
               v-if="column.link_or_text === 'link'"
@@ -102,7 +108,7 @@
         class="relative mb-6 flex w-full max-w-sm shrink-0 text-[0] md:mb-0 md:shrink"
       >
         <svg
-          class="absolute top-3 left-3 w-2.5 fill-indigo-800"
+          class="absolute top-3 left-3 w-2.5 fill-indigo"
           viewBox="0 0 9.6 9.6"
         >
           <path
@@ -111,7 +117,7 @@
           />
         </svg>
         <input
-          class="h-[34px] w-full max-w-sm rounded-md border border-solid border-indigo-400 bg-white p-2.5 pl-7 font-body text-10 leading-130 font-normal text-indigo-800 placeholder-indigo-800"
+          class="h-[34px] w-full max-w-sm rounded-md border border-solid border-stone bg-white p-2.5 pl-7 font-body text-10 leading-130 font-normal text-coal placeholder-coal"
           type="text"
           name="search-input"
           placeholder="Search"
@@ -122,7 +128,7 @@
           xmlns="http://www.w3.org/2000/svg"
           height="12"
           width="12"
-          class="absolute top-3 right-3 cursor-pointer fill-indigo-800"
+          class="absolute top-3 right-3 cursor-pointer fill-indigo"
           :class="{
             block: searchTerm.length > 0,
             hidden: searchTerm.length === 0,
@@ -140,7 +146,7 @@
         v-if="api === 'Course Catalogue'"
         v-model="selectedDepartment"
         @change="toggleDepartment($event)"
-        class="mr-5 mb-6 min-h-[44px] w-full max-w-[120px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline md:mb-0"
+        class="mr-5 mb-6 min-h-[44px] w-full max-w-[120px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-coal hover:underline md:mb-0"
         aria-label="Select a department"
       >
         <option value="All Departments">All Departments</option>
@@ -152,7 +158,7 @@
         "
         v-model="selectedDivision"
         @change="toggleTermDivision($event, true)"
-        class="mr-5 mb-6 min-h-[44px] w-full max-w-[120px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline md:mb-0"
+        class="mr-5 mb-6 min-h-[44px] w-full max-w-[120px] min-w-[44px] cursor-pointer font-body text-10 leading-130 leading-[44px] font-normal text-coal hover:underline md:mb-0"
         aria-label="Select a division"
       >
         <option value="All Divisions">All Divisions</option>
@@ -166,7 +172,7 @@
 
       <div v-if="filterOptions.length > 0" class="mb-6 flex md:mb-0">
         <button
-          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
+          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo hover:underline"
           :class="{ 'font-bold !text-indigo': filters.term === 'all' }"
           @click="toggleTermType('All')"
         >
@@ -175,7 +181,7 @@
         <button
           v-for="(term, index) in filterOptions"
           :key="index"
-          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo-900 hover:underline"
+          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 leading-[44px] font-normal text-coal hover:underline"
           :class="{ 'font-bold !text-indigo': filters.term === term }"
           @click="toggleTermType(term)"
         >
@@ -194,10 +200,7 @@
             v-for="(heading, index) in normalizedHeadings"
             :key="`th-${index}`"
             scope="col"
-            class="h-12 bg-[#eef4ff] px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap md:h-11 md:text-14"
-            :class="{
-              'bg-transparent': heading.generated,
-            }"
+            class="h-12 bg-cloud px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
           >
             <span :class="{ 'sr-only': heading.generated }">
               {{ heading.text }}
@@ -208,7 +211,7 @@
         <tr
           v-for="(item, index) in paginatedItems"
           :key="index"
-          class="h-12 min-h-[44px] w-full min-w-[44px] leading-[44px] odd:bg-gray-100 md:h-10"
+          class="h-12 min-h-[44px] w-full min-w-[44px] leading-[44px] odd:bg-cloud md:h-10"
         >
           <th
             scope="row"
@@ -253,11 +256,11 @@
             <Modal v-if="item.description" v-model="item.modalOpen">
               <template #content>
                 <h3
-                  class="flex items-center bg-[#eef4ff] px-5 py-2 text-left font-body text-20 leading-120 font-semibold text-indigo md:text-14"
+                  class="flex items-center bg-cloud px-5 py-2 text-left font-body text-20 leading-120 font-semibold text-indigo md:text-14"
                   v-text="item.title"
                 />
                 <p
-                  class="p-5 font-body text-20 leading-[1.5rem] font-normal text-indigo-800 md:text-12"
+                  class="p-5 font-body text-20 leading-140 font-normal text-coal md:text-12"
                   v-html="item.description"
                 />
               </template>
@@ -282,7 +285,7 @@
           <td
             v-for="(column, colIndex) in item.columns"
             :key="colIndex"
-            class="px-6 py-2 font-body text-16 leading-140 font-normal text-indigo-800 md:text-12"
+            class="px-6 py-2 font-body text-16 leading-140 font-normal text-coal md:text-12"
             v-text="column"
           />
         </tr>
@@ -294,22 +297,22 @@
       class="pagination mt-10 flex flex-wrap items-center justify-between gap-y-4"
     >
       <span
-        class="pagination__text font-body text-12 leading-140 font-normal text-indigo-800"
+        class="pagination__text font-body text-12 leading-140 font-normal text-coal"
       >
         Showing {{ paginatedItems.length }} of {{ inputFilteredItems.length }}
       </span>
 
       <div
-        class="inline-flex h-8 items-center space-x-1 rounded-md bg-gray-100 px-2 py-0.5 md:px-5"
+        class="inline-flex h-8 items-center space-x-1 rounded-md bg-cloud px-5 py-0.5"
       >
         <button
-          v-if="currentPage > 1"
-          class="block cursor-pointer p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
+          v-if="currentPage !== 1"
+          class="block cursor-pointer p-2 font-body text-14 leading-140 font-normal text-coal transition-all duration-200 ease-in-out hover:bg-cloud hover:text-indigo hover:underline md:text-10"
           @click="navigatePages('prev')"
           aria-label="Previous"
         >
           <svg
-            class="w-1 fill-indigo-800"
+            class="w-1 fill-indigo"
             viewBox="0 0 4.2 7"
             style="enable-background: new 0 0 4.2 7"
             xml:space="preserve"
@@ -328,8 +331,8 @@
             class="pagination__item"
           >
             <button
-              class="block min-h-[36px] min-w-[36px] cursor-pointer p-1 py-1 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:min-h-[44px] md:min-w-[44px] md:p-2 md:text-10"
-              :class="{ 'bg-[#eef4ff] font-bold': currentPage === pageIndex }"
+              class="block min-h-[44px] min-w-[44px] cursor-pointer p-2 py-1 font-body text-14 leading-140 leading-[44px] font-normal text-coal transition-all duration-200 ease-in-out hover:bg-cloud hover:text-indigo hover:underline md:text-10"
+              :class="{ 'bg-cloud': currentPage === pageIndex }"
               @click="navigateFn(pageIndex)"
             >
               {{ pageIndex }}
@@ -338,13 +341,13 @@
         </ul>
 
         <button
-          v-if="currentPage < totalPages"
-          class="block cursor-pointer p-2 font-body text-14 leading-140 font-normal text-indigo-800 transition-all duration-200 ease-in-out hover:bg-[#eef4ff] hover:text-indigo hover:underline md:text-10"
+          v-if="currentPage !== totalPages"
+          class="block cursor-pointer p-2 font-body text-14 leading-140 font-normal text-coal transition-all duration-200 ease-in-out hover:bg-cloud hover:text-indigo hover:underline md:text-10"
           @click="navigatePages('next')"
           aria-label="Next"
         >
           <svg
-            class="w-1 rotate-180 fill-indigo-800"
+            class="w-1 rotate-180 fill-indigo"
             viewBox="0 0 4.2 7"
             style="enable-background: new 0 0 4.2 7"
             xml:space="preserve"

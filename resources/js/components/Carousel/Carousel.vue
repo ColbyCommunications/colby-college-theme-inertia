@@ -11,7 +11,6 @@
       <Context
         size="small"
         :type="type"
-        :arrow="true"
         :reverse="true"
         :heading="heading"
         :subheading="subheading"

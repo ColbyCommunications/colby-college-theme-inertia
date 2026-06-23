@@ -2,7 +2,7 @@
   <div class="overlay-wide-image mx-auto my-0 max-w-screen-2xl">
     <div class="overlay-wide-image__inner relative md:pb-[45.45454545454545%]">
       <div
-        class="overlay-wide-image__overlay relative top-0 left-0 z-10 flex h-full w-full items-center bg-gray-1000/40 p-9 md:absolute md:p-24"
+        class="overlay-wide-image__overlay z-10 relative md:absolute top-0 left-0 flex items-center w-full h-full p-9 md:p-24 bg-snow"
       >
         <Context
           size="medium"

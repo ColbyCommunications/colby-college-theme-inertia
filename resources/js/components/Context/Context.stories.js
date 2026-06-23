@@ -127,7 +127,7 @@ export const LightType = {
     await expect(canvas.getByText("Faculty Achievements")).toBeInTheDocument();
 
     const subheading = canvas.getByText("Spotlight");
-    await expect(subheading.className).toMatch(/text-canary/);
+    await expect(subheading.className).toMatch(/text-gold/);
 
     const heading = canvas.getByText("Faculty Achievements");
     await expect(heading.className).toMatch(/text-white/);

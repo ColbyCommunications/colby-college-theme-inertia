@@ -3,7 +3,7 @@
   <a
     :href="url"
     :target="target || undefined"
-    class="btn group/btn inline-flex min-h-[44px] min-w-[44px] flex-row items-center rounded border border-solid font-body leading-130 font-normal !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-canary"
+    class="btn group inline-flex min-h-[44px] min-w-[44px] flex-row items-center rounded border-[0.75px] border-solid font-body leading-130 font-normal !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-gold"
     :class="[
       space,
       textSize,
@@ -12,9 +12,9 @@
       borderColor,
       hoverBorderColor,
       textColor,
-      !transparentBg
-        ? [backgroundColor, hoverBackgroundColor, focusBackgroundColor]
-        : null,
+      hoverTextColor,
+      hoverBackgroundColor,
+      !transparentBg ? [backgroundColor, focusBackgroundColor] : null,
     ]"
   >
     <svg
@@ -60,6 +60,7 @@ const props = defineProps({
   size: { type: String, default: "medium" }, // xlarge|large|medium|small
   type: { type: String, default: "light" }, // dark|light (twig else = light)
   arrow: { type: Boolean, default: false },
+  playIcon: { type: Boolean, default: false },
   transparentBg: { type: Boolean, default: false },
   url: { type: String, required: true },
   title: { type: String, required: true },
@@ -112,30 +113,53 @@ const space = computed(() => S.value.space);
 
 /* type mapping */
 const isDark = computed(() => props.type === "dark");
-const textColor = computed(() => (isDark.value ? "text-white" : "text-indigo"));
+const textColor = computed(() =>
+  props.transparentBg
+    ? "text-white"
+    : isDark.value
+      ? "text-white"
+      : "text-indigo",
+);
 const backgroundColor = computed(() =>
-  isDark.value ? "bg-indigo/20" : "bg-[#f9fbff]",
+  isDark.value ? "bg-indigo" : "bg-transparent",
 );
 const borderColor = computed(() =>
   props.transparentBg
-    ? "border-transparent"
+    ? "border-white"
     : isDark.value
       ? "border-[#5a6e94]"
-      : "border-[#dfecfe]",
+      : "border-indigo",
 );
 const hoverBorderColor = computed(() =>
-  isDark.value ? "hover:border-[#dfecfe]" : "hover:border-[#b7c2d5]",
+  props.transparentBg
+    ? ""
+    : isDark.value
+      ? "hover:border-indigo"
+      : "hover:border-snow",
+);
+const hoverTextColor = computed(() =>
+  props.transparentBg
+    ? "hover:text-indigo"
+    : isDark.value
+      ? "hover:text-indigo"
+      : "hover:text-indigo",
 );
 const hoverBackgroundColor = computed(() =>
-  isDark.value ? "" : "hover:bg-[#eef4ff]",
+  props.transparentBg
+    ? "hover:bg-white"
+    : isDark.value
+      ? "hover:bg-white"
+      : "hover:bg-cloud",
 );
 const focusBackgroundColor = computed(() =>
-  isDark.value ? "" : "focus:bg-[#eef4ff]",
+  isDark.value ? "" : "focus:bg-cloud",
 );
-const borderBackground = computed(() =>
-  isDark.value ? "bg-white" : "bg-indigo",
-);
+const borderBackground = computed(() => "bg-indigo");
 const arrowColor = computed(() =>
-  isDark.value ? "fill-canary" : "fill-azure",
+  props.transparentBg
+    ? "fill-gold"
+    : isDark.value
+      ? "fill-gold"
+      : "fill-indigo",
 );
 </script>

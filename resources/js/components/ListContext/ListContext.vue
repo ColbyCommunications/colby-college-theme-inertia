@@ -18,7 +18,7 @@
           <li
             v-for="(item, index) in items"
             :key="index"
-            class="list-disc font-body text-indigo-600"
+            class="list-disc font-body text-coal"
             :class="
               size === 'small'
                 ? 'text-14 leading-130 font-semibold'
@@ -27,7 +27,7 @@
           >
             <a
               v-if="item.link?.url"
-              class="text-indigo no-underline transition-all duration-200 ease-in-out hover:text-indigo-600 hover:underline"
+              class="text-indigo no-underline transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
               :href="item.link.url"
             >
               {{ item.link.title }}

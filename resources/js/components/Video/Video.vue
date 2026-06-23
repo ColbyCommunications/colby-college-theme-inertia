@@ -17,7 +17,7 @@
       >
         <Icon
           name="play"
-          class="z-10 w-12 fill-indigo-800 transition-all duration-400 ease-in-out group-hover:fill-indigo"
+          class="z-10 w-12 fill-indigo transition-all duration-400 ease-in-out group-hover:fill-indigo"
           aria-hidden="true"
           focusable="false"
         />
