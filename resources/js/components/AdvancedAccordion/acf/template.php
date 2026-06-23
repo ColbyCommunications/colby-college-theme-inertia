@@ -1,45 +1,28 @@
 <?php
-
-$block_id = ! empty( $block['anchor'] )
-    ? esc_attr( $block['anchor'] )
-    : '';
-
-$class_name = 'advanced-accordion';
+$block_id = ! empty( $block['anchor'] ) ? esc_attr( $block['anchor'] ) : 'accordion-' . wp_generate_uuid4();
+$class_name = 'advanced-accordion max-w-screen-2xl w-full mx-auto';
 
 if ( ! empty( $block['className'] ) ) {
     $class_name .= ' ' . $block['className'];
 }
 
-$allowed_blocks = [
-    'acf/advanced-accordion-panel',
-];
-
-$inner_blocks_template = [
-    [
-        'acf/advanced-accordion-panel',
-        [],
-    ],
-];
-
-$wrapper_attributes = get_block_wrapper_attributes([
-    'id'    => $block_id,
-    'class' => esc_attr( $class_name ),
-]);
+$single = get_field('single') ? '1' : '0';
+$allowed_blocks = ['acf/advanced-accordion-panel'];
 ?>
 
-<div <?php echo wp_kses_data( $wrapper_attributes ); ?>>
-    <div class="acf-block-fields acf-fields">
-        <div class="acf-field">
-            <div class="acf-label">
-                <label>Advanced Accordion</label>
-            </div>
-
-            <div class="acf-input" style="border: 1px solid #ccc; padding: 20px;">
-                <InnerBlocks
-                    allowedBlocks="<?php echo esc_attr( wp_json_encode( $allowed_blocks ) ); ?>"
-                    template="<?php echo esc_attr( wp_json_encode( $inner_blocks_template ) ); ?>"
-                />
+<div id="<?php echo $block_id; ?>" class="<?php echo esc_attr( $class_name ); ?>" data-single="<?php echo esc_attr( $single ); ?>">
+    <?php if ( $is_preview ) : ?>
+        <div class="acf-block-fields acf-fields">
+            <div class="acf-field">
+                <div class="acf-label"><label>Advanced Accordion</label></div>
+                <div style="border: 2px dashed #ccc; padding: 20px;">
+                    <InnerBlocks allowedBlocks="<?php echo esc_attr( wp_json_encode( $allowed_blocks ) ); ?>" />
+                </div>
             </div>
         </div>
-    </div>
+    <?php else : ?>
+        <div class="colby-advanced-accordion-block border-b border-gray-300">
+            <InnerBlocks allowedBlocks="<?php echo esc_attr( wp_json_encode( $allowed_blocks ) ); ?>" />
+        </div>
+    <?php endif; ?>
 </div>

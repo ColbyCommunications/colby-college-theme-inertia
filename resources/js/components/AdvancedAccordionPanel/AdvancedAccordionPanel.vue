@@ -2,7 +2,7 @@
   <article class="advanced-accordion__panel border-t border-gray-300">
     <div class="advanced-accordion__header">
       <button
-        class="advanced-accordion__button flex w-full items-center justify-between gap-x-3 !px-0 !py-6 text-left"
+        class="advanced-accordion__button flex w-full cursor-pointer items-center justify-between gap-x-3 !px-0 !py-6 text-left"
         @click="toggle"
       >
         <h3 class="!text-18 leading-120 text-indigo">
