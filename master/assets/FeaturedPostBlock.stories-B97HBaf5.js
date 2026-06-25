@@ -1,0 +1,29 @@
+import e from"./FeaturedPost-DEve6D9A.js";import"./iframe-DTL4LCWd.js";import"./preload-helper-CNn__nYE.js";import"./Context-Csn7vR_T.js";import"./TextGroup-DdC10FMg.js";import"./_plugin-vue_export-helper-DlAUqK2U.js";import"./noframework.waypoints-DVP5Ss7z.js";import"./ButtonGroup-D5CFiUsv.js";import"./Button-D7gjFSN8.js";import"./AnimatedBorder-CNksFuNW.js";import"./index-D4-8ALNT.js";import"./Picture-DaNxw0P8.js";const{expect:g}=__STORYBOOK_MODULE_TEST__,h={title:"Blocks/Featured Post",component:e,tags:["!autodocs"],argTypes:{heading:{name:"Heading",control:"text",table:{category:"Wordpress Fields"}},paragraph:{name:"Paragraph",control:"text",table:{category:"Wordpress Fields"}},caption:{name:"Caption",control:"text",table:{category:"Wordpress Fields"}},buttons:{name:"Buttons",control:"object",table:{category:"Wordpress Fields"}},post:{name:"Post",control:"object",table:{category:"Wordpress Fields"}}}},t={name:"Featured Post",args:{heading:"Events",paragraph:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue pulvinar lectus.",caption:"Allen & Benner",buttons:[{url:"#",title:"All Events"}],post:{date:"June 24, 2022",heading:"Lorem ipsum dolor sit amet, consectet.",paragraph:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue pulvinar lectus.",buttons:[{url:"#",title:"All Events"}],image:{srcset:"https://placehold.co/760x430",src:"https://placehold.co/410x290",alt:"Featured post image",sizes:{Rectangle:"https://placehold.co/760x430"}}}}};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
+  name: "Featured Post",
+  args: {
+    heading: "Events",
+    paragraph: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue pulvinar lectus.",
+    caption: "Allen & Benner",
+    buttons: [{
+      url: "#",
+      title: "All Events"
+    }],
+    post: {
+      date: "June 24, 2022",
+      heading: "Lorem ipsum dolor sit amet, consectet.",
+      paragraph: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue pulvinar lectus.",
+      buttons: [{
+        url: "#",
+        title: "All Events"
+      }],
+      image: {
+        srcset: "https://placehold.co/760x430",
+        src: "https://placehold.co/410x290",
+        alt: "Featured post image",
+        sizes: {
+          Rectangle: "https://placehold.co/760x430"
+        }
+      }
+    }
+  }
+}`,...t.parameters?.docs?.source}}};const b=["Default"];export{t as Default,b as __namedExportsOrder,h as default};
