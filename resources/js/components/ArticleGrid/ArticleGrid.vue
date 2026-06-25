@@ -11,7 +11,7 @@
             <div
               v-for="(item, index) in carouselItems"
               :key="index"
-              class="article-grid__item glide__slide"
+              class="article-grid__item glide__slide pb-[1px]"
             >
               <Article
                 size="small"
