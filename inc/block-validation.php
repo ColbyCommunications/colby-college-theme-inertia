@@ -1,1220 +1,630 @@
 <?php
-
 /**
- * Metadata-driven ACF block validation for required fields.
+ * ACF block validation rules shared by PHP validation and Gutenberg editor JS.
  *
- * Intercepts save and autosave requests, reads ACF field definitions
- * from the runtime registry, and validates only fields marked as required.
- * Respects conditional_logic so hidden fields are not validated.
- */
-
-// ---------------------------------------------------------------------------
-// 1. Field-group lookup: block name → ACF field groups
-// ---------------------------------------------------------------------------
-
-function colby_get_block_field_groups(string $block_name): array {
-    static $map = null;
-
-    if ($map === null) {
-        $map = [];
-
-        if (!function_exists('acf_get_field_groups')) {
-            return [];
-        }
-
-        foreach (acf_get_field_groups() as $group) {
-            foreach (($group['location'] ?? []) as $or_group) {
-                foreach ($or_group as $rule) {
-                    if (
-                        ($rule['param'] ?? null) === 'block'
-                        && ($rule['operator'] ?? '==') === '=='
-                    ) {
-                        $map[$rule['value']][] = $group;
-                    }
-                }
-            }
-        }
-    }
-
-    return $map[$block_name] ?? [];
-}
-
-// ---------------------------------------------------------------------------
-// 2. Schema expansion: resolve clone targets into a full field tree
-// ---------------------------------------------------------------------------
-
-/**
- * Build a map of field_key → original required value from ACF's local field store.
+ * Convention:
+ * resources/js/components/{BlockName}/acf/validation.php
  *
- * acf_get_local_fields() returns the raw field arrays as registered via
- * acf_add_local_field_group(), BEFORE ACF's clone resolution propagates
- * the clone wrapper's required flag to resolved children.
+ * Each per-block validation file should return an array keyed by ACF field key:
+ *
+ * return [
+ *     'field_632352355646a' => [
+ *         'name'  => 'image',
+ *         'label' => 'Media Context image',
+ *         'type'  => 'image',
+ *     ],
+ * ];
  */
-function colby_get_source_required_map(string $parent_key): array {
-    static $cache = [];
 
-    if (isset($cache[$parent_key])) {
-        return $cache[$parent_key];
-    }
-
-    $map = [];
-
-    if (!function_exists('acf_get_local_fields')) {
-        return $cache[$parent_key] = $map;
-    }
-
-    $walk = function (string $parent) use (&$walk, &$map): void {
-        foreach ((array) acf_get_local_fields($parent) as $field) {
-            $key = $field['key'] ?? '';
-            if ($key === '') {
-                continue;
-            }
-
-            $map[$key] = (int) ($field['required'] ?? 0);
-
-            // Recurse into clone targets to get their original required flags too
-            if (($field['type'] ?? '') === 'clone') {
-                foreach (($field['clone'] ?? []) as $target) {
-                    if (strpos($target, 'group_') === 0) {
-                        $walk($target);
-                    }
-                }
-            }
-
-            $walk($key);
-        }
-    };
-
-    $walk($parent_key);
-
-    return $cache[$parent_key] = $map;
+if (!defined('ABSPATH')) {
+    exit;
 }
 
 /**
- * Restore original required flags on resolved fields using the source map.
+ * Directories that contain block component folders.
+ *
+ * Override this with the `colby_acf_block_validation_component_roots` filter
+ * if the components directory moves.
  */
-function colby_restore_required_flags(array $fields, array $required_map): array {
-    foreach ($fields as &$field) {
-        $key = $field['key'] ?? '';
-        if ($key !== '') {
-            $matched = false;
-
-            // Direct match
-            if (array_key_exists($key, $required_map)) {
-                $field['required'] = $required_map[$key];
-                $matched = true;
-            }
-
-            // ACF creates compound keys for clone-resolved fields (e.g.,
-            // field_clone_field_original). Match by suffix.
-            if (!$matched) {
-                foreach ($required_map as $source_key => $source_required) {
-                    if (str_ends_with($key, '_' . $source_key)) {
-                        $field['required'] = $source_required;
-                        $matched = true;
-                        break;
-                    }
-                }
-            }
-
-            // If no direct match found but the compound key contains a segment
-            // that maps to required=0 (a non-required clone ancestor), treat
-            // this field as non-required to prevent clone inheritance false positives.
-            if (!$matched && $field['required']) {
-                foreach ($required_map as $source_key => $source_required) {
-                    if ($source_required === 0 && strpos($key, $source_key . '_') !== false) {
-                        $field['required'] = 0;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (!empty($field['sub_fields'])) {
-            $field['sub_fields'] = colby_restore_required_flags($field['sub_fields'], $required_map);
-        }
-    }
-    unset($field);
-
-    return $fields;
-}
-
-function colby_expand_field_schema(array $field): array {
-    if ($field['type'] === 'clone') {
-        // Use the clone field's own resolved sub_fields if ACF populated them
-        // (these have the correct compound keys from the parent context).
-        // Fall back to fetching from clone targets independently.
-        $cloned_fields = $field['sub_fields'] ?? [];
-
-        if (empty($cloned_fields)) {
-            foreach (($field['clone'] ?? []) as $target) {
-                if (function_exists('acf_get_fields')) {
-                    $target_fields = acf_get_fields($target);
-                    if (is_array($target_fields)) {
-                        $cloned_fields = array_merge($cloned_fields, $target_fields);
-                    }
-                }
-            }
-        }
-
-        // Restore original required flags from the local field store
-        // to undo ACF's clone-required inheritance (where a required clone
-        // forces all its resolved children to be required too)
-        foreach (($field['clone'] ?? []) as $target) {
-            if (strpos($target, 'group_') === 0) {
-                $source_map = colby_get_source_required_map($target);
-                if (!empty($source_map)) {
-                    $cloned_fields = colby_restore_required_flags($cloned_fields, $source_map);
-                }
-            }
-        }
-
-        $seamless = ($field['display'] ?? 'seamless') === 'seamless'
-            && empty($field['prefix_name']);
-
-        $field['_resolved_clone_fields'] = array_map('colby_expand_field_schema', $cloned_fields);
-        $field['_clone_seamless'] = $seamless;
-
-        return $field;
-    }
-
-    if (!empty($field['sub_fields'])) {
-        $field['sub_fields'] = array_map('colby_expand_field_schema', $field['sub_fields']);
-    }
-
-    return $field;
-}
-
-// ---------------------------------------------------------------------------
-// 3. Flat-key extraction helpers
-// ---------------------------------------------------------------------------
-
-/**
- * Extract all raw_data keys that start with a given prefix into a sub-array.
- * E.g., prefix "post" extracts "post_image" => val as "image" => val.
- */
-function colby_extract_prefixed_data(array $raw_data, string $prefix): array {
-    $result = [];
-    $prefix_len = strlen($prefix) + 1; // +1 for the underscore
-
-    foreach ($raw_data as $key => $value) {
-        if (!is_string($key)) {
-            continue;
-        }
-        if (strpos($key, $prefix . '_') === 0) {
-            $remainder = substr($key, $prefix_len);
-            // Only take the immediate key (no further underscores means it's a direct child)
-            // But we keep ALL keys — the recursive normalizer will handle deeper extraction
-            $result[$remainder] = $value;
-        }
-    }
-
-    return $result;
-}
-
-/**
- * Extract repeater row data from flat keys.
- * Supports both name-based keys (images_0_image) and field-key-based keys
- * (field_xxx_0_field_yyy) since ACF versions may use either format.
- */
-function colby_extract_row_data(
-    array $raw_data,
-    string $repeater_name,
-    int $row_index,
-    string $repeater_key = '',
-    array $sub_fields = []
-): array {
-    $result = [];
-
-    // Try name-based patterns first (most common)
-    $patterns = [
-        "{$repeater_name}_{$row_index}_",
-        "{$repeater_name}_row-{$row_index}_",
+function colby_acf_block_validation_component_roots(): array {
+    $roots = [
+        get_stylesheet_directory() . '/resources/js/components',
     ];
 
-    foreach ($raw_data as $k => $value) {
-        if (!is_string($k)) {
-            continue;
-        }
-        foreach ($patterns as $pattern) {
-            if (strpos($k, $pattern) === 0) {
-                $remainder = substr($k, strlen($pattern));
-                $result[$remainder] = $value;
-                break;
-            }
-        }
-    }
-
-    // If name-based extraction found nothing, try field-key-based patterns
-    if (empty($result) && $repeater_key !== '') {
-        $key_patterns = [
-            "{$repeater_key}_{$row_index}_",
-            "{$repeater_key}_row-{$row_index}_",
-        ];
-
-        $key_to_name = [];
-        foreach ($sub_fields as $sf) {
-            $sf_key = $sf['key'] ?? '';
-            $sf_name = $sf['name'] ?? '';
-            if ($sf_key !== '' && $sf_name !== '') {
-                $key_to_name[$sf_key] = $sf_name;
-            }
-        }
-
-        foreach ($raw_data as $k => $value) {
-            if (!is_string($k)) {
-                continue;
-            }
-            foreach ($key_patterns as $pattern) {
-                if (strpos($k, $pattern) === 0) {
-                    $remainder = substr($k, strlen($pattern));
-                    // Map field key remainder back to field name if possible
-                    $mapped_name = $key_to_name[$remainder] ?? $remainder;
-                    $result[$mapped_name] = $value;
-                    break;
-                }
-            }
-        }
-    }
-
-    return $result;
-}
-
-// ---------------------------------------------------------------------------
-// 4. Data normalization: raw attrs.data → structured values keyed by field name
-// ---------------------------------------------------------------------------
-
-function colby_normalize_block_data(array $raw_data, array $schema): array {
-    $normalized = [];
-
-    foreach ($schema as $field) {
-        $name = $field['name'] ?? '';
-        $key = $field['key'] ?? '';
-        $type = $field['type'] ?? '';
-
-        if ($name === '' && $key === '') {
-            continue;
-        }
-
-        if ($type === 'clone' && !empty($field['_clone_seamless'])) {
-            // Seamless clones inline their fields into the current scope
-            $clone_fields = $field['_resolved_clone_fields'] ?? [];
-            $clone_data = colby_normalize_block_data($raw_data, $clone_fields);
-            $normalized = array_merge($normalized, $clone_data);
-            continue;
-        }
-
-        // Find the value - try field name first, then field key
-        $value = $raw_data[$name] ?? $raw_data[$key] ?? null;
-
-        if ($type === 'group') {
-            $sub_fields = $field['sub_fields'] ?? [];
-            $group_data = [];
-
-            if (is_array($value)) {
-                $group_data = $value;
-            }
-
-            // Merge in all flat keys that start with the group name prefix
-            // This handles deep nesting like post_image, post_context_heading, etc.
-            $prefixed = colby_extract_prefixed_data($raw_data, $name);
-            $group_data = array_merge($prefixed, $group_data);
-
-            $normalized[$name] = colby_normalize_block_data($group_data, $sub_fields);
-            continue;
-        }
-
-        if ($type === 'repeater') {
-            $sub_fields = $field['sub_fields'] ?? [];
-            $rows = [];
-
-            if (is_array($value) && !empty($value)) {
-                // Check if it's structured rows (nested arrays keyed by index, row-N, or ACF hash IDs)
-                $first_value = reset($value);
-                $is_row_collection = is_array($first_value);
-
-                if ($is_row_collection) {
-                    foreach ($value as $row_data) {
-                        if (is_array($row_data)) {
-                            $rows[] = colby_normalize_block_data($row_data, $sub_fields);
-                        }
-                    }
-                } else {
-                    // Single value — might be a count string like "1"
-                    // Fall through to flat extraction below
-                }
-            }
-
-            if (empty($rows)) {
-                // Flat format: field_name = count, field_name_0_subfield = value
-                $count = is_numeric($value) ? (int) $value : 0;
-
-                if ($count === 0 && $key !== '' && isset($raw_data[$key]) && is_numeric($raw_data[$key])) {
-                    $count = (int) $raw_data[$key];
-                }
-
-                for ($i = 0; $i < $count; $i++) {
-                    // Extract ALL keys matching this row's prefix pattern
-                    // Tries name-based first, falls back to field-key-based
-                    $row_data = colby_extract_row_data($raw_data, $name, $i, $key, $sub_fields);
-
-                    // Skip empty rows (stale count with no actual data)
-                    if (empty($row_data)) {
-                        continue;
-                    }
-
-                    $rows[] = colby_normalize_block_data($row_data, $sub_fields);
-                }
-            }
-
-            $normalized[$name] = $rows;
-            continue;
-        }
-
-        if ($type === 'clone' && empty($field['_clone_seamless'])) {
-            // Prefixed clone: data is under clone field name
-            $clone_fields = $field['_resolved_clone_fields'] ?? [];
-            $clone_data = is_array($value) ? $value : [];
-
-            // Merge in flat prefixed keys
-            $prefixed = colby_extract_prefixed_data($raw_data, $name);
-            $clone_data = array_merge($prefixed, $clone_data);
-
-            $normalized[$name] = colby_normalize_block_data($clone_data, $clone_fields);
-            continue;
-        }
-
-        // Scalar or other field types
-        $normalized[$name] = $value;
-    }
-
-    return $normalized;
-}
-
-// ---------------------------------------------------------------------------
-// 5. Conditional logic evaluation
-// ---------------------------------------------------------------------------
-
-/**
- * Build a field key → name index from a schema, including seamless clone fields.
- */
-function colby_build_key_index(array $schema): array {
-    $index = [];
-    foreach ($schema as $f) {
-        if (!empty($f['key']) && !empty($f['name'])) {
-            $index[$f['key']] = $f['name'];
-        }
-        if (($f['type'] ?? '') === 'clone' && !empty($f['_clone_seamless'])) {
-            foreach (($f['_resolved_clone_fields'] ?? []) as $cf) {
-                if (!empty($cf['key']) && !empty($cf['name'])) {
-                    $index[$cf['key']] = $cf['name'];
-                }
-            }
-        }
-    }
-    return $index;
+    /**
+     * Filter the component root directories scanned for acf/validation.php files.
+     *
+     * @param array<int, string> $roots Absolute directory paths.
+     */
+    return array_values(array_filter((array) apply_filters('colby_acf_block_validation_component_roots', $roots)));
 }
 
 /**
- * Evaluate a single conditional rule against data.
- */
-function colby_rule_matches(array $rule, $actual): bool {
-    $operator = $rule['operator'] ?? '==';
-    $expected = $rule['value'] ?? '';
-
-    // Normalize actual value for comparison
-    if (is_bool($actual)) {
-        $actual = $actual ? '1' : '0';
-    } elseif (is_numeric($actual)) {
-        $actual = (string) $actual;
-    } elseif (is_null($actual)) {
-        $actual = '';
-    } elseif (is_array($actual)) {
-        $actual = !empty($actual) ? '__non_empty__' : '';
-    }
-
-    if (!is_string($actual)) {
-        $actual = '';
-    }
-
-    switch ($operator) {
-        case '==':
-            return $actual === (string) $expected;
-
-        case '!=':
-            return $actual !== (string) $expected;
-
-        case '==empty':
-            return trim($actual) === '' || $actual === '0';
-
-        case '!=empty':
-            return trim($actual) !== '' && $actual !== '0';
-
-        default:
-            return true;
-    }
-}
-
-/**
- * Evaluate whether a field is visible based on its conditional_logic rules.
+ * Find validation.php files colocated with block field definitions.
  *
- * Accepts both the current scope's schema/data and a parent scope stack
- * so that rules referencing fields in ancestor scopes can be resolved.
+ * Expected path:
+ * resources/js/components/{BlockName}/acf/validation.php
  */
-function colby_evaluate_conditional_logic(
-    array $field,
-    array $data,
-    array $schema,
-    array $parent_scopes = []
-): bool {
-    $logic = $field['conditional_logic'] ?? false;
+function colby_acf_block_validation_rule_files(): array {
+    $files = [];
 
-    if (empty($logic) || $logic === 0) {
-        return true;
-    }
-
-    // Build key index for current scope
-    $key_to_name = colby_build_key_index($schema);
-
-    // Also build indexes for all parent scopes
-    $parent_indexes = [];
-    foreach ($parent_scopes as $scope) {
-        $parent_indexes[] = [
-            'index' => colby_build_key_index($scope['schema']),
-            'data' => $scope['data'],
-        ];
-    }
-
-    // Conditional logic is OR of AND groups
-    foreach ($logic as $and_group) {
-        $all_matched = true;
-
-        foreach ($and_group as $rule) {
-            $target_key = $rule['field'] ?? '';
-
-            // Try resolving in current scope first
-            $resolved = false;
-            $target_name = $key_to_name[$target_key] ?? '';
-
-            if ($target_name !== '') {
-                $actual = $data[$target_name] ?? null;
-                $resolved = true;
-            }
-
-            // If not found in current scope, check parent scopes
-            if (!$resolved) {
-                foreach ($parent_indexes as $parent) {
-                    $parent_name = $parent['index'][$target_key] ?? '';
-                    if ($parent_name !== '') {
-                        $actual = $parent['data'][$parent_name] ?? null;
-                        $resolved = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!$resolved) {
-                // Can't resolve the field - treat as visible (safe default)
-                continue;
-            }
-
-            if (!colby_rule_matches($rule, $actual)) {
-                $all_matched = false;
-                break;
-            }
+    foreach (colby_acf_block_validation_component_roots() as $root) {
+        if (!is_string($root) || !is_dir($root)) {
+            continue;
         }
 
-        if ($all_matched) {
-            return true;
+        $matches = glob(trailingslashit($root) . '*/acf/validation.php');
+
+        if (is_array($matches)) {
+            $files = array_merge($files, $matches);
         }
     }
 
-    return false;
+    /**
+     * Filter discovered validation rule files.
+     *
+     * @param array<int, string> $files Absolute validation.php file paths.
+     */
+    return array_values(array_unique(array_filter((array) apply_filters('colby_acf_block_validation_rule_files', $files))));
 }
 
-// ---------------------------------------------------------------------------
-// 6. Per-type required-value checks
-// ---------------------------------------------------------------------------
+/**
+ * Load all colocated block validation rules.
+ *
+ * Each file must return an array keyed by field key. Invalid files are ignored
+ * rather than fataling the editor.
+ */
+function colby_acf_block_colocated_validation_rules(): array {
+    $rules = [];
 
-function colby_field_has_required_value(array $field, $value): bool {
-    $type = $field['type'] ?? '';
-
-    switch ($type) {
-        case 'text':
-        case 'textarea':
-        case 'email':
-        case 'url':
-        case 'password':
-        case 'wysiwyg':
-            return is_string($value) ? trim(wp_strip_all_tags($value)) !== '' : !empty($value);
-
-        case 'radio':
-        case 'select':
-        case 'checkbox':
-        case 'button_group':
-            return is_string($value) ? trim($value) !== '' : !empty($value);
-
-        case 'number':
-        case 'range':
-            return $value !== null && $value !== '' && $value !== false;
-
-        case 'true_false':
-            return true;
-
-        case 'image':
-        case 'file':
-        case 'gallery':
-            if (is_array($value)) {
-                return !empty($value['id']) || !empty($value['ID']) || !empty($value['url']);
-            }
-            return is_numeric($value) && (int) $value > 0;
-
-        case 'link':
-            if (is_array($value)) {
-                return !empty($value['url']);
-            }
-            return !empty($value);
-
-        case 'repeater':
-            if (!is_array($value) || count($value) === 0) {
-                return false;
-            }
-            // Verify at least one row has actual content (not just empty arrays from stale counts)
-            foreach ($value as $row) {
-                if (!is_array($row)) {
-                    continue;
-                }
-                foreach ($row as $v) {
-                    if ($v !== null && $v !== '' && $v !== false && $v !== []) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-
-        case 'group':
-            // A required group must have at least one non-empty sub-field value
-            if (!is_array($value)) {
-                return false;
-            }
-            foreach ($value as $v) {
-                if ($v !== null && $v !== '' && $v !== false && $v !== []) {
-                    return true;
-                }
-            }
-            return false;
-
-        case 'clone':
-            if (!is_array($value)) {
-                return false;
-            }
-            foreach ($value as $v) {
-                if ($v !== null && $v !== '' && $v !== false && $v !== []) {
-                    return true;
-                }
-            }
-            return false;
-
-        case 'taxonomy':
-        case 'post_object':
-        case 'relationship':
-        case 'page_link':
-        case 'user':
-            return !empty($value);
-
-        default:
-            if (is_array($value)) {
-                return !empty(array_filter($value, function ($v) {
-                    return $v !== null && $v !== '' && $v !== false;
-                }));
-            }
-            if (is_string($value)) {
-                return trim($value) !== '';
-            }
-            return $value !== null && $value !== false && $value !== '';
-    }
-}
-
-// ---------------------------------------------------------------------------
-// 7. WYSIWYG content policy validation
-// ---------------------------------------------------------------------------
-
-function colby_wysiwyg_field_policy(array $field): array {
-    if (($field['type'] ?? '') !== 'wysiwyg') {
-        return ['mode' => 'none'];
-    }
-
-    $toolbar = strtolower((string) ($field['toolbar'] ?? ''));
-
-    if (in_array($toolbar, ['basic', 'limited'], true)) {
-        return [
-            'mode' => 'limited',
-            'forbidden_tags' => [
-                'audio',
-                'blockquote',
-                'button',
-                'canvas',
-                'col',
-                'colgroup',
-                'embed',
-                'figcaption',
-                'figure',
-                'form',
-                'h1',
-                'h2',
-                'h3',
-                'h4',
-                'h5',
-                'h6',
-                'iframe',
-                'img',
-                'input',
-                'math',
-                'object',
-                'picture',
-                'pre',
-                'script',
-                'select',
-                'source',
-                'style',
-                'svg',
-                'table',
-                'tbody',
-                'td',
-                'textarea',
-                'tfoot',
-                'th',
-                'thead',
-                'tr',
-                'video',
-            ],
-        ];
-    }
-
-    if ($toolbar === 'full' && empty($field['media_upload'])) {
-        return [
-            'mode' => 'no_media',
-            'forbidden_tags' => [
-                'audio',
-                'canvas',
-                'embed',
-                'figcaption',
-                'figure',
-                'iframe',
-                'img',
-                'math',
-                'object',
-                'picture',
-                'script',
-                'source',
-                'style',
-                'svg',
-                'video',
-            ],
-        ];
-    }
-
-    return ['mode' => 'none'];
-}
-
-function colby_wysiwyg_limited_allowed_html(): array {
-    return [
-        'a' => [
-            'href' => true,
-            'rel' => true,
-            'target' => true,
-            'title' => true,
-        ],
-        'b' => [],
-        'br' => [],
-        'em' => [],
-        'i' => [],
-        'li' => [],
-        'ol' => [],
-        'p' => [],
-        'strong' => [],
-        'u' => [],
-        'ul' => [],
-    ];
-}
-
-function colby_wysiwyg_find_html_tags(string $html): array {
-    if (!preg_match_all('/<\s*\/?\s*([a-zA-Z0-9:-]+)/', $html, $matches)) {
-        return [];
-    }
-
-    $tags = array_map('strtolower', $matches[1]);
-
-    return array_values(array_unique($tags));
-}
-
-function colby_wysiwyg_tag_label(string $tag): string {
-    if (in_array($tag, ['img', 'picture', 'source', 'figure', 'figcaption'], true)) {
-        return 'images';
-    }
-
-    if ($tag === 'blockquote') {
-        return 'block quotes';
-    }
-
-    if (in_array($tag, ['table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'col', 'colgroup'], true)) {
-        return 'tables';
-    }
-
-    if (in_array($tag, ['iframe', 'embed', 'object', 'video', 'audio', 'canvas', 'svg', 'math'], true)) {
-        return 'embedded media';
-    }
-
-    if (in_array($tag, ['script', 'style'], true)) {
-        return 'scripts or styles';
-    }
-
-    if (in_array($tag, ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], true)) {
-        return 'headings';
-    }
-
-    if (in_array($tag, ['form', 'input', 'button', 'select', 'textarea'], true)) {
-        return 'form controls';
-    }
-
-    return 'unsupported HTML';
-}
-
-function colby_wysiwyg_detect_forbidden_markup(string $html, array $policy): array {
-    $forbidden_tags = array_flip($policy['forbidden_tags'] ?? []);
-    $labels = [];
-
-    if (empty($forbidden_tags)) {
-        return [];
-    }
-
-    foreach (colby_wysiwyg_find_html_tags($html) as $tag) {
-        if (isset($forbidden_tags[$tag])) {
-            $labels[] = colby_wysiwyg_tag_label($tag);
+    foreach (colby_acf_block_validation_rule_files() as $file) {
+        if (!is_readable($file)) {
+            continue;
         }
+
+        $file_rules = include $file;
+
+        if (!is_array($file_rules)) {
+            continue;
+        }
+
+        $rules = array_replace($rules, $file_rules);
     }
 
-    return array_values(array_unique($labels));
+    return $rules;
 }
 
-function colby_wysiwyg_normalize_html_for_compare(string $html): string {
-    $html = trim($html);
-    $html = preg_replace('/>\s+</', '><', $html);
-    $html = preg_replace('/\s+/', ' ', $html);
+/**
+ * Required ACF block field rules keyed by ACF field key.
+ *
+ * Rules are loaded from colocated files at:
+ * resources/js/components/{BlockName}/acf/validation.php
+ */
+function colby_acf_block_validation_rules(): array {
+    static $rules = null;
 
-    return trim((string) $html);
+    if ($rules !== null) {
+        return $rules;
+    }
+
+    $rules = colby_acf_block_colocated_validation_rules();
+
+    /**
+     * Filter the final validation rules used by both PHP and JS.
+     *
+     * @param array<string, array<string, mixed>> $rules Rules keyed by ACF field key.
+     */
+    $rules = (array) apply_filters('colby_acf_block_validation_rules', $rules);
+
+    return $rules;
 }
 
-function colby_wysiwyg_policy_violation(string $html, array $policy): string {
-    if (($policy['mode'] ?? 'none') === 'none' || trim($html) === '') {
-        return '';
-    }
+/**
+ * Return all rules for a given ACF field name.
+ */
+function colby_acf_block_validation_rules_for_name(string $name): array {
+    return array_filter(
+        colby_acf_block_validation_rules(),
+        static function (array $rule) use ($name): bool {
+            return ($rule['name'] ?? '') === $name;
+        }
+    );
+}
 
-    $forbidden = colby_wysiwyg_detect_forbidden_markup($html, $policy);
-
-    if (!empty($forbidden)) {
-        return implode(', ', $forbidden) . ' are not allowed';
-    }
-
-    if (($policy['mode'] ?? '') !== 'limited') {
-        return '';
-    }
-
-    $sanitized = wp_kses(
-        $html,
-        colby_wysiwyg_limited_allowed_html(),
-        ['http', 'https', 'mailto', 'tel']
+/**
+ * Register one generic ACF validation callback for each field name represented in the rules map.
+ */
+add_action('acf/init', function (): void {
+    $field_names = array_unique(
+        array_filter(
+            array_map(
+                static fn(array $rule): string => (string) ($rule['name'] ?? ''),
+                colby_acf_block_validation_rules()
+            )
+        )
     );
 
-    if (
-        colby_wysiwyg_normalize_html_for_compare($html)
-        !== colby_wysiwyg_normalize_html_for_compare($sanitized)
-    ) {
-        return 'only paragraphs, links, lists, bold, italic, and underline are allowed';
-    }
-
-    return '';
-}
-
-function colby_validate_wysiwyg_policy_list(
-    array $schema,
-    array $data,
-    string $block_label = '',
-    array $parent_scopes = []
-): array {
-    $errors = [];
-
-    foreach ($schema as $field) {
-        $name = $field['name'] ?? '';
-        $type = $field['type'] ?? '';
-
-        if ($type === 'clone' && !empty($field['_clone_seamless'])) {
-            $clone_fields = $field['_resolved_clone_fields'] ?? [];
-            $clone_errors = colby_validate_wysiwyg_policy_list($clone_fields, $data, $block_label, $parent_scopes);
-            $errors = array_merge($errors, $clone_errors);
-            continue;
-        }
-
-        if (!colby_evaluate_conditional_logic($field, $data, $schema, $parent_scopes)) {
-            continue;
-        }
-
-        $value = $data[$name] ?? null;
-
-        if ($type === 'wysiwyg' && is_string($value) && trim($value) !== '') {
-            $violation = colby_wysiwyg_policy_violation($value, colby_wysiwyg_field_policy($field));
-
-            if ($violation !== '') {
-                $label = $field['label'] ?? $name;
-                $errors[] = sprintf('%s: %s', $label, $violation);
-            }
-        }
-
-        $child_parent_scopes = array_merge(
-            [['schema' => $schema, 'data' => $data]],
-            $parent_scopes
+    foreach ($field_names as $field_name) {
+        add_filter(
+            "acf/validate_value/name={$field_name}",
+            'colby_validate_acf_block_configured_required_field',
+            10,
+            4
         );
-
-        if ($type === 'group' && is_array($value)) {
-            $sub_fields = $field['sub_fields'] ?? [];
-            $sub_errors = colby_validate_wysiwyg_policy_list($sub_fields, $value, $block_label, $child_parent_scopes);
-            $errors = array_merge($errors, $sub_errors);
-        }
-
-        if ($type === 'repeater' && is_array($value)) {
-            $sub_fields = $field['sub_fields'] ?? [];
-            foreach ($value as $row_index => $row_data) {
-                if (!is_array($row_data)) {
-                    continue;
-                }
-
-                $row_errors = colby_validate_wysiwyg_policy_list($sub_fields, $row_data, $block_label, $child_parent_scopes);
-                foreach ($row_errors as $row_error) {
-                    $errors[] = sprintf('%s (row %d)', $row_error, $row_index + 1);
-                }
-            }
-        }
-
-        if ($type === 'clone' && empty($field['_clone_seamless']) && is_array($value)) {
-            $clone_fields = $field['_resolved_clone_fields'] ?? [];
-            $clone_errors = colby_validate_wysiwyg_policy_list($clone_fields, $value, $block_label, $child_parent_scopes);
-            $errors = array_merge($errors, $clone_errors);
-        }
-    }
-
-    return $errors;
-}
-
-// ---------------------------------------------------------------------------
-// 8. Recursive field-tree validation
-// ---------------------------------------------------------------------------
-
-/**
- * Validate required fields in a field list.
- *
- * @param array  $schema        The expanded field schema for the current scope.
- * @param array  $data          The normalized data for the current scope.
- * @param string $block_label   The block's display name (for error messages).
- * @param array  $parent_scopes Stack of parent scopes [{schema, data}, ...] for conditional logic.
- */
-function colby_validate_field_list(
-    array $schema,
-    array $data,
-    string $block_label = '',
-    array $parent_scopes = []
-): array {
-    $errors = [];
-
-    foreach ($schema as $field) {
-        $name = $field['name'] ?? '';
-        $type = $field['type'] ?? '';
-        $required = !empty($field['required']);
-
-        // Handle seamless clones
-        if ($type === 'clone' && !empty($field['_clone_seamless'])) {
-            $clone_fields = $field['_resolved_clone_fields'] ?? [];
-
-            // Check if the clone has any data present
-            $clone_has_data = false;
-            foreach ($clone_fields as $cf) {
-                $cf_name = $cf['name'] ?? '';
-                $cf_value = $data[$cf_name] ?? null;
-                if ($cf_value !== null && $cf_value !== '' && $cf_value !== false && $cf_value !== []) {
-                    $clone_has_data = true;
-                    break;
-                }
-            }
-
-            // If the clone wrapper is required, enforce that it has data
-            if ($required && !$clone_has_data) {
-                $label = $field['label'] ?? $name;
-                $errors[] = $label;
-                continue;
-            }
-
-            // If the clone wrapper is optional and has no data, skip validation entirely
-            if (!$required && !$clone_has_data) {
-                continue;
-            }
-
-            // Validate the inlined clone fields in the current scope
-            $clone_errors = colby_validate_field_list($clone_fields, $data, $block_label, $parent_scopes);
-            $errors = array_merge($errors, $clone_errors);
-            continue;
-        }
-
-        // Check conditional visibility (with parent scope awareness)
-        if (!colby_evaluate_conditional_logic($field, $data, $schema, $parent_scopes)) {
-            continue;
-        }
-
-        $value = $data[$name] ?? null;
-
-        // Check required
-        if ($required && !colby_field_has_required_value($field, $value)) {
-            $label = $field['label'] ?? $name;
-            $errors[] = $label;
-            continue;
-        }
-
-        // Build new parent scope stack for children
-        $child_parent_scopes = array_merge(
-            [['schema' => $schema, 'data' => $data]],
-            $parent_scopes
-        );
-
-        // Recurse into groups
-        if ($type === 'group' && is_array($value)) {
-            $sub_fields = $field['sub_fields'] ?? [];
-            $sub_errors = colby_validate_field_list($sub_fields, $value, $block_label, $child_parent_scopes);
-            $errors = array_merge($errors, $sub_errors);
-        }
-
-        // Recurse into repeater rows
-        if ($type === 'repeater' && is_array($value)) {
-            $sub_fields = $field['sub_fields'] ?? [];
-            foreach ($value as $row_index => $row_data) {
-                if (!is_array($row_data)) {
-                    continue;
-                }
-                $row_errors = colby_validate_field_list($sub_fields, $row_data, $block_label, $child_parent_scopes);
-                foreach ($row_errors as $row_error) {
-                    $errors[] = sprintf('%s (row %d)', $row_error, $row_index + 1);
-                }
-            }
-        }
-
-        // Recurse into prefixed clones
-        if ($type === 'clone' && empty($field['_clone_seamless']) && is_array($value)) {
-            $clone_fields = $field['_resolved_clone_fields'] ?? [];
-            $clone_errors = colby_validate_field_list($clone_fields, $value, $block_label, $child_parent_scopes);
-            $errors = array_merge($errors, $clone_errors);
-        }
-    }
-
-    return $errors;
-}
-
-// ---------------------------------------------------------------------------
-// 9. Main validation entry point
-// ---------------------------------------------------------------------------
-
-function colby_validate_blocks(array $blocks): array {
-    $errors = [];
-
-    foreach ($blocks as $block) {
-        $block_name = $block['blockName'] ?? '';
-
-        if (strpos($block_name, 'acf/') !== 0) {
-            if (!empty($block['innerBlocks'])) {
-                $errors = array_merge($errors, colby_validate_blocks($block['innerBlocks']));
-            }
-            continue;
-        }
-
-        if (!function_exists('acf_get_field_groups') || !function_exists('acf_get_fields')) {
-            continue;
-        }
-
-        $raw_data = is_array($block['attrs']['data'] ?? null) ? $block['attrs']['data'] : [];
-
-        // Get field definitions from ACF runtime registry
-        $field_groups = colby_get_block_field_groups($block_name);
-        $fields = [];
-
-        foreach ($field_groups as $group) {
-            $group_fields = acf_get_fields($group['key']);
-            if (is_array($group_fields)) {
-                // Restore original required flags to undo ACF's clone inheritance.
-                // Build the source map from the block's own group AND all referenced
-                // clone target groups.
-                $source_map = colby_get_source_required_map($group['key']);
-                if (!empty($source_map)) {
-                    $group_fields = colby_restore_required_flags($group_fields, $source_map);
-                }
-                $fields = array_merge($fields, $group_fields);
-            }
-        }
-
-        if (empty($fields)) {
-            if (!empty($block['innerBlocks'])) {
-                $errors = array_merge($errors, colby_validate_blocks($block['innerBlocks']));
-            }
-            continue;
-        }
-
-        // Expand clone targets in the field tree
-        $schema = array_map('colby_expand_field_schema', $fields);
-
-        // Normalize the raw flat data against the schema
-        $data = colby_normalize_block_data($raw_data, $schema);
-
-        // Validate required fields recursively
-        $block_title = $block['attrs']['data']['_block_title']
-            ?? ucwords(str_replace('-', ' ', substr($block_name, 4)));
-        $field_errors = colby_validate_field_list($schema, $data, $block_title);
-
-        if (!empty($field_errors)) {
-            $message = sprintf(
-                __('%s requires the following fields before saving: %s.', 'colby'),
-                $block_title,
-                implode(', ', $field_errors)
-            );
-
-            $errors[] = new WP_Error(
-                'colby_block_validation_failed',
-                $message,
-                ['status' => 400]
-            );
-        }
-
-        $wysiwyg_errors = colby_validate_wysiwyg_policy_list($schema, $data, $block_title);
-
-        if (!empty($wysiwyg_errors)) {
-            $message = sprintf(
-                __('%s contains unsupported WYSIWYG content: %s.', 'colby'),
-                $block_title,
-                implode('; ', $wysiwyg_errors)
-            );
-
-            $errors[] = new WP_Error(
-                'colby_block_validation_failed',
-                $message,
-                ['status' => 400]
-            );
-        }
-
-        if (!empty($block['innerBlocks'])) {
-            $errors = array_merge($errors, colby_validate_blocks($block['innerBlocks']));
-        }
-    }
-
-    return $errors;
-}
-
-// ---------------------------------------------------------------------------
-// 10. Request content extraction (unchanged)
-// ---------------------------------------------------------------------------
-
-function colby_get_request_content(WP_REST_Request $request): string {
-    $content_sources = [
-        $request->get_param('content'),
-        $request->get_json_params()['content'] ?? null,
-        $request->get_body_params()['content'] ?? null,
-    ];
-
-    foreach ($content_sources as $content_param) {
-        if (is_array($content_param) && !empty($content_param['raw'])) {
-            return (string) $content_param['raw'];
-        }
-
-        if (is_string($content_param) && $content_param !== '') {
-            return $content_param;
-        }
-    }
-
-    $body = $request->get_body();
-    if ($body) {
-        $decoded_body = json_decode($body, true);
-        $content_param = $decoded_body['content'] ?? null;
-
-        if (is_array($content_param) && !empty($content_param['raw'])) {
-            return (string) $content_param['raw'];
-        }
-
-        if (is_string($content_param) && $content_param !== '') {
-            return $content_param;
-        }
-    }
-
-    return '';
-}
-
-// ---------------------------------------------------------------------------
-// 11. Validation error aggregation (unchanged)
-// ---------------------------------------------------------------------------
-
-function colby_get_block_validation_error(WP_REST_Request $request): ?WP_Error {
-    $content = colby_get_request_content($request);
-
-    if (!$content) {
-        return null;
-    }
-
-    $blocks = parse_blocks($content);
-    $errors = colby_validate_blocks($blocks);
-
-    if (!empty($errors)) {
-        $messages = array_map(function ($error) {
-            return $error->get_error_message();
-        }, $errors);
-        $message = implode("\n", $messages);
-
-        if (count($messages) > 1) {
-            $message = "\n" . $message;
-        }
-
-        return new WP_Error(
-            'colby_block_validation_failed',
-            $message,
-            ['status' => 400]
-        );
-    }
-
-    return null;
-}
-
-// ---------------------------------------------------------------------------
-// 12. Hook into WordPress save and autosave
-// ---------------------------------------------------------------------------
-
-function colby_validate_blocks_on_save($prepared_post, WP_REST_Request $request) {
-    $validation_error = colby_get_block_validation_error($request);
-
-    if ($validation_error) {
-        return $validation_error;
-    }
-
-    return $prepared_post;
-}
-
-add_action('init', function () {
-    $post_types = get_post_types(['show_in_rest' => true], 'names');
-
-    foreach ($post_types as $post_type) {
-        if (!post_type_supports($post_type, 'editor')) {
-            continue;
-        }
-
-        add_filter("rest_pre_insert_{$post_type}", 'colby_validate_blocks_on_save', 10, 2);
     }
 });
 
-add_action('enqueue_block_editor_assets', function () {
+/**
+ * Generic ACF validation callback for every configured field name.
+ */
+function colby_validate_acf_block_configured_required_field($valid, $value, $field, $input_name) {
+    $field_name = isset($field['name']) ? (string) $field['name'] : '';
+
+    if ($field_name === '') {
+        return $valid;
+    }
+
+    return colby_validate_acf_block_required_field(
+        $valid,
+        $value,
+        $field,
+        $input_name,
+        colby_acf_block_validation_rules_for_name($field_name)
+    );
+}
+
+/**
+ * Validate an ACF block field against configured required-field rules.
+ */
+function colby_validate_acf_block_required_field($valid, $value, $field, $input_name, array $rules) {
+    if (!$valid) {
+        return $valid;
+    }
+
+    if (!is_string($input_name) || strpos($input_name, 'acf-block') === false) {
+        return $valid;
+    }
+
+    $field_key = isset($field['key']) ? (string) $field['key'] : '';
+
+    if ($field_key === '' || !isset($rules[$field_key])) {
+        return $valid;
+    }
+
+    $rule = $rules[$field_key];
+    $label = $rule['label'] ?? ($field['label'] ?? 'This field');
+    $type = $rule['type'] ?? ($field['type'] ?? '');
+
+    if ($type === 'repeater') {
+        $minimum = isset($rule['min']) ? (int) $rule['min'] : 1;
+
+        if (is_array($value)) {
+            $count = count($value);
+        } elseif (is_numeric($value)) {
+            $count = (int) $value;
+        } else {
+            $count = 0;
+        }
+
+        if ($count < $minimum) {
+            return sprintf(
+                __('%s requires at least %d %s before saving.', 'colby'),
+                $label,
+                $minimum,
+                _n('row', 'rows', $minimum, 'colby')
+            );
+        }
+
+        return $valid;
+    }
+
+    if (colby_acf_block_value_is_empty($value)) {
+        return sprintf(__('%s is required before saving.', 'colby'), $label);
+    }
+
+    return $valid;
+}
+
+/**
+ * Determine whether a submitted ACF value should count as empty.
+ */
+function colby_acf_block_value_is_empty($value): bool {
+    if (is_string($value)) {
+        return trim($value) === '';
+    }
+
+    if (is_array($value)) {
+        return count(array_filter($value, static function ($item): bool {
+            return !colby_acf_block_value_is_empty($item);
+        })) === 0;
+    }
+
+    return empty($value);
+}
+
+/**
+ * Enqueue editor-only CSS and JS that uses the same validation rules to proactively lock Gutenberg saving.
+ */
+add_action('enqueue_block_editor_assets', function (): void {
     wp_register_style('colby-block-validation-editor', false);
     wp_enqueue_style('colby-block-validation-editor');
+
     wp_add_inline_style(
         'colby-block-validation-editor',
         '.components-notice__content, .components-snackbar__content { white-space: pre-line; }'
     );
+
+    wp_register_script(
+        'colby-acf-block-validation',
+        false,
+        ['wp-data', 'wp-dom-ready', 'wp-notices', 'wp-editor', 'wp-block-editor'],
+        null,
+        true
+    );
+
+    wp_enqueue_script('colby-acf-block-validation');
+
+    wp_add_inline_script(
+        'colby-acf-block-validation',
+        'window.colbyAcfBlockValidationRules = ' . wp_json_encode(colby_acf_block_validation_rules()) . ';',
+        'before'
+    );
+
+    wp_add_inline_script('colby-acf-block-validation', <<<'JS'
+(function (wp) {
+    if (!wp || !wp.data || !wp.domReady) {
+        return;
+    }
+
+    const LOCK_NAME = 'acf-validation-lock';
+    const NOTICE_ID = 'acf-universal-save-lock';
+    const rules = window.colbyAcfBlockValidationRules || {};
+
+    let lastLockedState = null;
+
+    function cssEscape(value) {
+        if (window.CSS && typeof window.CSS.escape === 'function') {
+            return window.CSS.escape(value);
+        }
+
+        return String(value).replace(/["\\]/g, '\\$&');
+    }
+
+    function getFieldsByKey(fieldKey) {
+        return Array.from(
+            document.querySelectorAll(`.acf-field[data-key="${fieldKey}"]`)
+        ).filter((field) => {
+            return !field.closest('.acf-clone');
+        });
+    }
+
+    function getFieldType(field, rule) {
+        if (rule.type) {
+            return rule.type;
+        }
+
+        const classMatch = Array.from(field.classList).find(function (className) {
+            return className.indexOf('acf-field-') === 0 && className !== 'acf-field';
+        });
+
+        return classMatch ? classMatch.replace('acf-field-', '') : '';
+    }
+
+    function getRepeaterRowCount(field) {
+        const countInput = field.querySelector(':scope > .acf-input > input[type="hidden"]');
+
+        if (countInput) {
+            return parseInt(countInput.value || '0', 10);
+        }
+
+        return field.querySelectorAll(':scope .acf-row:not(.acf-clone)').length;
+    }
+
+    function getImageValue(field) {
+        const hiddenInput = field.querySelector(
+            ':scope > .acf-input input[type="hidden"][name]'
+        );
+
+        return hiddenInput ? hiddenInput.value : '';
+    }
+
+    function getRelationshipLikeValueCount(field) {
+        const selectedValues = field.querySelectorAll(
+            ':scope > .acf-input .acf-rel-item input[type="hidden"], ' +
+            ':scope > .acf-input .values input[type="hidden"], ' +
+            ':scope > .acf-input select option:checked'
+        );
+
+        if (selectedValues.length) {
+            return Array.from(selectedValues).filter(function (input) {
+                return String(input.value || '').trim() !== '';
+            }).length;
+        }
+
+        const hiddenInput = field.querySelector(':scope > .acf-input input[type="hidden"][name]');
+        return hiddenInput && String(hiddenInput.value || '').trim() !== '' ? 1 : 0;
+    }
+
+    function getWysiwygValue(field) {
+        const textarea = field.querySelector(':scope > .acf-input textarea.wp-editor-area');
+
+        if (!textarea) {
+            return '';
+        }
+
+        if (
+            window.tinymce &&
+            textarea.id &&
+            window.tinymce.get(textarea.id) &&
+            !window.tinymce.get(textarea.id).isHidden()
+        ) {
+            return window.tinymce.get(textarea.id).getContent();
+        }
+
+        return textarea.value || '';
+    }
+
+    function getBasicInputValue(field) {
+        const checked = field.querySelector(
+            ':scope > .acf-input input[type="radio"]:checked, :scope > .acf-input input[type="checkbox"]:checked'
+        );
+
+        if (checked) {
+            return checked.value || '';
+        }
+
+        const select = field.querySelector(':scope > .acf-input select');
+        if (select) {
+            return select.value || '';
+        }
+
+        const textarea = field.querySelector(':scope > .acf-input textarea:not(.wp-editor-area)');
+        if (textarea) {
+            return textarea.value || '';
+        }
+
+        const input = field.querySelector(
+            ':scope > .acf-input input:not([type="hidden"]):not([type="button"]):not([type="submit"]):not([type="radio"]):not([type="checkbox"])'
+        );
+
+        return input ? input.value || '' : '';
+    }
+
+    function valueIsEmpty(value) {
+        if (Array.isArray(value)) {
+            return value.every(valueIsEmpty);
+        }
+
+        if (value && typeof value === 'object') {
+            return Object.values(value).every(valueIsEmpty);
+        }
+
+        return String(value || '').trim() === '';
+    }
+
+    function fieldIsEmpty(field, rule) {
+        const type = getFieldType(field, rule);
+        const minimum = parseInt(rule.min || '1', 10);
+
+        if (type === 'repeater') {
+            return getRepeaterRowCount(field) < minimum;
+        }
+
+        if (['image', 'file'].includes(type) || ['image', 'post'].includes(rule.name)) {
+            return valueIsEmpty(getImageValue(field));
+        }
+
+        if (['relationship', 'post_object', 'user', 'taxonomy'].includes(type) || rule.name === 'post') {
+            return getRelationshipLikeValueCount(field) < 1;
+        }
+
+        if (type === 'wysiwyg') {
+            return valueIsEmpty(getWysiwygValue(field));
+        }
+
+        return valueIsEmpty(getBasicInputValue(field));
+    }
+
+    function getMessage(rule) {
+        if (rule.type === 'repeater') {
+            const minimum = parseInt(rule.min || '1', 10);
+            return rule.label + ' requires at least ' + minimum + ' ' + (minimum === 1 ? 'row' : 'rows') + ' before saving.';
+        }
+
+        return rule.label + ' is required before saving.';
+    }
+
+    function markFieldInvalid(field, rule) {
+        field.classList.add('acf-error');
+
+        const label = field.querySelector(':scope > .acf-label');
+
+        if (!label || label.querySelector('.acf-error-message[data-colby-validation="1"]')) {
+            return;
+        }
+
+        const message = document.createElement('div');
+        message.className = 'acf-error-message';
+        message.dataset.colbyValidation = '1';
+        message.innerHTML = '<p>' + getMessage(rule) + '</p>';
+
+        label.appendChild(message);
+    }
+
+    function clearFieldInvalid(field) {
+        field
+            .querySelectorAll(':scope > .acf-label .acf-error-message[data-colby-validation="1"]')
+            .forEach(function (message) {
+                message.remove();
+            });
+
+        if (!field.querySelector(':scope > .acf-label .acf-error-message')) {
+            field.classList.remove('acf-error');
+        }
+    }
+
+    function validateConfiguredFields() {
+        let hasErrors = false;
+
+        Object.entries(rules).forEach(([fieldKey, rule]) => {
+            const fields = getFieldsByKey(fieldKey);
+
+            if (!fields.length) {
+                return;
+            }
+
+            fields.forEach((field) => {
+                if (fieldIsEmpty(field, rule)) {
+                    markFieldInvalid(field, rule);
+                    hasErrors = true;
+                } else {
+                    clearFieldInvalid(field);
+                }
+            });
+        });
+
+        return !hasErrors;
+    }
+
+    function hasExistingAcfErrors() {
+        return Boolean(
+            document.querySelector(
+                '.acf-error-message:not([data-colby-validation="1"]), .acf-notice.-error'
+            )
+        );
+    }
+
+    function showNotice() {
+        wp.data.dispatch('core/notices').removeNotice(NOTICE_ID);
+
+        wp.data.dispatch('core/notices').createNotice(
+            'error',
+            'Draft cannot be saved: Please complete the required block fields before saving.',
+            {
+                id: NOTICE_ID,
+                isDismissible: true
+            }
+        );
+    }
+
+    function clearNotice() {
+        wp.data.dispatch('core/notices').removeNotice(NOTICE_ID);
+    }
+
+    function syncSaveLock() {
+        const configuredFieldsAreValid = validateConfiguredFields();
+        const shouldLock = !configuredFieldsAreValid || hasExistingAcfErrors();
+
+        if (shouldLock) {
+            wp.data.dispatch('core/editor').lockPostSaving(LOCK_NAME);
+            wp.data.dispatch('core/editor').lockPostAutosaving(LOCK_NAME);
+
+            if (lastLockedState !== true) {
+                showNotice();
+            }
+
+            lastLockedState = true;
+            return true;
+        }
+
+        wp.data.dispatch('core/editor').unlockPostSaving(LOCK_NAME);
+        wp.data.dispatch('core/editor').unlockPostAutosaving(LOCK_NAME);
+
+        if (lastLockedState !== false) {
+            clearNotice();
+        }
+
+        lastLockedState = false;
+        return false;
+    }
+
+    function isSaveControl(element) {
+        const button = element && element.closest ? element.closest('button, [role="button"], .components-button') : null;
+
+        if (!button) {
+            return false;
+        }
+
+        if (
+            button.classList.contains('editor-post-save-draft') ||
+            button.classList.contains('editor-post-publish-button') ||
+            button.classList.contains('editor-post-publish-button__button') ||
+            button.classList.contains('editor-post-publish-panel__toggle')
+        ) {
+            return true;
+        }
+
+        const ariaLabel = String(button.getAttribute('aria-label') || '').toLowerCase();
+        const text = String(button.textContent || '').trim().toLowerCase();
+
+        return (
+            ariaLabel === 'save draft' ||
+            ariaLabel === 'save' ||
+            ariaLabel === 'publish' ||
+            ariaLabel === 'update' ||
+            text === 'save draft' ||
+            text === 'save' ||
+            text === 'publish' ||
+            text === 'update'
+        );
+    }
+
+    function preventSaveIfInvalid(event) {
+        if (!isSaveControl(event.target)) {
+            return;
+        }
+
+        if (!syncSaveLock()) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        showNotice();
+    }
+
+    function preventKeyboardSaveIfInvalid(event) {
+        const isSaveShortcut = (event.metaKey || event.ctrlKey) && String(event.key || '').toLowerCase() === 's';
+
+        if (!isSaveShortcut) {
+            return;
+        }
+
+        if (!syncSaveLock()) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        showNotice();
+    }
+
+    function scheduleSync() {
+        window.clearTimeout(scheduleSync.timeout);
+        scheduleSync.timeout = window.setTimeout(syncSaveLock, 100);
+    }
+
+    wp.domReady(function () {
+        syncSaveLock();
+
+        wp.data.subscribe(scheduleSync);
+
+        document.addEventListener('click', preventSaveIfInvalid, true);
+        document.addEventListener('keydown', preventKeyboardSaveIfInvalid, true);
+
+        document.addEventListener('input', scheduleSync, true);
+        document.addEventListener('change', scheduleSync, true);
+        document.addEventListener('blur', scheduleSync, true);
+        document.addEventListener('click', scheduleSync, true);
+
+        if (window.acf) {
+            window.acf.addAction('append', scheduleSync);
+            window.acf.addAction('remove', scheduleSync);
+            window.acf.addAction('invalid_field', scheduleSync);
+            window.acf.addAction('valid_field', scheduleSync);
+            window.acf.addAction('validation_complete', scheduleSync);
+        }
+    });
+})(window.wp);
+JS);
 });
