@@ -80,6 +80,7 @@ const blockRegistry = {
   "acf/overlay-wide-image": () => import("../OverlayWideImage/OverlayWideImage.vue"),
   "acf/block-quote": () => import("../BlockQuote/BlockQuote.vue"),
   "acf/bordered-article-row": () => import("../BorderedArticleRow/BorderedArticleRow.vue"),
+  "acf/collage-section": () => import("../CollageSection/CollageSection.vue"),
 
   "core/heading": () => import("../Heading/Heading.vue"),
   "core/group": () => import("../Group/Group.vue"),
@@ -181,6 +182,7 @@ function getPlaceholderHeight(item) {
     "acf/image-text": 200,
     "acf/advanced-accordion": 500,
     "acf/overlay-wide-image": 500,
+    "acf/collage-section": 500,
 
     "core/heading": 0,
     "core/group": 600,
