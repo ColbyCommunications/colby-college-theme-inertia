@@ -89,7 +89,7 @@ const sizes = computed(() => {
       sub: "text-24",
       head: "md:text-48",
       headMobile: "text-48",
-      weight: "font-semibold",
+      weight: "font-medium",
     };
 
   if (s === "large")

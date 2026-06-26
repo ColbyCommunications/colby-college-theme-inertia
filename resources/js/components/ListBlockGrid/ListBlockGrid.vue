@@ -13,7 +13,7 @@
         :subheading="item.subheading"
         :heading="item.heading"
         :paragraph="item.paragraph"
-        :buttons="item.buttons"
+        :buttons="item.buttons ? item.buttons : []"
       />
     </div>
   </div>
