@@ -29,10 +29,7 @@
             <div class="relative pb-[65.28117359413203%] md:pb-[87.5%]">
               <Picture
                 class="absolute h-full w-full object-cover"
-                :srcset="images[0].srcset"
-                :src="images[0].src"
-                :sizeMobile="images[0].image.sizes.Hero"
-                :sizeDesktop="images[0].image.sizes.Hero"
+                :src="images[0].image.sizes.Hero"
                 :alt="images[0].alt"
               />
             </div>
@@ -45,10 +42,7 @@
             <div class="relative pb-[80.43478260869566%]">
               <Picture
                 class="absolute h-full w-full object-cover"
-                :srcset="images[1].srcset"
-                :src="images[1].src"
-                :sizeMobile="images[1].image.sizes.Square"
-                :sizeDesktop="images[1].image.sizes.Square"
+                :src="images[1].image.sizes.Square"
                 :alt="images[1].alt"
               />
             </div>
@@ -63,10 +57,7 @@
             >
               <Picture
                 class="absolute h-full w-full object-cover"
-                :srcset="images[2].srcset"
-                :src="images[2].src"
-                :sizeMobile="images[2].image.sizes.Rectangle"
-                :size-desktop="images[2].image.sizes.Rectangle"
+                :src="images[2].image.sizes.Rectangle"
                 :alt="images[2].alt"
               />
             </div>
