@@ -4,15 +4,12 @@
       v-for="(image, index) in images"
       :key="index"
       class="image-grid__item col-span-8"
-      :class="{ 'md:col-span-4': imageOrientation !== 'landscape' }"
+      :class="{ 'md:col-span-4': image_orientation !== 'landscape' }"
     >
       <div class="image-grid__image relative" :class="aspectClass">
         <Picture
           class="absolute w-full h-full object-cover"
-          :src="image.src"
-          :srcset="image.srcset"
-          :size-desktop="desktopSize(image)"
-          :size-mobile="mobileSize(image)"
+          :src="image.url"
           :alt="image.alt"
         />
       </div>
@@ -32,11 +29,11 @@ import Picture from "@/js/components/Picture/Picture.vue";
 
 const props = defineProps({
   images: { type: Array, default: () => [] },
-  imageOrientation: { type: String, default: "square" },
+  image_orientation: { type: String, default: "square" },
 });
 
 const aspectClass = computed(() => {
-  switch (props.imageOrientation) {
+  switch (props.image_orientation) {
     case "landscape":
       return "pb-[69.04761904761905%] md:pb-[48.86363636363636%]";
     case "rectangle":
@@ -50,7 +47,7 @@ const aspectClass = computed(() => {
 
 const desktopSize = (image) => {
   const sizes = image.image?.sizes || image.sizes || {};
-  switch (props.imageOrientation) {
+  switch (props.image_orientation) {
     case "landscape":
       return sizes.Landscape || "";
     case "portrait":
@@ -62,7 +59,7 @@ const desktopSize = (image) => {
 
 const mobileSize = (image) => {
   const sizes = image.image?.sizes || image.sizes || {};
-  switch (props.imageOrientation) {
+  switch (props.image_orientation) {
     case "landscape":
       return sizes.Landscape_mobile || "";
     case "portrait":
