@@ -148,13 +148,13 @@
 
   /* Background images (use bg-hero__pattern, etc.) */
   /* Adjust paths to where these images live relative to this CSS file */
-  --bg-hero__pattern: url("/resources/images/hero__pattern.jpg");
-  --bg-notfound__pattern: url("/resources/images/miller3.jpeg");
-  --bg-darkinterstitial__pattern: url("/resources/images/Background-3.jpg");
-  --bg-marble__pattern: url("/resources/images/mountain.jpg");
-  --bg-bluemarble__pattern: url("/resources/images/Treatment-36.jpg");
-  --bg-mediacontextsection___pattern: url("/resources/images/media-context-section_bg.jpg");
-  --bg-blueslate__pattern: url("/resources/images/Treatment-14.jpg");
+  --background-image-hero__pattern: url("/resources/images/hero__pattern.jpg");
+  --background-image-notfound__pattern: url("/resources/images/miller3.jpeg");
+  --background-image-darkinterstitial__pattern: url("/resources/images/Background-3.jpg");
+  --background-image-marble__pattern: url("/resources/images/mountain.jpg");
+  --background-image-bluemarble__pattern: url("/resources/images/Treatment-36.jpg");
+  --background-image-mediacontextsection___pattern: url("/resources/images/media-context-section_bg.jpg");
+  --background-image-blueslate__pattern: url("/resources/images/Treatment-14.jpg");
 
   /* --- List Styles --- */
   --list-style-none: none;
