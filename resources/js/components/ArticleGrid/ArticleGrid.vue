@@ -134,9 +134,14 @@
     <div v-if="showLoadMore" class="mt-10 flex justify-center">
       <button
         @click="loadMore"
-        class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border-[0.75px] border-solid border-indigo bg-cloud px-6 py-3 font-body text-14 leading-130 font-bold text-white !no-underline transition-all duration-200 ease-in-out hover:bg-cloud"
+        class="btn group/btn inline-flex min-h-[44px] min-w-[44px] cursor-pointer flex-row items-center space-x-2 rounded border-[0.75px] border-solid border-indigo bg-transparent px-4 py-1.5 font-body text-14 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:border-snow hover:bg-cloud hover:text-indigo focus:bg-cloud focus:outline focus:outline-2 focus:outline-gold"
       >
-        <span class="btn__text">See More</span>
+        <span class="btn__text">
+          <span>See More</span>
+          <div
+            class="btn__border block h-px w-0 bg-indigo transition-all duration-200 ease-in-out group-hover/btn:w-full"
+          ></div>
+        </span>
       </button>
     </div>
 
