@@ -32,7 +32,7 @@
               :heading="item.heading"
               :paragraph="item.paragraph"
               :buttons="item.buttons"
-              :fromApi="false"
+              :fromApi="fromApi"
             />
           </div>
         </template>
@@ -77,6 +77,7 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  fromApi: { type: Boolean, default: false },
 
   initial_items: { type: Array, default: () => [] },
   hydrated_from_server: { type: Boolean, default: false },

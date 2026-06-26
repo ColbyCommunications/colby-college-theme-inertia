@@ -1,15 +1,18 @@
 <template>
   <div class="background-section relative py-24 bg-marble__pattern bg-cover full-bleed">
-    <div class="background-section___decor absolute top-[200px] left-0 bg-white w-1/2 lg:w-[700px] h-[700px]"></div>
     <div class="background-section___inner relative z-10 space-y-24">
       <ContextArticleGrid
-        :render-api="news.renderApi !== undefined ? news.renderApi : true"
-        :api="news.api || 'Alumni'"
-        :per-page="news.perPage || 3"
+        :render-api="false"
+        api="manual"
+        :per-page="3"
         :subheading="news.subheading"
         :heading="news.heading"
         :paragraph="news.paragraph"
-        :items="news.items"
+        :items="news.items || []"
+        :initial_items="news.items || []"
+        :hydrated_from_server="news.hydrated_from_server || false"
+        :should_client_refresh="false"
+        :fromApi="true"
       />
       <ContextSection
         size="medium"
