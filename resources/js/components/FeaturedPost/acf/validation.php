@@ -1,30 +1,8 @@
 <?php
 
-return function (array $data, array $block): ?WP_Error {
-    $errors = [];
-
-    if (empty($data['heading'])) {
-        $errors[] = 'heading';
-    }
-
-    if (empty($data['paragraph'])) {
-        $errors[] = 'paragraph';
-    }
-
-    if (empty($data['caption'])) {
-        $errors[] = 'caption';
-    }
-
-    if (empty($data['post_image'])) {
-        $errors[] = 'post > image';
-    }
-
-    if (!empty($errors)) {
-        return new WP_Error(
-            'colby_invalid_featured_post',
-            sprintf(__('Featured Post requires the following fields before saving: %s.', 'colby'), implode(', ', $errors))
-        );
-    }
-
-    return null;
-};
+return [
+    'field_62f02c486f1cf' => ['name' => 'image', 'label' => 'Featured Post image'],
+    'field_62f02b016f1ca' => ['name' => 'heading', 'label' => 'Featured Post heading'],
+    'field_62f02b2f6f1cb' => ['name' => 'paragraph', 'label' => 'Featured Post paragraph'],
+    'field_62f02de84f93a' => ['name' => 'caption', 'label' => 'Featured Post caption'],
+];
