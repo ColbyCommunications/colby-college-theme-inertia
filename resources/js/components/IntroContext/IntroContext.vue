@@ -20,7 +20,7 @@
         <ButtonGroup
           v-if="buttons && buttons.length"
           size="large"
-          :items="buttonItems"
+          :items="buttons"
         />
       </div>
     </div>
