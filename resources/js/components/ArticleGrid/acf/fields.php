@@ -279,53 +279,6 @@ acf_add_local_field_group( array(
       'append' => '',
     ),
     array(
-      'key' => 'field_6344542af7223',
-      'label' => 'Size',
-      'name' => 'size',
-      'aria-label' => '',
-      'type' => 'radio',
-      'instructions' => '',
-      'required' => 0,
-      'conditional_logic' => array(
-        array(
-          array(
-            'field' => 'field_66a797e74888c',
-            'operator' => '==',
-            'value' => 'manual',
-          ),
-        ),
-        array(
-          array(
-            'field' => 'field_66a797e74888c',
-            'operator' => '==',
-            'value' => 'api',
-          ),
-        ),
-        array(
-          array(
-            'field' => 'field_66a797e74888c',
-            'operator' => '==',
-            'value' => 'internal',
-          ),
-        ),
-      ),
-      'wrapper' => array(
-        'width' => '',
-        'class' => '',
-        'id' => '',
-      ),
-      'choices' => array(
-        'small' => 'Small',
-        'xsmall' => 'X-Small',
-      ),
-      'default_value' => '',
-      'return_format' => 'value',
-      'allow_null' => 0,
-      'other_choice' => 0,
-      'layout' => 'horizontal',
-      'save_other_choice' => 0,
-    ),
-    array(
       'key' => 'field_632bc0d32e53c',
       'label' => 'Columns',
       'name' => 'columns',

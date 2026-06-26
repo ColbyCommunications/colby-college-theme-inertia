@@ -14,7 +14,6 @@
               class="article-grid__item glide__slide pb-[1px]"
             >
               <Article
-                size="small"
                 :image="item.image"
                 :subheading="item.subheading"
                 :heading="item.heading"
@@ -45,7 +44,6 @@
           }"
         >
           <Article
-            size="small"
             :image="item.image"
             :subheading="item.subheading"
             :heading="item.heading"
@@ -81,7 +79,6 @@
         >
           <Article
             :apiSource="props.api_source"
-            :size="props.size"
             :image="item.image"
             :heading="item.title.rendered"
             :border="normalizedBorder"
@@ -122,7 +119,6 @@
           }"
         >
           <Article
-            size="small"
             :image="item.image"
             :subheading="item.subheading"
             :heading="item.heading"
@@ -167,7 +163,9 @@
       >
         <article
           class="article space-y-4"
-          :class="{ 'border-t-[0.75px] border-solid border-indigo pt-1': border }"
+          :class="{
+            'border-t-[0.75px] border-solid border-indigo pt-1': border,
+          }"
         >
           <a
             v-if="item.image?.src"
@@ -196,7 +194,7 @@
                   {{ item.subheading }}
                 </div>
                 <h2
-                  class="text-group__heading -tracking-3 text-left font-extended text-20 leading-[1.5] font-normal text-indigo"
+                  class="text-group__heading -tracking-3 font-extended text-left text-20 leading-[1.5] font-normal text-indigo"
                   :class="{ 'lg:text-16': columns == 4 }"
                   v-html="item.heading"
                 />
@@ -234,9 +232,7 @@
           >
             <div class="flex w-full justify-end pt-4 pr-4 pl-4">
               <button @click="toggleAccordion(i)" class="cursor-pointer">
-                <span class="material-symbols-sharp text-coal"
-                  >close</span
-                >
+                <span class="material-symbols-sharp text-coal">close</span>
               </button>
             </div>
 
@@ -294,9 +290,7 @@
               ]"
             >
               <button @click="toggleAccordion(i)" class="cursor-pointer">
-                <span class="material-symbols-sharp text-coal"
-                  >close</span
-                >
+                <span class="material-symbols-sharp text-coal">close</span>
               </button>
             </div>
 
@@ -357,7 +351,6 @@ const props = defineProps({
   external_media_api: { type: String, default: "" },
   range: { type: [Number, String], default: 6 },
   post_limit: { type: [Number, String], default: -1 },
-  size: { type: String, default: "" },
   image_orientation: { type: String, default: "rectangle" },
   columns: { type: Number, default: 3 },
   border: { type: [Boolean, Number, String], default: false },
