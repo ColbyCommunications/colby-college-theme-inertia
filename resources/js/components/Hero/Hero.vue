@@ -32,12 +32,13 @@
         >
           <Picture
             class="absolute top-0 left-0 h-full w-full object-cover"
-            :src="image.url"
+            :src="image_orientation === 'portrait' ? image.sizes.Portrait : image.sizes.Rectangle"
             :alt="image.alt"
             :loading="priority ? 'eager' : 'lazy'"
             :fetch-priority="priority ? 'high' : 'auto'"
             :progressive="!priority"
-            :sizes="primaryImageSizes"
+            :height="image_orientation === 'portrait' ? image.sizes['Portrait-height'] : image.sizes['Rectangle-height']"
+            :width="image_orientation === 'portrait' ? image.sizes['Portrait-width'] : image.sizes['Rectangle-width']"
           />
         </div>
         <p
@@ -112,7 +113,7 @@ const props = defineProps({
     default: () => [],
   },
   image: Object,
-  imageOrientation: {
+  image_orientation: {
     type: String,
     default: "landscape",
   },
@@ -133,7 +134,7 @@ const props = defineProps({
 const primaryImageSizes = "(max-width: 767px) 100vw, 50vw";
 
 const imageClass = computed(() => {
-  return props.imageOrientation === "portrait"
+  return props.image_orientation === "portrait"
     ? "md:pb-[119.44444444444444%]"
     : "md:pb-[80.55555555555556%]";
 });
