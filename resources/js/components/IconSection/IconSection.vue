@@ -25,9 +25,9 @@
         :key="index"
         class="icon-section__item flex flex-col items-center col-span-6 md:col-span-3"
       >
-        <img
+        <Picture
           class="icon-section__image w-40 mb-4"
-          :src="item.image?.sizes?.Square || item.image?.src"
+          :src="item.image?.sizes?.Square || item.image?.url"
           :alt="item.image?.alt"
         />
         <Context
@@ -45,6 +45,7 @@
 <script setup>
 import { computed } from "vue";
 import Context from "@/js/components/Context/Context.vue";
+import Picture from "@/js/components/Picture/Picture.vue";
 
 const props = defineProps({
   subheading: { type: String, default: "" },
