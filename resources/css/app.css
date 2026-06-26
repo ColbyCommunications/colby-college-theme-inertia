@@ -153,8 +153,8 @@
   --bg-darkinterstitial__pattern: url("/resources/images/Background-3.jpg");
   --bg-marble__pattern: url("/resources/images/mountain.jpg");
   --bg-bluemarble__pattern: url("/resources/images/Treatment-36.jpg");
-  --mediacontextsection___pattern: url("/resources/images/media-context-section_bg.jpg");
-  --blueslate__pattern: url("/resources/images/Treatment-14.jpg");
+  --bg-mediacontextsection___pattern: url("/resources/images/media-context-section_bg.jpg");
+  --bg-blueslate__pattern: url("/resources/images/Treatment-14.jpg");
 
   /* --- List Styles --- */
   --list-style-none: none;
