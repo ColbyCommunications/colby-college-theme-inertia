@@ -53,7 +53,7 @@
         </div>
 
         <div v-if="Array.isArray(images) && images.length" class="dark-interstitial__images-wrap overflow-scroll md:overflow-visible mt-28">
-            <div class="dark-interstitial__inner relative md:grid grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-9 md:px-5 my-0 mx-auto mr-9 md:mr-auto whitespace-nowrap text-[0]">
+            <div class="dark-interstitial__inner relative md:grid grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-9 md:px-5 my-0 mx-auto mr-9 md:mr-auto whitespace-nowrap text-[0] gap-y-[30px]">
                 <span class="absolute top-0 left-[20px] hidden md:block w-[calc(100%_-_40px)] h-px bg-white z-[1]"></span>
                 <div v-for="(img, idx) in images" :key="idx" class="inline-block col-span-4 w-full md:w-auto mr-6 md:mr-0">
                     <div class="dark-interstitial__image relative pb-[119.44444444444444%]">
