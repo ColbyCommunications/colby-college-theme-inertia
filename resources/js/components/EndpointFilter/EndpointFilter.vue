@@ -17,7 +17,7 @@
             class="font-body text-14 leading-130 font-medium whitespace-nowrap text-coal md:text-10"
           >
             <button
-              class="text-coal transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
+              class="text-coal transition-all duration-200 ease-in-out hover:text-indigo hover:underline cursor-pointer"
               :class="{
                 '!text-indigo underline': currentEndpoint === filter.url,
               }"
