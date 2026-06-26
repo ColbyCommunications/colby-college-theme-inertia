@@ -37,9 +37,9 @@
             size="small"
             type="dark"
             :subheading="post.date"
-            :heading="post_heading"
-            :paragraph="post_paragraph"
-            :buttons="{ items: post_buttons }"
+            :heading="post.heading"
+            :paragraph="post.paragraph"
+            :buttons="{ items: post.buttons }"
           />
         </div>
       </div>
@@ -59,8 +59,6 @@ const props = defineProps({
   buttons: { type: Array, default: () => [] },
   post: { type: Object, default: () => ({}) },
   post_image: { type: Object, default: () => ({}) },
-  post_paragraph: { type: String, default: "" },
-  post_heading: { type: String, default: "" },
-  post_buttons: { type: Array, default: () => [] },
 });
+
 </script>
