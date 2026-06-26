@@ -12,7 +12,7 @@
         </h2>
         <ul class="flex items-center space-x-7 pr-9 md:pr-0">
           <li
-            v-for="(filter, index) in filters"
+            v-for="(filter, index) in filterItems"
             :key="index"
             class="font-body text-14 leading-130 font-medium whitespace-nowrap text-coal md:text-10"
           >
@@ -83,47 +83,50 @@ const props = defineProps({
   },
   // Accepts Array of filters or 'false' (boolean) to hide the menu
   filters: {
-    type: [Array, Boolean],
-    default: () => [
-      {
-        title: "All",
-        url: "https://events.colby.edu/live/json/events/group/Colby%20Arts%20EMS/group/Museum%20of%20Art/group/Art/group/Center%20for%20Arts%20and%20Humanities/group/Creative%20Writing/group/Music/group/Cinema%20Studies/group/Performance%2C%20Theater%2C%20and%20Dance",
-      },
-      {
-        title: "Art",
-        url: "https://events.colby.edu/live/json/events/group/Art",
-      },
-      {
-        title: "Music",
-        url: "https://events.colby.edu/live/json/events/group/Music",
-      },
-      {
-        title: "Cinema Studies",
-        url: "https://events.colby.edu/live/json/events/group/Cinema%20Studies",
-      },
-      {
-        title: "Performance, Theater, and Dance",
-        url: "https://events.colby.edu/live/json/events/group/Performance%2C%20Theater%2C%20and%20Dance",
-      },
-      {
-        title: "Center for the Arts and Humanities",
-        url: "https://events.colby.edu/live/json/events/group/Center%20for%20Arts%20and%20Humanities",
-      },
-      {
-        title: "Creative Writing",
-        url: "https://events.colby.edu/live/json/events/group/Creative%20Writing",
-      },
-      {
-        title: "Museum of Art",
-        url: "https://events.colby.edu/live/json/events/group/Museum%20of%20Art",
-      },
-    ],
+    type: Boolean,
+    default: false,
   },
 });
+
 
 // Reactive State
 const currentEndpoint = ref(props.initialEndpoint);
 const items = ref([]);
+
+const filterItems = ref([
+  {
+    title: "All",
+    url: "https://events.colby.edu/live/json/events/group/Colby%20Arts%20EMS/group/Museum%20of%20Art/group/Art/group/Center%20for%20Arts%20and%20Humanities/group/Creative%20Writing/group/Music/group/Cinema%20Studies/group/Performance%2C%20Theater%2C%20and%20Dance",
+  },
+  {
+    title: "Art",
+    url: "https://events.colby.edu/live/json/events/group/Art",
+  },
+  {
+    title: "Music",
+    url: "https://events.colby.edu/live/json/events/group/Music",
+  },
+  {
+    title: "Cinema Studies",
+    url: "https://events.colby.edu/live/json/events/group/Cinema%20Studies",
+  },
+  {
+    title: "Performance, Theater, and Dance",
+    url: "https://events.colby.edu/live/json/events/group/Performance%2C%20Theater%2C%20and%20Dance",
+  },
+  {
+    title: "Center for the Arts and Humanities",
+    url: "https://events.colby.edu/live/json/events/group/Center%20for%20Arts%20and%20Humanities",
+  },
+  {
+    title: "Creative Writing",
+    url: "https://events.colby.edu/live/json/events/group/Creative%20Writing",
+  },
+  {
+    title: "Museum of Art",
+    url: "https://events.colby.edu/live/json/events/group/Museum%20of%20Art",
+  },
+]);
 
 // Utility: Strip HTML tags
 const stripHTML = (html) => {
