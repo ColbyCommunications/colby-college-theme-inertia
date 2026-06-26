@@ -113,8 +113,25 @@ if (!function_exists('colby_block_article_grid_get_cached_remote_json')) {
 }
 
 if (!function_exists('colby_block_article_grid_matches_external_filter')) {
-    function colby_block_article_grid_matches_external_filter(array $item, string $external_media_api): bool
+    function colby_block_article_grid_matches_external_filter(array $item, string $external_media_api, string $api_source = ''): bool
     {
+        if ($api_source === 'media_coverage') {
+            $has_valid_story_type = false;
+            
+            if (!empty($item['story_type']) && is_array($item['story_type'])) {
+                foreach ($item['story_type'] as $type) {
+                    if (($type['name'] ?? '') === 'Media Coverage') {
+                        $has_valid_story_type = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (!$has_valid_story_type) {
+                return false;
+            }
+        }
+
         switch ($external_media_api) {
             case 'all_media':
                 return true;
@@ -164,10 +181,11 @@ if (!function_exists('colby_block_article_grid_fetch_external_items')) {
         }
 
         $external_media_api = $data['external_media_api'] ?? 'all_media';
+        $api_source = $data['api_source'] ?? '';
         $range = (int) ($data['range'] ?? 6);
 
-        $filtered = array_filter($items, function ($item) use ($external_media_api) {
-            return colby_block_article_grid_matches_external_filter($item, $external_media_api);
+        $filtered = array_filter($items, function ($item) use ($external_media_api, $api_source) {
+            return colby_block_article_grid_matches_external_filter($item, $external_media_api, $api_source);
         });
 
         $normalized = array_map(function ($item) {
