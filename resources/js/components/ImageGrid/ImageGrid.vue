@@ -9,8 +9,8 @@
       <div class="image-grid__image relative" :class="aspectClass">
         <Picture
           class="absolute w-full h-full object-cover"
-          :src="image.url"
-          :alt="image.alt"
+          :src="image.image.url"
+          :alt="image.image.alt"
         />
       </div>
       <p
@@ -31,6 +31,8 @@ const props = defineProps({
   images: { type: Array, default: () => [] },
   image_orientation: { type: String, default: "square" },
 });
+
+console.log(props);
 
 const aspectClass = computed(() => {
   switch (props.image_orientation) {
