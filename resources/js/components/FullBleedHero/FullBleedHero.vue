@@ -14,12 +14,12 @@
           :subheading="subheading"
           :heading="heading"
           :paragraph="paragraph"
-          :buttons="{ items: buttonItems }"
+          :buttons="{ items: buttons }"
           align="center"
         />
       </div>
       <div
-        v-if="image && image.src"
+        v-if="image && image.url"
         class="full-bleed-hero__main"
         :class="
           type === 'light'
@@ -38,9 +38,6 @@
           <Picture
             class="absolute w-full h-full object-cover"
             :src="imageSrc"
-            :srcset="image.srcset"
-            :size-desktop="image.sizes?.Hero"
-            :size-mobile="image.sizes?.Rectangle"
             :alt="image.alt"
             :loading="priority ? 'eager' : 'lazy'"
             :fetch-priority="priority ? 'high' : 'auto'"
