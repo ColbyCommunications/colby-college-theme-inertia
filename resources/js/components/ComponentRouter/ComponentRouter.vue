@@ -78,6 +78,8 @@ const blockRegistry = {
   "acf/image": () => import("../Image/Image.vue"),
   "acf/image-text": () => import("../ImageText/ImageText.vue"),
   "acf/overlay-wide-image": () => import("../OverlayWideImage/OverlayWideImage.vue"),
+  "acf/block-quote": () => import("../BlockQuote/BlockQuote.vue"),
+  "acf/bordered-article-row": () => import("../BorderedArticleRow/BorderedArticleRow.vue"),
 
   "core/heading": () => import("../Heading/Heading.vue"),
   "core/group": () => import("../Group/Group.vue"),
@@ -172,6 +174,8 @@ function getPlaceholderHeight(item) {
     "acf/people-grid": 350,
     "acf/accordion": 350,
     "acf/paragraph": 350,
+    "acf/block-quote": 350,
+    "acf/bordered-article-row": 350,
     "acf/embed": 200,
     "acf/image": 200,
     "acf/image-text": 200,
