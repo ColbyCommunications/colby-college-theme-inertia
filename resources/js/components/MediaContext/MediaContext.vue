@@ -19,9 +19,9 @@
         </template>
 
         <template v-else>
-          <img
+          <Picture
             class="w-full object-cover"
-            :src="image.url"
+            :src="image.sizes.Landscape"
             :alt="image.alt || ''"
             loading="lazy"
           />
@@ -55,6 +55,7 @@
 // Adjust imports to match your project structure
 import Video from "../Video/Video.vue";
 import Context from "../Context/Context.vue";
+import Picture from "../Picture/Picture.vue";
 
 const props = defineProps({
   inset: {
