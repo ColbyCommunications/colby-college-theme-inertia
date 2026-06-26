@@ -15,10 +15,7 @@
                 >
                   <Picture
                     class="w-full object-cover"
-                    :src="item.image?.src"
-                    :srcset="item.image?.srcset"
-                    :size-desktop="item.image?.sizes?.Landscape"
-                    :size-mobile="item.image?.sizes?.Square"
+                    :src="item.image?.sizes.Landscape"
                     :alt="item.image?.alt"
                   />
                   <p
@@ -38,10 +35,7 @@
           <div class="media-aside__image">
             <Picture
               class="w-full object-cover"
-              :src="image?.src"
-              :srcset="image?.srcset"
-              :size-desktop="image?.sizes?.Landscape"
-              :size-mobile="image?.sizes?.Square"
+              :src="image?.sizes.Landscape"
               :alt="image?.alt"
             />
           </div>
@@ -86,7 +80,7 @@
               <ButtonGroup
                 v-if="item.buttons && item.buttons.length"
                 size="large"
-                :items="mapButtons(item.buttons)"
+                :items="item.buttons"
               />
             </div>
           </div>
@@ -125,7 +119,7 @@
           <ButtonGroup
             v-if="buttons && buttons.length"
             size="large"
-            :items="mapButtons(buttons)"
+            :items="buttons"
           />
         </template>
       </div>
