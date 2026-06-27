@@ -11,6 +11,7 @@
           :heading="heading"
           :paragraph="paragraph"
           :buttons="buttonData"
+          :align="align"
         />
       </div>
       <Picture
@@ -33,6 +34,7 @@ const props = defineProps({
   paragraph: { type: String, default: "" },
   buttons: { type: Array, default: () => [] },
   image: { type: Object, default: () => ({}) },
+  align: { type: String, default: "left" }
 });
 
 const buttonData = computed(() => {

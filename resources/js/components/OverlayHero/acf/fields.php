@@ -46,7 +46,26 @@ acf_add_local_field_group( array(
 			'library' => 'all',
 			'min_size' => '',
 			'max_size' => '',
-			'mime_types' => '',
+			'mime_types' => 'mp4',
+		),
+		array(
+			'key' => 'field_overlay_hero_use_device_specific_video_files',
+			'label' => 'Use Device Specific Video Files',
+			'name' => 'use_device_specific_video_files',
+			'type' => 'true_false',
+			'instructions' => 'Show optional tablet and mobile MP4 video loop fields.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => '',
+			'default_value' => 0,
+			'ui' => 1,
+			'ui_on_text' => 'Yes',
+			'ui_off_text' => 'No',
 		),
 		array(
 			'key' => 'field_681d185e7a101',
@@ -56,7 +75,15 @@ acf_add_local_field_group( array(
 			'type' => 'file',
 			'instructions' => 'Optional smaller MP4 loop for tablet-sized screens. Falls back to the main video loop when empty.',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_overlay_hero_use_device_specific_video_files',
+						'operator' => '==',
+						'value' => '1',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
@@ -76,7 +103,15 @@ acf_add_local_field_group( array(
 			'type' => 'file',
 			'instructions' => 'Optional compressed MP4 loop for mobile screens. Leave empty to show the poster image only on mobile.',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_overlay_hero_use_device_specific_video_files',
+						'operator' => '==',
+						'value' => '1',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
@@ -89,6 +124,25 @@ acf_add_local_field_group( array(
 			'mime_types' => 'mp4',
 		),
 		array(
+			'key' => 'field_overlay_hero_optimize_with_cloudflare_streams',
+			'label' => 'Optimize with Cloudflare Stream',
+			'name' => 'optimize_with_cloudflare_streams',
+			'type' => 'true_false',
+			'instructions' => 'Show HLS manifest fields for Cloudflare Stream playback.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => '',
+			'default_value' => 0,
+			'ui' => 1,
+			'ui_on_text' => 'Yes',
+			'ui_off_text' => 'No',
+		),
+		array(
 			'key' => 'field_681d2d5d03901',
 			'label' => 'HLS Video Loop Manifest',
 			'name' => 'hls_video_loop',
@@ -96,7 +150,15 @@ acf_add_local_field_group( array(
 			'type' => 'url',
 			'instructions' => 'Optional desktop/default .m3u8 manifest URL. Used before MP4 loop fields.',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_overlay_hero_optimize_with_cloudflare_streams',
+						'operator' => '==',
+						'value' => '1',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
@@ -113,7 +175,15 @@ acf_add_local_field_group( array(
 			'type' => 'url',
 			'instructions' => 'Optional tablet-specific .m3u8 manifest URL. Falls back to the default HLS manifest when empty.',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_overlay_hero_optimize_with_cloudflare_streams',
+						'operator' => '==',
+						'value' => '1',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
@@ -130,7 +200,15 @@ acf_add_local_field_group( array(
 			'type' => 'url',
 			'instructions' => 'Optional mobile-specific .m3u8 manifest URL. Falls back to the default HLS manifest when empty.',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_overlay_hero_optimize_with_cloudflare_streams',
+						'operator' => '==',
+						'value' => '1',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
