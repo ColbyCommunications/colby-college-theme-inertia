@@ -7,7 +7,7 @@
           :subheading="subheading"
           :heading="heading"
           :paragraph="paragraph"
-          :buttons="{ items: buttonItems }"
+          :buttons="{ items: buttons }"
         />
       </div>
       <div
@@ -25,10 +25,7 @@
           <div class="media-aside___image pb-[100%] md:pb-[54.54545454545455%]">
             <Picture
               class="absolute w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ease-in-out"
-              :src="item.image.src"
-              :srcset="item.image.srcset"
-              :size-desktop="item.image.sizes?.Rectangle"
-              :size-mobile="item.image.sizes?.Rectangle"
+              :src="item.image.sizes?.Rectangle"
               :alt="item.image.alt"
             />
           </div>

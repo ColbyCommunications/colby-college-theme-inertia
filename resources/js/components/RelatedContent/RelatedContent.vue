@@ -1,7 +1,7 @@
 <template>
   <div class="related-content space-y-20">
     <div
-      class="related-content__inner mx-auto my-0 grid w-full max-w-screen-2xl gap-x-10 px-5 md:grid-cols-12"
+      class="related-content__inner mx-auto mb-4 grid w-full max-w-screen-2xl gap-x-10 px-5 md:grid-cols-12"
     >
       <h2
         class="text-center font-extended text-18 leading-120 font-bold tracking-8 text-indigo uppercase md:col-span-12"
