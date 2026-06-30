@@ -48,7 +48,8 @@ if (!function_exists('colby_block_article_section_get_cached_remote_json')) {
 if (!function_exists('colby_block_article_section_strip_html_preserve_emphasis')) {
     function colby_block_article_section_strip_html_preserve_emphasis(string $html): string
     {
-        return preg_replace('/<(?!\/?(i|em)\b)[^>]+>/i', '', $html) ?? '';
+        $decoded = html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        return preg_replace('/<(?!\/?(i|em)\b)[^>]+>/i', '', $decoded) ?? '';
     }
 }
 
@@ -89,6 +90,8 @@ if (!function_exists('colby_block_article_section_normalize_academic_items')) {
     function colby_block_article_section_normalize_academic_items(array $items): array
     {
         return array_map(function ($item) {
+            $title = colby_block_article_section_strip_html_preserve_emphasis($item['title']['rendered'] ?? '');
+
             return [
                 'yoast_head_json' => [
                     'og_image' => [
@@ -100,8 +103,9 @@ if (!function_exists('colby_block_article_section_normalize_academic_items')) {
                     'og_description' => $item['yoast_head_json']['og_description'] ?? '',
                 ],
                 'title' => [
-                    'rendered' => $item['title']['rendered'] ?? '',
+                    'rendered' => $title,
                 ],
+                'heading' => $title,
                 'post-meta-fields' => [
                     'primary_category' => $item['post-meta-fields']['primary_category'] ?? '',
                     'summary' => [
@@ -137,6 +141,7 @@ if (!function_exists('colby_block_article_section_normalize_faculty_items')) {
                 'title' => [
                     'rendered' => $title,
                 ],
+                'heading' => $title,
                 'post-meta-fields' => [
                     'primary_category' => '',
                     'summary' => [$summary],
@@ -169,6 +174,21 @@ if (!function_exists('colby_block_article_section_get_remote_data')) {
                 $items = colby_block_article_section_normalize_faculty_items($items);
             } elseif (($data['api'] ?? '') === 'Academic News') {
                 $items = colby_block_article_section_normalize_academic_items($items);
+            } else {
+                $items = is_array($items) ? array_map(function ($item) {
+                    if (isset($item['title']['rendered'])) {
+                        $clean_title = colby_block_article_section_strip_html_preserve_emphasis($item['title']['rendered']);
+                        $item['title']['rendered'] = $clean_title;
+                        $item['heading'] = $clean_title;
+                    }
+                    
+                    $summary_path = $item['post-meta-fields']['summary'][0] ?? null;
+                    if ($summary_path) {
+                        $item['post-meta-fields']['summary'][0] = colby_block_article_section_strip_html_preserve_emphasis($summary_path);
+                    }
+                    
+                    return $item;
+                }, $items) : [];
             }
 
             $data['initial_items'] = is_array($items) ? $items : [];
@@ -187,8 +207,10 @@ if (!function_exists('colby_block_article_section_get_remote_data')) {
             ]);
             
             $data['initial_items'] = is_array($items) ? array_map(function (&$post) {
-                // dd($post);
-                $post->heading = $post->post_title;
+                $clean_title = colby_block_article_section_strip_html_preserve_emphasis($post->post_title ?? '');
+                
+                $post->heading = $clean_title;
+                $post->title = ['rendered' => $clean_title];
                 $post->subheading = $post->post_type == 'post' ? date("M d, Y", strtotime($post->post_date)) : null;
                 $post->paragraph = wp_trim_words(get_the_excerpt($post->ID), 50);
                 $post->buttons = [
@@ -205,8 +227,6 @@ if (!function_exists('colby_block_article_section_get_remote_data')) {
             $data['hydrated_from_server'] = !empty($data['initial_items']);
             $data['should_client_refresh'] = false;
         }
-
-        // dd($data);
 
         return $data;
     }

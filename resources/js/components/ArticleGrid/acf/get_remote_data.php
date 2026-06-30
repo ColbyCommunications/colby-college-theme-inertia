@@ -1,6 +1,5 @@
 <?php
 
-
 function normalize_image($image, $image_orientation): ?array
 {
     if (empty($image) || !is_array($image)) {
@@ -40,7 +39,8 @@ if (!function_exists('colby_block_article_grid_is_truthy')) {
 if (!function_exists('colby_block_article_grid_strip_html_preserve_emphasis')) {
     function colby_block_article_grid_strip_html_preserve_emphasis(string $html): string
     {
-        return preg_replace('/<(?!\/?(i|em)\b)[^>]+>/i', '', $html) ?? '';
+        $decoded = html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        return preg_replace('/<(?!\/?(i|em)\b)[^>]+>/i', '', $decoded) ?? '';
     }
 }
 
@@ -273,7 +273,9 @@ if (!function_exists('colby_block_article_grid_fetch_internal_items')) {
             $post_id = $post_obj->ID;
             
             $thumb_src = get_image($data['image_orientation'], $post_id);
-            $title = get_the_title($post_id);
+            $thumb_id = get_post_thumbnail_id($post_id);
+            $title = colby_block_article_grid_strip_html_preserve_emphasis(get_the_title($post_id));
+            
             $normalized[] = [
                 'title' => [
                     'rendered' => $title,
@@ -318,6 +320,14 @@ if (!function_exists('colby_block_article_grid_get_remote_data')) {
             foreach (($data['items'] ?? []) as $item) {
 
                 $new_item = $item;
+
+                if (!empty($new_item['heading'])) {
+                    $new_item['heading'] = colby_block_article_grid_strip_html_preserve_emphasis($new_item['heading']);
+                }
+
+                if (!empty($new_item['title']['rendered'])) {
+                    $new_item['title']['rendered'] = colby_block_article_grid_strip_html_preserve_emphasis($new_item['title']['rendered']);
+                }
 
                 if (!empty($new_item['image'])) {
                     $new_item['image'] = normalize_image(
@@ -405,7 +415,7 @@ if (!function_exists('colby_block_article_grid_get_remote_data')) {
 
                     $image = normalize_image($acf_image, $orientation);
 
-                    $title = get_the_title($post_id);
+                    $title = colby_block_article_grid_strip_html_preserve_emphasis(get_the_title($post_id));
 
                     $normalized[] = [
                         'title' => [
