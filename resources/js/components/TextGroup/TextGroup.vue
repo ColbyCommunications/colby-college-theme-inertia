@@ -316,4 +316,15 @@ onBeforeUnmount(() => {
     display: inline-block !important;
   }
 }
+
+.glide__slide--clone {
+  .text-group__subheading .word-wrap,
+  .text-group__heading .word-wrap,
+  .text-group__p,
+  ul,
+  ol {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
 </style>
