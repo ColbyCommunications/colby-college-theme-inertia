@@ -1,5 +1,30 @@
 <?php
 
+if (!function_exists('colby_block_carousel_strip_html_preserve_emphasis')) {
+    function colby_block_carousel_strip_html_preserve_emphasis(string $html): string
+    {
+        $decoded = html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        return preg_replace('/<(?!\/?(i|em)\b)[^>]+>/i', '', $decoded) ?? '';
+    }
+}
+
+if (!function_exists('colby_block_carousel_truncate')) {
+    function colby_block_carousel_truncate(string $text, int $length = 120): string
+    {
+        $text = trim($text);
+
+        if ($text === '') {
+            return '';
+        }
+
+        if (mb_strlen($text) <= $length) {
+            return $text;
+        }
+
+        return mb_substr($text, 0, $length) . '...';
+    }
+}
+
 function should_server_hydrate_carousel(array $data, int $index): bool {
     $render_api = $data['render_api'] ?? false;
     $is_api = in_array($render_api, [true, 1, '1', 'true'], true);
@@ -14,7 +39,7 @@ function should_server_hydrate_carousel(array $data, int $index): bool {
 function get_carousel_api_url(array $data): ?string {
     switch ($data['api'] ?? '') {
         case 'Latest News':
-            return 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=5&tags=561&_embed=1';
+            return 'https://dev-54ta5gq-4nvswumupeimi.us-4.platformsh.site/wp-json/wp/v2/posts?per_page=5&tags=561&_embed=1';
         case 'Academic News':
             return 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=5&categories=8,12,14,15&_embed=1';
         case 'Faculty Accomplishments':
@@ -37,8 +62,6 @@ function get_cached_remote_json(string $cache_key, string $url, int $ttl = 300):
             'Accept' => 'application/json',
         ],
     ]);
-
-    // dd($response);
 
     if (is_wp_error($response)) {
         return [];
@@ -63,12 +86,9 @@ function get_cached_remote_json(string $cache_key, string $url, int $ttl = 300):
   
 function normalize_faculty_carousel_items(array $items): array {
     return array_map(function ($item) {
-        $title = wp_strip_all_tags($item['title']['rendered'] ?? '', true);
-        $content = wp_strip_all_tags($item['content']['rendered'] ?? '', true);
-        $summary = mb_substr(trim($content), 0, 120);
-        if ($summary !== '') {
-            $summary .= '...';
-        }
+        $title = colby_block_carousel_strip_html_preserve_emphasis($item['title']['rendered'] ?? '');
+        $content = colby_block_carousel_strip_html_preserve_emphasis($item['content']['rendered'] ?? '');
+        $summary = colby_block_carousel_truncate($content, 120);
 
         return [
             'yoast_head_json' => [
@@ -79,6 +99,7 @@ function normalize_faculty_carousel_items(array $items): array {
             'title' => [
                 'rendered' => $title,
             ],
+            'heading' => $title,
             'post-meta-fields' => [
                 'primary_category' => '',
                 'summary' => [$summary],
@@ -105,6 +126,21 @@ function enrich_remote_data(array $data, int $index): array {
 
     if (($data['api'] ?? '') === 'Faculty Accomplishments') {
         $items = normalize_faculty_carousel_items($items);
+    } else {
+        $items = is_array($items) ? array_map(function ($item) {
+            if (isset($item['title']['rendered'])) {
+                $clean_title = colby_block_carousel_strip_html_preserve_emphasis($item['title']['rendered']);
+                $item['title']['rendered'] = $clean_title;
+                $item['heading'] = $clean_title;
+            }
+            
+            $summary_path = $item['post-meta-fields']['summary'][0] ?? null;
+            if ($summary_path) {
+                $item['post-meta-fields']['summary'][0] = colby_block_carousel_strip_html_preserve_emphasis($summary_path);
+            }
+            
+            return $item;
+        }, $items) : [];
     }
 
     $data['initial_items'] = $items;
@@ -112,8 +148,6 @@ function enrich_remote_data(array $data, int $index): array {
     $data['should_client_refresh'] = false;
     return $data;
 }
-
-
 
 if (!function_exists('colby_block_carousel_get_remote_data')) {
     function colby_block_carousel_get_remote_data(array $block_data, int $index, array $block = []): array
