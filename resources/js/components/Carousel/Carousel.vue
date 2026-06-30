@@ -3,11 +3,9 @@
     class="carousel__inner mx-auto my-0 w-full max-w-screen-2xl gap-x-10 px-5 md:grid md:grid-cols-12"
     v-if="mode === 'basic'"
   >
-    <!-- Left Context -->
     <div
       class="carousel__context items-center md:col-span-4 md:flex lg:col-span-3"
     >
-      <!-- BASIC (non-API) uses the shared Context component -->
       <Context
         size="small"
         :type="type"
@@ -19,7 +17,6 @@
       />
     </div>
 
-    <!-- Right Slides -->
     <div
       class="carousel__main mt-12 md:col-span-8 md:col-start-5 md:mt-0"
       @mouseenter="pauseCarousel"
@@ -29,7 +26,6 @@
       <div class="carousel__window w-full" data-glide-window>
         <div class="glide__track" data-glide-el="track">
           <div class="glide__slides">
-            <!-- BASIC mode uses local items image fields -->
             <div
               v-for="(item, idx) in slides"
               :key="'basic-' + idx"
@@ -46,16 +42,18 @@
         </div>
       </div>
 
-      <!-- Slide context under the window (shared) -->
-      <div class="carousel__slides-context relative mt-6 h-60 md:h-40">
-        <!-- BASIC: use Context -->
+      <div
+        class="carousel__slides-context pointer-events-none relative z-20 mt-6 h-60 md:h-40"
+      >
         <div
           v-for="(item, idx) in items"
           :key="'ctx-basic-' + idx"
-          class="carousel__slides-context-wrap invisible absolute top-0 left-0 w-full translate-y-[60px] opacity-0 transition-all duration-300 ease-in-out"
-          :class="{
-            '!visible !translate-y-0 opacity-100': activeSlide === idx,
-          }"
+          class="carousel__slides-context-wrap absolute top-0 left-0 w-full transition-all duration-300 ease-in-out"
+          :class="
+            activeSlide === idx
+              ? 'pointer-events-auto !visible !translate-y-0 opacity-100'
+              : 'pointer-events-none invisible translate-y-[60px] opacity-0'
+          "
         >
           <Context
             :size="size"
@@ -68,9 +66,10 @@
         </div>
       </div>
 
-      <!-- Controls (for basic + latest) -->
-      <div class="carousel__controls-wrap flex justify-end">
-        <div class="carousel__controls">
+      <div
+        class="carousel__controls-wrap pointer-events-none relative z-30 flex justify-end"
+      >
+        <div class="carousel__controls pointer-events-auto">
           <ArrowControls size="large" type="light" @prev="prev" @next="next" />
         </div>
       </div>
@@ -121,14 +120,18 @@
           </div>
         </div>
       </div>
-      <div class="carousel__slides-context relative mt-6 h-60 md:h-40">
+      <div
+        class="carousel__slides-context pointer-events-none relative z-20 mt-6 h-60 md:h-40"
+      >
         <div
           v-for="(it, idx) in slides"
           :key="'ctx-api-' + idx"
-          class="carousel__slides-context-wrap invisible absolute top-0 left-0 w-full translate-y-[60px] opacity-0 transition-all duration-300 ease-in-out"
-          :class="{
-            '!visible !translate-y-0 opacity-100': activeSlide === idx,
-          }"
+          class="carousel__slides-context-wrap absolute top-0 left-0 w-full transition-all duration-300 ease-in-out"
+          :class="
+            activeSlide === idx
+              ? 'pointer-events-auto !visible !translate-y-0 opacity-100'
+              : 'pointer-events-none invisible translate-y-[60px] opacity-0'
+          "
         >
           <div class="context space-y-5">
             <TextGroup
@@ -154,8 +157,10 @@
           </div>
         </div>
       </div>
-      <div class="carousel__controls-wrap flex justify-end">
-        <div class="carousel__controls">
+      <div
+        class="carousel__controls-wrap pointer-events-none relative z-30 flex justify-end"
+      >
+        <div class="carousel__controls pointer-events-auto">
           <ArrowControls size="large" type="light" @prev="prev" @next="next" />
         </div>
       </div>
@@ -284,7 +289,7 @@
                 <a
                   v-if="it.yoast_head_json.og_image[0].url"
                   class="article__image relative block overflow-hidden"
-                  :href="item.guid.rendered"
+                  :href="it.guid.rendered"
                 >
                   <picture>
                     <source
@@ -349,7 +354,6 @@ import Picture from "../Picture/Picture.vue";
 const props = defineProps({
   render_api: { type: Boolean, default: false },
   api: { type: String, default: "" },
-
   type: { type: String, default: "dark" },
   heading: { type: String, default: "News" },
   subheading: { type: String, default: "" },
@@ -424,16 +428,18 @@ const apiLeftButtonItems = computed(() => {
 
 const basicButtonItems = computed(() => {
   let buttons = [];
-  if(props.buttons) {
+  if (props.buttons) {
     buttons = props.buttons.map((btn) => {
-      if('button' in btn) {
+      if ("button" in btn) {
         return btn;
       } else {
-        return { button: { url: btn.url, title: btn.title, target: btn.target || "" }};
+        return {
+          button: { url: btn.url, title: btn.title, target: btn.target || "" },
+        };
       }
     });
   }
- return buttons;
+  return buttons;
 });
 
 function normalizeImage(image) {
@@ -447,10 +453,6 @@ function normalizeImage(image) {
   };
 }
 
-/**
- * Normalize a single item object:
- * - item.image.src guaranteed if image exists
- */
 function normalizeItem(item) {
   if (!item || typeof item !== "object") {
     return item;
@@ -462,9 +464,6 @@ function normalizeItem(item) {
   };
 }
 
-/**
- * Normalize any items array
- */
 function normalizeItems(items = []) {
   if (!Array.isArray(items)) {
     return [];
@@ -473,16 +472,29 @@ function normalizeItems(items = []) {
   return items.map(normalizeItem);
 }
 
-// Simplified: slides come directly from props
 const slides = computed(() =>
-  mode.value === "basic" ?  normalizeItems(props.items) : normalizeItems(props.initial_items)
+  mode.value === "basic"
+    ? normalizeItems(props.items)
+    : normalizeItems(props.initial_items),
 );
 
 const rootEl = ref(null);
 const activeSlide = ref(0);
 const glide = ref(null);
 
+let resizeObserver = null;
+let initialObserver = null;
+
 function destroyGlide() {
+  if (resizeObserver) {
+    resizeObserver.disconnect();
+    resizeObserver = null;
+  }
+  if (initialObserver) {
+    initialObserver.disconnect();
+    initialObserver = null;
+  }
+
   if (glide.value) {
     glide.value.destroy();
     glide.value = null;
@@ -508,6 +520,14 @@ function buildGlide() {
   });
 
   glide.value.mount();
+
+  resizeObserver = new ResizeObserver(() => {
+    if (glide.value) {
+      glide.value.update();
+    }
+  });
+
+  resizeObserver.observe(win);
 }
 
 const isPlaying = ref(!!props.autoplay);
@@ -556,13 +576,30 @@ function changeSlide(dir) {
 async function initializeCarousel() {
   await nextTick();
 
-  setTimeout(() => {
+  const win = rootEl.value?.querySelector("[data-glide-window]");
+  if (!win) return;
+
+  if (win.offsetWidth === 0) {
+    initialObserver = new ResizeObserver((entries) => {
+      if (entries[0].contentRect.width > 0) {
+        initialObserver.disconnect();
+        initialObserver = null;
+        buildGlide();
+        startAutoplay();
+      }
+    });
+    initialObserver.observe(win);
+  } else {
     buildGlide();
     startAutoplay();
-  }, 80);
+  }
 }
 
 onMounted(async () => {
+  console.log(
+    "Initial Carousel Items:",
+    JSON.parse(JSON.stringify(slides.value)),
+  );
   await initializeCarousel();
 });
 
@@ -580,27 +617,18 @@ watch(
 
 watch([intervalMs], startAutoplay);
 
+const parser = new DOMParser();
 const decodeHtmlEntities = (input) => {
-  const doc = new DOMParser().parseFromString(input || "", "text/html");
-  return doc.documentElement.textContent || "";
+  const doc = parser.parseFromString(input || "", "text/html");
+  return doc.body.innerHTML || "";
 };
 
 const firstOg = (it) => it?.yoast_head_json?.og_image?.[0] || null;
-const title = (it) => decodeHtmlEntities(it?.title?.rendered);
+const title = (it) => it?.title?.rendered || "";
 const summary = (it) =>
   decodeHtmlEntities(it?.["post-meta-fields"]?.summary?.[0] || "");
 const primaryCategory = (it) =>
   it?.["post-meta-fields"]?.primary_category || "";
-
-const buildSrcset = (url) => {
-  if (!url) return "";
-  return [
-    `https://colby.edu/cdn-cgi/image/width=320,quality=60/${url} 320w`,
-    `https://colby.edu/cdn-cgi/image/width=640,quality=65/${url} 640w`,
-    `https://colby.edu/cdn-cgi/image/width=960,quality=70/${url} 960w`,
-    `https://colby.edu/cdn-cgi/image/width=1280,quality=70/${url} 1280w`,
-  ].join(", ");
-};
 
 defineExpose({
   pauseCarousel,
