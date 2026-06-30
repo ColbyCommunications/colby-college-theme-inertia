@@ -39,7 +39,7 @@ function should_server_hydrate_carousel(array $data, int $index): bool {
 function get_carousel_api_url(array $data): ?string {
     switch ($data['api'] ?? '') {
         case 'Latest News':
-            return 'https://dev-54ta5gq-4nvswumupeimi.us-4.platformsh.site/wp-json/wp/v2/posts?per_page=5&tags=561&_embed=1';
+            return 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=5&tags=561&_embed=1';
         case 'Academic News':
             return 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=5&categories=8,12,14,15&_embed=1';
         case 'Faculty Accomplishments':
