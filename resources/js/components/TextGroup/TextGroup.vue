@@ -8,7 +8,7 @@
       <component
         v-if="subheading"
         :is="subheadingTag"
-        class="text-group__subheading mb-2 font-extended font-bold uppercase md:mb-0"
+        class="text-group__subheading font-extended mb-2 font-bold uppercase md:mb-0"
         :class="[
           subheadingSize,
           'leading-130',
@@ -51,10 +51,16 @@
 import { ref, onMounted, onBeforeUnmount, computed, nextTick } from "vue";
 import WYSIWYG from "@/js/components/WYSIWYG/WYSIWYG.vue";
 import "waypoints/lib/noframework.waypoints";
+import { gsap } from "gsap";
+import { SplitText } from "gsap/SplitText";
+
+gsap.registerPlugin(SplitText);
 
 const container = ref(null);
 const isBot = ref(false);
 let waypointInstance = null;
+let splitSubheading = null;
+let splitHeading = null;
 
 const emit = defineEmits(["animation-complete"]);
 
@@ -71,14 +77,7 @@ const props = defineProps({
   disableAnimations: { type: Boolean, default: false },
 });
 
-let gsapInstance = null;
-
-async function getGsap() {
-  if (gsapInstance) return gsapInstance;
-  const mod = await import("gsap");
-  gsapInstance = mod.gsap;
-  return gsapInstance;
-}
+console.log(props.heading);
 
 const sizes = computed(() => {
   const s = props.size;
@@ -156,10 +155,6 @@ const paragraphColor = computed(() =>
   props.type === "light" ? "text-[#eef4ff]" : "text-coal",
 );
 
-/* ----------------------------
-   SEMANTIC FIX (core change)
------------------------------ */
-
 const subheadingTag = computed(() => "h2");
 
 const headingTag = computed(() => {
@@ -178,14 +173,10 @@ const headingSizeMobile = computed(() => sizes.value.headMobile || "");
 const headingWeight = computed(() => sizes.value.weight);
 const strippedHeading = computed(() => props.heading || "");
 
-const animateSubheading = async () => {
-  if (!container.value || isBot.value) return;
-  const gsap = await getGsap();
-  const target = container.value.querySelectorAll(
-    ".text-group__subheading > .word-wrap",
-  );
+const animateSubheading = () => {
+  if (!container.value || isBot.value || !splitSubheading) return;
 
-  gsap.to(target, {
+  gsap.to(splitSubheading.words, {
     duration: 0.5,
     stagger: 0.1,
     opacity: 1,
@@ -197,12 +188,10 @@ const animateSubheading = async () => {
   });
 };
 
-const animateHeading = async () => {
-  if (!container.value || isBot.value) return;
-  const gsap = await getGsap();
-  const target = container.value.querySelectorAll(".text-group__heading span");
+const animateHeading = () => {
+  if (!container.value || isBot.value || !splitHeading) return;
 
-  gsap.to(target, {
+  gsap.to(splitHeading.words, {
     duration: 0.2,
     stagger: 0.1,
     opacity: 1,
@@ -211,9 +200,8 @@ const animateHeading = async () => {
   });
 };
 
-const animateParagraph = async () => {
+const animateParagraph = () => {
   if (!container.value || isBot.value) return;
-  const gsap = await getGsap();
 
   const target = container.value.querySelectorAll(".text-group__p, ul, ol");
 
@@ -247,28 +235,18 @@ onMounted(async () => {
 
   const subheading = container.value.querySelector(".text-group__subheading");
   const heading = container.value.querySelector(".text-group__heading");
-  const paragraph = container.value.querySelector(".text-group__p, ul, ol");
 
   if (subheading) {
-    let words = subheading.innerHTML.split(" ");
-    subheading.innerHTML = "";
-    words.forEach((word) => {
-      let wordWrap = document.createElement("span");
-      wordWrap.classList.add("word-wrap");
-      wordWrap.innerHTML = word;
-      subheading.append(wordWrap);
-      subheading.append(" ");
+    splitSubheading = new SplitText(subheading, {
+      type: "words",
+      wordsClass: "word-wrap",
     });
   }
 
   if (heading) {
-    let headingText = heading.innerHTML.split(" ");
-    heading.innerHTML = "";
-    headingText.forEach((word) => {
-      let wordWrap = document.createElement("span");
-      wordWrap.innerHTML = word;
-      heading.append(wordWrap);
-      heading.append(" ");
+    splitHeading = new SplitText(heading, {
+      type: "words",
+      wordsClass: "word-wrap",
     });
   }
 
@@ -290,22 +268,24 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
+  if (splitSubheading) splitSubheading.revert();
+  if (splitHeading) splitHeading.revert();
   if (waypointInstance?.destroy) waypointInstance.destroy();
 });
 </script>
 
 <style lang="scss">
-.text-group__subheading span {
+.text-group__subheading .word-wrap {
   display: inline-block;
 }
 
 .text-group--animated {
-  .text-group__subheading span {
+  .text-group__subheading .word-wrap {
     display: inline-block;
     opacity: 0;
   }
 
-  .text-group__heading span {
+  .text-group__heading .word-wrap {
     display: inline-block;
     opacity: 0;
     transform: translate(0, 10px);
@@ -324,14 +304,15 @@ onBeforeUnmount(() => {
   .text-group__p,
   ul,
   ol,
-  .text-group__heading span,
-  .text-group__subheading span {
+  .text-group__heading .word-wrap,
+  .text-group__subheading .word-wrap {
     opacity: 1 !important;
     transform: none !important;
     display: block !important;
   }
 
-  .text-group__subheading span {
+  .text-group__subheading .word-wrap,
+  .text-group__heading .word-wrap {
     display: inline-block !important;
   }
 }
