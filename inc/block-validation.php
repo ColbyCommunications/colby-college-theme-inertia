@@ -272,42 +272,67 @@ add_action('enqueue_block_editor_assets', function (): void {
 
     wp_add_inline_script('colby-acf-block-validation', <<<'JS'
 (function (wp) {
-    if (!wp || !wp.data || !wp.domReady) {
+    if (!wp?.data || !wp?.domReady) {
         return;
     }
 
     const LOCK_NAME = 'acf-validation-lock';
+    const AUTOSAVE_LOCK_NAME = 'acf-validation-autosave-lock';
     const NOTICE_ID = 'acf-universal-save-lock';
     const rules = window.colbyAcfBlockValidationRules || {};
 
     let lastLockedState = null;
 
-    function cssEscape(value) {
-        if (window.CSS && typeof window.CSS.escape === 'function') {
-            return window.CSS.escape(value);
-        }
-
-        return String(value).replace(/["\\]/g, '\\$&');
-    }
-
     function getFieldsByKey(fieldKey) {
         return Array.from(
             document.querySelectorAll(`.acf-field[data-key="${fieldKey}"]`)
-        ).filter((field) => {
-            return !field.closest('.acf-clone');
-        });
+        ).filter((field) => !field.closest('.acf-clone'));
     }
 
-    function getFieldType(field, rule) {
-        if (rule.type) {
-            return rule.type;
+    function isFieldVisible(field) {
+        if (!field || field.closest('.acf-clone')) {
+            return false;
         }
 
-        const classMatch = Array.from(field.classList).find(function (className) {
-            return className.indexOf('acf-field-') === 0 && className !== 'acf-field';
-        });
+        if (field.hidden || field.getAttribute('aria-hidden') === 'true') {
+            return false;
+        }
 
-        return classMatch ? classMatch.replace('acf-field-', '') : '';
+        return field.offsetParent !== null;
+    }
+
+    function getFieldValue(field) {
+        if (!field) {
+            return '';
+        }
+
+        const checked = field.querySelector(
+            'input[type="radio"]:checked, input[type="checkbox"]:checked'
+        );
+
+        if (checked) {
+            return checked.value;
+        }
+
+        const select = field.querySelector('select');
+
+        if (select) {
+            return select.value;
+        }
+
+        const input = field.querySelector('input:not([type="hidden"]), textarea');
+
+        if (input) {
+            return input.value;
+        }
+
+        const hidden = field.querySelector('input[type="hidden"]');
+
+        if (hidden) {
+            return hidden.value;
+        }
+
+        return '';
     }
 
     function getRepeaterRowCount(field) {
@@ -320,118 +345,85 @@ add_action('enqueue_block_editor_assets', function (): void {
         return field.querySelectorAll(':scope .acf-row:not(.acf-clone)').length;
     }
 
-    function getImageValue(field) {
-        const hiddenInput = field.querySelector(
-            ':scope > .acf-input input[type="hidden"][name]'
-        );
+    function conditionMatches(condition, field) {
+        const actual = getFieldValue(field);
+        const expected = condition.value;
+        const operator = condition.operator || '==';
 
-        return hiddenInput ? hiddenInput.value : '';
+        if (operator === '!=') {
+            return String(actual) !== String(expected);
+        }
+
+        return String(actual) === String(expected);
     }
 
-    function getRelationshipLikeValueCount(field) {
-        const selectedValues = field.querySelectorAll(
-            ':scope > .acf-input .acf-rel-item input[type="hidden"], ' +
-            ':scope > .acf-input .values input[type="hidden"], ' +
-            ':scope > .acf-input select option:checked'
-        );
-
-        if (selectedValues.length) {
-            return Array.from(selectedValues).filter(function (input) {
-                return String(input.value || '').trim() !== '';
-            }).length;
+    function ruleConditionsPass(rule, field) {
+        if (!Array.isArray(rule.when) || !rule.when.length) {
+            return true;
         }
 
-        const hiddenInput = field.querySelector(':scope > .acf-input input[type="hidden"][name]');
-        return hiddenInput && String(hiddenInput.value || '').trim() !== '' ? 1 : 0;
-    }
+        const block = field.closest('[data-type^="acf/"]');
 
-    function getWysiwygValue(field) {
-        const textarea = field.querySelector(':scope > .acf-input textarea.wp-editor-area');
+        return rule.when.every((condition) => {
+            const conditionField = block
+                ? block.querySelector(`.acf-field[data-key="${condition.field}"]`)
+                : document.querySelector(`.acf-field[data-key="${condition.field}"]`);
 
-        if (!textarea) {
-            return '';
-        }
-
-        if (
-            window.tinymce &&
-            textarea.id &&
-            window.tinymce.get(textarea.id) &&
-            !window.tinymce.get(textarea.id).isHidden()
-        ) {
-            return window.tinymce.get(textarea.id).getContent();
-        }
-
-        return textarea.value || '';
-    }
-
-    function getBasicInputValue(field) {
-        const checked = field.querySelector(
-            ':scope > .acf-input input[type="radio"]:checked, :scope > .acf-input input[type="checkbox"]:checked'
-        );
-
-        if (checked) {
-            return checked.value || '';
-        }
-
-        const select = field.querySelector(':scope > .acf-input select');
-        if (select) {
-            return select.value || '';
-        }
-
-        const textarea = field.querySelector(':scope > .acf-input textarea:not(.wp-editor-area)');
-        if (textarea) {
-            return textarea.value || '';
-        }
-
-        const input = field.querySelector(
-            ':scope > .acf-input input:not([type="hidden"]):not([type="button"]):not([type="submit"]):not([type="radio"]):not([type="checkbox"])'
-        );
-
-        return input ? input.value || '' : '';
-    }
-
-    function valueIsEmpty(value) {
-        if (Array.isArray(value)) {
-            return value.every(valueIsEmpty);
-        }
-
-        if (value && typeof value === 'object') {
-            return Object.values(value).every(valueIsEmpty);
-        }
-
-        return String(value || '').trim() === '';
+            return conditionMatches(condition, conditionField);
+        });
     }
 
     function fieldIsEmpty(field, rule) {
-        const type = getFieldType(field, rule);
-        const minimum = parseInt(rule.min || '1', 10);
+        const type = rule.type || '';
 
         if (type === 'repeater') {
+            const minimum = parseInt(rule.min || '1', 10);
             return getRepeaterRowCount(field) < minimum;
         }
 
-        if (['image', 'file'].includes(type) || ['image', 'post'].includes(rule.name)) {
-            return valueIsEmpty(getImageValue(field));
+        if (
+            ['image', 'file', 'post', 'post_object', 'relationship'].includes(type) ||
+            ['image', 'post'].includes(rule.name)
+        ) {
+            const hiddenValue = field.querySelector('input[type="hidden"]');
+
+            return !hiddenValue || !hiddenValue.value || hiddenValue.value === '0';
         }
 
-        if (['relationship', 'post_object', 'user', 'taxonomy'].includes(type) || rule.name === 'post') {
-            return getRelationshipLikeValueCount(field) < 1;
+        if (
+            field.classList.contains('acf-field-radio') ||
+            field.classList.contains('acf-field-checkbox')
+        ) {
+            return !field.querySelector(
+                'input[type="radio"]:checked, input[type="checkbox"]:checked'
+            );
         }
 
-        if (type === 'wysiwyg') {
-            return valueIsEmpty(getWysiwygValue(field));
+        const wysiwyg = field.querySelector('.wp-editor-area');
+
+        if (wysiwyg) {
+            return !String(wysiwyg.value || '').trim();
         }
 
-        return valueIsEmpty(getBasicInputValue(field));
+        const input = field.querySelector('input:not([type="hidden"]), textarea, select');
+
+        if (input) {
+            return !String(input.value || '').trim();
+        }
+
+        return false;
     }
 
     function getMessage(rule) {
         if (rule.type === 'repeater') {
             const minimum = parseInt(rule.min || '1', 10);
-            return rule.label + ' requires at least ' + minimum + ' ' + (minimum === 1 ? 'row' : 'rows') + ' before saving.';
+
+            return `${rule.label} requires at least ${minimum} ${
+                minimum === 1 ? 'row' : 'rows'
+            } before saving.`;
         }
 
-        return rule.label + ' is required before saving.';
+        return `${rule.label} is required before saving.`;
     }
 
     function markFieldInvalid(field, rule) {
@@ -439,28 +431,22 @@ add_action('enqueue_block_editor_assets', function (): void {
 
         const label = field.querySelector(':scope > .acf-label');
 
-        if (!label || label.querySelector('.acf-error-message[data-colby-validation="1"]')) {
+        if (!label || label.querySelector('.acf-error-message')) {
             return;
         }
 
         const message = document.createElement('div');
         message.className = 'acf-error-message';
-        message.dataset.colbyValidation = '1';
-        message.innerHTML = '<p>' + getMessage(rule) + '</p>';
-
+        message.innerHTML = `<p>${getMessage(rule)}</p>`;
         label.appendChild(message);
     }
 
     function clearFieldInvalid(field) {
-        field
-            .querySelectorAll(':scope > .acf-label .acf-error-message[data-colby-validation="1"]')
-            .forEach(function (message) {
-                message.remove();
-            });
+        field.classList.remove('acf-error');
 
-        if (!field.querySelector(':scope > .acf-label .acf-error-message')) {
-            field.classList.remove('acf-error');
-        }
+        field
+            .querySelectorAll('.acf-error-message')
+            .forEach((message) => message.remove());
     }
 
     function validateConfiguredFields() {
@@ -474,6 +460,16 @@ add_action('enqueue_block_editor_assets', function (): void {
             }
 
             fields.forEach((field) => {
+                if (!isFieldVisible(field)) {
+                    clearFieldInvalid(field);
+                    return;
+                }
+
+                if (!ruleConditionsPass(rule, field)) {
+                    clearFieldInvalid(field);
+                    return;
+                }
+
                 if (fieldIsEmpty(field, rule)) {
                     markFieldInvalid(field, rule);
                     hasErrors = true;
@@ -487,11 +483,17 @@ add_action('enqueue_block_editor_assets', function (): void {
     }
 
     function hasExistingAcfErrors() {
-        return Boolean(
-            document.querySelector(
-                '.acf-error-message:not([data-colby-validation="1"]), .acf-notice.-error'
-            )
-        );
+        return Array.from(
+            document.querySelectorAll('.acf-error, .acf-error-message, .acf-notice.-error')
+        ).some((error) => {
+            const field = error.closest('.acf-field');
+
+            if (!field) {
+                return true;
+            }
+
+            return isFieldVisible(field);
+        });
     }
 
     function showNotice() {
@@ -502,7 +504,7 @@ add_action('enqueue_block_editor_assets', function (): void {
             'Draft cannot be saved: Please complete the required block fields before saving.',
             {
                 id: NOTICE_ID,
-                isDismissible: true
+                isDismissible: true,
             }
         );
     }
@@ -511,118 +513,95 @@ add_action('enqueue_block_editor_assets', function (): void {
         wp.data.dispatch('core/notices').removeNotice(NOTICE_ID);
     }
 
-    function syncSaveLock() {
-        const configuredFieldsAreValid = validateConfiguredFields();
-        const shouldLock = !configuredFieldsAreValid || hasExistingAcfErrors();
+    function lockSave() {
+        wp.data.dispatch('core/editor').lockPostSaving(LOCK_NAME);
 
-        if (shouldLock) {
-            wp.data.dispatch('core/editor').lockPostSaving(LOCK_NAME);
-            wp.data.dispatch('core/editor').lockPostAutosaving(LOCK_NAME);
-
-            if (lastLockedState !== true) {
-                showNotice();
-            }
-
-            lastLockedState = true;
-            return true;
+        if (wp.data.dispatch('core/editor').lockPostAutosaving) {
+            wp.data.dispatch('core/editor').lockPostAutosaving(AUTOSAVE_LOCK_NAME);
         }
 
+        if (lastLockedState !== true) {
+            showNotice();
+        }
+
+        lastLockedState = true;
+    }
+
+    function unlockSave() {
         wp.data.dispatch('core/editor').unlockPostSaving(LOCK_NAME);
-        wp.data.dispatch('core/editor').unlockPostAutosaving(LOCK_NAME);
+
+        if (wp.data.dispatch('core/editor').unlockPostAutosaving) {
+            wp.data.dispatch('core/editor').unlockPostAutosaving(AUTOSAVE_LOCK_NAME);
+        }
 
         if (lastLockedState !== false) {
             clearNotice();
         }
 
         lastLockedState = false;
-        return false;
     }
 
-    function isSaveControl(element) {
-        const button = element && element.closest ? element.closest('button, [role="button"], .components-button') : null;
+    function syncSaveLock() {
+        const configuredFieldsAreValid = validateConfiguredFields();
+        const shouldLock = !configuredFieldsAreValid || hasExistingAcfErrors();
 
-        if (!button) {
+        if (shouldLock) {
+            lockSave();
             return false;
         }
 
-        if (
-            button.classList.contains('editor-post-save-draft') ||
-            button.classList.contains('editor-post-publish-button') ||
-            button.classList.contains('editor-post-publish-button__button') ||
-            button.classList.contains('editor-post-publish-panel__toggle')
-        ) {
-            return true;
-        }
+        unlockSave();
+        return true;
+    }
 
-        const ariaLabel = String(button.getAttribute('aria-label') || '').toLowerCase();
-        const text = String(button.textContent || '').trim().toLowerCase();
+    function scheduleSyncSaveLock() {
+        window.clearTimeout(scheduleSyncSaveLock.timeout);
+        scheduleSyncSaveLock.timeout = window.setTimeout(syncSaveLock, 100);
+    }
 
-        return (
-            ariaLabel === 'save draft' ||
-            ariaLabel === 'save' ||
-            ariaLabel === 'publish' ||
-            ariaLabel === 'update' ||
-            text === 'save draft' ||
-            text === 'save' ||
-            text === 'publish' ||
-            text === 'update'
+    function blockSaveAttempt(event) {
+        const saveButton = event.target.closest(
+            '.editor-post-save-draft, .editor-post-publish-button, .editor-post-publish-panel__toggle, .editor-post-publish-button__button'
         );
-    }
 
-    function preventSaveIfInvalid(event) {
-        if (!isSaveControl(event.target)) {
+        if (!saveButton) {
             return;
         }
 
         if (!syncSaveLock()) {
-            return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
         }
-
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        showNotice();
     }
 
-    function preventKeyboardSaveIfInvalid(event) {
-        const isSaveShortcut = (event.metaKey || event.ctrlKey) && String(event.key || '').toLowerCase() === 's';
-
-        if (!isSaveShortcut) {
+    function blockKeyboardSave(event) {
+        if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== 's') {
             return;
         }
 
         if (!syncSaveLock()) {
-            return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
         }
-
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        showNotice();
-    }
-
-    function scheduleSync() {
-        window.clearTimeout(scheduleSync.timeout);
-        scheduleSync.timeout = window.setTimeout(syncSaveLock, 100);
     }
 
     wp.domReady(function () {
         syncSaveLock();
 
-        wp.data.subscribe(scheduleSync);
+        wp.data.subscribe(scheduleSyncSaveLock);
 
-        document.addEventListener('click', preventSaveIfInvalid, true);
-        document.addEventListener('keydown', preventKeyboardSaveIfInvalid, true);
-
-        document.addEventListener('input', scheduleSync, true);
-        document.addEventListener('change', scheduleSync, true);
-        document.addEventListener('blur', scheduleSync, true);
-        document.addEventListener('click', scheduleSync, true);
+        document.addEventListener('click', blockSaveAttempt, true);
+        document.addEventListener('keydown', blockKeyboardSave, true);
+        document.addEventListener('input', scheduleSyncSaveLock, true);
+        document.addEventListener('change', scheduleSyncSaveLock, true);
+        document.addEventListener('blur', scheduleSyncSaveLock, true);
 
         if (window.acf) {
-            window.acf.addAction('append', scheduleSync);
-            window.acf.addAction('remove', scheduleSync);
-            window.acf.addAction('invalid_field', scheduleSync);
-            window.acf.addAction('valid_field', scheduleSync);
-            window.acf.addAction('validation_complete', scheduleSync);
+            acf.addAction('append', scheduleSyncSaveLock);
+            acf.addAction('remove', scheduleSyncSaveLock);
+            acf.addAction('invalid_field', scheduleSyncSaveLock);
+            acf.addAction('valid_field', scheduleSyncSaveLock);
+            acf.addAction('validation_complete', scheduleSyncSaveLock);
         }
     });
 })(window.wp);
