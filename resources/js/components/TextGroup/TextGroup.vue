@@ -8,7 +8,7 @@
       <component
         v-if="subheading"
         :is="subheadingTag"
-        class="text-group__subheading font-extended mb-2 font-bold uppercase md:mb-0"
+        class="text-group__subheading font-extended mb-2 font-bold whitespace-nowrap uppercase md:mb-0"
         :class="[
           subheadingSize,
           'leading-130',
@@ -158,13 +158,7 @@ const paragraphColor = computed(() =>
 const subheadingTag = computed(() => "h2");
 
 const headingTag = computed(() => {
-  if (props.hero) {
-    return "h1";
-  } else if (props.subheading) {
-    return "h3";
-  } else {
-    return "h2";
-  }
+  return props.subheading ? "h3" : "h2";
 });
 
 const subheadingSize = computed(() => sizes.value.sub);
