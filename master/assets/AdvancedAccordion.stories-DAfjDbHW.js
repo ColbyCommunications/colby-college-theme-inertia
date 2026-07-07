@@ -1,0 +1,28 @@
+import t from"./AdvancedAccordion-CpnS1ivY.js";import"./iframe-Ctgz600G.js";import"./preload-helper-CNn__nYE.js";import"./AdvancedAccordionPanel-BzIo2RZZ.js";import"./Icon-DOvIfJu7.js";import"./ComponentRouter-B4ohwSaZ.js";import"./_plugin-vue_export-helper-DlAUqK2U.js";import"./Hero-C1CSr_nO.js";import"./Context-CaoZand9.js";import"./TextGroup-Be01OkKq.js";import"./noframework.waypoints-DVP5Ss7z.js";import"./index-xgxdCp6f.js";import"./ButtonGroup-CWN9p6uN.js";import"./Button-DmjbEDLf.js";import"./Picture-B6XK0vzl.js";import"./HomeHero-BG_U63TJ.js";import"./HlsBackground-CkkdVU2o.js";import"./OverlayHero-zyGx-B46.js";import"./Video-Bkam8Roi.js";import"./_commonjsHelpers-CE1G-McA.js";const{expect:E}=__STORYBOOK_MODULE_TEST__,_={title:"Core Components/Advanced Accordion",component:t,tags:["autodocs"]},e={name:"Default",args:{panels:[{heading:"What is the application deadline?",content:"<p>The regular decision deadline is January 1. Early Decision I is November 15 and Early Decision II is January 1.</p>"},{heading:"What standardized tests are required?",content:"<p>Colby is test-optional. Students may choose whether or not to submit standardized test scores.</p>"},{heading:"How do I schedule a campus visit?",content:"<p>You can schedule a campus visit through the admissions website. We offer both in-person and virtual visit options.</p>"}]},play:async({canvas:a,userEvent:o})=>{}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
+  name: "Default",
+  args: {
+    panels: [{
+      heading: "What is the application deadline?",
+      content: "<p>The regular decision deadline is January 1. Early Decision I is November 15 and Early Decision II is January 1.</p>"
+    }, {
+      heading: "What standardized tests are required?",
+      content: "<p>Colby is test-optional. Students may choose whether or not to submit standardized test scores.</p>"
+    }, {
+      heading: "How do I schedule a campus visit?",
+      content: "<p>You can schedule a campus visit through the admissions website. We offer both in-person and virtual visit options.</p>"
+    }]
+  },
+  play: async ({
+    canvas,
+    userEvent
+  }) => {
+    if (import.meta.env.MODE !== 'test') return;
+    await expect(canvas.getByText("What is the application deadline?")).toBeInTheDocument();
+    await expect(canvas.getByText("What standardized tests are required?")).toBeInTheDocument();
+    await expect(canvas.getByText("How do I schedule a campus visit?")).toBeInTheDocument();
+
+    // Click first panel to trigger onPanelToggle
+    const buttons = canvas.getAllByRole("button");
+    await userEvent.click(buttons[0]);
+  }
+}`,...e.parameters?.docs?.source}}};const x=["Default"];export{e as Default,x as __namedExportsOrder,_ as default};
