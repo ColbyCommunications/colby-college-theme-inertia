@@ -381,13 +381,34 @@ add_action('enqueue_block_editor_assets', function (): void {
             return getRepeaterRowCount(field) < minimum;
         }
 
-        if (
-            ['image', 'file', 'post', 'post_object', 'relationship'].includes(type) ||
-            ['image', 'post'].includes(rule.name)
-        ) {
+        if (['image', 'file'].includes(type) || ['image'].includes(rule.name)) {
             const hiddenValue = field.querySelector('input[type="hidden"]');
-
             return !hiddenValue || !hiddenValue.value || hiddenValue.value === '0';
+        }
+
+        if (
+            ['post', 'post_object', 'relationship', 'user', 'taxonomy'].includes(type) ||
+            ['post'].includes(rule.name)
+        ) {
+            const select = field.querySelector('select');
+
+            if (select) {
+                if (select.multiple) {
+                    return Array.from(select.selectedOptions).length === 0;
+                }
+
+                return !String(select.value || '').trim();
+            }
+
+            const hiddenValues = Array.from(
+                field.querySelectorAll('input[type="hidden"]')
+            ).filter((input) => {
+                return input.name && !input.name.includes('_acf');
+            });
+
+            return !hiddenValues.some((input) => {
+                return input.value && input.value !== '0';
+            });
         }
 
         if (
