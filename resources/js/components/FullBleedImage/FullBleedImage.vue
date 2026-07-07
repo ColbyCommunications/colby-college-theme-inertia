@@ -18,7 +18,7 @@
       >
         {{ heading }}
       </h2>
-      <p class="font-body font-normal text-16 leading-130 text-coal !mt-2">
+      <p class="font-body font-normal text-16 leading-130 text-indigo !mt-2">
         {{ paragraph }}
       </p>
       <ButtonGroup

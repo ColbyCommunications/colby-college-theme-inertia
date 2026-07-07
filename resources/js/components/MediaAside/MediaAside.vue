@@ -20,7 +20,7 @@
                   />
                   <p
                     v-if="item.image?.caption"
-                    class="media-aside__caption font-body font-normal text-12 text-coal leading-140 mt-2"
+                    class="media-aside__caption font-body font-normal text-12 text-indigo leading-140 mt-2"
                   >
                     {{ item.image.caption }}
                   </p>
@@ -41,7 +41,7 @@
           </div>
           <p
             v-if="image?.caption"
-            class="media-aside__caption font-body font-normal text-12 text-coal leading-140 mt-2"
+            class="media-aside__caption font-body font-normal text-12 text-indigo leading-140 mt-2"
           >
             {{ image.caption }}
           </p>

@@ -14,7 +14,7 @@
         :class="inset ? 'md:col-span-5' : 'md:col-span-6'"
       >
         <div
-          class="font-body text-18 leading-130 font-normal text-coal"
+          class="font-body text-18 leading-130 font-normal text-indigo"
           v-html="text"
         ></div>
         <ButtonGroup

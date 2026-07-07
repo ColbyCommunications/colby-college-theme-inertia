@@ -57,7 +57,7 @@
               {{ fact.figure }}
             </h3>
             <p
-              class="font-body text-12 leading-140 font-normal text-coal"
+              class="font-body text-12 leading-140 font-normal text-indigo"
             >
               {{ fact.paragraph }}
             </p>

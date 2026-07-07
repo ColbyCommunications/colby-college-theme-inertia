@@ -152,7 +152,7 @@ const headingColor = computed(() =>
 );
 
 const paragraphColor = computed(() =>
-  props.type === "light" ? "text-[#eef4ff]" : "text-coal",
+  props.type === "light" ? "text-[#eef4ff]" : "text-indigo",
 );
 
 const subheadingTag = computed(() => "h2");

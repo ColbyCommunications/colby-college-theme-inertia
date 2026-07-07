@@ -14,10 +14,10 @@
           <li
             v-for="(filter, index) in filterItems"
             :key="index"
-            class="font-body text-14 leading-130 font-medium whitespace-nowrap text-coal md:text-10"
+            class="font-body text-14 leading-130 font-medium whitespace-nowrap text-indigo md:text-10"
           >
             <button
-              class="text-coal transition-all duration-200 ease-in-out hover:text-indigo hover:underline cursor-pointer"
+              class="text-indigo transition-all duration-200 ease-in-out hover:text-indigo hover:underline cursor-pointer"
               :class="{
                 '!text-indigo underline': currentEndpoint === filter.url,
               }"

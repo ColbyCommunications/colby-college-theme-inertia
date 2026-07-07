@@ -21,10 +21,10 @@
               <li
                 v-for="(item, idx) in list.items"
                 :key="idx"
-                class="font-body text-14 leading-130 font-normal text-coal"
+                class="font-body text-14 leading-130 font-normal text-indigo"
               >
                 <a
-                  class="text-coal transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
+                  class="text-indigo transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
                   :href="item.link?.url || item.url"
                 >
                   {{ item.link?.title || item.title }}

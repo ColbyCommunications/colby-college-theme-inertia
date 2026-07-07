@@ -14,7 +14,7 @@
           Page Not Found
         </h2>
 
-        <p class="font-body text-16 leading-150 text-coal">
+        <p class="font-body text-16 leading-150 text-indigo">
           Sorry, we couldn't find the page you were looking for. Please try our
 
           <Modal

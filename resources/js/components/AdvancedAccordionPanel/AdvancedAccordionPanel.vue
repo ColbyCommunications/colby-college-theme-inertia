@@ -33,7 +33,7 @@
     >
       <div
         ref="contentEl"
-        class="advanced-accordion__content pb-6 font-body text-coal"
+        class="advanced-accordion__content pb-6 font-body text-indigo"
       >
         <ComponentRouter :components="blocks" />
       </div>

@@ -40,7 +40,7 @@
                 </div>
                 <p
                   v-if="item.image?.caption"
-                  class="mt-2 font-body text-10 leading-140 font-normal text-coal"
+                  class="mt-2 font-body text-10 leading-140 font-normal text-indigo"
                 >
                   {{ item.image?.caption }}
                 </p>
@@ -67,7 +67,7 @@
               {{ item.testimonial.quote }}
             </p>
             <div
-              class="font-body text-14 leading-130 font-normal text-coal"
+              class="font-body text-14 leading-130 font-normal text-indigo"
             >
               {{ item.testimonial.name }}
             </div>

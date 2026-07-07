@@ -18,7 +18,7 @@
           <li
             v-for="(item, index) in items"
             :key="index"
-            class="list-disc font-body text-coal"
+            class="list-disc font-body text-indigo"
             :class="
               size === 'small'
                 ? 'text-14 leading-130 font-semibold'
