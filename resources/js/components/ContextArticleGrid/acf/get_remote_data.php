@@ -49,9 +49,10 @@ if (!function_exists('colby_block_context_article_grid_get_cached_remote_json'))
 if (!function_exists('colby_block_context_article_grid_get_endpoint')) {
     function colby_block_context_article_grid_get_endpoint(array $data): string
     {
-        $per_page = $data['per_page'];
+        $per_page = $data['per_page'] ?? 6;
+        $api = $data['api'] ?? '';
 
-        switch ($data['api'] ?? '') {
+        switch ($api) {
             case 'Arts':
                 return 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=' . $per_page . '&categories=8&_embed=1';
 
@@ -63,6 +64,9 @@ if (!function_exists('colby_block_context_article_grid_get_endpoint')) {
 
             case 'people':
                 return 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=' . $per_page . '&tags=569&_embed=1';
+                
+            default:
+                return '';
         }
     }
 }
@@ -113,20 +117,40 @@ if (!function_exists('colby_block_context_article_grid_normalize_items')) {
 if (!function_exists('colby_block_context_article_grid_get_remote_data')) {
     function colby_block_context_article_grid_get_remote_data(array $data, int $index, array $block = []): array
     {
-
-        if ($data['api'] === 'manual') {
-            // dd($data);
-            return $data;
-        }
-
         $render_api = $data['render_api'] ?? false;
 
+        // If the Context API toggle is OFF, we defer to standard Article Grid logic
         if (!colby_block_context_article_grid_is_truthy($render_api)) {
+            
+            // Explicitly load the ArticleGrid PHP file if the function isn't loaded yet
+            if (!function_exists('colby_block_article_grid_get_remote_data')) {
+                $article_grid_file = get_theme_file_path('resources/js/components/ArticleGrid/acf/get_remote_data.php');
+                if (file_exists($article_grid_file)) {
+                    require_once $article_grid_file;
+                }
+            }
+
+            // Now safely call it to hydrate `initial_items`
+            if (function_exists('colby_block_article_grid_get_remote_data')) {
+                return colby_block_article_grid_get_remote_data($data, $index, $block);
+            }
+            
             return $data;
         }
 
-        $per_page = $data['per_page'];
+        // Safely check the API key to prevent the undefined array key warning
+        $api = $data['api'] ?? '';
+
+        if ($api === 'manual') {
+            return $data;
+        }
+
+        $per_page = $data['per_page'] ?? 6;
         $endpoint = colby_block_context_article_grid_get_endpoint($data);
+
+        if (!$endpoint) {
+            return $data;
+        }
 
         $cache_key = 'colby_block_context_article_grid_' . md5($endpoint);
         $items = colby_block_context_article_grid_get_cached_remote_json($cache_key, $endpoint, 300);

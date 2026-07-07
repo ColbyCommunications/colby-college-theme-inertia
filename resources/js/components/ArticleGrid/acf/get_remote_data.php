@@ -252,6 +252,41 @@ if (!function_exists('colby_block_article_grid_fetch_internal_items')) {
         $category = (int) ($data['render_posts_category'] ?? 1);
         $post_limit = (int) ($data['post_limit'] ?? -1);
 
+        $exclude_ids = [];
+
+        // 1. Try formatted ACF array
+        if (!empty($data['exclude_internal_posts']) && is_array($data['exclude_internal_posts'])) {
+            foreach ($data['exclude_internal_posts'] as $row) {
+                $val = $row['post'] ?? null;
+                if (is_object($val) && isset($val->ID)) {
+                    $exclude_ids[] = $val->ID;
+                } elseif (is_array($val) && isset($val['ID'])) {
+                    $exclude_ids[] = $val['ID'];
+                } elseif (is_numeric($val)) {
+                    $exclude_ids[] = $val;
+                }
+            }
+        }
+        // 2. Try raw ACF block attributes (flat keys)
+        else {
+            $count = (int) ($data['exclude_internal_posts'] ?? 0);
+            for ($i = 0; $i < $count; $i++) {
+                $key = "exclude_internal_posts_{$i}_post";
+                if (!empty($data[$key])) {
+                    $val = $data[$key];
+                    if (is_object($val) && isset($val->ID)) {
+                        $exclude_ids[] = $val->ID;
+                    } elseif (is_array($val) && isset($val['ID'])) {
+                        $exclude_ids[] = $val['ID'];
+                    } elseif (is_numeric($val)) {
+                        $exclude_ids[] = $val;
+                    }
+                }
+            }
+        }
+
+        $exclude_ids = array_values(array_unique(array_filter(array_map('intval', $exclude_ids))));
+
         $query_args = [
             'post_type'           => 'post',
             'post_status'         => 'publish',
@@ -260,6 +295,10 @@ if (!function_exists('colby_block_article_grid_fetch_internal_items')) {
             'ignore_sticky_posts' => true,
             'no_found_rows'       => true,
         ];
+
+        if (!empty($exclude_ids)) {
+            $query_args['post__not_in'] = $exclude_ids;
+        }
 
         $query = new WP_Query($query_args);
 
@@ -374,6 +413,41 @@ if (!function_exists('colby_block_article_grid_get_remote_data')) {
             $category = (int) ($data['render_posts_category'] ?? 1);
             $post_limit = (int) ($data['post_limit'] ?? -1);
 
+            $exclude_ids = [];
+
+            // 1. Try formatted ACF array
+            if (!empty($data['exclude_internal_posts']) && is_array($data['exclude_internal_posts'])) {
+                foreach ($data['exclude_internal_posts'] as $row) {
+                    $val = $row['post'] ?? null;
+                    if (is_object($val) && isset($val->ID)) {
+                        $exclude_ids[] = $val->ID;
+                    } elseif (is_array($val) && isset($val['ID'])) {
+                        $exclude_ids[] = $val['ID'];
+                    } elseif (is_numeric($val)) {
+                        $exclude_ids[] = $val;
+                    }
+                }
+            }
+            // 2. Try raw ACF block attributes (flat keys)
+            else {
+                $count = (int) ($data['exclude_internal_posts'] ?? 0);
+                for ($i = 0; $i < $count; $i++) {
+                    $key = "exclude_internal_posts_{$i}_post";
+                    if (!empty($data[$key])) {
+                        $val = $data[$key];
+                        if (is_object($val) && isset($val->ID)) {
+                            $exclude_ids[] = $val->ID;
+                        } elseif (is_array($val) && isset($val['ID'])) {
+                            $exclude_ids[] = $val['ID'];
+                        } elseif (is_numeric($val)) {
+                            $exclude_ids[] = $val;
+                        }
+                    }
+                }
+            }
+
+            $exclude_ids = array_values(array_unique(array_filter(array_map('intval', $exclude_ids))));
+
             $query_args = [
                 'post_type'           => 'post',
                 'post_status'         => 'publish',
@@ -382,6 +456,10 @@ if (!function_exists('colby_block_article_grid_get_remote_data')) {
                 'ignore_sticky_posts' => true,
                 'no_found_rows'       => true,
             ];
+
+            if (!empty($exclude_ids)) {
+                $query_args['post__not_in'] = $exclude_ids;
+            }
 
             $query = new WP_Query($query_args);
 
