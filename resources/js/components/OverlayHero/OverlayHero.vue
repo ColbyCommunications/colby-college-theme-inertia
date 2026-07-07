@@ -33,7 +33,7 @@
             :buttons="{ items: buttons }"
           />
 
-          <button v-if="video?.id" class="btn group inline-flex flex-row items-center rounded border-[0.75px] border-solid font-body leading-130 font-normal !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-gold min-w-[44px] min-h-[44px] space-x-1.5 text-12 py-1 px-3.5 border-white text-white hover:text-indigo hover:bg-white" @click="setActive">
+          <button v-if="video?.id" class="btn group inline-flex flex-row items-center rounded border-[0.75px] border-solid font-body leading-130 font-normal !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-gold min-w-[44px] min-h-[44px] space-x-1.5 text-12 py-1 px-3.5 border-white text-white hover:text-indigo hover:bg-white mt-4" @click="setActive">
             <Icon
               name="play"
               class="w-3 fill-gold transition-all duration-400 ease-in-out group-hover:fill-gold"
