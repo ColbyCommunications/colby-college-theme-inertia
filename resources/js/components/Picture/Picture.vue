@@ -79,7 +79,7 @@ function normalizeSrc(src) {
     return "";
   }
 
-  const rawSrc = String(src);
+  const rawSrc = String(src.replace(/-scaled/g, ""));
   const colby = window.colby || {};
 
   if (colby.isLocal && colby.PRIMARY_DOMAIN && !props.fromApi) {

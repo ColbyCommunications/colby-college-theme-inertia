@@ -6,25 +6,25 @@
     <div class="breadcrumbs__inner mx-auto w-full max-w-screen-2xl px-5">
       <ul class="flex items-center [&>li+li]:ml-5">
         <li
-          class="font-body text-10 leading-140 font-bold whitespace-nowrap text-indigo"
+          class="font-body text-11 leading-140 font-bold whitespace-nowrap text-indigo"
         >
           <a
-            class="inline-flex h-[44px] w-[44px] items-center justify-center text-indigo transition-all duration-200 ease-in-out hover:text-indigo"
+            class="inline-flex h-[44px] w-[44px] items-center justify-center text-indigo transition-all duration-200 ease-in-out hover:underline hover:text-coal"
             href="/"
           >
             <span class="sr-only">Homepage</span>
 
-            <Icon :name="'home'" class="size-[10px] fill-indigo" />
+            <Icon :name="'home'" class="size-[10px] fill-indigo hover:fill-azure" />
           </a>
         </li>
 
         <li
           v-for="(item, index) in items"
           :key="index"
-          class="font-body text-10 leading-140 font-bold whitespace-nowrap text-indigo"
+          class="font-body text-11 leading-140 font-bold whitespace-nowrap text-indigo"
         >
           <a
-            class="inline-block min-h-[44px] min-w-[44px] leading-[44px] text-indigo transition-all duration-200 ease-in-out hover:text-indigo"
+            class="inline-block min-h-[44px] min-w-[44px] leading-[44px] text-indigo transition-all duration-200 ease-in-out hover:underline hover:text-coal"
             :href="item.url"
             v-html="item.title"
           ></a>

@@ -21,7 +21,7 @@
         <template v-else>
           <Picture
             class="w-full object-cover"
-            :src="image.sizes.Landscape"
+            :src="image.sizes.Square"
             :alt="image.alt || ''"
             loading="lazy"
           />

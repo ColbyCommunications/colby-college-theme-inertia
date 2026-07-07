@@ -11,21 +11,13 @@
             :key="`th-${index}`"
             scope="col"
             class="h-12 bg-cloud px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
+            :class="{ 'bg-white': heading.generated }"
           >
             <span :class="{ 'sr-only': heading.generated }">
               {{ heading.text }}
             </span>
           </th>
         </tr>
-        <tr v-else>
-          <th
-            scope="col"
-            class="h-12 bg-cloud px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
-          >
-            Column 1
-          </th>
-        </tr>
-
         <tr
           v-for="(item, itemIndex) in manualItems"
           :key="`row-${itemIndex}`"
