@@ -15,13 +15,13 @@
         ]"
       >
         <template v-if="video && video.id">
-          <Video :id="video.id" :image="image" />
+          <Video :id="video.id" :image="normalizedImage" />
         </template>
 
         <template v-else>
           <Picture
             class="w-full object-cover"
-            :src="image.sizes.Square"
+            :src="selectedImageSrc"
             :alt="image.alt || ''"
             loading="lazy"
           />
@@ -29,7 +29,7 @@
       </div>
 
       <div
-        class="media-context__context md:flex md:items-center mt-4"
+        class="media-context__context mt-4 md:flex md:items-center"
         :class="[
           reverse ? 'md:-order-1' : '',
           inset
@@ -52,52 +52,64 @@
 </template>
 
 <script setup>
-// Adjust imports to match your project structure
+import { computed } from "vue";
 import Video from "../Video/Video.vue";
 import Context from "../Context/Context.vue";
 import Picture from "../Picture/Picture.vue";
 
 const props = defineProps({
-  inset: {
-    type: Boolean,
-    default: false,
-  },
-  reverse: {
-    type: Boolean,
-    default: false,
-  },
-  video: {
-    type: Object,
-    default: () => null,
-  },
+  inset: { type: Boolean, default: false },
+  reverse: { type: Boolean, default: false },
+  video: { type: Object, default: () => null },
+
   image: {
     type: Object,
     default: () => ({
       src: "",
+      url: "",
       srcset: "",
       alt: "",
       sizes: {},
     }),
   },
-  size: {
+
+  image_orientation: {
     type: String,
-    default: "medium",
+    default: "default",
   },
-  subheading: {
-    type: String,
-    default: "",
-  },
-  heading: {
-    type: String,
-    default: "",
-  },
-  paragraph: {
-    type: String,
-    default: "",
-  },
-  buttons: {
-    type: Array,
-    default: () => [],
-  },
+
+  size: { type: String, default: "medium" },
+  subheading: { type: String, default: "" },
+  heading: { type: String, default: "" },
+  paragraph: { type: String, default: "" },
+  buttons: { type: Array, default: () => [] },
 });
+
+const selectedImageSrc = computed(() => {
+  const sizes = props.image?.sizes || {};
+
+  switch (props.image_orientation) {
+    case "square":
+      return sizes.Square || props.image.src || props.image.url || "";
+
+    case "rectangle":
+      return sizes.Rectangle || props.image.src || props.image.url || "";
+
+    case "landscape":
+      return sizes.Landscape || props.image.src || props.image.url || "";
+
+    case "portrait":
+      return sizes.Portrait || props.image.src || props.image.url || "";
+
+    case "default":
+    default:
+      return sizes.Square || props.image.src || props.image.url || "";
+  }
+});
+
+const normalizedImage = computed(() => ({
+  ...props.image,
+  src: selectedImageSrc.value,
+  url: selectedImageSrc.value,
+}));
 </script>
