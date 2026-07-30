@@ -8,6 +8,9 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
   require_once __DIR__ . '/vendor/autoload.php';
 }
 
+require_once __DIR__ . '/directory_sync.php';
+require_once __DIR__ . '/directory_form_auth.php';
+
 add_filter('wp_preload_resources', 'colby_preload_hero_assets');
 
 function colby_preload_critical_assets() {
@@ -313,6 +316,20 @@ add_action('template_redirect', function () {
   });
 });
 
+add_action('template_redirect', function() {
+    if ( is_page( 'directory-profile-update-form' ) ) {
+        \BoxyBird\Inertia\Inertia::share([
+            'debug_session' => [
+                'session_id'         => session_id(),
+                'colby_directory_id' => $_SESSION['colby_directory_id'] ?? 'MISSING',
+                'has_person_data'    => isset($_SESSION['person']) ? 'YES' : 'NO',
+                'first_name'         => $_SESSION['person']['first_name'][0] ?? 'N/A',
+                'last_name'          => $_SESSION['person']['last_name'][0] ?? 'N/A',
+            ]
+        ]);
+    }
+}, 20);
+
 function colby_get_menu($location) {
   
   $locations = get_nav_menu_locations();
@@ -470,6 +487,8 @@ function theme_supports() {
       'people'  => __('People Menu', 'colby'),
       'social'  => __('Social Menu', 'colby'),
     ]);
+
+    add_theme_support( 'responsive-embeds' );
 	}
 
   add_filter('acf/fields/wysiwyg/toolbars', function( $toolbars ) {
@@ -794,3 +813,502 @@ function custom_quicktags_buttons($qtInit, $editor_id) {
     return $qtInit;
 }
 add_filter('quicktags_settings', 'custom_quicktags_buttons', 10, 2);
+
+function gravity_forms_buttons() {
+	return array(
+		'formatselect',
+		'bold',
+		'italic',
+		'bullist',
+		'underline',
+		'numlist',
+		'undo',
+		'redo',
+		'link',
+		'unlink',
+		'sub',
+		'sup',
+		'justifyleft',
+		'justifycenter',
+		'justifyright',
+		'justifyfull',
+		'hr',
+	);
+}
+
+add_filter( 'gform_rich_text_editor_buttons', 'gravity_forms_buttons', 1, 1 );
+
+add_filter( 'gform_init_scripts_footer', '__return_false' );
+
+add_filter( 'manage_pages_columns', 'wpse248405_columns', 25, 1 );
+function wpse248405_columns( $cols ) {
+	$user = wp_get_current_user();
+	if ( ! in_array( 'administrator', $user->roles ) && in_array( 'editor', $user->roles ) ) {
+		// remove title column
+		unset( $cols['title'] );
+		unset( $cols['taxonomy-page-categories'] );
+		// add custom column in second place
+		$cols = array(
+			'foo'    => __( 'Title', 'textdomain' ),
+			'parent' => __( 'Parent Page', 'textdomain' ),
+		) + $cols;
+		// return columns
+
+	}
+	return $cols;
+}
+
+add_action( 'manage_pages_custom_column', 'wpse248405_custom_column', 10, 2 );
+function wpse248405_custom_column( $col, $post_id ) {
+	$user = wp_get_current_user();
+	if ( ! in_array( 'administrator', $user->roles ) && in_array( 'editor', $user->roles ) ) {
+
+		global $mode;
+		if ( $col === 'foo' ) {
+
+			$current_level = 0;
+			$post          = get_post( $post_id );
+			// Sent current_level 0 by accident, by default, or because we don't know the actual level.
+			$find_main_page = (int) $post->post_parent;
+
+			while ( $find_main_page > 0 ) {
+				$parent = get_post( $find_main_page );
+
+				if ( is_null( $parent ) ) {
+					break;
+				}
+
+				$current_level++;
+				$find_main_page = (int) $parent->post_parent;
+
+				if ( ! isset( $parent_name ) ) {
+					/** This filter is documented in wp-includes/post-template.php */
+					$parent_name = apply_filters( 'the_title', $parent->post_title, $parent->ID );
+				}
+			}
+
+			$can_edit_post = current_user_can( 'edit_post', $post->ID );
+
+			if ( $can_edit_post && 'trash' !== $post->post_status ) {
+				$lock_holder = wp_check_post_lock( $post->ID );
+
+				if ( $lock_holder ) {
+					$lock_holder   = get_userdata( $lock_holder );
+					$locked_avatar = get_avatar( $lock_holder->ID, 18 );
+					/* translators: %s: User's display name. */
+					$locked_text = esc_html( sprintf( __( '%s is currently editing' ), $lock_holder->display_name ) );
+				} else {
+					$locked_avatar = '';
+					$locked_text   = '';
+				}
+
+				echo '<div class="locked-info"><span class="locked-avatar">' . $locked_avatar . '</span> <span class="locked-text">' . $locked_text . "</span></div>\n";
+			}
+
+			$pad = '';
+			echo '<strong>';
+
+			$title = _draft_or_post_title();
+
+			if ( $can_edit_post && 'trash' !== $post->post_status ) {
+				printf(
+					'<a class="row-title" href="%s" aria-label="%s">%s%s</a>',
+					get_edit_post_link( $post->ID ),
+					/* translators: %s: Post title. */
+					esc_attr( sprintf( __( '&#8220;%s&#8221; (Edit)' ), $title ) ),
+					$pad,
+					$title
+				);
+			} else {
+				printf(
+					'<span>%s%s</span>',
+					$pad,
+					$title
+				);
+			}
+
+			// _post_states( $post );
+			if ( isset( $parent_name ) ) {
+				if ( html_entity_decode( $parent_name ) === html_entity_decode( 'Departments & Programs' ) ) {
+					echo ' - Department Homepage';
+				}
+
+				if ( $parent_name === 'Offices Directory' ) {
+					echo ' - Office Homepage';
+				}
+			}
+
+			echo "</strong>\n";
+
+			if ( 'excerpt' === $mode
+				&& ! is_post_type_hierarchical( $post->post_type )
+				&& current_user_can( 'read_post', $post->ID )
+			) {
+				if ( post_password_required( $post ) ) {
+					echo '<span class="protected-post-excerpt">' . esc_html( get_the_excerpt() ) . '</span>';
+				} else {
+					echo esc_html( get_the_excerpt() );
+				}
+			}
+
+			get_inline_data( $post );
+		}
+
+		if ( $col === 'parent' ) {
+
+			$current_level = 0;
+			$post          = get_post( $post_id );
+			// Sent current_level 0 by accident, by default, or because we don't know the actual level.
+			$find_main_page = (int) $post->post_parent;
+
+			while ( $find_main_page > 0 ) {
+				$parent = get_post( $find_main_page );
+
+				if ( is_null( $parent ) ) {
+					break;
+				}
+
+				$current_level++;
+				$find_main_page = (int) $parent->post_parent;
+
+				if ( ! isset( $parent_name ) ) {
+					/** This filter is documented in wp-includes/post-template.php */
+					$pid         = $parent->ID;
+					$parent_name = apply_filters( 'the_title', $parent->post_title, $parent->ID );
+				}
+			}
+			// echo $parent_name;
+			if ( isset( $parent_name ) ) {
+				printf(
+					'<a href="%s" aria-label="%s">%s</a>',
+					get_edit_post_link( $pid ),
+					$parent_name,
+					$parent_name
+				);
+			}
+		}
+	}
+}
+
+add_filter( 'manage_edit-post_columns', 'yoast_seo_admin_remove_columns', 10, 1 );
+add_filter( 'manage_edit-page_columns', 'yoast_seo_admin_remove_columns', 10, 1 );
+
+function yoast_seo_admin_remove_columns( $columns ) {
+	$user = wp_get_current_user();
+	if ( ! in_array( 'administrator', $user->roles ) && in_array( 'editor', $user->roles ) ) {
+
+		unset( $columns['wpseo-score'] );
+		unset( $columns['wpseo-score-readability'] );
+		unset( $columns['wpseo-title'] );
+		unset( $columns['wpseo-metadesc'] );
+		unset( $columns['wpseo-focuskw'] );
+		unset( $columns['wpseo-links'] );
+		unset( $columns['wpseo-linked'] );
+		unset( $columns['editor'] );
+
+	}
+	return $columns;
+}
+
+add_filter( 'admin_body_class', 'admin_body_classes' );
+function admin_body_classes( $classes ) {
+	if ( is_user_logged_in() ) {
+		$user     = wp_get_current_user();
+		$roles    = $user->roles;
+		$classes .= ' user-role-' . $roles[0] . ' ';
+	}
+	return $classes;
+}
+
+add_action( 'admin_head', 'custom_admin_css' );
+
+function custom_admin_css() {
+	echo '<style>
+    .user-role-editor.post-type-page .fixed .column-parent,
+    .user-role-editor.post-type-page .fixed .column-author,
+    .user-role-editor.post-type-page .fixed .column-date {
+      width: auto;
+    } 
+    .user-role-editor.post-type-page .fixed .column-foo {
+        width: 40%;
+    }
+  </style>';
+}
+
+add_filter( 'ajax_query_attachments_args', 'hide_directory_attachments' );
+
+function hide_directory_attachments( $query = array() ) {
+	$user = wp_get_current_user();
+	if ( in_array( 'editor', $user->roles ) ) {
+		$posts = get_posts(
+			array(
+				'post_type'   => 'people',
+				'post_status' => 'publish',
+				'numberposts' => -1,
+			)
+		);
+
+		$query['post_parent__not_in'] = array_column( $posts, 'ID' );
+	}
+	// comment
+	return $query;
+}
+
+function custom_meta_description( $description ) {
+	// Check if the meta description is empty or not set
+	if ( empty( $description ) ) {
+			// Get the current post ID and its content
+		$post_id      = get_the_ID();
+		$post_content = get_post_field( 'post_content', $post_id );
+
+				// Extract the content from the first block (paragraph or image-text)
+		preg_match( '/<!--\s+wp:acf\/(paragraph|image-text).+?{"paragraph_text":"(.*?)"/s', $post_content, $matches );
+
+				// Check if a match is found and extract the content from the block
+		$match = isset( $matches[2] ) ? json_decode( '"' . $matches[2] . '"' ) : null;
+
+				// Decode Unicode escape sequences in the extracted text
+		$decoded_match = isset( $match ) ? html_entity_decode( $match ) : null;
+
+				// Remove unwanted characters from the extracted text except hyphens
+		$clean_match = isset( $decoded_match ) ? preg_replace( '/[\x00-\x1F\x7F-\xFF\xA0]/u', ' ', $decoded_match ) : null;
+
+				// Trim the description to 40 words if it exists
+		$description = isset( $clean_match ) ? wp_trim_words( $clean_match, 40, '' ) : 'Colby College is an intellectual community working to solve the world’s most complex challenges.';
+	}
+
+	return $description;
+}
+add_filter( 'wpseo_metadesc', 'custom_meta_description' );
+
+add_filter( 'auto_core_update_send_email', '__return_false' );
+
+add_filter(
+	'wpseo_title',
+	function ( $title ) {
+		if ( get_query_var( 'post_type' ) === 'people' && is_post_type_archive( 'people' ) ) {
+			$title = 'People Directory | Colby College';
+		}
+		return  $title;
+	}
+);
+
+function _purgeCF() {
+	$cf_api_email = get_option( 'cloudflare_api_email' );
+	$cf_api_key   = get_option( 'cloudflare_api_key' );
+	$data         = array(
+		// get host from database
+		'hosts' => array( wp_parse_url(home_url())['host'] ),
+	);
+
+	$json = json_encode( $data );
+
+	$ch = curl_init();
+
+	// Set options
+	curl_setopt( $ch, CURLOPT_URL, 'https://api.cloudflare.com/client/v4/zones/bcccb3fcba241fabbe73cd335f7507bc/purge_cache' );
+	curl_setopt( $ch, CURLOPT_POST, 1 );
+	curl_setopt(
+		$ch,
+		CURLOPT_HTTPHEADER,
+		array(
+			'Content-Type: application/json',
+			'X-Auth-Email: ' . $cf_api_email,
+			'X-Auth-Key:' . $cf_api_key,
+		)
+	);
+	curl_setopt(
+		$ch,
+		CURLOPT_POSTFIELDS,
+		$json
+	);
+
+	// Receive server response ...
+	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+
+	// execute cURL
+	$server_output = curl_exec( $ch );
+
+	curl_close( $ch );
+}
+
+add_action( 'acf/options_page/save', 'general_settings_onsave', 10, 2 );
+function general_settings_onsave( $post_id, $menu_slug ) {
+	if ( 'global-settings' === $menu_slug ) {
+		_purgeCF();
+		return;
+	}
+}
+
+function on_save_post( $post_id ) {
+
+	// Find parent post_id.
+	if ( $post_parent_id = wp_get_post_parent_id( $post_id ) ) {
+		$post_id = $post_parent_id;
+	}
+
+	$post = get_post($post_id);
+
+	if ($post->post_title === "Colby College Updates") {
+		_purgeCF();
+	}
+}
+add_action( 'save_post', 'on_save_post' );
+
+add_filter( 'ppp_nonce_life', 'public_post_preview_time_window' );
+function public_post_preview_time_window() {
+	// one year
+	return 31539456;
+}
+
+// Handles 404 for trying to visit category pages in the url, such as colby.edu/academics/news
+function return_404_for_category_archives() {
+    if (is_category()) {
+        global $wp_query;
+        $wp_query->set_404();
+        status_header(404);
+        nocache_headers();
+        include(get_query_template('404'));
+        exit();
+    }
+}
+add_action('template_redirect', 'return_404_for_category_archives');
+
+function exclude_specific_posts_from_algolia_index( $should_index, $post ) {
+    // Array of post IDs to exclude
+    $excluded_post_ids = array(7443, 7441); // Replace these IDs with the IDs of the posts you want to exclude
+
+    if ( in_array( $post->ID, $excluded_post_ids ) ) {
+        return false;
+    }
+
+    return $should_index;
+}
+add_filter( 'algolia_should_index_searchable_post', 'exclude_specific_posts_from_algolia_index', 10, 2 );
+
+function filter_image_pre_upload($file)
+{
+    $allowed_types = ['image/jpeg', 'image/png'];
+
+    // 1 MB.
+    $max_allowed_size = 1000 * 1024;
+
+    if (in_array($file['type'], $allowed_types)) {
+        if ($file['size'] > $max_allowed_size) {
+            $file['error'] = 'Please reduce the size of your image to 1 MB or less before uploading it. Despite the maximum file upload size of the server, files less than 1MB are much more SEO and accessibility friendly.';
+        }
+    }
+
+    return $file;
+}
+
+add_filter('wp_handle_upload_prefilter', 'filter_image_pre_upload', 20);
+
+// Replace OpenGraph image with placeholder image if hide_photo is enabled.
+function alter_opengraph_image_for_person( $image ) {
+	if ( is_singular( 'people' ) ) {
+		$post_id = get_queried_object_id();
+		$hide_photo = get_post_meta( $post_id, 'hide_photo', true );
+		if ( $hide_photo == '1' ) {
+			$fallback_image_id = 11432;
+			$image_src = wp_get_attachment_image_src( $fallback_image_id, 'full' );
+			if ( $image_src && ! empty( $image_src[0] ) ) {
+				return $image_src[0];
+			}
+		}
+	}
+	return $image;
+}
+add_filter( 'wpseo_opengraph_image', 'alter_opengraph_image_for_person', 99 );
+
+// Remove ImageObject and thumbnailUrl from Yoast schema if hide_photo is enabled.
+add_filter( 'wpseo_schema_graph', function( $graph ) {
+	if ( is_singular( 'people' ) ) {
+		$post_id = get_queried_object_id();
+		$hide_photo = get_post_meta( $post_id, 'hide_photo', true );
+
+		if ( $hide_photo == '1' ) {
+			$graph = array_filter( $graph, function( $piece ) {
+				// Remove ImageObject types
+				return !( isset( $piece['@type'] ) && $piece['@type'] === 'ImageObject' );
+			} );
+
+			// Remove image references in WebPage
+			foreach ( $graph as &$piece ) {
+				if ( isset( $piece['@type'] ) && $piece['@type'] === 'WebPage' ) {
+					unset( $piece['thumbnailUrl'] );
+					unset( $piece['primaryImageOfPage'] );
+					unset( $piece['image'] );
+				}
+			}
+			unset( $piece );
+		}
+	}
+	return $graph;
+}, 11 );
+
+add_filter('map_meta_cap', function ($caps, $cap, $user_id, $args) {
+
+	/*
+ 	* This requires adding edit permissions for each of the parent pages up to the
+    * department, office, or section HP
+	*/
+	
+    // Which primitive caps are we going to block?
+    $caps_to_block = ['edit_post'];
+
+    if (!in_array($cap, $caps_to_block, true)) {
+        return $caps;
+    }
+
+    // Safety: ensure we have a post ID
+    $post_id = isset($args[0]) ? intval($args[0]) : 0;
+    if (!$post_id) {
+        return $caps;
+    }
+
+    // Only target PAGES (not posts or CPTs). Remove this check if you want posts/CPTs too.
+    if (get_post_type($post_id) !== 'page') {
+        return $caps;
+    }
+
+    // === CONFIGURE HERE ===
+    // Page IDs to protect
+    $protected_page_ids = [7436, 7441, 7443, 7439]; // <-- replace with your page IDs
+
+    // Roles to block from editing those pages
+    $blocked_roles = ['editor']; // e.g., block Editors and below
+    // ======================
+
+    if (!in_array($post_id, $protected_page_ids, true)) {
+        return $caps; // not a protected page
+    }
+
+    $user = get_userdata($user_id);
+    if (!$user || empty($user->roles)) {
+        return $caps;
+    }
+
+    // If the user has ANY of the blocked roles, deny
+    if (array_intersect($blocked_roles, (array) $user->roles)) {
+        // 'do_not_allow' ensures WP hard-stops the action with a permissions error
+        return ['do_not_allow'];
+    }
+
+    return $caps;
+}, 10, 4);
+
+add_filter('tiny_mce_before_init', function($init){
+    // Make sure advlist is enabled so custom styles are respected
+    if (empty($init['plugins']) || strpos($init['plugins'], 'advlist') === false) {
+        $init['plugins'] .= ' advlist';
+    }
+
+    // Allowed bullet styles (only the normal disc bullet)
+    $init['advlist_bullet_styles'] = 'default';
+
+    // Allowed number styles (decimal + roman numerals)
+    $init['advlist_number_styles'] = 'default,lower-roman,upper-roman';
+
+    return $init;
+}, 20);

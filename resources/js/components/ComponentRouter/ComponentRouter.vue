@@ -77,9 +77,11 @@ const blockRegistry = {
   "acf/embed": () => import("../Embed/Embed.vue"),
   "acf/image": () => import("../Image/Image.vue"),
   "acf/image-text": () => import("../ImageText/ImageText.vue"),
-  "acf/overlay-wide-image": () => import("../OverlayWideImage/OverlayWideImage.vue"),
+  "acf/overlay-wide-image": () =>
+    import("../OverlayWideImage/OverlayWideImage.vue"),
   "acf/block-quote": () => import("../BlockQuote/BlockQuote.vue"),
-  "acf/bordered-article-row": () => import("../BorderedArticleRow/BorderedArticleRow.vue"),
+  "acf/bordered-article-row": () =>
+    import("../BorderedArticleRow/BorderedArticleRow.vue"),
   "acf/collage-section": () => import("../CollageSection/CollageSection.vue"),
   "acf/context-section": () => import("../ContextSection/ContextSection.vue"),
   "acf/endpoint-filter": () => import("../EndpointFilter/EndpointFilter.vue"),
@@ -92,7 +94,8 @@ const blockRegistry = {
   "acf/intro-context": () => import("../IntroContext/IntroContext.vue"),
   "acf/list-block-grid": () => import("../ListBlockGrid/ListBlockGrid.vue"),
   "acf/media-aside": () => import("../MediaAside/MediaAside.vue"),
-  "acf/media-context-section": () => import("../MediaContextSection/MediaContextSection.vue"),
+  "acf/media-context-section": () =>
+    import("../MediaContextSection/MediaContextSection.vue"),
   "acf/related-section": () => import("../RelatedSection/RelatedSection.vue"),
   "acf/table-section": () => import("../TableSection/TableSection.vue"),
 
@@ -100,6 +103,8 @@ const blockRegistry = {
   "core/group": () => import("../Group/Group.vue"),
   "core/html": () => import("../Html/Html.vue"),
   "core/classic": () => import("../Classic/Classic.vue"),
+
+  "gravityforms/form": () => import("../GravityForm/GravityForm.vue"),
 };
 
 function getLoader(blockName) {
@@ -115,16 +120,22 @@ function isHeroMediaBlock(blockName) {
 }
 
 function getFirstHeroMediaBlockIndex() {
-  return props.components.findIndex((item) => isHeroMediaBlock(item?.blockName));
+  return props.components.findIndex((item) =>
+    isHeroMediaBlock(item?.blockName),
+  );
 }
 
 function isPriorityMediaBlock(item, index) {
-  return isHeroMediaBlock(item?.blockName) && index === getFirstHeroMediaBlockIndex();
+  return (
+    isHeroMediaBlock(item?.blockName) && index === getFirstHeroMediaBlockIndex()
+  );
 }
 
 function getComponentProps(item, index) {
   return {
     ...(item.attrs?.data || {}),
+    blockAttrs: item.attrs || {},
+    renderedHtml: item.innerHTML || "",
     priority: isPriorityMediaBlock(item, index),
   };
 }
@@ -144,10 +155,7 @@ function isEager(item, index) {
     return !isMobile.value;
   }
 
-  return [
-    "acf/section-nav",
-    "acf/subpage-nav",
-  ].includes(blockName);
+  return ["acf/section-nav", "acf/subpage-nav"].includes(blockName);
 }
 
 function getRootMargin(item, index) {

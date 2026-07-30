@@ -1,5 +1,7 @@
 <template>
-  <div class="directory-card grid w-full max-w-screen-2xl grid-cols-8 gap-10 mb-20">
+  <div
+    class="directory-card mb-20 grid w-full max-w-screen-2xl grid-cols-8 gap-10"
+  >
     <div v-if="hasImage" class="directory-card__image col-span-8 md:col-span-4">
       <div class="relative pb-[119.44444444444444%]">
         <Picture
@@ -19,7 +21,7 @@
           {{ name }}
         </h1>
         <div
-          v-if="pronouns && !hidePronouns"
+          v-if="pronouns && !hide_pronouns"
           class="mt-2 font-body text-12 leading-140 font-semibold text-indigo"
         >
           {{ pronouns }}
@@ -40,7 +42,7 @@
               </p>
             </div>
 
-            <div v-if="department && !hideDepartment" class="col-span-2">
+            <div v-if="department && !hide_department" class="col-span-2">
               <h2
                 class="mb-3 font-body text-10 leading-140 font-bold tracking-8 text-indigo uppercase"
               >
@@ -62,9 +64,9 @@
               <ul
                 class="directiory_information grid grid-cols-4 gap-x-10 font-body text-12 leading-140 font-normal"
               >
-                <li v-if="phone && !hidePhoneNumber" class="col-span-2 mb-3">
+                <li v-if="phone && !hide_phone_number" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo hover:text-coal hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-coal hover:underline"
                     :href="`tel:${phone}`"
                   >
                     <Icon name="phone" class="mr-1.5 h-3 fill-indigo" />
@@ -72,10 +74,10 @@
                   </a>
                 </li>
 
-                <li v-if="curriculumVitae && !hideCv" class="col-span-2 mb-3">
+                <li v-if="curriculum_vitae && !hide_cv" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo hover:text-coal hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
-                    :href="curriculumVitae"
+                    class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-coal hover:underline"
+                    :href="curriculum_vitae"
                     target="_blank"
                   >
                     <Icon name="clipboard" class="mr-1.5 h-3 fill-indigo" />
@@ -83,9 +85,9 @@
                   </a>
                 </li>
 
-                <li v-if="email && !hideEmail" class="col-span-2 mb-3">
+                <li v-if="email && !hide_email" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo hover:text-coal hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-coal hover:underline"
                     :href="`mailto:${email}`"
                   >
                     <Icon name="email" class="mr-1.5 h-3 fill-indigo" />
@@ -93,9 +95,9 @@
                   </a>
                 </li>
 
-                <li v-if="fax && !hideFax" class="col-span-2 mb-3">
+                <li v-if="fax && !hide_fax" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo hover:text-coal hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-coal hover:underline"
                     :href="`tel:${fax}`"
                   >
                     <Icon name="fax" class="mr-1.5 h-4 fill-indigo" />
@@ -103,7 +105,7 @@
                   </a>
                 </li>
 
-                <li v-if="location && !hideLocation" class="col-span-2 mb-3">
+                <li v-if="location && !hide_location" class="col-span-2 mb-3">
                   <div class="flex items-center text-indigo">
                     <Icon name="location" class="mr-1.5 h-3 fill-indigo" />
                     {{ location }}
@@ -118,23 +120,19 @@
               >
                 Address
               </h2>
-              <p
-                class="font-body text-12 leading-130 font-normal text-indigo"
-              >
+              <p class="font-body text-12 leading-130 font-normal text-indigo">
                 {{ address }}
               </p>
             </div>
 
-            <div v-if="officeHours && !hideOfficeHours" class="col-span-4">
+            <div v-if="office_hours && !hide_office_hours" class="col-span-4">
               <h2
                 class="mb-3 font-body text-10 leading-140 font-bold tracking-8 text-indigo uppercase"
               >
                 Office Hours
               </h2>
-              <p
-                class="font-body text-12 leading-130 font-normal text-indigo"
-              >
-                {{ officeHours }}
+              <p class="font-body text-12 leading-130 font-normal text-indigo">
+                {{ office_hours }}
               </p>
             </div>
           </template>
@@ -164,7 +162,7 @@
               >
                 <li v-if="phone" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo hover:text-indigo hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-indigo hover:underline"
                     :href="`tel:${phone}`"
                   >
                     <Icon name="phone" class="mr-1.5 h-3 fill-indigo" />
@@ -172,10 +170,10 @@
                   </a>
                 </li>
 
-                <li v-if="curriculumVitae" class="col-span-2 mb-3">
+                <li v-if="curriculum_vitae" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo hover:text-coal hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
-                    :href="curriculumVitae"
+                    class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-coal hover:underline"
+                    :href="curriculum_vitae"
                     target="_blank"
                   >
                     <Icon name="clipboard" class="mr-1.5 h-3 fill-indigo" />
@@ -185,7 +183,7 @@
 
                 <li v-if="email" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo hover:text-coal hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-coal hover:underline"
                     :href="`mailto:${email}`"
                   >
                     <Icon name="email" class="mr-1.5 h-3 fill-indigo" />
@@ -195,7 +193,7 @@
 
                 <li v-if="fax" class="col-span-2 mb-3">
                   <a
-                    class="flex items-center text-indigo hover:text-coal hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+                    class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-coal hover:underline"
                     :href="`tel:${fax}`"
                   >
                     <Icon name="fax" class="mr-1.5 h-4 fill-indigo" />
@@ -220,41 +218,34 @@
 
 <script setup>
 import { computed, defineProps } from "vue";
-// Assuming you have these base components created
 import Picture from "../Picture/Picture.vue";
 import Icon from "../Icon/Icon.vue";
 
 const props = defineProps({
-  // Data Objects
   post: {
     type: Object,
     default: () => ({}),
   },
   image: {
     type: String,
-    default: '',
+    default: "",
   },
-
-  // Configuration
   type: {
-    type: String, // 'people' or 'offices'
+    type: String,
     default: "people",
   },
-
-  // Text Content
   name: { type: String, default: "" },
   pronouns: { type: String, default: "" },
   title: { type: String, default: "" },
   department: { type: String, default: "" },
   phone: { type: String, default: "" },
-  curriculum_itae: { type: String, default: "" },
+  curriculum_vitae: { type: String, default: "" },
   email: { type: String, default: "" },
   fax: { type: String, default: "" },
   location: { type: String, default: "" },
   address: { type: String, default: "" },
   office_hours: { type: String, default: "" },
 
-  // Visibility Flags
   hide_photo: { type: Boolean, default: false },
   hide_pronouns: { type: Boolean, default: false },
   hide_department: { type: Boolean, default: false },
@@ -266,10 +257,8 @@ const props = defineProps({
   hide_office_hours: { type: Boolean, default: false },
 });
 
-// Computed Logic for Image Data
-// This handles the fallback logic seen in the Twig: (post.thumbnail or image)
 const hasImage = computed(() => {
-  return (props.image) && !props.hidePhoto;
+  return props.image && !props.hide_photo;
 });
 
 const imageAlt = computed(() => {
@@ -279,5 +268,4 @@ const imageAlt = computed(() => {
   }
   return "Directory Image";
 });
-
 </script>

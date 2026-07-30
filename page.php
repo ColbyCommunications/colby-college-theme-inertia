@@ -182,6 +182,17 @@ function colby_process_single_block(array $block, int $index = 0, string $path =
         $block['attrs']['data']['html'] = wp_kses_post($block['innerHTML'] ?? '');
     
         return $block;
+    } elseif (($block['blockName'] ?? null) === 'gravityforms/form') {
+        
+        $form_id = $block['attrs']['formId'] ?? null;
+        
+        if ($form_id) {
+            // gravity_form($id, $title, $description, $inactive, $values, $ajax, $tabindex, $echo)
+            $rendered = gravity_form(intval($form_id), false, false, false, null, true, 1, false);
+            $block['innerHTML'] = $rendered;
+        }
+        
+        return $block;
     } elseif (($block['blockName'] ?? null) === 'core/group') {
         $block['attrs'] = isset($block['attrs']) && is_array($block['attrs'])
             ? $block['attrs']
@@ -221,9 +232,27 @@ function colby_process_blocks(array $blocks, string $path = 'root'): array
 
 $filtered_blocks = colby_process_blocks($filtered_blocks);
 
+$person_data = null;
+if ( is_page( 'directory-profile-update-form' ) && isset( $_SESSION['person'] ) ) {
+    $person_data = [
+        'first_name' => $_SESSION['person']['first_name'][0] ?? '',
+        'last_name'  => $_SESSION['person']['last_name'][0] ?? '',
+    ];
+}
+
 if ( post_password_required( $post->ID ) ) {
     Inertia::render('Password/Show', [
         'password_form' => get_the_password_form($post->ID),
+    ]);
+} elseif ( is_page( 'directory-profile-update-form' ) ) {
+    Inertia::render('Page/DirectoryForm', [
+        'id'          => $post->ID,
+        'title'       => get_the_title($post->ID),
+        'blocks'      => $filtered_blocks,
+        'person_data' => isset( $_SESSION['person'] ) ? [
+            'first_name' => $_SESSION['person']['first_name'][0] ?? '',
+            'last_name'  => $_SESSION['person']['last_name'][0] ?? '',
+        ] : null,
     ]);
 } else {
     Inertia::render('Page/Show', [
