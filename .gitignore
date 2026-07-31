@@ -4,4 +4,5 @@ coverage/
 *storybook.log
 storybook-static
 vendor/
+!lib/simplesamlphp/vendor
 simplesaml-local/
