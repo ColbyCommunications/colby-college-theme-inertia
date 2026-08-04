@@ -805,98 +805,201 @@ function custom_quicktags_buttons($qtInit, $editor_id) {
 }
 add_filter('quicktags_settings', 'custom_quicktags_buttons', 10, 2);
 
-add_action('wp_enqueue_scripts', function() {
+/**
+ * Whether the current request is the isolated Gravity Forms iframe document.
+ */
+function colby_is_gravity_forms_iframe_request(): bool {
+    return isset($_GET['gf_iframe_id']) && absint(wp_unslash($_GET['gf_iframe_id'])) > 0;
+}
 
-    if (is_page('directory-profile-update-form')) {
-        gravity_form_enqueue_scripts(12, true);
-
-        wp_enqueue_script('gform_gravityforms');
-        wp_enqueue_script('gform_conditional_logic');
+/**
+ * Render a Gravity Form inside a small, same-origin HTML document.
+ *
+ * The form is rendered before wp_head() so Gravity Forms and any wp_editor()
+ * instances can register all of their scripts, styles, and footer callbacks
+ * before WordPress starts printing assets.
+ */
+function colby_render_gravity_forms_iframe(): void {
+    if (!colby_is_gravity_forms_iframe_request()) {
+        return;
     }
 
-}, 20);
+    $form_id = absint(wp_unslash($_GET['gf_iframe_id']));
 
-add_action('template_redirect', function() {
-    if (isset($_GET['gf_iframe_id'])) {
-        $form_id = intval($_GET['gf_iframe_id']);
-        
-        // Hide the WordPress admin bar
-        add_filter('show_admin_bar', '__return_false');
-        
-        // Ensure Gravity Forms rich text editors format HTML correctly
-        add_filter('gform_allow_html_formatter', '__return_true');
-        
-        // Force Gravity Forms to queue its configuration scripts
-        gravity_form_enqueue_scripts($form_id, true);
-        
-        // Dequeue SPA scripts so they don't crash inside the iframe
-        add_action('wp_enqueue_scripts', function() {
-            wp_dequeue_script('vite-client');
-            wp_dequeue_script('colby-app');
-            wp_dequeue_style('colby-app');
-        }, 999);
+    if (!function_exists('gravity_form') || !function_exists('gravity_form_enqueue_scripts')) {
+        status_header(503);
+        wp_die(
+            esc_html__('The form service is currently unavailable.', 'colby'),
+            esc_html__('Form unavailable', 'colby'),
+            array('response' => 503)
+        );
+    }
 
-        // Output clean, isolated HTML
-        ?>
-        <!DOCTYPE html>
-        <html <?php language_attributes(); ?>>
-        <head>
-            <meta charset="<?php bloginfo( 'charset' ); ?>">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <?php wp_head(); ?>
-            <style>
-                body { 
-                    background: transparent !important; 
-                    margin: 0; 
-                    padding: 5px; 
-                    font-family: 'Libre Franklin', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                    font-size: 16px;
-                    color: #1a1a1a;
-                }
-                .gform_wrapper input:not([type="file"]):not([type="submit"]) { border: 1px solid #b7c2d5; border-radius: 3px; }
-                .gform_wrapper textarea { border: 1px solid #b7c2d5; border-radius: 3px; }
-                .gform_wrapper select { border: 1px solid #b7c2d5; border-radius: 3px; padding: 5px; }
-                .gform_wrapper input[type="submit"] { background-color: #002878; border: 2px solid #002878; color: #fff; padding: 5px 12px; cursor: pointer; border-radius: 4px; }
-                .gform_wrapper input[type="submit"]:hover, .gform_wrapper input[type="submit"]:focus { background-color: #fff; border: 2px solid #002878; color: #003878; text-decoration: underline; }
-                .gform_wrapper .remove-field { margin-bottom: 2rem; }
-                .gform_wrapper .remove-field label, .gform_wrapper .gchoice label { margin-left: 0.5rem; }
-                .post-password-form input[type="password"] { border: 1px solid #ccc; }
-                .post-password-form input[type="submit"] { border: 1px solid #002878; background-color: #002878; color: #fff; padding: 1px 10px; }
-            </style>
-        </head>
-        <body>
-            <!-- 
-              This hidden dummy editor forces WordPress to natively bootstrap 
-              all TinyMCE scripts, styles, and configurations for Gravity Forms. 
-            -->
-            <div style="display:none;">
-                <?php wp_editor( '', 'gf_dummy_editor' ); ?>
-            </div>
+    add_filter('show_admin_bar', '__return_false');
+    add_filter('gform_allow_html_formatter', '__return_true');
 
-            <?php gravity_form($form_id, false, false, false, null, true, 1, true); ?>
-            
-            <?php wp_footer(); ?>
-            
-            <script>
-                function sendHeight() {
-                    const height = document.body.scrollHeight || document.documentElement.scrollHeight;
-                    window.parent.postMessage({ type: 'gf_iframe_resize', height: height }, '*');
-                }
-                
-                const observer = new MutationObserver(sendHeight);
-                observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+    // Gravity Forms 2.5+ expects initialization scripts in the footer.
+    // Keeping them there guarantees that the gform runtime is defined first.
+    add_filter('gform_init_scripts_footer', '__return_true');
+
+    nocache_headers();
+
+    /*
+     * The outer document is already an iframe, so use a normal postback inside
+     * it instead of creating Gravity Forms' legacy nested AJAX iframe.
+     */
+    $use_gravity_forms_ajax = false;
+
+    // Register the form's base and conditional assets before wp_head().
+    gravity_form_enqueue_scripts($form_id, $use_gravity_forms_ajax);
+
+    // Rendering now also registers the real field-specific TinyMCE settings.
+    $form_html = gravity_form(
+        $form_id,
+        false, // Display title.
+        false, // Display description.
+        false, // Force display inactive form.
+        null,  // Dynamic population values.
+        $use_gravity_forms_ajax,
+        0,     // Let the browser determine tabindex order.
+        false  // Return markup instead of echoing it.
+    );
+
+    if (!is_string($form_html) || trim($form_html) === '') {
+        status_header(404);
+        wp_die(
+            esc_html__('The requested form could not be found.', 'colby'),
+            esc_html__('Form not found', 'colby'),
+            array('response' => 404)
+        );
+    }
+
+    ?>
+    <!doctype html>
+    <html <?php language_attributes(); ?>>
+    <head>
+        <meta charset="<?php bloginfo('charset'); ?>">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?php wp_head(); ?>
+        <style>
+            html,
+            body {
+                background: transparent !important;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                padding: 5px;
+                color: #1a1a1a;
+                font-family: "Libre Franklin", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                font-size: 16px;
+            }
+
+            .gform_wrapper input:not([type="file"]):not([type="submit"]),
+            .gform_wrapper textarea {
+                border: 1px solid #b7c2d5;
+                border-radius: 3px;
+            }
+
+            .gform_wrapper select {
+                border: 1px solid #b7c2d5;
+                border-radius: 3px;
+                padding: 5px;
+            }
+
+            .gform_wrapper input[type="submit"] {
+                border: 2px solid #002878;
+                border-radius: 4px;
+                background-color: #002878;
+                color: #fff;
+                cursor: pointer;
+                padding: 5px 12px;
+            }
+
+            .gform_wrapper input[type="submit"]:hover,
+            .gform_wrapper input[type="submit"]:focus {
+                border-color: #002878;
+                background-color: #fff;
+                color: #003878;
+                text-decoration: underline;
+            }
+
+            .gform_wrapper .remove-field {
+                margin-bottom: 2rem;
+            }
+
+            .gform_wrapper .remove-field label,
+            .gform_wrapper .gchoice label {
+                margin-left: 0.5rem;
+            }
+
+            .post-password-form input[type="password"] {
+                border: 1px solid #ccc;
+            }
+
+            .post-password-form input[type="submit"] {
+                border: 1px solid #002878;
+                background-color: #002878;
+                color: #fff;
+                padding: 1px 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <?php echo $form_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+
+        <?php wp_footer(); ?>
+
+        <script>
+            (() => {
+                const parentOrigin = window.location.origin;
+                let resizeFrame = 0;
+
+                const sendHeight = () => {
+                    window.cancelAnimationFrame(resizeFrame);
+
+                    resizeFrame = window.requestAnimationFrame(() => {
+                        const height = Math.max(
+                            document.body.scrollHeight,
+                            document.documentElement.scrollHeight
+                        );
+
+                        window.parent.postMessage(
+                            { type: 'gf_iframe_resize', height },
+                            parentOrigin
+                        );
+                    });
+                };
+
+                const resizeObserver = new ResizeObserver(sendHeight);
+                resizeObserver.observe(document.documentElement);
+                resizeObserver.observe(document.body);
+
+                const mutationObserver = new MutationObserver(sendHeight);
+                mutationObserver.observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                    attributes: true,
+                });
+
                 window.addEventListener('load', sendHeight);
-                
+                document.addEventListener('DOMContentLoaded', sendHeight);
+
                 if (window.jQuery) {
-                    window.jQuery(document).on('gform_post_render', sendHeight);
+                    window.jQuery(document).on(
+                        'gform_post_render gform_page_loaded gform_confirmation_loaded',
+                        sendHeight
+                    );
                 }
-            </script>
-        </body>
-        </html>
-        <?php
-        exit;
-    }
-}, 1);
+            })();
+        </script>
+    </body>
+    </html>
+    <?php
+    exit;
+}
+add_action('template_redirect', 'colby_render_gravity_forms_iframe', 1);
 
 function gravity_forms_buttons() {
 	return array(
@@ -920,9 +1023,7 @@ function gravity_forms_buttons() {
 	);
 }
 
-add_filter( 'gform_rich_text_editor_buttons', 'gravity_forms_buttons', 1, 1 );
-
-add_filter( 'gform_init_scripts_footer', '__return_false' );
+add_filter('gform_rich_text_editor_buttons', 'gravity_forms_buttons', 1, 1);
 
 add_filter( 'manage_pages_columns', 'wpse248405_columns', 25, 1 );
 function wpse248405_columns( $cols ) {
