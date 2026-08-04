@@ -154,7 +154,7 @@ const props = defineProps({
   },
   page_categories: {
     type: Array,
-    default: [],
+    default: () => [],
   },
   address: {
     type: String,
