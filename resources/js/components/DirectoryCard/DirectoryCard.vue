@@ -69,18 +69,24 @@
                     class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-coal hover:underline"
                     :href="`tel:${phone}`"
                   >
-                    <Icon name="phone" class="mr-1.5 h-3 fill-indigo" />
+                    <Icon
+                      name="phone"
+                      class="mr-1.5 h-3 shrink-0 fill-indigo"
+                    />
                     {{ phone }}
                   </a>
                 </li>
 
                 <li v-if="curriculum_vitae && !hide_cv" class="col-span-2 mb-3">
                   <a
-                    class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-coal hover:underline"
+                    class="flex min-h-[44px] min-w-[44px] items-center text-indigo hover:text-coal hover:underline"
                     :href="curriculum_vitae"
                     target="_blank"
                   >
-                    <Icon name="clipboard" class="mr-1.5 h-3 fill-indigo" />
+                    <Icon
+                      name="clipboard"
+                      class="mr-1.5 h-3 shrink-0 fill-indigo"
+                    />
                     Curriculum Vitae/Personal Webpage
                   </a>
                 </li>
@@ -90,7 +96,10 @@
                     class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-coal hover:underline"
                     :href="`mailto:${email}`"
                   >
-                    <Icon name="email" class="mr-1.5 h-3 fill-indigo" />
+                    <Icon
+                      name="email"
+                      class="mr-1.5 h-3 shrink-0 fill-indigo"
+                    />
                     {{ email }}
                   </a>
                 </li>
@@ -100,14 +109,17 @@
                     class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-coal hover:underline"
                     :href="`tel:${fax}`"
                   >
-                    <Icon name="fax" class="mr-1.5 h-4 fill-indigo" />
+                    <Icon name="fax" class="mr-1.5 h-4 shrink-0 fill-indigo" />
                     {{ fax }}
                   </a>
                 </li>
 
                 <li v-if="location && !hide_location" class="col-span-2 mb-3">
                   <div class="flex items-center text-indigo">
-                    <Icon name="location" class="mr-1.5 h-3 fill-indigo" />
+                    <Icon
+                      name="location"
+                      class="mr-1.5 h-3 shrink-0 fill-indigo"
+                    />
                     {{ location }}
                   </div>
                 </li>
@@ -165,7 +177,10 @@
                     class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-indigo hover:underline"
                     :href="`tel:${phone}`"
                   >
-                    <Icon name="phone" class="mr-1.5 h-3 fill-indigo" />
+                    <Icon
+                      name="phone"
+                      class="mr-1.5 h-3 shrink-0 fill-indigo"
+                    />
                     {{ phone }}
                   </a>
                 </li>
@@ -176,7 +191,10 @@
                     :href="curriculum_vitae"
                     target="_blank"
                   >
-                    <Icon name="clipboard" class="mr-1.5 h-3 fill-indigo" />
+                    <Icon
+                      name="clipboard"
+                      class="mr-1.5 h-3 shrink-0 fill-indigo"
+                    />
                     Curriculum Vitae/Personal Webpage
                   </a>
                 </li>
@@ -186,7 +204,10 @@
                     class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-coal hover:underline"
                     :href="`mailto:${email}`"
                   >
-                    <Icon name="email" class="mr-1.5 h-3 fill-indigo" />
+                    <Icon
+                      name="email"
+                      class="mr-1.5 h-3 shrink-0 fill-indigo"
+                    />
                     {{ email }}
                   </a>
                 </li>
@@ -196,14 +217,17 @@
                     class="flex min-h-[44px] min-w-[44px] items-center leading-[44px] text-indigo hover:text-coal hover:underline"
                     :href="`tel:${fax}`"
                   >
-                    <Icon name="fax" class="mr-1.5 h-4 fill-indigo" />
+                    <Icon name="fax" class="mr-1.5 h-4 shrink-0 fill-indigo" />
                     {{ fax }}
                   </a>
                 </li>
 
                 <li v-if="location" class="col-span-2 mb-3">
                   <div class="flex items-center text-indigo">
-                    <Icon name="location" class="mr-1.5 h-3 fill-indigo" />
+                    <Icon
+                      name="location"
+                      class="mr-1.5 h-3 shrink-0 fill-indigo"
+                    />
                     {{ location }}
                   </div>
                 </li>
