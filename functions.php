@@ -316,19 +316,6 @@ add_action('template_redirect', function () {
   });
 });
 
-add_action('template_redirect', function() {
-    if ( is_page( 'directory-profile-update-form' ) ) {
-        \BoxyBird\Inertia\Inertia::share([
-            'debug_session' => [
-                'session_id'         => session_id(),
-                'colby_directory_id' => $_SESSION['colby_directory_id'] ?? 'MISSING',
-                'has_person_data'    => isset($_SESSION['person']) ? 'YES' : 'NO',
-                'first_name'         => $_SESSION['person']['first_name'][0] ?? 'N/A',
-                'last_name'          => $_SESSION['person']['last_name'][0] ?? 'N/A',
-            ]
-        ]);
-    }
-}, 20);
 
 function colby_get_menu($location) {
   
@@ -381,6 +368,10 @@ add_action('customize_save_after', 'colby_delete_menu_transients');
 
 // Enqueue scripts.
 add_action('wp_enqueue_scripts', function () {
+if (isset($_GET['gf_iframe_id'])) {
+      return;
+  }
+
   $vite_internal = 'http://node:5173';
   $res = wp_remote_get("$vite_internal/vite/@vite/client", ['timeout' => 0.5]);
   $vite_running = !is_wp_error($res) && (int) wp_remote_retrieve_response_code($res) === 200;
@@ -814,6 +805,280 @@ function custom_quicktags_buttons($qtInit, $editor_id) {
 }
 add_filter('quicktags_settings', 'custom_quicktags_buttons', 10, 2);
 
+/**
+ * Whether the current request is the isolated Gravity Forms iframe document.
+ */
+function colby_is_gravity_forms_iframe_request(): bool {
+    return isset($_GET['gf_iframe_id']) && absint(wp_unslash($_GET['gf_iframe_id'])) > 0;
+}
+
+/**
+ * Render a Gravity Form inside a small, same-origin HTML document.
+ *
+ * The form is rendered before wp_head() so Gravity Forms and any wp_editor()
+ * instances can register all of their scripts, styles, and footer callbacks
+ * before WordPress starts printing assets.
+ */
+function colby_render_gravity_forms_iframe(): void {
+    if (!colby_is_gravity_forms_iframe_request()) {
+        return;
+    }
+
+    $form_id = absint(wp_unslash($_GET['gf_iframe_id']));
+
+    if (!function_exists('gravity_form') || !function_exists('gravity_form_enqueue_scripts')) {
+        status_header(503);
+        wp_die(
+            esc_html__('The form service is currently unavailable.', 'colby'),
+            esc_html__('Form unavailable', 'colby'),
+            array('response' => 503)
+        );
+    }
+
+    add_filter('show_admin_bar', '__return_false');
+    add_filter('gform_allow_html_formatter', '__return_true');
+
+    // Gravity Forms 2.5+ expects initialization scripts in the footer.
+    // Keeping them there guarantees that the gform runtime is defined first.
+    add_filter('gform_init_scripts_footer', '__return_true');
+
+    nocache_headers();
+
+    /*
+     * The outer document is already an iframe, so use a normal postback inside
+     * it instead of creating Gravity Forms' legacy nested AJAX iframe.
+     */
+    $use_gravity_forms_ajax = false;
+
+    // Register the form's base and conditional assets before wp_head().
+    gravity_form_enqueue_scripts($form_id, $use_gravity_forms_ajax);
+
+    // Rendering now also registers the real field-specific TinyMCE settings.
+    $form_html = gravity_form(
+        $form_id,
+        false, // Display title.
+        false, // Display description.
+        false, // Force display inactive form.
+        null,  // Dynamic population values.
+        $use_gravity_forms_ajax,
+        0,     // Let the browser determine tabindex order.
+        false  // Return markup instead of echoing it.
+    );
+
+    if (!is_string($form_html) || trim($form_html) === '') {
+        status_header(404);
+        wp_die(
+            esc_html__('The requested form could not be found.', 'colby'),
+            esc_html__('Form not found', 'colby'),
+            array('response' => 404)
+        );
+    }
+
+    ?>
+    <!doctype html>
+    <html <?php language_attributes(); ?>>
+    <head>
+        <meta charset="<?php bloginfo('charset'); ?>">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?php wp_head(); ?>
+        <style>
+            html,
+            body {
+                background: transparent !important;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                padding: 5px;
+                color: #1a1a1a;
+                font-family: "Libre Franklin", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                font-size: 16px;
+            }
+
+            .gform_wrapper input:not([type="file"]):not([type="submit"]),
+            .gform_wrapper textarea {
+                border: 1px solid #b7c2d5;
+                border-radius: 3px;
+            }
+
+            .gform_wrapper select {
+                border: 1px solid #b7c2d5;
+                border-radius: 3px;
+                padding: 5px;
+            }
+
+            .gform_wrapper input[type="submit"] {
+                border: 2px solid #002878;
+                border-radius: 4px;
+                background-color: #002878;
+                color: #fff;
+                cursor: pointer;
+                padding: 5px 12px;
+            }
+
+            .gform_wrapper input[type="submit"]:hover,
+            .gform_wrapper input[type="submit"]:focus {
+                border-color: #002878;
+                background-color: #fff;
+                color: #003878;
+                text-decoration: underline;
+            }
+
+            .gform_wrapper .remove-field {
+                margin-bottom: 2rem;
+            }
+
+            .gform_wrapper .remove-field label,
+            .gform_wrapper .gchoice label {
+                margin-left: 0.5rem;
+            }
+
+            .post-password-form input[type="password"] {
+                border: 1px solid #ccc;
+            }
+
+            .post-password-form input[type="submit"] {
+                border: 1px solid #002878;
+                background-color: #002878;
+                color: #fff;
+                padding: 1px 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <?php echo $form_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+
+        <?php wp_footer(); ?>
+
+        <script>
+          (() => {
+              const parentOrigin = window.location.origin;
+
+              let resizeFrame = 0;
+              let confirmationSent = false;
+
+              const getDocumentHeight = () => {
+                  return Math.max(
+                      document.body?.scrollHeight || 0,
+                      document.documentElement?.scrollHeight || 0
+                  );
+              };
+
+              const sendHeight = () => {
+                  window.cancelAnimationFrame(resizeFrame);
+
+                  resizeFrame = window.requestAnimationFrame(() => {
+                      window.parent.postMessage(
+                          {
+                              type: 'gf_iframe_resize',
+                              height: getDocumentHeight(),
+                          },
+                          parentOrigin
+                      );
+                  });
+              };
+
+              const sendConfirmation = () => {
+                  if (confirmationSent) {
+                      return;
+                  }
+
+                  const confirmation = document.querySelector(
+                      '[id^="gform_confirmation_wrapper_"], ' +
+                      '.gform_confirmation_message'
+                  );
+
+                  if (!confirmation) {
+                      return;
+                  }
+
+                  confirmationSent = true;
+
+                  /*
+                  * Move keyboard/screen-reader focus to the confirmation without
+                  * attempting to scroll the iframe's own document.
+                  */
+                  if (!confirmation.hasAttribute('tabindex')) {
+                      confirmation.setAttribute('tabindex', '-1');
+                  }
+
+                  try {
+                      confirmation.focus({
+                          preventScroll: true,
+                      });
+                  } catch (error) {
+                      confirmation.focus();
+                  }
+
+                  /*
+                  * Tell the parent Vue application that submission completed.
+                  * Include the final confirmation-document height so the parent can
+                  * resize before scrolling.
+                  */
+                  window.parent.postMessage(
+                      {
+                          type: 'gf_iframe_confirmation',
+                          height: getDocumentHeight(),
+                      },
+                      parentOrigin
+                  );
+              };
+
+              const handleDocumentChange = () => {
+                  sendHeight();
+                  sendConfirmation();
+              };
+
+              document.addEventListener(
+                  'DOMContentLoaded',
+                  handleDocumentChange
+              );
+
+              window.addEventListener(
+                  'load',
+                  handleDocumentChange
+              );
+
+              if ('ResizeObserver' in window) {
+                  const resizeObserver = new ResizeObserver(sendHeight);
+
+                  resizeObserver.observe(document.documentElement);
+                  resizeObserver.observe(document.body);
+              }
+
+              const mutationObserver = new MutationObserver(
+                  handleDocumentChange
+              );
+
+              mutationObserver.observe(document.body, {
+                  childList: true,
+                  subtree: true,
+                  attributes: true,
+              });
+
+              /*
+              * These support AJAX forms, multipage forms, and other Gravity Forms
+              * rendering changes. The DOM check above still handles non-AJAX
+              * confirmation postbacks.
+              */
+              if (window.jQuery) {
+                  window.jQuery(document).on(
+                      'gform_post_render ' +
+                      'gform_page_loaded ' +
+                      'gform_confirmation_loaded',
+                      handleDocumentChange
+                  );
+              }
+          })();
+        </script>
+    </body>
+    </html>
+    <?php
+    exit;
+}
+add_action('template_redirect', 'colby_render_gravity_forms_iframe', 1);
+
 function gravity_forms_buttons() {
 	return array(
 		'formatselect',
@@ -836,9 +1101,7 @@ function gravity_forms_buttons() {
 	);
 }
 
-add_filter( 'gform_rich_text_editor_buttons', 'gravity_forms_buttons', 1, 1 );
-
-add_filter( 'gform_init_scripts_footer', '__return_false' );
+add_filter('gform_rich_text_editor_buttons', 'gravity_forms_buttons', 1, 1);
 
 add_filter( 'manage_pages_columns', 'wpse248405_columns', 25, 1 );
 function wpse248405_columns( $cols ) {

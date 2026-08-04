@@ -184,15 +184,9 @@ function colby_process_single_block(array $block, int $index = 0, string $path =
         return $block;
     } elseif (($block['blockName'] ?? null) === 'gravityforms/form') {
         
-        $form_id = $block['attrs']['formId'] ?? null;
-        
-        if ($form_id) {
-            // gravity_form($id, $title, $description, $inactive, $values, $ajax, $tabindex, $echo)
-            $rendered = gravity_form(intval($form_id), false, false, false, null, true, 1, false);
-            $block['innerHTML'] = $rendered;
-        }
-        
+        // Do not render the HTML. The Vue iframe component only needs the block attributes (formId).
         return $block;
+        
     } elseif (($block['blockName'] ?? null) === 'core/group') {
         $block['attrs'] = isset($block['attrs']) && is_array($block['attrs'])
             ? $block['attrs']

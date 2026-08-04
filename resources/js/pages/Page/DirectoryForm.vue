@@ -4,13 +4,15 @@
     :menus="resolvedMenus"
     :page-title="props.title"
   >
-    <div v-if="person_data" class="mx-auto mt-10 mb-8 max-w-screen-xl px-5">
-      <h2 class="mb-2 font-bold" style="font-size: 30px">
-        Hello, {{ person_data.first_name }} {{ person_data.last_name }}
-      </h2>
-    </div>
+    <div class="mx-auto max-w-screen-2xl px-9">
+      <div v-if="person_data" class="mt-10 mb-8">
+        <h2 class="font-bold" style="font-size: 30px">
+          Hello, {{ person_data.first_name }} {{ person_data.last_name }}
+        </h2>
+      </div>
 
-    <ComponentRouter :components="resolvedBlocks" />
+      <ComponentRouter :components="resolvedBlocks" />
+    </div>
   </AppLayout>
 </template>
 
