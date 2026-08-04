@@ -952,47 +952,125 @@ function colby_render_gravity_forms_iframe(): void {
         <?php wp_footer(); ?>
 
         <script>
-            (() => {
-                const parentOrigin = window.location.origin;
-                let resizeFrame = 0;
+          (() => {
+              const parentOrigin = window.location.origin;
 
-                const sendHeight = () => {
-                    window.cancelAnimationFrame(resizeFrame);
+              let resizeFrame = 0;
+              let confirmationSent = false;
 
-                    resizeFrame = window.requestAnimationFrame(() => {
-                        const height = Math.max(
-                            document.body.scrollHeight,
-                            document.documentElement.scrollHeight
-                        );
+              const getDocumentHeight = () => {
+                  return Math.max(
+                      document.body?.scrollHeight || 0,
+                      document.documentElement?.scrollHeight || 0
+                  );
+              };
 
-                        window.parent.postMessage(
-                            { type: 'gf_iframe_resize', height },
-                            parentOrigin
-                        );
-                    });
-                };
+              const sendHeight = () => {
+                  window.cancelAnimationFrame(resizeFrame);
 
-                const resizeObserver = new ResizeObserver(sendHeight);
-                resizeObserver.observe(document.documentElement);
-                resizeObserver.observe(document.body);
+                  resizeFrame = window.requestAnimationFrame(() => {
+                      window.parent.postMessage(
+                          {
+                              type: 'gf_iframe_resize',
+                              height: getDocumentHeight(),
+                          },
+                          parentOrigin
+                      );
+                  });
+              };
 
-                const mutationObserver = new MutationObserver(sendHeight);
-                mutationObserver.observe(document.body, {
-                    childList: true,
-                    subtree: true,
-                    attributes: true,
-                });
+              const sendConfirmation = () => {
+                  if (confirmationSent) {
+                      return;
+                  }
 
-                window.addEventListener('load', sendHeight);
-                document.addEventListener('DOMContentLoaded', sendHeight);
+                  const confirmation = document.querySelector(
+                      '[id^="gform_confirmation_wrapper_"], ' +
+                      '.gform_confirmation_message'
+                  );
 
-                if (window.jQuery) {
-                    window.jQuery(document).on(
-                        'gform_post_render gform_page_loaded gform_confirmation_loaded',
-                        sendHeight
-                    );
-                }
-            })();
+                  if (!confirmation) {
+                      return;
+                  }
+
+                  confirmationSent = true;
+
+                  /*
+                  * Move keyboard/screen-reader focus to the confirmation without
+                  * attempting to scroll the iframe's own document.
+                  */
+                  if (!confirmation.hasAttribute('tabindex')) {
+                      confirmation.setAttribute('tabindex', '-1');
+                  }
+
+                  try {
+                      confirmation.focus({
+                          preventScroll: true,
+                      });
+                  } catch (error) {
+                      confirmation.focus();
+                  }
+
+                  /*
+                  * Tell the parent Vue application that submission completed.
+                  * Include the final confirmation-document height so the parent can
+                  * resize before scrolling.
+                  */
+                  window.parent.postMessage(
+                      {
+                          type: 'gf_iframe_confirmation',
+                          height: getDocumentHeight(),
+                      },
+                      parentOrigin
+                  );
+              };
+
+              const handleDocumentChange = () => {
+                  sendHeight();
+                  sendConfirmation();
+              };
+
+              document.addEventListener(
+                  'DOMContentLoaded',
+                  handleDocumentChange
+              );
+
+              window.addEventListener(
+                  'load',
+                  handleDocumentChange
+              );
+
+              if ('ResizeObserver' in window) {
+                  const resizeObserver = new ResizeObserver(sendHeight);
+
+                  resizeObserver.observe(document.documentElement);
+                  resizeObserver.observe(document.body);
+              }
+
+              const mutationObserver = new MutationObserver(
+                  handleDocumentChange
+              );
+
+              mutationObserver.observe(document.body, {
+                  childList: true,
+                  subtree: true,
+                  attributes: true,
+              });
+
+              /*
+              * These support AJAX forms, multipage forms, and other Gravity Forms
+              * rendering changes. The DOM check above still handles non-AJAX
+              * confirmation postbacks.
+              */
+              if (window.jQuery) {
+                  window.jQuery(document).on(
+                      'gform_post_render ' +
+                      'gform_page_loaded ' +
+                      'gform_confirmation_loaded',
+                      handleDocumentChange
+                  );
+              }
+          })();
         </script>
     </body>
     </html>
