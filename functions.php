@@ -316,19 +316,6 @@ add_action('template_redirect', function () {
   });
 });
 
-add_action('template_redirect', function() {
-    if ( is_page( 'directory-profile-update-form' ) ) {
-        \BoxyBird\Inertia\Inertia::share([
-            'debug_session' => [
-                'session_id'         => session_id(),
-                'colby_directory_id' => $_SESSION['colby_directory_id'] ?? 'MISSING',
-                'has_person_data'    => isset($_SESSION['person']) ? 'YES' : 'NO',
-                'first_name'         => $_SESSION['person']['first_name'][0] ?? 'N/A',
-                'last_name'          => $_SESSION['person']['last_name'][0] ?? 'N/A',
-            ]
-        ]);
-    }
-}, 20);
 
 function colby_get_menu($location) {
   
@@ -381,6 +368,10 @@ add_action('customize_save_after', 'colby_delete_menu_transients');
 
 // Enqueue scripts.
 add_action('wp_enqueue_scripts', function () {
+if (isset($_GET['gf_iframe_id'])) {
+      return;
+  }
+
   $vite_internal = 'http://node:5173';
   $res = wp_remote_get("$vite_internal/vite/@vite/client", ['timeout' => 0.5]);
   $vite_running = !is_wp_error($res) && (int) wp_remote_retrieve_response_code($res) === 200;
@@ -813,6 +804,99 @@ function custom_quicktags_buttons($qtInit, $editor_id) {
     return $qtInit;
 }
 add_filter('quicktags_settings', 'custom_quicktags_buttons', 10, 2);
+
+add_action('wp_enqueue_scripts', function() {
+
+    if (is_page('directory-profile-update-form')) {
+        gravity_form_enqueue_scripts(12, true);
+
+        wp_enqueue_script('gform_gravityforms');
+        wp_enqueue_script('gform_conditional_logic');
+    }
+
+}, 20);
+
+add_action('template_redirect', function() {
+    if (isset($_GET['gf_iframe_id'])) {
+        $form_id = intval($_GET['gf_iframe_id']);
+        
+        // Hide the WordPress admin bar
+        add_filter('show_admin_bar', '__return_false');
+        
+        // Ensure Gravity Forms rich text editors format HTML correctly
+        add_filter('gform_allow_html_formatter', '__return_true');
+        
+        // Force Gravity Forms to queue its configuration scripts
+        gravity_form_enqueue_scripts($form_id, true);
+        
+        // Dequeue SPA scripts so they don't crash inside the iframe
+        add_action('wp_enqueue_scripts', function() {
+            wp_dequeue_script('vite-client');
+            wp_dequeue_script('colby-app');
+            wp_dequeue_style('colby-app');
+        }, 999);
+
+        // Output clean, isolated HTML
+        ?>
+        <!DOCTYPE html>
+        <html <?php language_attributes(); ?>>
+        <head>
+            <meta charset="<?php bloginfo( 'charset' ); ?>">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <?php wp_head(); ?>
+            <style>
+                body { 
+                    background: transparent !important; 
+                    margin: 0; 
+                    padding: 5px; 
+                    font-family: 'Libre Franklin', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                    font-size: 16px;
+                    color: #1a1a1a;
+                }
+                .gform_wrapper input:not([type="file"]):not([type="submit"]) { border: 1px solid #b7c2d5; border-radius: 3px; }
+                .gform_wrapper textarea { border: 1px solid #b7c2d5; border-radius: 3px; }
+                .gform_wrapper select { border: 1px solid #b7c2d5; border-radius: 3px; padding: 5px; }
+                .gform_wrapper input[type="submit"] { background-color: #002878; border: 2px solid #002878; color: #fff; padding: 5px 12px; cursor: pointer; border-radius: 4px; }
+                .gform_wrapper input[type="submit"]:hover, .gform_wrapper input[type="submit"]:focus { background-color: #fff; border: 2px solid #002878; color: #003878; text-decoration: underline; }
+                .gform_wrapper .remove-field { margin-bottom: 2rem; }
+                .gform_wrapper .remove-field label, .gform_wrapper .gchoice label { margin-left: 0.5rem; }
+                .post-password-form input[type="password"] { border: 1px solid #ccc; }
+                .post-password-form input[type="submit"] { border: 1px solid #002878; background-color: #002878; color: #fff; padding: 1px 10px; }
+            </style>
+        </head>
+        <body>
+            <!-- 
+              This hidden dummy editor forces WordPress to natively bootstrap 
+              all TinyMCE scripts, styles, and configurations for Gravity Forms. 
+            -->
+            <div style="display:none;">
+                <?php wp_editor( '', 'gf_dummy_editor' ); ?>
+            </div>
+
+            <?php gravity_form($form_id, false, false, false, null, true, 1, true); ?>
+            
+            <?php wp_footer(); ?>
+            
+            <script>
+                function sendHeight() {
+                    const height = document.body.scrollHeight || document.documentElement.scrollHeight;
+                    window.parent.postMessage({ type: 'gf_iframe_resize', height: height }, '*');
+                }
+                
+                const observer = new MutationObserver(sendHeight);
+                observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+                window.addEventListener('load', sendHeight);
+                
+                if (window.jQuery) {
+                    window.jQuery(document).on('gform_post_render', sendHeight);
+                }
+            </script>
+        </body>
+        </html>
+        <?php
+        exit;
+    }
+}, 1);
 
 function gravity_forms_buttons() {
 	return array(

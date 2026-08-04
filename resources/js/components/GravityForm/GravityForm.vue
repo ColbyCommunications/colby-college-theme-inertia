@@ -1,11 +1,25 @@
 <template>
-  <div class="gravity-form-container mx-auto mt-10 max-w-screen-xl">
-    <div ref="formContainer" v-html="renderedHtml"></div>
+  <div class="gravity-form-container mx-auto mt-10">
+    <iframe
+      v-if="formId"
+      ref="gfIframe"
+      :src="`/?gf_iframe_id=${formId}`"
+      class="w-full"
+      :style="{
+        height: iframeHeight + 'px',
+        border: 'none',
+        overflow: 'hidden',
+      }"
+      scrolling="no"
+    ></iframe>
+    <div v-else class="p-5 text-red-500">
+      Error: No Gravity Form ID provided.
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 
 const props = defineProps({
   blockAttrs: {
@@ -18,27 +32,21 @@ const props = defineProps({
   },
 });
 
-const formContainer = ref(null);
+const iframeHeight = ref(800);
+const formId = computed(() => props.blockAttrs?.formId || null);
 
-onMounted(async () => {
-  await nextTick();
+const handleMessage = (event) => {
+  if (event.data && event.data.type === "gf_iframe_resize") {
+    iframeHeight.value = event.data.height + 20; // 20px buffer to prevent cutoffs
+  }
+};
 
-  if (!formContainer.value) return;
+onMounted(() => {
+  window.addEventListener("message", handleMessage);
+});
 
-  const scripts = formContainer.value.querySelectorAll("script");
-
-  scripts.forEach((script) => {
-    const newScript = document.createElement("script");
-
-    if (script.src) {
-      newScript.src = script.src;
-    } else {
-      newScript.textContent = script.innerText;
-    }
-
-    document.body.appendChild(newScript);
-    script.remove();
-  });
+onUnmounted(() => {
+  window.removeEventListener("message", handleMessage);
 });
 </script>
 <style scoped>
