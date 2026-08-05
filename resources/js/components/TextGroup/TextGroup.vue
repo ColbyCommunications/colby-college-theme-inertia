@@ -8,7 +8,7 @@
       <component
         v-if="subheading"
         :is="subheadingTag"
-        class="text-group__subheading font-extended mb-2 font-bold whitespace-nowrap uppercase md:mb-0"
+        class="text-group__subheading font-extended mb-2 font-bold uppercase md:mb-0"
         :class="[
           subheadingSize,
           'leading-130',
