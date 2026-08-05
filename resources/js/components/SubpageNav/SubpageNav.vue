@@ -7,12 +7,12 @@
     <div ref="container" class="subpage-nav--animated">
       <h2>
         <div
-          class="relative w-full px-6 py-4 text-left font-extended text-14 leading-130 font-bold tracking-8 text-azure uppercase md:px-0 md:py-0 md:text-12"
+          class="font-extended relative w-full px-6 py-4 text-left text-14 leading-130 font-bold tracking-8 text-azure uppercase md:px-0 md:py-0 md:text-12"
           @click="toggleMenu"
         >
           <a
             :href="parentPermalink"
-            class="pointer-events-none inline-block min-h-[44px] min-w-[44px] leading-[44px] md:pointer-events-auto"
+            class="pointer-events-none inline-block min-h-[44px] min-w-[44px] md:pointer-events-auto"
           >
             {{ heading }}
             <div class="absolute top-6 right-8 w-1.5 md:hidden">
@@ -46,7 +46,7 @@
           <a
             class="block flex min-h-[44px] min-w-[44px] items-center border-solid px-6 transition-all duration-200 ease-in-out hover:bg-cloud md:border-l-2 md:px-0 md:pl-2.5"
             :class="{
-              'border-indigo text-gray-1000': item.active,
+              'text-gray-1000 border-indigo': item.active,
               'border-transparent text-indigo hover:text-coal hover:underline':
                 !item.active,
             }"
