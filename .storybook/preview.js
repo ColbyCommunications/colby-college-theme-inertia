@@ -53,6 +53,7 @@ export const decorators = [
   (story, context) => {
     window.colby = window.colby || {};
     window.colby.DISABLE_ANIMATIONS = false;
+    window.colby.PRIMARY_DOMAIN = 'www.colby.edu';
 
     return {
       components: { story },

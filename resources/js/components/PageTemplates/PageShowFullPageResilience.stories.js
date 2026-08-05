@@ -75,7 +75,7 @@ const render = (args) => ({
 });
 
 export default {
-  title: "Templates/Page Show/Full Page/Resilience",
+  title: "Templates/Page Templates/Full Page/Resilience",
   component: PageShow,
   parameters: {
     layout: "fullscreen",
