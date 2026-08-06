@@ -32,7 +32,7 @@
               :class="
                 item.link
                   ? 'cursor-pointer text-indigo hover:underline'
-                  : 'text-coal'
+                  : 'text-indigo'
               "
               :href="item.link ? item.link.url : null"
             >
@@ -61,7 +61,7 @@
             v-if="item.columns"
             v-for="(column, colIndex) in item.columns"
             :key="`col-${itemIndex}-${colIndex}`"
-            class="px-6 py-2 font-body text-16 leading-140 font-normal text-coal md:text-12"
+            class="px-6 py-2 font-body text-16 leading-140 font-normal text-indigo md:text-12"
           >
             <a
               v-if="column.link_or_text === 'link'"
@@ -295,18 +295,18 @@
             <Modal v-if="item.description" v-model="item.modalOpen">
               <template #content>
                 <h3
-                  class="flex items-center bg-cloud px-5 py-2 text-left font-body text-20 leading-120 font-semibold text-indigo md:text-14 border-b border-gray-300"
+                  class="flex items-center bg-cloud px-5 py-3 text-left font-body text-20 leading-120 font-semibold text-indigo md:text-16 border-b border-gray-300"
                   v-text="item.title"
                 />
                 <p
-                  class="p-5 font-body text-20 leading-140 font-normal text-coal md:text-12"
+                  class="p-5 font-body text-20 leading-140 font-normal text-indigo md:text-14"
                   v-html="item.description"
                 />
               </template>
               <template #button>
                 <button
                   type="button"
-                  class="inline-flex cursor-pointer items-center text-left font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12"
+                  class="inline-flex cursor-pointer items-center text-left font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12 min-h-[44px] min-w-[44px]"
                   v-html="item.link?.title || item.title"
                   @click.stop="item.modalOpen = true"
                 ></button>
@@ -324,7 +324,7 @@
           <td
             v-for="(column, colIndex) in item.columns"
             :key="colIndex"
-            class="px-6 py-2 font-body text-16 leading-140 font-normal text-coal md:text-12"
+            class="px-6 py-2 font-body text-16 leading-140 font-normal text-indigo md:text-12"
             v-text="column"
           />
         </tr>
