@@ -4,7 +4,7 @@ import PageWithSidebar from "../../pages/PageWithSidebar/Show.vue";
 const siteData = {
     url: "https://www.colby.edu",
     address: {
-      text: "4000 Mayflower Hill<br>Waterville, ME 04901",
+      text: "4000 Mayflower Hill<br>Waterville, ME 04901.",
     },
     phone: "207-859-4000",
     alert: null,
