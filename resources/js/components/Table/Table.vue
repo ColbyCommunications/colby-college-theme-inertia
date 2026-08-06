@@ -138,10 +138,50 @@
         v-if="api === 'Course Catalogue'"
         v-model="selectedDepartment"
         @change="toggleDepartment($event)"
-        class="mr-5 mb-6 min-h-[44px] w-full max-w-[120px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-coal hover:underline md:mb-0"
+        class="mr-5 mb-6 min-h-[44px] w-full max-w-[120px] min-w-[44px] cursor-pointer font-body text-10 leading-130 text-coal hover:underline md:mb-0"
+        :class="
+          selectedDepartment !== 'All Departments' ? 'font-bold' : 'font-normal'
+        "
         aria-label="Select a department"
       >
         <option value="All Departments">All Departments</option>
+        <option value="AFAM">African American Studies</option>
+        <option value="AMER">American Studies</option>
+        <option value="ANTH">Anthropology</option>
+        <option value="ART">Art</option>
+        <option value="BIOL">Biology</option>
+        <option value="CHEM">Chemistry</option>
+        <option value="CINE">Cinema Studies</option>
+        <option value="CLAS">Classics</option>
+        <option value="COMP">Computer Science</option>
+        <option value="ERSC">Earth Sciences</option>
+        <option value="EAST">East Asian Studies</option>
+        <option value="ECON">Economics</option>
+        <option value="EDUC">Education</option>
+        <option value="ENGL">English</option>
+        <option value="ENVS">Environmental Studies</option>
+        <option value="FRIT">French and Italian</option>
+        <option value="GMRU">German and Russian</option>
+        <option value="GLST">Global Studies</option>
+        <option value="GOVT">Government</option>
+        <option value="HIST">History</option>
+        <option value="INDP">Independent Major</option>
+        <option value="ISP">Integrated Studies</option>
+        <option value="JWST">Jewish Studies</option>
+        <option value="LTAM">Latin American Studies</option>
+        <option value="MATH">Mathematics</option>
+        <option value="MUSI">Music</option>
+        <option value="THEA">Performance, Theater, and Dance</option>
+        <option value="PHIL">Philosophy</option>
+        <option value="PHYS">Physics and Astronomy</option>
+        <option value="PSYC">Psychology</option>
+        <option value="RELG">Religious Studies</option>
+        <option value="SCIT">Science, Technology, and Society</option>
+        <option value="SOCY">Sociology</option>
+        <option value="SPAN">Spanish</option>
+        <option value="STAT">Statistics</option>
+        <option value="WGST">Women's, Gender, and Sexuality Studies</option>
+        <option value="WRTG">Writing Department</option>
       </select>
 
       <select
@@ -150,7 +190,10 @@
         "
         v-model="selectedDivision"
         @change="toggleTermDivision($event, true)"
-        class="mr-5 mb-6 min-h-[44px] w-full max-w-[120px] min-w-[44px] cursor-pointer font-body text-10 leading-130 leading-[44px] font-normal text-coal hover:underline md:mb-0"
+        class="mr-5 mb-6 min-h-[44px] w-full max-w-[120px] min-w-[44px] cursor-pointer font-body text-10 leading-130 leading-[44px] text-coal hover:underline md:mb-0"
+        :class="
+          selectedDivision !== 'All Divisions' ? 'font-bold' : 'font-normal'
+        "
         aria-label="Select a division"
       >
         <option value="All Divisions">All Divisions</option>
@@ -164,8 +207,8 @@
 
       <div v-if="filterOptions.length > 0" class="mb-6 flex md:mb-0">
         <button
-          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 font-normal text-indigo hover:underline"
-          :class="{ 'font-bold !text-indigo': filters.term === 'all' }"
+          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 text-indigo hover:underline"
+          :class="filters.term === 'all' ? 'font-bold' : 'font-normal'"
           @click="toggleTermType('All')"
         >
           All
@@ -173,8 +216,12 @@
         <button
           v-for="(term, index) in filterOptions"
           :key="index"
-          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 leading-[44px] font-normal text-coal hover:underline"
-          :class="{ 'font-bold !text-indigo': filters.term === term }"
+          class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 leading-[44px] hover:underline"
+          :class="
+            filters.term === term
+              ? 'font-bold text-indigo'
+              : 'font-normal text-coal'
+          "
           @click="toggleTermType(term)"
         >
           {{ term }}
@@ -295,7 +342,7 @@
       </span>
 
       <div
-        class="inline-flex h-8 items-center space-x-1 rounded-md bg-cloud px-5 py-0.5 min-h-[44px] min-w-[44px]"
+        class="inline-flex h-8 min-h-[44px] min-w-[44px] items-center space-x-1 rounded-md bg-cloud px-5 py-0.5"
       >
         <button
           v-if="currentPage !== 1"
@@ -323,8 +370,12 @@
             class="pagination__item"
           >
             <button
-              class="block min-h-[44px] min-w-[44px] cursor-pointer font-body text-14 leading-140 leading-[44px] font-normal text-coal transition-all duration-200 ease-in-out hover:bg-indigo hover:text-white hover:underline md:text-10"
-              :class="{ 'bg-cloud': currentPage === pageIndex }"
+              class="block min-h-[44px] min-w-[44px] cursor-pointer font-body text-14 leading-140 leading-[44px] font-normal transition-all duration-200 ease-in-out md:text-10"
+              :class="
+                currentPage === pageIndex
+                  ? 'bg-indigo text-white'
+                  : 'text-coal hover:bg-indigo hover:text-white hover:underline'
+              "
               @click="navigateFn(pageIndex)"
             >
               {{ pageIndex }}
@@ -458,23 +509,24 @@ const filteredItems = computed(() => {
     g = g.filter((item) => filters.value.department.includes(item.department));
   }
 
-  if (fuse.value) {
-    fuse.value.setCollection(g);
-  }
-
   return g;
 });
 
 const inputFilteredItems = computed(() => {
+  const currentFiltered = filteredItems.value;
   let u = [];
 
   if (fuse.value) {
+    fuse.value.setCollection(currentFiltered);
+
     if (searchTerm.value.length > 0) {
       const f = fuse.value.search(searchTerm.value);
       u = f.map((item) => item.item);
     } else {
-      u = filteredItems.value;
+      u = currentFiltered;
     }
+  } else {
+    u = currentFiltered;
   }
 
   return u;
