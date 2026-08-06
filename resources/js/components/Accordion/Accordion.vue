@@ -170,7 +170,7 @@ onMounted(() => {
   }
 
   &__content {
-    padding: 20px 14px;
+    padding: 5px 14px;
   }
 
   :deep(p:nth-child(1)) {

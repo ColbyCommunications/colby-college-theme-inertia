@@ -2,7 +2,7 @@
   <div class="colby-table-block">
     <table
       v-if="!render_api && !externalItems"
-      class="block w-full overflow-scroll md:table md:overflow-auto"
+      class="w-full overflow-scroll md:table md:overflow-auto"
     >
       <tbody>
         <tr v-if="normalizedHeadings.length">
@@ -10,8 +10,8 @@
             v-for="(heading, index) in normalizedHeadings"
             :key="`th-${index}`"
             scope="col"
-            class="h-12 bg-cloud px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
-            :class="{ 'bg-white': heading.generated }"
+            class="h-12 bg-cloud px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14 border-b border-gray-300"
+            :class="{ 'bg-white': heading.generated, 'sr-only': heading.generated }"
           >
             <span :class="{ 'sr-only': heading.generated }">
               {{ heading.text }}
@@ -239,7 +239,7 @@
             v-for="(heading, index) in normalizedHeadings"
             :key="`th-${index}`"
             scope="col"
-            class="h-12 bg-cloud px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
+            class="h-12 bg-cloud px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14  border-b border-gray-300"
           >
             <span :class="{ 'sr-only': heading.generated }">
               {{ heading.text }}
@@ -295,7 +295,7 @@
             <Modal v-if="item.description" v-model="item.modalOpen">
               <template #content>
                 <h3
-                  class="flex items-center bg-cloud px-5 py-2 text-left font-body text-20 leading-120 font-semibold text-indigo md:text-14"
+                  class="flex items-center bg-cloud px-5 py-2 text-left font-body text-20 leading-120 font-semibold text-indigo md:text-14 border-b border-gray-300"
                   v-text="item.title"
                 />
                 <p

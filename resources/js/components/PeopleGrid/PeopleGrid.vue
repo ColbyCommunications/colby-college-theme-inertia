@@ -17,3 +17,11 @@ const props = defineProps({
 });
 console.log(props);
 </script>
+
+<style scoped>
+@media (min-width: 768px) {
+  :deep(.article__image img){
+      height: 230px;
+  }
+}
+</style>
