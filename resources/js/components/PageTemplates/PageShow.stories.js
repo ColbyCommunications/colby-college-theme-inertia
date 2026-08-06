@@ -527,7 +527,7 @@ const createFullPageStory = (carouselMode, gridMode, sectionMode) => ({
 });
 
 export default {
-  title: "Templates/Page Show/Full Page",
+  title: "Templates/Page Templates/Full Page",
   component: PageShow,
   parameters: {
     layout: "fullscreen",

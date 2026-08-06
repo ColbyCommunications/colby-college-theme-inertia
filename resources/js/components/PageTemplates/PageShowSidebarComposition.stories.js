@@ -68,7 +68,7 @@ const render = (args) => ({
 });
 
 export default {
-  title: "Templates/Page Show/Full Page w Sidebar/Composition",
+  title: "Templates/Page Templates/Full Page w Sidebar/Composition",
   component: PageShow,
   parameters: {
     layout: "fullscreen",

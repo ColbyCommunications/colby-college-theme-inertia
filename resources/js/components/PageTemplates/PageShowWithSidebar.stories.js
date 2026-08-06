@@ -179,7 +179,7 @@ const createSidebarStory = (heroVariant, isPost, contentState) => ({
 });
 
 export default {
-  title: "Templates/Page Show/Full Page w Sidebar",
+  title: "Templates/Page Templates/Full Page w Sidebar",
   component: PageShow,
   parameters: {
     layout: "fullscreen",
