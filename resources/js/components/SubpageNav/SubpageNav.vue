@@ -7,7 +7,7 @@
     <div ref="container" class="subpage-nav--animated">
       <h2>
         <div
-          class="font-extended relative w-full px-6 py-4 text-left text-14 leading-130 font-bold tracking-8 text-azure uppercase md:px-0 md:py-0 md:text-12"
+          class="font-extended relative w-full px-6 py-4 text-left text-14 leading-[1.5] font-bold tracking-8 text-azure uppercase md:px-0 md:py-0 md:text-12"
           @click="toggleMenu"
         >
           <a
