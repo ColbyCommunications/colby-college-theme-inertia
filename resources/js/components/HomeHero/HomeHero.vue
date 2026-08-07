@@ -221,3 +221,16 @@ onBeforeUnmount(() => {
   tabletMediaQuery?.removeEventListener("change", updateViewport);
 });
 </script>
+
+<style scoped>
+/* styling for aligning context component text in home hero for mobile to prevent cut-off in mobile landscape view*/
+@media (max-height: 500px) and (orientation: landscape) {
+  .home-hero__bottom {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+  .home-hero__inner.mt-24 {
+    margin-top: 1.5rem !important;
+  }
+}
+</style>
