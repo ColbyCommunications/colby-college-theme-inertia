@@ -7,7 +7,7 @@
       <li
         v-for="item in menu"
         :key="item.id || item.url || item.title"
-        class="!ml-6 list-none font-extended text-24 leading-110 font-normal md:text-16 lg:!ml-12 md:[&:first-child]:!ml-0 font-stretch-semi-expanded"
+        class="font-extended !ml-6 list-none text-24 leading-110 font-normal font-stretch-semi-expanded md:!ml-4 md:text-14 lg:!ml-12 lg:text-16 md:[&:first-child]:!ml-0"
       >
         <a
           class="inline-flex h-full min-h-[44px] min-w-[44px] items-center justify-center border-b-2 border-solid border-transparent text-indigo transition-all duration-200 ease-in-out hover:text-indigo md:py-7 md:outline-0 md:hover:border-indigo md:focus:border-indigo"
