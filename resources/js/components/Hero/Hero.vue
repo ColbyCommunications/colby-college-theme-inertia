@@ -1,7 +1,7 @@
 <template>
   <div class="hero full-bleed relative space-y-16 py-20">
     <div
-      class="hero__inner mx-auto my-0 grid w-full max-w-screen-2xl space-y-16 gap-x-10 px-5 md:grid-cols-12 md:items-center md:space-y-0"
+      class="hero__inner mx-auto my-0 grid w-full max-w-screen-2xl gap-x-10 px-5 md:grid-cols-12 md:items-center md:space-y-0"
     >
       <div
         :class="[

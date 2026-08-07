@@ -8,7 +8,7 @@
             v-for="item in items"
             :key="item.objectID"
             @click="$emit('select-suggestion', item.query)"
-            class="btn cursor-pointer rounded border border-[#dfecfe] bg-cloud px-3 py-1 font-body text-10 text-indigo hover:bg-cloud"
+            class="btn group/btn inline-flex min-h-[44px] min-w-[44px] flex-row items-center rounded border-[0.75px] border-solid font-body leading-130 font-normal outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-coal text-12 py-1 px-3.5 space-x-1.5 bg-white hover:text-indigo hover:bg-cloud hover:border-snow hover:underline cursor-pointer transition-all duration-200 ease-in-out"
           >
             <ais-highlight :hit="item" attribute="query" />
           </li>

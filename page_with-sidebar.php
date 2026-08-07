@@ -340,10 +340,10 @@ function colby_process_single_block(array $block, int $index = 0, string $path =
                       $item['heading'] = $item['post']->post_title;
                       $item['paragraph'] = get_post_meta($post_id, 'title', true);
                       $feat_image_id = get_post_thumbnail_id($post_id);
-                      $feat_image_array = wp_get_attachment_image_src($feat_image_id, 'Square_mobile');
+                      $feat_image_array = wp_get_attachment_image_src($feat_image_id, 'Square');
                       $feat_image_url = "";
                       if ($feat_image_array && $feat_image_array[1] >= 300 && $feat_image_array[2] >= 300){
-                        $feat_image_url = get_the_post_thumbnail_url($post_id, 'Square_mobile');
+                        $feat_image_url = get_the_post_thumbnail_url($post_id, 'Square');
                       } else {
                         $feat_image_url = 'https://www.colby.edu/wp-content/uploads/2022/11/directory-placeholder_E4E8F0_90_100-380x430_square.jpg';
                       }
