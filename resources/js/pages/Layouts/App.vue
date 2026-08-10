@@ -96,8 +96,6 @@ const resolvedSiteData = computed(() => ({
   ...(props.siteData || {}),
 }));
 
-console.log(props.siteData);
-
 const resolvedMenus = computed(() => ({
   main: [],
   utility: [],

@@ -53,5 +53,4 @@ const normalizedItems = computed(() => {
   return props.items.map(normalizeItem);
 });
 
-console.log(props.items);
 </script>

@@ -77,8 +77,6 @@ const props = defineProps({
   disableAnimations: { type: Boolean, default: false },
 });
 
-console.log(props.heading);
-
 const sizes = computed(() => {
   const s = props.size;
   const isStatic = props.static === true;

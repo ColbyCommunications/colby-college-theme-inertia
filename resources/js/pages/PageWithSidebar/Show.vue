@@ -185,8 +185,6 @@ const props = defineProps({
 
 const page = usePage();
 
-console.log(props);
-
 const resolvedLayout = computed(
   () => props.layout || page.props?.layout || "default",
 );

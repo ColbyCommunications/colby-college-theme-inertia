@@ -191,8 +191,6 @@ const props = defineProps({
   utilityMenuButton: { type: Object, default: () => ({ text: "", url: "" }) },
 });
 
-console.log(props);
-
 const showModal = ref(false);
 const searchRef = ref(null);
 </script>

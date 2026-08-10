@@ -93,5 +93,4 @@
   const page = usePage();
 
   const resolvedBlocks = computed(() => props.blocks || page.props?.blocks || []);
-  console.log(resolvedBlocks);
 </script>

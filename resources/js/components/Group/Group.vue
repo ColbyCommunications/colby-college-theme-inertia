@@ -14,5 +14,4 @@
     },
   });
 
-  console.log(props);
   </script>

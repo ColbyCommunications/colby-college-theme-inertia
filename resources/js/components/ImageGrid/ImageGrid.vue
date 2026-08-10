@@ -32,8 +32,6 @@ const props = defineProps({
   image_orientation: { type: String, default: "square" },
 });
 
-console.log(props);
-
 const aspectClass = computed(() => {
   switch (props.image_orientation) {
     case "landscape":

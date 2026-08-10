@@ -596,10 +596,6 @@ async function initializeCarousel() {
 }
 
 onMounted(async () => {
-  console.log(
-    "Initial Carousel Items:",
-    JSON.parse(JSON.stringify(slides.value)),
-  );
   await initializeCarousel();
 });
 

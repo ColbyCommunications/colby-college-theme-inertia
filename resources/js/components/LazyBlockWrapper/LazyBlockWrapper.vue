@@ -103,8 +103,6 @@ async function loadComponent() {
   }
 }
 
-console.log(props);
-
 onMounted(() => {
   if (props.eager) {
     loadComponent();

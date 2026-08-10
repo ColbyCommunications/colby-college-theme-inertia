@@ -232,7 +232,6 @@ const props = defineProps({
   display_athletics_logo: { type: Boolean },
 });
 
-console.log(props);
 </script>
 <style scoped>
 .home .nondescrimination-message {

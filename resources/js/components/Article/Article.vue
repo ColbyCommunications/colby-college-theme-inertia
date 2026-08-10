@@ -96,8 +96,6 @@ const props = defineProps({
   fromApi: { type: Boolean, default: false },
 });
 
-console.log(props);
-
 const hasButtons = computed(
   () =>
     Array.isArray(props.buttons) &&
