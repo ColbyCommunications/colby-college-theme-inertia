@@ -370,8 +370,6 @@ const props = defineProps({
   should_client_refresh: { type: Boolean, default: false },
 });
 
-console.log(props);
-
 const expandedIndex = ref(null);
 const itemRefs = reactive([]);
 const contextRefs = reactive([]);
