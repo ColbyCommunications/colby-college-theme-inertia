@@ -14,7 +14,7 @@
             :href="parentPermalink"
             class="pointer-events-none inline-block min-h-[44px] min-w-[44px] md:pointer-events-auto"
           >
-            {{ heading }}
+            <span v-html="heading"></span>
             <div class="absolute top-6 right-8 w-1.5 md:hidden">
               <span
                 class="relative block h-0.5 w-6 bg-azure transition-all duration-200 ease-in-out"
