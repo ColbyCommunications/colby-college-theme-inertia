@@ -105,6 +105,7 @@ const blockRegistry = {
   "core/classic": () => import("../Classic/Classic.vue"),
 
   "gravityforms/form": () => import("../GravityForm/GravityForm.vue"),
+  "tablepress/table": () => import("../TablePress/TablePress.vue"),
 };
 
 function getLoader(blockName) {

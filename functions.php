@@ -11,11 +11,43 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 require_once __DIR__ . '/directory_sync.php';
 require_once __DIR__ . '/directory_form_auth.php';
 
+// Isolated plugin iframe handlers.
+$tablepress_iframe_file = __DIR__ . '/inc/iframe-embeds/tablepress.php';
+
+if (file_exists($tablepress_iframe_file)) {
+  require_once $tablepress_iframe_file;
+}
+
+/**
+ * Whether this request is for one of the theme's isolated plugin iframe documents.
+ */
+function colby_is_isolated_plugin_iframe_request(): bool {
+  $is_gravity_forms_iframe =
+    function_exists('colby_is_gravity_forms_iframe_request')
+    && colby_is_gravity_forms_iframe_request();
+
+  $is_tablepress_iframe =
+    function_exists('colby_is_tablepress_iframe_request')
+    && colby_is_tablepress_iframe_request();
+
+  return $is_gravity_forms_iframe
+    || $is_tablepress_iframe;
+}
+
 add_filter('wp_preload_resources', 'colby_preload_hero_assets');
 
 function colby_preload_critical_assets() {
+  if (
+      function_exists(
+          'colby_is_isolated_plugin_iframe_request'
+      )
+      && colby_is_isolated_plugin_iframe_request()
+  ) {
+      return;
+  }
+
   echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/libre-franklin-latin-wght-normal-CLTz0ja0.woff2" as="font" type="font/woff2" crossorigin="anonymous">' . "\n";
-echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/noto-sans-cyrillic-ext-wght-normal-DSNfmdVt.woff2" as="font" type="font/woff2" crossorigin="anonymous">' . "\n";
+  echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/noto-sans-cyrillic-ext-wght-normal-DSNfmdVt.woff2" as="font" type="font/woff2" crossorigin="anonymous">' . "\n";
 
   $manifest_path = get_stylesheet_directory() . '/dist/.vite/manifest.json';
 
@@ -368,8 +400,8 @@ add_action('customize_save_after', 'colby_delete_menu_transients');
 
 // Enqueue scripts.
 add_action('wp_enqueue_scripts', function () {
-if (isset($_GET['gf_iframe_id'])) {
-      return;
+  if (colby_is_isolated_plugin_iframe_request()) {
+    return;
   }
 
   $vite_internal = 'http://node:5173';

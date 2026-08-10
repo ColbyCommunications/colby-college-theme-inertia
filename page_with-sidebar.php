@@ -120,24 +120,39 @@ function colby_block_remote_data_function_name(string $block_name): string
 function enrich_block_data(array $block, int $index): array
 {
     $block_name = $block['blockName'] ?? '';
-    $data = $block['attrs']['data'] ?? [];
 
     if (!$block_name) {
         return $block;
     }
 
-    $helper_file = colby_block_helper_file_path($block_name);
-
-    if (file_exists($helper_file)) {
-        require_once $helper_file;
-    } else {
+    /*
+     * get_remote_data.php is exclusively an ACF-block convention.
+     *
+     * This also prevents namespace collisions such as:
+     *
+     *     acf/table
+     *     tablepress/table
+     */
+    if (strpos($block_name, 'acf/') !== 0) {
         return $block;
     }
 
-    $function_name = colby_block_remote_data_function_name($block_name);
+    $data = $block['attrs']['data'] ?? [];
+
+    $helper_file = colby_block_helper_file_path($block_name);
+
+    if (!file_exists($helper_file)) {
+        return $block;
+    }
+
+    require_once $helper_file;
+
+    $function_name =
+        colby_block_remote_data_function_name($block_name);
 
     if (is_callable($function_name)) {
-        $block['attrs']['data'] = $function_name($data, $index, $block);
+        $block['attrs']['data'] =
+            $function_name($data, $index, $block);
     }
 
     return $block;
@@ -256,117 +271,353 @@ function colby_prepare_advanced_accordion_block(array $block, string $block_path
 }
 
 
-function colby_process_single_block(array $block, int $index = 0, string $path = 'root'): array
-{
+function colby_process_single_block(
+    array $block,
+    int $index = 0,
+    string $path = 'root'
+): array {
+    $block_name = $block['blockName'] ?? null;
     $block_path = $path . '_' . $index;
 
-    $block['attrs']['data'] = get_structured_block_data($block, $block_path);
-
-    if (($block['blockName'] ?? null) === 'core/html' || ($block['blockName'] ?? null) === 'core/classic') {
-        $block['attrs'] = isset($block['attrs']) && is_array($block['attrs'])
+    /*
+     * Normalize attrs so subsequent code can safely use it.
+     */
+    $block['attrs'] =
+        isset($block['attrs'])
+        && is_array($block['attrs'])
             ? $block['attrs']
             : [];
-    
-        $block['attrs']['data'] = isset($block['attrs']['data']) && is_array($block['attrs']['data'])
-            ? $block['attrs']['data']
-            : [];
-    
-        $block['attrs']['data']['html'] = wp_kses_post($block['innerHTML'] ?? '');
-    
+
+    /*
+     * ---------------------------------------------------------
+     * Plugin-native blocks
+     * ---------------------------------------------------------
+     *
+     * Do NOT run these through ACF.
+     *
+     * Preserve the native attributes supplied by the plugin:
+     *
+     * Gravity Forms:
+     *   attrs.formId
+     *
+     * TablePress:
+     *   attrs.id
+     *   attrs.parameters
+     */
+    if (
+        $block_name === 'gravityforms/form'
+        || $block_name === 'tablepress/table'
+    ) {
         return $block;
-    } elseif (($block['blockName'] ?? null) === 'core/group') {
-        $block['attrs'] = isset($block['attrs']) && is_array($block['attrs'])
-            ? $block['attrs']
-            : [];
-
-        $block['attrs']['data'] = isset($block['attrs']['data']) && is_array($block['attrs']['data'])
-            ? $block['attrs']['data']
-            : [];
-
-        $block['attrs']['data']['blocks'] = colby_flatten_group_descendants(
-            $block['innerBlocks'] ?? []
-        );
-
-        $block['attrs']['data']['blocks'] = colby_process_blocks(
-            $block['attrs']['data']['blocks'],
-            $block_path . '_group'
-        );
-    }  elseif (($block['blockName'] ?? null) === 'acf/advanced-accordion') {
-        $block = colby_prepare_advanced_accordion_block($block, $block_path);
-    } else if (($block['blockName'] ?? null) === 'acf/people-grid') {
-        // Split the URL path into segments
-        $url_segments = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
-        // dd($url_segments);
-        // Retrieve segments 1, 2, and 3 from the URL (if they exist)
-        $segment1 = $url_segments[0] ?? '';
-        $segment2 = $url_segments[1] ?? '';
-        $segment3 = $url_segments[2] ?? '';
-  
-        // Replace dashes in third url segment with spaces
-        $segment3 = strtolower(str_replace('-', ' ', trim($segment3)));
-  
-        // Handle auto populate if enabled
-        $is_enabled_auto_populate = $block['attrs']['data']['auto_populate'];
-
-        // dd($block);
-
-        $people_posts = $is_enabled_auto_populate ? get_people($segment1, $segment2, $segment3) : [];
-        $acf_items = $block['attrs']['data']['items'] ?: [];
-    
-        // Merge ACF items and people posts
-        $merged_items = array_merge(is_array($acf_items) ? $acf_items : [], is_array($people_posts) ? $people_posts : []);
-        
-        // get people exclusions
-        $people_exclusions = get_field('exclude_from_listings');
-  
-        $final_people_items = [];
-  
-        // process/obtain the final list of folks
-        if ($people_exclusions){
-          foreach ( $merged_items as $person) {
-            if(!in_array($person, $people_exclusions)) {
-              $final_people_items[] = $person;
-            }
-          }
-        } else {
-          $final_people_items = $merged_items;
-        }
-  
-        foreach ($final_people_items as &$item) {
-              if (isset($item['post'])) {
-                  $post_id = $item['post']->ID;
-                  if ($post_id) { // Ensure $post_id is valid
-                      $item['last_name'] = strtolower(get_post_meta($post_id, 'last_name', true));
-                      $item['heading'] = $item['post']->post_title;
-                      $item['paragraph'] = get_post_meta($post_id, 'title', true);
-                      $feat_image_id = get_post_thumbnail_id($post_id);
-                      $feat_image_array = wp_get_attachment_image_src($feat_image_id, 'Square');
-                      $feat_image_url = "";
-                      if ($feat_image_array && $feat_image_array[1] >= 300 && $feat_image_array[2] >= 300){
-                        $feat_image_url = get_the_post_thumbnail_url($post_id, 'Square');
-                      } else {
-                        $feat_image_url = 'https://www.colby.edu/wp-content/uploads/2022/11/directory-placeholder_E4E8F0_90_100-380x430_square.jpg';
-                      }
-                      $item['image'] = ['url' => $feat_image_url, 'alt' => 'Image of '. $item['post']->post_title];
-                      $item['buttons'][] = ['button' => ['title' => 'Read Bio', 'url' => '/people/people-directory/'. str_replace(' ', '-', remove_accents(strtolower($item['post']->post_title))) . '/']];
-                  }
-              }
-          }
-          unset($item);
-  
-      // Sort the merged_items array by last_name
-      usort($final_people_items, function($a, $b) {
-        return strcmp(strtolower($a['last_name']), strtolower($b['last_name']));
-      });
-  
-      // Update context with merged items
-      $block['attrs']['data']['acf_items'] = $acf_items;
-      $block['attrs']['data']['people_posts'] = $people_posts;
-      $block['attrs']['data']['people'] = $final_people_items;
     }
 
-    $block = enrich_block_data($block, $index);
+    /*
+     * ---------------------------------------------------------
+     * Core HTML / Classic
+     * ---------------------------------------------------------
+     */
+    if (
+        $block_name === 'core/html'
+        || $block_name === 'core/classic'
+    ) {
+        $block['attrs']['data'] = [
+            'html' => wp_kses_post(
+                $block['innerHTML'] ?? ''
+            ),
+        ];
 
+        return $block;
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * Core Heading
+     * ---------------------------------------------------------
+     */
+    if ($block_name === 'core/heading') {
+        $block['attrs']['data'] =
+            get_structured_block_data(
+                $block,
+                $block_path
+            );
+
+        return $block;
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * Core Group
+     * ---------------------------------------------------------
+     */
+    if ($block_name === 'core/group') {
+        $block['attrs']['data'] =
+            isset($block['attrs']['data'])
+            && is_array($block['attrs']['data'])
+                ? $block['attrs']['data']
+                : [];
+
+        $block['attrs']['data']['blocks'] =
+            colby_flatten_group_descendants(
+                $block['innerBlocks'] ?? []
+            );
+
+        $block['attrs']['data']['blocks'] =
+            colby_process_blocks(
+                $block['attrs']['data']['blocks'],
+                $block_path . '_group'
+            );
+
+        return $block;
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * ACF blocks
+     * ---------------------------------------------------------
+     *
+     * Only ACF blocks should go through:
+     *
+     *   acf_setup_meta()
+     *   get_fields()
+     *   acf_reset_meta()
+     */
+    if (
+        is_string($block_name)
+        && strpos($block_name, 'acf/') === 0
+    ) {
+        $block['attrs']['data'] =
+            get_structured_block_data(
+                $block,
+                $block_path
+            );
+
+        /*
+         * Advanced Accordion recursively processes its
+         * inner blocks.
+         */
+        if ($block_name === 'acf/advanced-accordion') {
+            $block =
+                colby_prepare_advanced_accordion_block(
+                    $block,
+                    $block_path
+                );
+        }
+
+        /*
+         * People Grid has additional page-specific population logic.
+         */
+        if ($block_name === 'acf/people-grid') {
+            // Split the URL path into segments.
+            $url_segments = explode(
+                '/',
+                trim($_SERVER['REQUEST_URI'], '/')
+            );
+
+            $segment1 = $url_segments[0] ?? '';
+            $segment2 = $url_segments[1] ?? '';
+            $segment3 = $url_segments[2] ?? '';
+
+            // Replace dashes in third URL segment with spaces.
+            $segment3 = strtolower(
+                str_replace(
+                    '-',
+                    ' ',
+                    trim($segment3)
+                )
+            );
+
+            // Handle auto populate if enabled.
+            $is_enabled_auto_populate =
+                $block['attrs']['data']['auto_populate']
+                ?? false;
+
+            $people_posts =
+                $is_enabled_auto_populate
+                    ? get_people(
+                        $segment1,
+                        $segment2,
+                        $segment3
+                    )
+                    : [];
+
+            $acf_items =
+                $block['attrs']['data']['items']
+                ?? [];
+
+            /*
+             * Merge manually selected ACF people with
+             * automatically populated people.
+             */
+            $merged_items = array_merge(
+                is_array($acf_items)
+                    ? $acf_items
+                    : [],
+                is_array($people_posts)
+                    ? $people_posts
+                    : []
+            );
+
+            // Get people exclusions.
+            $people_exclusions =
+                get_field('exclude_from_listings');
+
+            $final_people_items = [];
+
+            /*
+             * Process/obtain the final list of people.
+             */
+            if ($people_exclusions) {
+                foreach ($merged_items as $person) {
+                    if (
+                        !in_array(
+                            $person,
+                            $people_exclusions
+                        )
+                    ) {
+                        $final_people_items[] =
+                            $person;
+                    }
+                }
+            } else {
+                $final_people_items =
+                    $merged_items;
+            }
+
+            foreach ($final_people_items as &$item) {
+                if (!isset($item['post'])) {
+                    continue;
+                }
+
+                $post_id = $item['post']->ID;
+
+                if (!$post_id) {
+                    continue;
+                }
+
+                $item['last_name'] = strtolower(
+                    get_post_meta(
+                        $post_id,
+                        'last_name',
+                        true
+                    )
+                );
+
+                $item['heading'] =
+                    $item['post']->post_title;
+
+                $item['paragraph'] =
+                    get_post_meta(
+                        $post_id,
+                        'title',
+                        true
+                    );
+
+                $feat_image_id =
+                    get_post_thumbnail_id(
+                        $post_id
+                    );
+
+                $feat_image_array =
+                    wp_get_attachment_image_src(
+                        $feat_image_id,
+                        'Square'
+                    );
+
+                $feat_image_url = '';
+
+                if (
+                    $feat_image_array
+                    && $feat_image_array[1] >= 300
+                    && $feat_image_array[2] >= 300
+                ) {
+                    $feat_image_url =
+                        get_the_post_thumbnail_url(
+                            $post_id,
+                            'Square'
+                        );
+                } else {
+                    $feat_image_url =
+                        'https://www.colby.edu/'
+                        . 'wp-content/uploads/2022/11/'
+                        . 'directory-placeholder_'
+                        . 'E4E8F0_90_100-380x430_square.jpg';
+                }
+
+                $item['image'] = [
+                    'url' => $feat_image_url,
+                    'alt' =>
+                        'Image of '
+                        . $item['post']->post_title,
+                ];
+
+                $item['buttons'][] = [
+                    'button' => [
+                        'title' => 'Read Bio',
+                        'url' =>
+                            '/people/people-directory/'
+                            . str_replace(
+                                ' ',
+                                '-',
+                                remove_accents(
+                                    strtolower(
+                                        $item['post']
+                                            ->post_title
+                                    )
+                                )
+                            )
+                            . '/',
+                    ],
+                ];
+            }
+
+            unset($item);
+
+            /*
+             * Sort alphabetically by last name.
+             */
+            usort(
+                $final_people_items,
+                function ($a, $b) {
+                    return strcmp(
+                        strtolower(
+                            $a['last_name']
+                            ?? ''
+                        ),
+                        strtolower(
+                            $b['last_name']
+                            ?? ''
+                        )
+                    );
+                }
+            );
+
+            $block['attrs']['data']['acf_items'] =
+                $acf_items;
+
+            $block['attrs']['data']['people_posts'] =
+                $people_posts;
+
+            $block['attrs']['data']['people'] =
+                $final_people_items;
+        }
+
+        /*
+         * Run optional block-specific
+         * acf/get_remote_data.php.
+         */
+        $block = enrich_block_data(
+            $block,
+            $index
+        );
+
+        return $block;
+    }
+
+    /*
+     * Any other Core or third-party plugin block that we don't
+     * explicitly support should remain exactly as parse_blocks()
+     * provided it.
+     */
     return $block;
 }
 
