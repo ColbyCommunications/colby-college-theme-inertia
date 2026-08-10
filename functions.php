@@ -379,10 +379,10 @@ if (isset($_GET['gf_iframe_id'])) {
   if ($vite_running) {
     $vite_public = home_url('/vite'); // e.g., https://colby.lndo.site/vite
 
-    wp_enqueue_script_module('vite-client', "$vite_public/@vite/client", [], null, true);
+    wp_enqueue_script_module('vite-client', "$vite_public/@vite/client", [], null, []);
     // wp_script_add_data('vite-client', 'type', 'module');
 
-    wp_enqueue_script_module('colby-app', "$vite_public/resources/js/app.js", [], null, true);
+    wp_enqueue_script_module('colby-app', "$vite_public/resources/js/app.js", [], null, []);
     // wp_script_add_data('colby-app', 'type', 'module');
 
   } else {
