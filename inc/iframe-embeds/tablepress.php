@@ -217,6 +217,7 @@ function colby_render_tablepress_iframe(): void {
                 'load',
                 sendHeight
             );
+            
 
             /*
              * ResizeObserver catches actual layout changes caused by:
@@ -255,6 +256,76 @@ function colby_render_tablepress_iframe(): void {
                     attributes: true,
                 }
             );
+
+            document.addEventListener('click', (event) => {
+                const link = event.target.closest('a[href]');
+
+                if (!link) {
+                    return;
+                }
+
+                /*
+                * Only intercept links that belong to the TablePress/DataTables
+                * portion of this iframe.
+                */
+                if (!link.closest('.tablepress, .dt-container')) {
+                    return;
+                }
+
+                /*
+                * Preserve normal browser behavior for modified clicks:
+                *
+                * Cmd/Ctrl + click
+                * Shift + click
+                * Alt + click
+                */
+                if (
+                    event.metaKey
+                    || event.ctrlKey
+                    || event.shiftKey
+                    || event.altKey
+                ) {
+                    return;
+                }
+
+                /*
+                * Only handle normal left-click navigation.
+                */
+                if (event.button !== 0) {
+                    return;
+                }
+
+                /*
+                * Preserve links that explicitly open a new tab/window.
+                */
+                if (
+                    link.getAttribute('target')?.toLowerCase()
+                    === '_blank'
+                ) {
+                    return;
+                }
+
+                /*
+                * Preserve download links.
+                */
+                if (link.hasAttribute('download')) {
+                    return;
+                }
+
+                const href = link.getAttribute('href');
+
+                if (
+                    !href
+                    || href.startsWith('#')
+                    || href.startsWith('javascript:')
+                ) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                window.top.location.assign(link.href);
+            });
         })();
         </script>
     </body>
