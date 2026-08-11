@@ -5,26 +5,28 @@
   >
     <div
       ref="container"
-      class="section-nav__inner flex space-x-10 px-5 lg:justify-center"
+      class="section-nav__inner flex w-max min-w-full items-center gap-x-10 px-5 lg:justify-center"
     >
       <h2
-        class="section-nav__heading flex items-center font-extended text-14 font-bold tracking-8 whitespace-nowrap text-azure uppercase md:text-12"
+        class="section-nav__heading flex shrink-0 items-center font-extended text-14 font-bold tracking-8 whitespace-nowrap text-azure uppercase md:text-12"
       >
         {{ title }}
       </h2>
-      <ul class="flex items-center space-x-7 pr-9 md:pr-0">
+
+      <ul class="flex shrink-0 items-center gap-x-7 pr-9 md:pr-0">
         <li
           v-for="(item, index) in items"
           :key="index"
-          class="section-nav__item font-body text-14 font-medium whitespace-nowrap text-indigo md:text-12"
+          class="section-nav__item shrink-0 font-body text-14 font-medium whitespace-nowrap text-indigo md:text-12"
         >
           <a
             class="inline-flex min-h-[44px] min-w-[44px] items-center text-indigo transition-all duration-200 ease-in-out hover:text-indigo hover:underline"
             :href="item.link.url"
           >
-            <span class="material-symbols-sharp mr-1 !text-14">{{
-              item.icon_class
-            }}</span>
+            <span class="material-symbols-sharp mr-1 !text-14">
+              {{ item.icon_class }}
+            </span>
+
             {{ item.link.title }}
           </a>
         </li>
