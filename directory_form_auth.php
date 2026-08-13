@@ -4,7 +4,7 @@ if ( ! session_id() && ! headers_sent() ) {
 }
 
 require_once( 'lib/simplesamlphp/src/_autoload.php' );
-add_action( 'template_redirect', 'directory_auth_check' );
+add_action( 'init', 'directory_auth_check' );
 
 function directory_auth_check() {
   if ( is_page( 'directory-profile-update-form' ) ) {
