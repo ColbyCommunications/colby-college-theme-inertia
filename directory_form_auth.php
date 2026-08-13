@@ -1,310 +1,299 @@
 <?php
-if ( ! session_id() && ! headers_sent() ) {
-    session_start();
-}
 
 require_once( 'lib/simplesamlphp/src/_autoload.php' );
-add_action( 'init', 'directory_auth_check' );
+
+/**
+ * Helper function to retrieve and cache person meta during the request.
+ * This avoids race conditions with $_SESSION.
+ */
+function get_current_directory_person() {
+    static $person_meta = null;
+
+    // Return cached meta if already fetched during this request
+    if ( $person_meta !== null ) {
+        return $person_meta;
+    }
+
+    // Default to empty array if session data isn't set yet
+    if ( ! empty( $_SESSION['person'] ) ) {
+        $person_meta = $_SESSION['person'];
+        return $person_meta;
+    }
+
+    // Fallback: If $_SESSION isn't ready, inspect SimpleSAML directly
+    try {
+        $as = new \SimpleSAML\Auth\Simple( 'default-sp' );
+
+        if ( $as->isAuthenticated() ) {
+            $attributes = $as->getAttributes();
+            $e_id       = $attributes['WorkdayID'][0] ?? null;
+
+            if ( $e_id ) {
+                $args = array(
+                    'post_type'      => 'people',
+                    'posts_per_page' => 1,
+                    'meta_query'     => array(
+                        array(
+                            'key'     => 'employee_id',
+                            'value'   => $e_id,
+                            'compare' => '=',
+                        ),
+                    ),
+                );
+
+                $person_post = get_posts( $args );
+
+                if ( ! empty( $person_post ) ) {
+                    $id          = $person_post[0]->ID;
+                    $person_meta = get_post_meta( $id );
+                    
+                    // Keep session updated
+                    if ( session_status() === PHP_SESSION_ACTIVE ) {
+                        $_SESSION['colby_directory_id'] = $e_id;
+                        $_SESSION['person']             = $person_meta;
+                    }
+
+                    return $person_meta;
+                }
+            }
+        }
+    } catch ( \Exception $e ) {
+        error_log( '[DIRECTORY ERROR] SimpleSAML Exception: ' . $e->getMessage() );
+    }
+
+    $person_meta = [];
+    return $person_meta;
+}
+
+/**
+ * Authentication Check Hook
+ */
+add_action( 'wp', 'directory_auth_check' );
 
 function directory_auth_check() {
-  $request_uri = parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH );
+    if ( is_page( 'directory-profile-update-form' ) ) {
 
-  if ( strpos( $request_uri, 'directory-profile-update-form' ) !== false ) {
+        if ( session_status() !== PHP_SESSION_ACTIVE && ! headers_sent() ) {
+            session_start();
+        }
 
-      error_log( '[DIRECTORY DEBUG] --- Request started for directory form page ---' );
+        $as = new \SimpleSAML\Auth\Simple( 'default-sp' );
 
-      $as = new \SimpleSAML\Auth\Simple( 'default-sp' );
+        if ( ! $as->isAuthenticated() ) {
 
-      if ( ! $as->isAuthenticated() ) {
-          error_log( '[DIRECTORY DEBUG] SimpleSAML User NOT authenticated.' );
+            if ( isset( $_SESSION['person'] ) ) {
+                unset( $_SESSION['person'] );
+            }
 
-          if ( array_key_exists( 'person', $_SESSION ) ) {
-              unset( $_SESSION['person'] );
-          }
+            if ( isset( $_SERVER['HTTP_X_INERTIA'] ) ) {
+                header( 'X-Inertia-Location: ' . $as->getLoginURL() );
+                header( 'HTTP/1.1 409 Conflict' );
+                exit;
+            }
 
-          if ( isset( $_SERVER['HTTP_X_INERTIA'] ) ) {
-              header( 'X-Inertia-Location: ' . $as->getLoginURL() );
-              header( 'HTTP/1.1 409 Conflict' );
-              exit;
-          }
+            $as->requireAuth();
 
-          $as->requireAuth();
-
-      } else {
-          error_log( '[DIRECTORY DEBUG] SimpleSAML User IS authenticated.' );
-
-          $attributes = $as->getAttributes();
-          error_log( '[DIRECTORY DEBUG] SimpleSAML Attributes: ' . print_r( $attributes, true ) );
-
-          $e_id = $attributes['WorkdayID'][0] ?? null;
-          error_log( '[DIRECTORY DEBUG] Extracted WorkdayID: ' . var_export( $e_id, true ) );
-
-          if ( $e_id ) {
-              $args = array(
-                  'post_type'      => 'people',
-                  'posts_per_page' => 1,
-                  'meta_query'     => array(
-                      array(
-                          'key'     => 'employee_id',
-                          'value'   => $e_id,
-                          'compare' => '=',
-                      ),
-                  ),
-              );
-
-              $person_post = get_posts( $args );
-              error_log( '[DIRECTORY DEBUG] WP get_posts result count: ' . count( $person_post ) );
-
-              if ( ! empty( $person_post ) ) {
-                  $id                             = $person_post[0]->ID;
-                  $_SESSION['colby_directory_id'] = $e_id;
-                  $_SESSION['person']             = get_post_meta( $id );
-
-                  error_log( '[DIRECTORY DEBUG] $_SESSION[\'person\'] successfully set for Post ID: ' . $id );
-                  error_log( '[DIRECTORY DEBUG] $_SESSION[\'person\'] contents: ' . print_r( $_SESSION['person'], true ) );
-              } else {
-                  error_log( '[DIRECTORY DEBUG] ERROR: No "people" CPT post found matching employee_id = ' . $e_id );
-              }
-          } else {
-              error_log( '[DIRECTORY DEBUG] ERROR: "WorkdayID" key missing from SAML attributes!' );
-          }
-      }
-  }
+        } else {
+            // Trigger fetch and cache
+            get_current_directory_person();
+        }
+    }
 }
 
-/* Gravity Forms Prepopulation Functions */
+/* -------------------------------------------------------------------------- */
+/* Gravity Forms Prepopulation Filters                                        */
+/* -------------------------------------------------------------------------- */
+
+// Helper to pull specific key safely
+function get_directory_field_value( $key ) {
+    $person = get_current_directory_person();
+    return $person[ $key ][0] ?? '';
+}
 
 // Workday Email
-add_filter( 'gform_field_value_directory_email', 'email_prepopulation' );
-function email_prepopulation( $value ) {
-    error_log( '[DIRECTORY DEBUG] Inside email_prepopulation filter. $_SESSION dump: ' . print_r( $_SESSION, true ) );
-    
-    return $_SESSION['person']['email'][0] ?? '';
-}
+add_filter( 'gform_field_value_directory_email', function( $value ) {
+    return get_directory_field_value( 'email' );
+});
 
 // First Name
-add_filter( 'gform_field_value_directory_first_name', 'first_name_prepopulation' );
-function first_name_prepopulation( $value ) {
-  return $_SESSION['person']['first_name'][0];
-}
+add_filter( 'gform_field_value_directory_first_name', function( $value ) {
+    return get_directory_field_value( 'first_name' );
+});
 
 // Last Name
-add_filter( 'gform_field_value_directory_last_name', 'last_name_prepopulation' );
-function last_name_prepopulation( $value ) {
-  return $_SESSION['person']['last_name'][0];
-}
+add_filter( 'gform_field_value_directory_last_name', function( $value ) {
+    return get_directory_field_value( 'last_name' );
+});
 
 // Hide Pronouns
-add_filter( 'gform_field_value_directory_hide_pronouns', 'hide_pronouns_prepopulation' );
-function hide_pronouns_prepopulation( $value ) {
-  if ( empty( $_SESSION['person']['hide_pronouns'][0] ) || $_SESSION['person']['hide_pronouns'][0] == 0 ) {
-    return '';
-  }
-  return 'yes';
-}
+add_filter( 'gform_field_value_directory_hide_pronouns', function( $value ) {
+    $val = get_directory_field_value( 'hide_pronouns' );
+    return ( empty( $val ) || $val == 0 ) ? '' : 'yes';
+});
 
 // Hide Office Phone Number
-add_filter( 'gform_field_value_directory_hide_phone', 'hide_phone_prepopulation' );
-function hide_phone_prepopulation( $value ) {
-  if ( empty( $_SESSION['person']['hide_phone_number'][0] ) || $_SESSION['person']['hide_phone_number'][0] == 0 ) {
-    return '';
-  }
-  return 'yes';
-}
+add_filter( 'gform_field_value_directory_hide_phone', function( $value ) {
+    $val = get_directory_field_value( 'hide_phone_number' );
+    return ( empty( $val ) || $val == 0 ) ? '' : 'yes';
+});
 
 // Hide Fax Number
-add_filter( 'gform_field_value_directory_hide_fax', 'hide_fax_prepopulation' );
-function hide_fax_prepopulation( $value ) {
-  if ( empty( $_SESSION['person']['hide_fax'][0] ) || $_SESSION['person']['hide_fax'][0] == 0 ) {
-    return '';
-  }
-  return 'yes';
-}
+add_filter( 'gform_field_value_directory_hide_fax', function( $value ) {
+    $val = get_directory_field_value( 'hide_fax' );
+    return ( empty( $val ) || $val == 0 ) ? '' : 'yes';
+});
 
 // Hide Location
-add_filter( 'gform_field_value_directory_hide_location', 'hide_location_prepopulation' );
-function hide_location_prepopulation( $value ) {
-  if ( empty( $_SESSION['person']['hide_location'][0] ) || $_SESSION['person']['hide_location'][0] == 0 ) {
-    return '';
-  }
-  return 'yes';
-}
+add_filter( 'gform_field_value_directory_hide_location', function( $value ) {
+    $val = get_directory_field_value( 'hide_location' );
+    return ( empty( $val ) || $val == 0 ) ? '' : 'yes';
+});
 
 // Unsync Department Selection
-add_filter( 'gform_field_value_directory_unsync_department', 'unsync_department_prepopulation' );
-function unsync_department_prepopulation( $value ) {
-  if ( ! empty( $_SESSION['person']['unsync_department'] ) && $_SESSION['person']['unsync_department'][0] == 1 ) {
-    return 'yes';
-  }
-  return '';
-}
+add_filter( 'gform_field_value_directory_unsync_department', function( $value ) {
+    $val = get_directory_field_value( 'unsync_department' );
+    return ( ! empty( $val ) && $val == 1 ) ? 'yes' : '';
+});
 
 // Department
-add_filter( 'gform_field_value_directory_department', 'department_prepopulation' );
-function department_prepopulation( $value ) {
-  if ( ! empty( $_SESSION['person']['department'][0] ) ) {
-    return $_SESSION['person']['department'][0];
-  }
-}
+add_filter( 'gform_field_value_directory_department', function( $value ) {
+    return get_directory_field_value( 'department' );
+});
 
 // Hide Department
-add_filter( 'gform_field_value_directory_hide_department', 'hide_department_prepopulation' );
-function hide_department_prepopulation( $value ) {
-  if ( empty( $_SESSION['person']['hide_department'][0] ) || $_SESSION['person']['hide_department'][0] == 0 ) {
-    return '';
-  }
-  return 'yes';
-}
+add_filter( 'gform_field_value_directory_hide_department', function( $value ) {
+    $val = get_directory_field_value( 'hide_department' );
+    return ( empty( $val ) || $val == 0 ) ? '' : 'yes';
+});
 
 // Curriculum Vitae
-add_filter( 'gform_field_value_directory_cv', 'cv_prepopulation' );
-function cv_prepopulation( $value ) {
-  if ( ! empty( $_SESSION['person']['curriculum_vitae'][0] ) ) {
-    return $_SESSION['person']['curriculum_vitae'][0];
-  }
-}
+add_filter( 'gform_field_value_directory_cv', function( $value ) {
+    return get_directory_field_value( 'curriculum_vitae' );
+});
 
 // Hide Curriculum Vitae
-add_filter( 'gform_field_value_directory_hide_cv', 'hide_cv_prepopulation' );
-function hide_cv_prepopulation( $value ) {
-  if ( empty( $_SESSION['person']['hide_cv'][0] ) || $_SESSION['person']['hide_cv'][0] == 0 ) {
-    return '';
-  }
-  return 'yes';
-}
+add_filter( 'gform_field_value_directory_hide_cv', function( $value ) {
+    $val = get_directory_field_value( 'hide_cv' );
+    return ( empty( $val ) || $val == 0 ) ? '' : 'yes';
+});
 
 // Office Hours
-add_filter( 'gform_field_value_directory_office_hours', 'office_hours_prepopulation' );
-function office_hours_prepopulation( $value ) {
-  if ( ! empty( $_SESSION['person']['office_hours'][0] ) ) {
-    return $_SESSION['person']['office_hours'][0];
-  }
-}
+add_filter( 'gform_field_value_directory_office_hours', function( $value ) {
+    return get_directory_field_value( 'office_hours' );
+});
 
 // Hide Office Hours
-add_filter( 'gform_field_value_directory_hide_office_hours', 'hide_office_hours_prepopulation' );
-function hide_office_hours_prepopulation( $value ) {
-  if ( empty( $_SESSION['person']['hide_office_hours'][0] ) || $_SESSION['person']['hide_office_hours'][0] == 0 ) {
-    return '';
-  }
-  return 'yes';
-}
+add_filter( 'gform_field_value_directory_hide_office_hours', function( $value ) {
+    $val = get_directory_field_value( 'hide_office_hours' );
+    return ( empty( $val ) || $val == 0 ) ? '' : 'yes';
+});
 
 // Hide Profile Photo
-add_filter( 'gform_field_value_directory_hide_photo', 'hide_photo_prepopulation' );
-function hide_photo_prepopulation( $value ) {
-  if ( empty( $_SESSION['person']['hide_photo'][0] ) || $_SESSION['person']['hide_photo'][0] == 0 ) {
-    return '';
-  }
-  return 'yes';
-}
+add_filter( 'gform_field_value_directory_hide_photo', function( $value ) {
+    $val = get_directory_field_value( 'hide_photo' );
+    return ( empty( $val ) || $val == 0 ) ? '' : 'yes';
+});
 
 // Bio
-add_filter( 'gform_field_value_directory_bio', 'bio_prepopulation' );
-function bio_prepopulation( $value ) {
-  if ( ! empty( $_SESSION['person']['bio'][0] ) ) {
-    return $_SESSION['person']['bio'][0];
-  }
-}
+add_filter( 'gform_field_value_directory_bio', function( $value ) {
+    return get_directory_field_value( 'bio' );
+});
 
 // Hide Bio
-add_filter( 'gform_field_value_directory_hide_bio', 'hide_bio_prepopulation' );
-function hide_bio_prepopulation( $value ) {
-  if ( empty( $_SESSION['person']['hide_bio'][0] ) || $_SESSION['person']['hide_bio'][0] == 0 ) {
-    return '';
-  }
-  return 'yes';
-}
+add_filter( 'gform_field_value_directory_hide_bio', function( $value ) {
+    $val = get_directory_field_value( 'hide_bio' );
+    return ( empty( $val ) || $val == 0 ) ? '' : 'yes';
+});
 
 // Hide Email
-add_filter( 'gform_field_value_directory_hide_email', 'hide_email_prepopulation' );
-function hide_email_prepopulation( $value ) {
-  if ( empty( $_SESSION['person']['hide_email'][0] ) || $_SESSION['person']['hide_email'][0] == 0 ) {
-    return '';
-  }
-  return 'yes';
-}
+add_filter( 'gform_field_value_directory_hide_email', function( $value ) {
+    $val = get_directory_field_value( 'hide_email' );
+    return ( empty( $val ) || $val == 0 ) ? '' : 'yes';
+});
 
 // Hide Courses
-add_filter( 'gform_field_value_directory_hide_courses', 'hide_courses_prepopulation' );
-function hide_courses_prepopulation( $value ) {
-  if ( empty( $_SESSION['person']['hide_courses'][0] ) || $_SESSION['person']['hide_courses'][0] == 0 ) {
-    return '';
-  }
-  return 'yes';
-}
+add_filter( 'gform_field_value_directory_hide_courses', function( $value ) {
+    $val = get_directory_field_value( 'hide_courses' );
+    return ( empty( $val ) || $val == 0 ) ? '' : 'yes';
+});
+
+/* -------------------------------------------------------------------------- */
+/* Gravity Form Submission Handler                                            */
+/* -------------------------------------------------------------------------- */
 
 add_action( 'gform_after_submission_12', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 
-  // get attributes from SimpleSAML session
-  $as         = new \SimpleSAML\Auth\Simple( 'default-sp' );
-  $attributes = $as->getAttributes();
-  $e_id       = $attributes['WorkdayID'][0];
+    $as         = new \SimpleSAML\Auth\Simple( 'default-sp' );
+    $attributes = $as->getAttributes();
+    $e_id       = $attributes['WorkdayID'][0] ?? null;
 
-  // Accessing values with fallbacks to .1 subfields for checkboxes
-  $department        = $entry[5] ?? '';
-  $curriculum_vitae  = $entry[9] ?? '';
-  $office_hours      = $entry[15] ?? '';
-  $bio               = $entry[1] ?? '';
-  
-  $hide_pronouns     = $entry['34.1'] ?? $entry[34] ?? '';
-  $hide_phone_number = $entry['35.1'] ?? $entry[35] ?? '';
-  $hide_fax          = $entry['36.1'] ?? $entry[36] ?? '';
-  $hide_location     = $entry['37.1'] ?? $entry[37] ?? '';
-  $hide_department   = $entry['38.1'] ?? $entry[38] ?? '';
-  $hide_cv           = $entry['39.1'] ?? $entry[39] ?? '';
-  $hide_office_hours = $entry['40.1'] ?? $entry[40] ?? '';
-  $hide_bio          = $entry['41.1'] ?? $entry[41] ?? '';
-  $unsync_department = $entry['43.1'] ?? $entry[43] ?? '';
-  $hide_photo        = $entry['44.1'] ?? $entry[44] ?? '';
-  $hide_email        = $entry['51.1'] ?? $entry[51] ?? '';
-  $hide_courses      = $entry['52.1'] ?? $entry[52] ?? '';
+    if ( ! $e_id ) {
+        return;
+    }
 
-  // get person post by employee ID
-  $args = array(
-    'post_type'  => 'people',
-    'meta_query' => array(
-      array(
-        'key'     => 'employee_id',
-        'value'   => $e_id,
-        'compare' => '=',
-      ),
-    ),
-  );
+    $department        = $entry[5] ?? '';
+    $curriculum_vitae  = $entry[9] ?? '';
+    $office_hours      = $entry[15] ?? '';
+    $bio               = $entry[1] ?? '';
 
-  $person_post     = get_posts( $args );
-  $id              = $person_post[0]->ID;
-  $person_metadata = get_post_meta( $id );
+    $hide_pronouns     = $entry['34.1'] ?? $entry[34] ?? '';
+    $hide_phone_number = $entry['35.1'] ?? $entry[35] ?? '';
+    $hide_fax          = $entry['36.1'] ?? $entry[36] ?? '';
+    $hide_location     = $entry['37.1'] ?? $entry[37] ?? '';
+    $hide_department   = $entry['38.1'] ?? $entry[38] ?? '';
+    $hide_cv           = $entry['39.1'] ?? $entry[39] ?? '';
+    $hide_office_hours = $entry['40.1'] ?? $entry[40] ?? '';
+    $hide_bio          = $entry['41.1'] ?? $entry[41] ?? '';
+    $unsync_department = $entry['43.1'] ?? $entry[43] ?? '';
+    $hide_photo        = $entry['44.1'] ?? $entry[44] ?? '';
+    $hide_email        = $entry['51.1'] ?? $entry[51] ?? '';
+    $hide_courses      = $entry['52.1'] ?? $entry[52] ?? '';
 
-  // update post
-  $meta_values = array(
-    'department'        => $unsync_department === 'yes' ? $department : ($person_metadata['department'][0] ?? ''),
-    'curriculum_vitae'  => $curriculum_vitae,
-    'office_hours'      => $office_hours,
-    'bio'               => $bio,
+    $args = array(
+        'post_type'      => 'people',
+        'posts_per_page' => 1,
+        'meta_query'     => array(
+            array(
+                'key'     => 'employee_id',
+                'value'   => $e_id,
+                'compare' => '=',
+            ),
+        ),
+    );
 
-    // remove/hide fields
-    'hide_pronouns'     => $hide_pronouns === 'yes' ? 1 : 0,
-    'hide_phone_number' => $hide_phone_number === 'yes' ? 1 : 0,
-    'hide_fax'          => $hide_fax === 'yes' ? 1 : 0,
-    'hide_location'     => $hide_location === 'yes' ? 1 : 0,
-    'hide_department'   => $hide_department === 'yes' ? 1 : 0,
-    'hide_cv'           => $hide_cv === 'yes' ? 1 : 0,
-    'hide_office_hours' => $hide_office_hours === 'yes' ? 1 : 0,
-    'hide_bio'          => $hide_bio === 'yes' ? 1 : 0,
-    'hide_photo'        => $hide_photo === 'yes' ? 1 : 0,
-    'hide_email'        => $hide_email === 'yes' ? 1 : 0,
-    'hide_courses'      => $hide_courses === 'yes' ? 1 : 0,
-    'unsync_department' => $unsync_department === 'yes' ? 1 : 0,
-  );
+    $person_post = get_posts( $args );
 
-  wp_update_post(
-    array(
-      'ID'         => $person_post[0]->ID,
-      'post_title' => $person_metadata['first_name'][0] . ' ' . $person_metadata['last_name'][0],
-      'meta_input' => $meta_values,
-    )
-  );
+    if ( ! empty( $person_post ) ) {
+        $id              = $person_post[0]->ID;
+        $person_metadata = get_post_meta( $id );
 
+        $meta_values = array(
+            'department'        => $unsync_department === 'yes' ? $department : ($person_metadata['department'][0] ?? ''),
+            'curriculum_vitae'  => $curriculum_vitae,
+            'office_hours'      => $office_hours,
+            'bio'               => $bio,
+
+            'hide_pronouns'     => $hide_pronouns === 'yes' ? 1 : 0,
+            'hide_phone_number' => $hide_phone_number === 'yes' ? 1 : 0,
+            'hide_fax'          => $hide_fax === 'yes' ? 1 : 0,
+            'hide_location'     => $hide_location === 'yes' ? 1 : 0,
+            'hide_department'   => $hide_department === 'yes' ? 1 : 0,
+            'hide_cv'           => $hide_cv === 'yes' ? 1 : 0,
+            'hide_office_hours' => $hide_office_hours === 'yes' ? 1 : 0,
+            'hide_bio'          => $hide_bio === 'yes' ? 1 : 0,
+            'hide_photo'        => $hide_photo === 'yes' ? 1 : 0,
+            'hide_email'        => $hide_email === 'yes' ? 1 : 0,
+            'hide_courses'      => $hide_courses === 'yes' ? 1 : 0,
+            'unsync_department' => $unsync_department === 'yes' ? 1 : 0,
+        );
+
+        wp_update_post(
+            array(
+                'ID'         => $id,
+                'post_title' => ( $person_metadata['first_name'][0] ?? '' ) . ' ' . ( $person_metadata['last_name'][0] ?? '' ),
+                'meta_input' => $meta_values,
+            )
+        );
+    }
 }
