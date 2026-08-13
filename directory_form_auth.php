@@ -7,49 +7,68 @@ require_once( 'lib/simplesamlphp/src/_autoload.php' );
 add_action( 'init', 'directory_auth_check' );
 
 function directory_auth_check() {
-  if ( is_page( 'directory-profile-update-form' ) ) {
-    $as = new \SimpleSAML\Auth\Simple( 'default-sp' );
+  $request_uri = parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH );
 
-    if ( ! $as->isAuthenticated() ) {
+  if ( strpos( $request_uri, 'directory-profile-update-form' ) !== false ) {
 
-      if ( array_key_exists( 'person', $_SESSION ) ) {
-        unset( $_SESSION['person'] );
+      error_log( '[DIRECTORY DEBUG] --- Request started for directory form page ---' );
+
+      $as = new \SimpleSAML\Auth\Simple( 'default-sp' );
+
+      if ( ! $as->isAuthenticated() ) {
+          error_log( '[DIRECTORY DEBUG] SimpleSAML User NOT authenticated.' );
+
+          if ( array_key_exists( 'person', $_SESSION ) ) {
+              unset( $_SESSION['person'] );
+          }
+
+          if ( isset( $_SERVER['HTTP_X_INERTIA'] ) ) {
+              header( 'X-Inertia-Location: ' . $as->getLoginURL() );
+              header( 'HTTP/1.1 409 Conflict' );
+              exit;
+          }
+
+          $as->requireAuth();
+
+      } else {
+          error_log( '[DIRECTORY DEBUG] SimpleSAML User IS authenticated.' );
+
+          $attributes = $as->getAttributes();
+          error_log( '[DIRECTORY DEBUG] SimpleSAML Attributes: ' . print_r( $attributes, true ) );
+
+          $e_id = $attributes['WorkdayID'][0] ?? null;
+          error_log( '[DIRECTORY DEBUG] Extracted WorkdayID: ' . var_export( $e_id, true ) );
+
+          if ( $e_id ) {
+              $args = array(
+                  'post_type'      => 'people',
+                  'posts_per_page' => 1,
+                  'meta_query'     => array(
+                      array(
+                          'key'     => 'employee_id',
+                          'value'   => $e_id,
+                          'compare' => '=',
+                      ),
+                  ),
+              );
+
+              $person_post = get_posts( $args );
+              error_log( '[DIRECTORY DEBUG] WP get_posts result count: ' . count( $person_post ) );
+
+              if ( ! empty( $person_post ) ) {
+                  $id                             = $person_post[0]->ID;
+                  $_SESSION['colby_directory_id'] = $e_id;
+                  $_SESSION['person']             = get_post_meta( $id );
+
+                  error_log( '[DIRECTORY DEBUG] $_SESSION[\'person\'] successfully set for Post ID: ' . $id );
+                  error_log( '[DIRECTORY DEBUG] $_SESSION[\'person\'] contents: ' . print_r( $_SESSION['person'], true ) );
+              } else {
+                  error_log( '[DIRECTORY DEBUG] ERROR: No "people" CPT post found matching employee_id = ' . $e_id );
+              }
+          } else {
+              error_log( '[DIRECTORY DEBUG] ERROR: "WorkdayID" key missing from SAML attributes!' );
+          }
       }
-
-      if ( isset( $_SERVER['HTTP_X_INERTIA'] ) ) {
-        header( 'X-Inertia-Location: ' . $as->getLoginURL() );
-        header( 'HTTP/1.1 409 Conflict' );
-        exit;
-      }
-
-      $as->requireAuth();
-
-    } else {
-
-      $attributes = $as->getAttributes();
-      $e_id       = $attributes['WorkdayID'][0];
-
-      $args            = array(
-        'post_type'  => 'people',
-        'meta_query' => array(
-          array(
-            'key'     => 'employee_id',
-            'value'   => $e_id,
-            'compare' => '=',
-          ),
-        ),
-      );
-      $person_post     = get_posts( $args );
-      
-      if ( ! empty( $person_post ) ) {
-          $id              = $person_post[0]->ID;
-          $person_metadata = get_post_meta( $id );
-    
-          $_SESSION['colby_directory_id'] = $e_id;
-          $_SESSION['person']             = $person_metadata;
-      }
-    };
-
   }
 }
 
@@ -58,7 +77,9 @@ function directory_auth_check() {
 // Workday Email
 add_filter( 'gform_field_value_directory_email', 'email_prepopulation' );
 function email_prepopulation( $value ) {
-  return $_SESSION['person']['email'][0];
+    error_log( '[DIRECTORY DEBUG] Inside email_prepopulation filter. $_SESSION dump: ' . print_r( $_SESSION, true ) );
+    
+    return $_SESSION['person']['email'][0] ?? '';
 }
 
 // First Name
