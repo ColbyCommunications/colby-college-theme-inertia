@@ -98,6 +98,7 @@ const blockRegistry = {
     import("../MediaContextSection/MediaContextSection.vue"),
   "acf/related-section": () => import("../RelatedSection/RelatedSection.vue"),
   "acf/table-section": () => import("../TableSection/TableSection.vue"),
+  "acf/pdf-embed": () => import("../PdfEmbed/PdfEmbed.vue"),
 
   "core/heading": () => import("../Heading/Heading.vue"),
   "core/group": () => import("../Group/Group.vue"),
