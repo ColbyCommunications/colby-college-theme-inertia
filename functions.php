@@ -46,9 +46,6 @@ function colby_preload_critical_assets() {
       return;
   }
 
-  echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/libre-franklin-latin-wght-normal-CLTz0ja0.woff2" as="font" type="font/woff2" crossorigin="anonymous">' . "\n";
-  echo '<link rel="preload" href="/wp-content/themes/colby-college-theme-inertia/dist/assets/noto-sans-cyrillic-ext-wght-normal-DSNfmdVt.woff2" as="font" type="font/woff2" crossorigin="anonymous">' . "\n";
-
   $manifest_path = get_stylesheet_directory() . '/dist/.vite/manifest.json';
 
   if (!file_exists($manifest_path)) {
@@ -201,6 +198,24 @@ function colby_get_breadcrumbs_cached(): array {
           'title' => get_the_title($object_id),
           'url'   => get_permalink($object_id),
       ];
+
+  } elseif (is_singular('people') && $object_id) {
+
+      $breadcrumbs[] = [
+          'title' => 'People',
+          'url'   => home_url('/people/'),
+      ];
+
+      $breadcrumbs[] = [
+          'title' => 'People Directory',
+          'url'   => home_url('/people/people-directory/'),
+      ];
+
+      $breadcrumbs[] = [
+          'title' => get_the_title($object_id),
+          'url'   => get_permalink($object_id),
+      ];
+
   } elseif (is_single() && $object_id) {
       $categories = get_the_category($object_id);
 
