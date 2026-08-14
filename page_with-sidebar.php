@@ -512,35 +512,38 @@ function colby_process_single_block(
                         true
                     );
 
-                $feat_image_id =
-                    get_post_thumbnail_id(
-                        $post_id
-                    );
+                // Fetch hide_photo meta value as a single string/int
+                $hide_photo = get_post_meta($post_id, 'hide_photo', true);
 
-                $feat_image_array =
-                    wp_get_attachment_image_src(
+                $placeholder_url = 'https://www.colby.edu/wp-content/uploads/2022/11/directory-placeholder_E4E8F0_90_100-380x430_square.jpg';
+                $feat_image_url  = '';
+
+                // If user opted to hide their photo, skip getting the thumbnail and use placeholder
+                if ( ! empty( $hide_photo ) && ( $hide_photo === '1' || $hide_photo == 1 ) ) {
+
+                    $feat_image_url = $placeholder_url;
+
+                } else {
+
+                    $feat_image_id = get_post_thumbnail_id( $post_id );
+
+                    $feat_image_array = wp_get_attachment_image_src(
                         $feat_image_id,
                         'Square'
                     );
 
-                $feat_image_url = '';
-
-                if (
-                    $feat_image_array
-                    && $feat_image_array[1] >= 300
-                    && $feat_image_array[2] >= 300
-                ) {
-                    $feat_image_url =
-                        get_the_post_thumbnail_url(
+                    if (
+                        $feat_image_array
+                        && $feat_image_array[1] >= 300
+                        && $feat_image_array[2] >= 300
+                    ) {
+                        $feat_image_url = get_the_post_thumbnail_url(
                             $post_id,
                             'Square'
                         );
-                } else {
-                    $feat_image_url =
-                        'https://www.colby.edu/'
-                        . 'wp-content/uploads/2022/11/'
-                        . 'directory-placeholder_'
-                        . 'E4E8F0_90_100-380x430_square.jpg';
+                    } else {
+                        $feat_image_url = $placeholder_url;
+                    }
                 }
 
                 $item['image'] = [
@@ -572,6 +575,14 @@ function colby_process_single_block(
 
             unset($item);
 
+            // Filter out any items that don't have a valid post object attached
+            $final_people_items = array_filter(
+                $final_people_items,
+                function( $item ) {
+                    return ! empty( $item['post'] ) && ! empty( $item['post']->ID );
+                }
+            );
+
             /*
              * Sort alphabetically by last name.
              */
@@ -590,6 +601,9 @@ function colby_process_single_block(
                     );
                 }
             );
+
+            // Re-index array keys cleanly (0, 1, 2, 3...) after filtering and sorting
+            $final_people_items = array_values( $final_people_items );
 
             $block['attrs']['data']['acf_items'] =
                 $acf_items;
