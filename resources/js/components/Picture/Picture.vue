@@ -52,7 +52,7 @@ const props = defineProps({
   },
   quality: {
     type: String,
-    default: "60",
+    default: "80",
   },
   sizes: {
     type: String,
