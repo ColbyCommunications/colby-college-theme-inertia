@@ -15,7 +15,7 @@
       </div>
       <p
         v-if="image.caption"
-        class="hero__caption font-body font-normal text-12 text-indigo leading-140 mt-2"
+        class="hero__caption font-body font-normal text-12 text-indigo leading-[1.5] mt-2"
       >
         {{ image.caption }}
       </p>
