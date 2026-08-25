@@ -143,7 +143,7 @@
               >
                 Office Hours
               </h2>
-              <p class="font-body text-12 leading-130 font-normal text-indigo">
+              <p class="font-body text-12 leading-[1.5] font-normal text-indigo">
                 {{ office_hours }}
               </p>
             </div>

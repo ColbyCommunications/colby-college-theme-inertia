@@ -1622,3 +1622,5 @@ add_filter('tiny_mce_before_init', function($init){
 
     return $init;
 }, 20);
+
+add_filter( 'big_image_size_threshold', '__return_false' );
