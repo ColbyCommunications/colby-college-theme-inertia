@@ -90,7 +90,12 @@
             <div
               class="mx-auto my-0 mt-16 w-full max-w-screen-2xl px-5 md:mt-20 md:grid md:grid-cols-12"
             >
-            <div class="md:col-span-12"><Search /></div>
+              <div class="md:col-span-12">
+                <Search
+                  v-if="searchHasOpened"
+                  v-show="showModal"
+                />
+              </div>
             </div>
           </template>
         </Modal>
@@ -100,6 +105,7 @@
   <nav
     v-else
     class="header__utility flex h-[118px] justify-end bg-snow px-5 pt-4 lg:h-auto lg:pt-0"
+    aria-label="Utility menu"
   >
     <ul
       class="hidden w-0 md:grid md:inline-flex md:w-auto md:grid-cols-3 md:grid-cols-none md:grid-rows-2 md:grid-rows-none md:gap-0 md:gap-x-5 md:space-x-6"
@@ -166,7 +172,12 @@
             <div
               class="mx-auto my-0 mt-16 w-full max-w-screen-2xl px-5 md:mt-20 md:grid md:grid-cols-12"
             >
-              <div class="md:col-span-12"><Search /></div>
+              <div class="md:col-span-12">
+                <Search
+                  v-if="searchHasOpened"
+                  v-show="showModal"
+                />
+              </div>
             </div>
           </template>
         </Modal>
@@ -175,11 +186,25 @@
   </nav>
 </template>
 <script setup>
-import { ref } from "vue";
+import {
+  defineAsyncComponent,
+  ref,
+  watch,
+} from "vue";
+
 import Modal from "../Modal/Modal.vue";
-import Search from "../Search/Search.vue";
 import SearchIcon from "@/images/svg/icons/search.svg?component";
 import MyColbyIcon from "@/images/svg/icons/mycolby.svg?component";
+
+/**
+ * Lazy-load the entire search UI.
+ *
+ * Search.vue and its Algolia dependencies will not be requested until
+ * this component is actually mounted.
+ */
+const Search = defineAsyncComponent(() =>
+  import("../Search/Search.vue")
+);
 
 const props = defineProps({
   menu: {
@@ -192,5 +217,18 @@ const props = defineProps({
 });
 
 const showModal = ref(false);
-const searchRef = ref(null);
+
+/**
+ * Search should not exist at all on initial page load.
+ *
+ * Once the user opens Search for the first time, leave the component
+ * mounted so closing/reopening the modal does not reinitialize Algolia.
+ */
+const searchHasOpened = ref(false);
+
+watch(showModal, (isOpen) => {
+  if (isOpen) {
+    searchHasOpened.value = true;
+  }
+});
 </script>
