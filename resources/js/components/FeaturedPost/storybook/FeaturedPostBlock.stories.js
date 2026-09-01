@@ -1,4 +1,3 @@
-import { expect } from "storybook/test";
 import FeaturedPost from "../FeaturedPost.vue";
 
 export default {
@@ -21,26 +20,19 @@ export default {
       control: "text",
       table: { category: "Wordpress Fields" },
     },
-    buttons: {
-      name: "Buttons",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
-    post: {
-      name: "Post",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
+    buttons: { table: { disable: true } },
+    post: { table: { disable: true } },
+    post_image: { table: { disable: true } },
   },
 };
 
 export const Default = {
   name: "Featured Post",
   args: {
-    heading: "Events",
+    heading: "Reunion",
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue pulvinar lectus.",
-    caption: "Allen & Benner",
+    caption: "Welcome Alumni",
     buttons: [{ url: "#", title: "All Events" }],
     post: {
       date: "June 24, 2022",
@@ -50,10 +42,10 @@ export const Default = {
       buttons: [{ url: "#", title: "All Events" }],
       image: {
         srcset: "https://placehold.co/760x430",
-        src: "https://placehold.co/410x290",
+        url: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
         alt: "Featured post image",
         sizes: {
-          Rectangle: "https://placehold.co/760x430",
+          Rectangle: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
         },
       },
     },

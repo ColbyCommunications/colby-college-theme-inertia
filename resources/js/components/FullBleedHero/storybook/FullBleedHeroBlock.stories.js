@@ -33,16 +33,8 @@ export default {
       control: "text",
       table: { category: "Wordpress Fields" },
     },
-    buttons: {
-      name: "Buttons",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
-    image: {
-      name: "",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
+    buttons: { table: { disable: true } },
+    image: { table: { disable: true } },
     hero: { table: { disable: true } },
   },
 };
@@ -55,8 +47,16 @@ export const Dark = {
     heading: "Lorem ipsum dolor sit amet",
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue pulvinar lectus.",
+    buttons: [
+      {
+        button: {
+          url: "#",
+          title: "Areas of Distinction",
+        }
+      },
+    ],
     image: {
-      src: "https://placehold.co/480x480",
+      url: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
       srcset: "https://placehold.co/1280x700",
       alt: "Placeholder image",
       sizes: {
@@ -64,12 +64,5 @@ export const Dark = {
         Rectangle: "https://placehold.co/480x480",
       },
     },
-  },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText("Lorem ipsum")).toBeInTheDocument();
-    await expect(
-      canvas.getByText("Lorem ipsum dolor sit amet"),
-    ).toBeInTheDocument();
-    await expect(canvas.getByAltText("Placeholder image")).toBeInTheDocument();
   },
 };

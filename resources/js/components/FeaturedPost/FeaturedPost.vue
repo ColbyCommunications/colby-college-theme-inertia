@@ -34,7 +34,7 @@
         </div>
         <div class="featured-post__post relative mt-6">
           <Context
-            size="small"
+            size="medium"
             type="dark"
             :subheading="post.date"
             :heading="post.heading"

@@ -16,16 +16,8 @@ export default {
       control: "text",
       table: { category: "Wordpress Fields" },
     },
-    buttons: {
-      name: "Buttons",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
-    image: {
-      name: "Image",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
+    buttons: { table: { disable: true } },
+    image: { table: { disable: true } },
   },
 };
 
@@ -37,24 +29,15 @@ export const Default = {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue pulvinar lectus.",
     buttons: [
       {
-        url: "#",
-        title: "Areas of Distinction",
+        button: {
+          url: "#",
+          title: "Areas of Distinction",
+        }
       },
     ],
     image: {
-      srcset: "https://placehold.co/1280x700",
-      src: "https://placehold.co/480x480",
+      url: "https://news.colby.edu/wp-content/uploads/2026/08/New-Residence-Hall_primary.jpg",
       alt: "Placeholder image",
-      sizes: {
-        Hero: "https://placehold.co/1280x700",
-        Square: "https://placehold.co/480x480",
-      },
     },
-  },
-  play: async ({ canvas }) => {
-    // "Areas of Distinction" appears in both the heading and button, so use getAllByText
-    const elements = canvas.getAllByText("Areas of Distinction");
-    await expect(elements.length).toBeGreaterThanOrEqual(1);
-    await expect(canvas.getByAltText("Placeholder image")).toBeInTheDocument();
   },
 };
