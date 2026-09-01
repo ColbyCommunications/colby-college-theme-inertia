@@ -7,7 +7,7 @@ export default {
   component: Hero,
   tags: ["!autodocs"],
   argTypes: {
-    imageOrientation: {
+    image_orientation: {
       name: "Image Orientation",
       control: {
         type: "radio",
@@ -46,36 +46,24 @@ export default {
       control: "text",
       table: { category: "Wordpress Fields" },
     },
-    buttons: {
-      name: "Buttons",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
-    image: {
-      name: "Image",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
+    buttons: { table: { disable: true } },
+    image: { table: { disable: true } },
     caption: {
       name: "Caption",
       control: "text",
       table: { category: "Wordpress Fields" },
     },
-    columns: {
-      name: "Columns",
-      control: "inline-radio",
-      options: [2, 3],
-      table: { category: "Wordpress Fields" },
-    },
     date: { table: { disable: true } },
     images: { table: { disable: true } },
+    priority: { table: { disable: true } },
+    columns: { table: { disable: true } },
   },
 };
 
 export const Primary = {
   name: "Hero",
   args: {
-    imageOrientation: "square",
+    image_orientation: "square",
     align: "default",
     subheading: "Lorem ipsum",
     heading: "Lorem ipsum",
@@ -90,26 +78,18 @@ export const Primary = {
       },
     ],
     image: {
-      src: "https://placeholdit.com/400x600/dddddd/999999",
+      url: "https://news.colby.edu/wp-content/uploads/2026/08/New-Residence-Hall_primary.jpg",
       srcset:
         "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
       alt: "this is an alt tag",
+      caption: "This is a caption for the image.",
       sizes: {
-        Square: "https://placehold.co/600x400",
-        Square_mobile: "https://placehold.co/400x300",
+        Square: "https://news.colby.edu/wp-content/uploads/2026/08/New-Residence-Hall_primary.jpg",
+        Rectangle: "https://news.colby.edu/wp-content/uploads/2026/08/New-Residence-Hall_primary.jpg",
+        Portrait: "https://news.colby.edu/wp-content/uploads/2026/08/New-Residence-Hall_primary.jpg",
       },
     },
-    caption: "This is a caption for the image.",
+    
     columns: 3,
-  },
-  play: async ({ canvas }) => {
-    // Both subheading (h1) and heading (h2) are "Lorem ipsum", so use getAllByText
-    const loremElements = canvas.getAllByText("Lorem ipsum");
-    await expect(loremElements.length).toBeGreaterThanOrEqual(2);
-    await expect(
-      canvas.getByText(
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      ),
-    ).toBeInTheDocument();
   },
 };

@@ -7,21 +7,19 @@ export default {
   tags: ["!autodocs"],
   argTypes: {
     single: {
+      name: "Single Mode",
       control: "boolean",
       description: "If true, opening one panel automatically closes others.",
       table: { category: "Wordpress Fields" },
     },
-    openByDefault: {
+    open_by_default: {
+      name: "Open First Panel By Default",
       control: "boolean",
       description:
         "If true, the first panel will be open when the component mounts.",
       table: { category: "Wordpress Fields" },
     },
-    panels: {
-      control: "object",
-      description: "Array of content objects. Content accepts HTML strings.",
-      table: { category: "Wordpress Fields" },
-    },
+    panels: { table: { disable: true } },
   },
   parameters: {
     backgrounds: { default: "light" },
@@ -81,7 +79,7 @@ export const Default = {
   args: {
     panels: basicPanels,
     single: false,
-    openByDefault: false,
+    open_by_default: false,
   },
   render,
 };
