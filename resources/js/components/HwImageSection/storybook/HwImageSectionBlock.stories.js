@@ -49,7 +49,7 @@ export const Default = {
     reverse: false,
     image: {
       srcset: "https://placehold.co/760x430",
-      src: "https://placehold.co/480x480",
+      url: 'https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg',
       alt: "Placeholder image",
       sizes: {
         Hero: "https://placehold.co/760x430",

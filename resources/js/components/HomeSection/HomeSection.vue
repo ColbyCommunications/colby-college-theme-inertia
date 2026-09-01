@@ -1,6 +1,6 @@
 <template>
   <div class="background-section relative py-24 bg-marble__pattern bg-cover full-bleed">
-    <div class="background-section___inner relative z-10 space-y-24">
+    <div class="background-section___inner relative z-10 space-y-24 px-4">
       <ContextArticleGrid
         :render-api="false"
         api="manual"

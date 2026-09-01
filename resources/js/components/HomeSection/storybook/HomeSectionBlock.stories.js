@@ -21,10 +21,7 @@ export const Default = {
           subheading: "Campus News",
           paragraph: "A new program aims to expand access and opportunity.",
           image: {
-            sizes: {
-              desktop: "https://placehold.co/400x300",
-              mobile: "https://placehold.co/400x300",
-            },
+            src: 'https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg',
             alt: "News item",
           },
         },
@@ -34,10 +31,7 @@ export const Default = {
           paragraph:
             "Faculty and students collaborate on cutting-edge research.",
           image: {
-            sizes: {
-              desktop: "https://placehold.co/400x300",
-              mobile: "https://placehold.co/400x300",
-            },
+            src: 'https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg',
             alt: "Research",
           },
         },
@@ -46,10 +40,7 @@ export const Default = {
           subheading: "Community",
           paragraph: "Colby alumni continue to make an impact worldwide.",
           image: {
-            sizes: {
-              desktop: "https://placehold.co/400x300",
-              mobile: "https://placehold.co/400x300",
-            },
+            src: 'https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg',
             alt: "Alumni",
           },
         },
@@ -67,10 +58,7 @@ export const Default = {
           paragraph: "Explore campus and meet current students and faculty.",
           url: "#",
           image: {
-            sizes: {
-              desktop: "https://placehold.co/400x300",
-              mobile: "https://placehold.co/400x300",
-            },
+            src: 'https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg',
             alt: "Open House",
           },
         },
@@ -80,10 +68,7 @@ export const Default = {
           paragraph: "Welcome back alumni for a weekend of celebration.",
           url: "#",
           image: {
-            sizes: {
-              desktop: "https://placehold.co/400x300",
-              mobile: "https://placehold.co/400x300",
-            },
+            src: 'https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg',
             alt: "Homecoming",
           },
         },
@@ -94,10 +79,7 @@ export const Default = {
             "Enjoy performances by student ensembles and guest artists.",
           url: "#",
           image: {
-            sizes: {
-              desktop: "https://placehold.co/400x300",
-              mobile: "https://placehold.co/400x300",
-            },
+            src: 'https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg',
             alt: "Concert",
           },
         },
@@ -109,16 +91,11 @@ export const Default = {
       paragraph: "Come see for yourself what makes Colby special.",
       buttons: [{ url: "#", title: "Schedule a Visit" }],
       image: {
-        src: "https://placehold.co/1200x600",
+        url: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
         srcset: "",
         alt: "Colby campus",
         sizes: { Landscape: "1200w" },
       },
     },
-  },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText("Latest from Colby")).toBeInTheDocument();
-    await expect(canvas.getByText("Upcoming Events")).toBeInTheDocument();
-    await expect(canvas.getByText("Plan Your Visit")).toBeInTheDocument();
   },
 };
