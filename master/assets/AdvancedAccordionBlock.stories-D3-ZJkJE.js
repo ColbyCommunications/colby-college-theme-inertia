@@ -1,0 +1,19 @@
+import m from"./AdvancedAccordion-BCwkozAM.js";import"./iframe-Dz-2240V.js";import"./preload-helper-CNn__nYE.js";import"./AdvancedAccordionPanel-CThWowcj.js";import"./Icon-DNX-9geZ.js";import"./ComponentRouter-DRjLkWIr.js";import"./_plugin-vue_export-helper-DlAUqK2U.js";import"./Hero-BRc2hfVB.js";import"./Context-DbyJOQZV.js";import"./TextGroup-COjiNitn.js";import"./noframework.waypoints-DVP5Ss7z.js";import"./index-xgxdCp6f.js";import"./ButtonGroup-C0yK-bxT.js";import"./Button-CJ7-3sjQ.js";import"./Picture-DsinChsV.js";import"./HomeHero-C6DNQlkQ.js";import"./HlsBackground-3KtCKkax.js";import"./OverlayHero-YUUvhdoj.js";import"./Video-RpqbvdvV.js";import"./_commonjsHelpers-CE1G-McA.js";const{expect:s}=__STORYBOOK_MODULE_TEST__,W={title:"Blocks/Advanced Accordion",component:m,tags:["!autodocs"],argTypes:{single:{name:"Single Mode",control:{type:"boolean"},table:{category:"Wordpress Fields"}},blocks:{table:{disable:!0}}}},h=({id:a,heading:t="",paragraph:n="",image:e={},imageScale:i="50",wrappingText:r="no-wrap",alignImage:l="left",alignText:p="left",caption:d=""})=>({blockName:"acf/image-text",attrs:{id:a,data:{heading:t,paragraph_text:n,image_scale:i,wrapping_text:r,align_image:l,align_text:p,caption:d,image:{src:e.src||"https://placehold.co/800x600",url:e.url||e.src||"https://placehold.co/800x600",alt:e.alt||"Example image",width:e.width||800,height:e.height||600,sizes:{Landscape:e.sizes?.Landscape||"https://placehold.co/1200x800",Square:e.sizes?.Square||"https://placehold.co/800x800",Square_mobile:e.sizes?.Square_mobile||"https://placehold.co/600x600"}}}}}),c=(a,t)=>({blockName:"acf/paragraph",attrs:{id:t,data:{paragraph_text:`<p>${a}</p>`,buttons:[]}}}),g=(a,t)=>({blockName:"core/heading",attrs:{id:t,data:{heading:`<h3>${a}</h3>`}}}),u=[{blockName:"acf/advanced-accordion-panel",attrs:{id:"panel-one",data:{heading:"Admissions and Financial Aid",blocks:[c("Learn about the admissions process, financial aid, and resources available to prospective students.","paragraph-one"),h({id:"image-text-one",paragraph:"<p>Our financial aid program is designed to make a Colby education accessible to students from a wide range of backgrounds.</p>",image:{src:"https://placehold.co/1200x800",alt:"Students walking across campus"},imageScale:"50",alignImage:"left"})]}}},{blockName:"acf/advanced-accordion-panel",attrs:{id:"panel-two",data:{heading:"Academics",blocks:[c("Explore academic departments, programs, courses, and other learning opportunities.","paragraph-two")]}}},{blockName:"acf/advanced-accordion-panel",attrs:{id:"panel-three",data:{heading:"Student Life",blocks:[g("Life at Colby","heading-three"),c("Students participate in clubs, organizations, athletics, arts, and many other activities across campus.","paragraph-three")]}}}],o={name:"Advanced Accordion",args:{blocks:u,single:!1},play:async({canvas:a,userEvent:t})=>{await s(a.getByText("What is the application deadline?")).toBeInTheDocument(),await s(a.getByText("What standardized tests are required?")).toBeInTheDocument(),await s(a.getByText("How do I schedule a campus visit?")).toBeInTheDocument();const n=a.getAllByRole("button");await t.click(n[0])}};o.parameters={...o.parameters,docs:{...o.parameters?.docs,source:{originalSource:`{
+  name: "Advanced Accordion",
+  args: {
+    blocks: panels,
+    single: false
+  },
+  play: async ({
+    canvas,
+    userEvent
+  }) => {
+    await expect(canvas.getByText("What is the application deadline?")).toBeInTheDocument();
+    await expect(canvas.getByText("What standardized tests are required?")).toBeInTheDocument();
+    await expect(canvas.getByText("How do I schedule a campus visit?")).toBeInTheDocument();
+
+    // Click first panel to trigger onPanelToggle
+    const buttons = canvas.getAllByRole("button");
+    await userEvent.click(buttons[0]);
+  }
+}`,...o.parameters?.docs?.source}}};const C=["Default"];export{o as Default,C as __namedExportsOrder,W as default};
