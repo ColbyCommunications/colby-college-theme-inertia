@@ -25,9 +25,10 @@ export default {
   argTypes: {
     embed: {
       control: "text",
-      name: "Embed URL",
+      name: "Embed Code",
       table: { category: "Wordpress Fields" },
     },
+    iframeTitle: { table: { disable: true } },
   },
 };
 

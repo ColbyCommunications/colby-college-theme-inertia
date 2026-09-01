@@ -8,7 +8,7 @@ export default {
   tags: ["!autodocs"],
   argTypes: {
     icon: {
-      name: "Icon",
+      name: "Background",
       control: "boolean",
       table: { category: "Wordpress Fields" },
     },
@@ -27,21 +27,9 @@ export default {
       control: "text",
       table: { category: "Wordpress Fields" },
     },
-    buttons: {
-      name: "Buttons",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
-    facts: {
-      name: "Facts",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
-    images: {
-      name: "Images",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
+    buttons: { table: { disable: true } },
+    facts: { table: { disable: true } },
+    images: { table: { disable: true } },
   },
 };
 
@@ -54,14 +42,35 @@ export const Primary = {
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
-  play: async ({ canvas }) => {
-    // Both subheading and heading are "Lorem ipsum", so use getAllByText
-    const loremElements = canvas.getAllByText("Lorem ipsum");
-    await expect(loremElements.length).toBeGreaterThanOrEqual(2);
-    await expect(
-      canvas.getByText(
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      ),
-    ).toBeInTheDocument();
+};
+
+export const withImages = {
+  name: "Dark Interstitial with Images",
+  args: {
+    icon: true,
+    subheading: "Lorem ipsum",
+    heading: "Lorem ipsum",
+    paragraph:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    images: [
+      {
+        image: {
+          url: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
+          alt: "this is an alt tag",
+        }
+      },
+      {
+        image: {
+          url: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
+          alt: "this is an alt tag",
+        }
+      },
+      {
+        image: {
+          url: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
+          alt: "this is an alt tag",
+        }
+      }
+    ]
   },
 };

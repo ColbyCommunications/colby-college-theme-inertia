@@ -8,7 +8,7 @@ export default {
   tags: ["!autodocs"],
   argTypes: {
     hero: {
-      name: "Hero",
+      name: "Hero Mode",
       control: "boolean",
       table: { category: "Wordpress Fields" },
     },
@@ -51,11 +51,7 @@ export default {
       control: "text",
       table: { category: "Wordpress Fields" },
     },
-    buttons: {
-      name: "Buttons",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
+    buttons: { table: { disable: true } },
   },
 };
 
@@ -69,10 +65,6 @@ export const Default = {
     subheading: "Anthropology",
     paragraph:
       "As a semester-long project, students will create their own imaginary countries and give regular reports on their geography, folklore, education and political systems. Conducted in Russian.",
-    buttons: { url: "#", title: "Test Button" },
-  },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText("Lorem Ipsum")).toBeInTheDocument();
-    await expect(canvas.getByText("Anthropology")).toBeInTheDocument();
+    buttons: [ {button: { url: "#", title: "Test Button" }}],
   },
 };

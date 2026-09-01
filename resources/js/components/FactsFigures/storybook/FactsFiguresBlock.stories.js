@@ -17,21 +17,9 @@ export default {
       control: "text",
       table: { category: "Wordpress Fields" },
     },
-    buttons: {
-      name: "Buttons",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
-    facts: {
-      name: "Facts",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
-    image: {
-      name: "Image",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
+    buttons: { table: { disable: true } },
+    facts: { table: { disable: true } },
+    image: { table: { disable: true } },
     paragraph: {
       name: "Paragraph",
       control: "text",
@@ -57,16 +45,16 @@ export const Primary = {
     ],
     facts: [
       { figure: "100%", paragraph: "consectetur adipiscing elit" },
-      { figure: "100%", paragraph: "consectetur adipiscing elit" },
+      { figure: "71%", paragraph: "consectetur adipiscing elit" },
+      { figure: "10:1", paragraph: "consectetur adipiscing elit" },
+      { figure: "500", paragraph: "consectetur adipiscing elit" },
     ],
     image: {
-      src: "https://placeholdit.com/400x600/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+      src: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
       alt: "this is an alt tag",
       sizes: {
-        Square: "https://placehold.co/600x400",
-        Square_mobile: "https://placehold.co/400x300",
+        Square: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
+        Square_mobile: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
       },
     },
   },

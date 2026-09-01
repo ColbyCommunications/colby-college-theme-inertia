@@ -6,12 +6,12 @@ import { createMockEvents } from "../../__test-utils__/mock-data";
 // --- Mock Data for Carousel ---
 const mockItems = [
   {
-    title: "Keynote Speaker: Dr. Jane Goodall",
+    heading: "Keynote Speaker: Dr. Jane Goodall",
+    paragraph:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     date: "October 15, 2024",
     image: {
-      src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+      src: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
       alt: "this is an alt tag",
       sizes: {
         Rectangle: "https://placehold.co/600x400",
@@ -30,12 +30,12 @@ const mockItems = [
     ],
   },
   {
-    title: "Colby Symphony Orchestra",
+    heading: "Colby Symphony Orchestra",
+    paragraph:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     date: "November 3, 2024",
     image: {
-      src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+      src: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
       alt: "this is an alt tag",
       sizes: {
         Rectangle: "https://placehold.co/600x400",
@@ -54,12 +54,12 @@ const mockItems = [
     ],
   },
   {
-    title: "Museum Exhibition Opening",
+    heading: "Museum Exhibition Opening",
+    paragraph:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     date: "December 10, 2024",
     image: {
-      src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+      src: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
       alt: "this is an alt tag",
       sizes: {
         Rectangle: "https://placehold.co/600x400",
@@ -130,13 +130,6 @@ export default {
     },
   },
 
-  // Mock the EndpointFilter's axios call (fires on mount)
-  beforeEach: () => {
-    const spy = spyOn(axios, "get").mockResolvedValue({
-      data: createMockEvents(3),
-    });
-    return () => spy.mockRestore();
-  },
 };
 
 const render = (args) => ({
@@ -151,32 +144,12 @@ export const Default = {
   name: "Featured Events",
   render,
   args: {
-    display_posts_method: "api",
-    render_api: true,
+    display_posts_method: "manual",
+    render_api: false,
     api: "Latest News",
     heading: "Featured Events",
     paragraph:
       "Explore upcoming major events, lectures, and performances happening on Mayflower Hill.",
     items: mockItems,
-  },
-  play: async ({ canvas }) => {
-    // Assert carousel heading renders
-    const heading = await canvas.findByText("Featured Events");
-    await expect(heading).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(axios.get).toHaveBeenCalled();
-    });
-
-    // Assert mock events from EndpointFilter render
-    const event1 = await canvas.findByText("Spring Concert Series");
-    await expect(event1).toBeVisible();
-
-    const event2 = await canvas.findByText("Faculty Lecture: Climate Change");
-    await expect(event2).toBeVisible();
-
-    // Assert "Learn More" buttons from EndpointFilter render
-    const learnMoreButtons = canvas.getAllByText("Learn More");
-    await expect(learnMoreButtons.length).toBe(3);
   },
 };

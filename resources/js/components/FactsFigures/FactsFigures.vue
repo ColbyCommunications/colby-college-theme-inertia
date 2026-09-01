@@ -44,7 +44,7 @@
         class="pb-6 md:relative md:bottom-[16px] md:col-span-7 md:col-start-6 md:pb-8 lg:bottom-[70px] lg:col-span-6 lg:col-start-7"
       >
         <div
-          class="grid w-full max-w-screen-2xl grid-cols-6 gap-x-3 md:gap-x-10"
+          class="grid w-full max-w-screen-2xl grid-cols-6 gap-x-3 md:gap-x-10 md:gap-y-6"
         >
           <div
             v-for="(fact, i) in facts"
