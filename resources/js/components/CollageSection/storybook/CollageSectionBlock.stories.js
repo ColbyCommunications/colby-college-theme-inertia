@@ -5,6 +5,13 @@ export default {
   title: "Blocks/Collage Section",
   component: CollageSection,
   tags: ["!autodocs"],
+  render: (args) => ({
+    components: { CollageSection },
+    setup() {
+      return { args };
+    },
+    template: '<CollageSection :key="JSON.stringify(args)" v-bind="args" />',
+  }),
   argTypes: {
     heading: {
       name: "Heading",
@@ -21,11 +28,7 @@ export default {
       control: "text",
       table: { category: "Wordpress Fields" },
     },
-    images: {
-      name: "Images",
-      control: "object",
-      table: { category: "Wordpress Fields" },
-    },
+    images: { table: { disable: true } },
     buttons: { table: { disable: true } },
   },
 };

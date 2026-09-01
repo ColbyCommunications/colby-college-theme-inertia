@@ -2,9 +2,7 @@ import ArticleSection from "../ArticleSection.vue";
 const mockItems = [
   {
     image: {
-      src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+      src: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
       alt: "this is an alt tag",
     },
     heading: "Future of Artificial Intelligence",
@@ -26,9 +24,7 @@ const mockItems = [
   },
   {
     image: {
-      src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+      src: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
       alt: "this is an alt tag",
     },
     heading: "Sustainable Energy Solutions",
@@ -50,9 +46,7 @@ const mockItems = [
   },
   {
     image: {
-      src: "https://placeholdit.com/600x400/dddddd/999999",
-      srcset:
-        "https://placeholdit.com/300x200/dddddd/999999 300w, https://placeholdit.com/600x400/dddddd/999999 600w",
+      src: "https://www.colby.edu/wp-content/uploads/2024/12/20231017_gordoncenteraerial_0030-800x800.jpg",
       alt: "this is an alt tag",
     },
     heading: "Modern Architecture Trends",
@@ -78,19 +72,7 @@ export default {
   component: ArticleSection,
   tags: ["!autodocs"],
   argTypes: {
-    display_posts_method: {
-      name: "Display Posts Method",
-      control: {
-        type: "select",
-        labels: {
-          internal: "Internal Posts",
-          api: "External API",
-          manual: "Add Posts Manually",
-        },
-      },
-      options: ["internal", "api", "manual"],
-      table: { category: "Wordpress Fields" },
-    },
+    
     carousel: {
       name: "Carousel",
       control: "boolean",
@@ -161,6 +143,8 @@ export default {
     buttons: { table: { disable: true } },
     type: { table: { disable: true } },
     gridProps: { table: { disable: true } },
+    display_posts_method: { table: { disable: true } },
+    items: { table: { disable: true } }
   },
 };
 
@@ -176,14 +160,14 @@ export const Default = {
   name: "Article Section",
   render,
   args: {
-    display_posts_method: "internal",
+    display_posts_method: "manual",
     carousel: true,
-    render_api: true,
+    render_api: false,
     api: "Academic News",
     subheading: "Article Section subheading",
     heading: "Article Section Title",
     paragraph: "Discover recent updates from Colby College.",
-    render_posts: true,
+    render_posts: false,
     items: mockItems,
     render_posts_category: [],
   },

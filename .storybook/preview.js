@@ -21,6 +21,7 @@ const preview = {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
+      disableSaveFromUI: true, // 👈 Disables editing and the save popup
     },
 
     a11y: {
