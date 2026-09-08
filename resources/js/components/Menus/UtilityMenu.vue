@@ -42,21 +42,6 @@
     <ul
       class="flex space-x-6 bg-snow px-5 md:static md:float-right md:block md:bg-transparent md:px-0"
     >
-      <!-- myColby -->
-      <li
-        class="group inline-block items-center font-body text-14 leading-110 font-normal md:text-12"
-      >
-        <a
-          class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out group-hover:fill-indigo group-hover:underline"
-          href="https://my.colby.edu/"
-        >
-          <MyColbyIcon
-            class="mr-1.5 w-[16px] fill-[#b7c2d5] transition-all duration-200 ease-in-out group-hover:fill-indigo md:w-[10px]"
-          />
-          myColby
-        </a>
-      </li>
-
       <!-- Search (opens in modal) -->
       <li
         class="group inline-block font-body text-14 leading-110 font-normal md:text-12"
@@ -91,10 +76,7 @@
               class="mx-auto my-0 mt-16 w-full max-w-screen-2xl px-5 md:mt-20 md:grid md:grid-cols-12"
             >
               <div class="md:col-span-12">
-                <Search
-                  v-if="searchHasOpened"
-                  v-show="showModal"
-                />
+                <Search v-if="searchHasOpened" v-show="showModal" />
               </div>
             </div>
           </template>
@@ -150,22 +132,22 @@
         >
           <!-- Trigger button -->
           <template #button="{ open, isOpen }">
-              <button
-                type="button"
-                class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:fill-indigo hover:underline"
-                :class="{ 'fill-indigo underline': isOpen }"
-                aria-haspopup="dialog"
-                :aria-expanded="isOpen ? 'true' : 'false'"
-                @click="open"
-              >
-                <SearchIcon
-                  class="mr-1.5 w-[16px] fill-[#b7c2d5] transition-all duration-200 ease-in-out md:w-[10px]"
-                  aria-hidden="true"
-                  focusable="false"
-                />
-                Search
-              </button>
-            </template>
+            <button
+              type="button"
+              class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center py-2 text-indigo transition-all duration-200 ease-in-out hover:fill-indigo hover:underline"
+              :class="{ 'fill-indigo underline': isOpen }"
+              aria-haspopup="dialog"
+              :aria-expanded="isOpen ? 'true' : 'false'"
+              @click="open"
+            >
+              <SearchIcon
+                class="mr-1.5 w-[16px] fill-[#b7c2d5] transition-all duration-200 ease-in-out md:w-[10px]"
+                aria-hidden="true"
+                focusable="false"
+              />
+              Search
+            </button>
+          </template>
 
           <!-- Modal content -->
           <template #content>
@@ -173,10 +155,7 @@
               class="mx-auto my-0 mt-16 w-full max-w-screen-2xl px-5 md:mt-20 md:grid md:grid-cols-12"
             >
               <div class="md:col-span-12">
-                <Search
-                  v-if="searchHasOpened"
-                  v-show="showModal"
-                />
+                <Search v-if="searchHasOpened" v-show="showModal" />
               </div>
             </div>
           </template>
@@ -186,15 +165,10 @@
   </nav>
 </template>
 <script setup>
-import {
-  defineAsyncComponent,
-  ref,
-  watch,
-} from "vue";
+import { defineAsyncComponent, ref, watch } from "vue";
 
 import Modal from "../Modal/Modal.vue";
 import SearchIcon from "@/images/svg/icons/search.svg?component";
-import MyColbyIcon from "@/images/svg/icons/mycolby.svg?component";
 
 /**
  * Lazy-load the entire search UI.
@@ -202,9 +176,7 @@ import MyColbyIcon from "@/images/svg/icons/mycolby.svg?component";
  * Search.vue and its Algolia dependencies will not be requested until
  * this component is actually mounted.
  */
-const Search = defineAsyncComponent(() =>
-  import("../Search/Search.vue")
-);
+const Search = defineAsyncComponent(() => import("../Search/Search.vue"));
 
 const props = defineProps({
   menu: {
