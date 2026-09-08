@@ -5,7 +5,7 @@
 
       <div class="flex flex-col justify-between md:flex-row">
         <h2
-          class="-tracking-3 mb-5 font-extended text-24 leading-110 font-normal text-indigo md:mb-0"
+          class="-tracking-3 font-extended mb-5 text-24 leading-110 font-normal text-indigo md:mb-0"
         >
           Search
         </h2>
@@ -16,6 +16,7 @@
               class="absolute top-3 left-3 w-2.5 fill-indigo"
             />
             <input
+              v-focus
               type="search"
               placeholder="Search"
               class="h-[34px] w-full max-w-sm rounded-md border border-solid border-stone bg-white p-2.5 pl-7 font-body text-10 text-coal"
@@ -36,6 +37,25 @@ import Icon from "../Icon/Icon.vue";
 
 const props = defineProps(["modelValue"]);
 const emit = defineEmits(["update:modelValue"]);
+
+// Use IntersectionObserver to focus every time the input becomes visible
+const vFocus = {
+  mounted: (el) => {
+    el._observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setTimeout(() => {
+          el.focus();
+        }, 300);
+      }
+    });
+    el._observer.observe(el);
+  },
+  unmounted: (el) => {
+    if (el._observer) {
+      el._observer.disconnect();
+    }
+  },
+};
 
 // Local reference to store Algolia's refine function
 const algoliaRefine = ref(null);
