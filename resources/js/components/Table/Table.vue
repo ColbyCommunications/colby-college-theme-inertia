@@ -10,8 +10,11 @@
             v-for="(heading, index) in normalizedHeadings"
             :key="`th-${index}`"
             scope="col"
-            class="h-12 bg-cloud px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14 border-b border-gray-300"
-            :class="{ 'bg-white': heading.generated, 'sr-only': heading.generated }"
+            class="h-12 border-b border-gray-300 bg-cloud px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
+            :class="{
+              'bg-white': heading.generated,
+              'sr-only': heading.generated,
+            }"
           >
             <span :class="{ 'sr-only': heading.generated }">
               {{ heading.text }}
@@ -239,7 +242,7 @@
             v-for="(heading, index) in normalizedHeadings"
             :key="`th-${index}`"
             scope="col"
-            class="h-12 bg-cloud px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14  border-b border-gray-300"
+            class="h-12 border-b border-gray-300 bg-cloud px-6 text-left font-body text-18 leading-120 font-semibold whitespace-nowrap text-indigo md:h-11 md:text-14"
           >
             <span :class="{ 'sr-only': heading.generated }">
               {{ heading.text }}
@@ -285,9 +288,9 @@
                   />
                 </picture>
                 <span
+                  v-html="item.link.title"
                   class="inline-flex items-center font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12"
                 >
-                  {{ item.link.title }}
                 </span>
               </a>
             </div>
@@ -295,7 +298,7 @@
             <Modal v-if="item.description" v-model="item.modalOpen">
               <template #content>
                 <h3
-                  class="flex items-center bg-cloud px-5 py-3 text-left font-body text-20 leading-120 font-semibold text-indigo md:text-16 border-b border-gray-300"
+                  class="flex items-center border-b border-gray-300 bg-cloud px-5 py-3 text-left font-body text-20 leading-120 font-semibold text-indigo md:text-16"
                   v-text="item.title"
                 />
                 <p
@@ -306,7 +309,7 @@
               <template #button>
                 <button
                   type="button"
-                  class="inline-flex cursor-pointer items-center text-left font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12 min-h-[44px] min-w-[44px]"
+                  class="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center text-left font-body text-16 leading-140 font-semibold text-indigo hover:underline md:text-12"
                   v-html="item.link?.title || item.title"
                   @click.stop="item.modalOpen = true"
                 ></button>
@@ -315,9 +318,9 @@
 
             <span
               v-if="!item.description && !item.image && !item.link.url"
+              v-html="item.link.title"
               class="inline-flex items-center font-body text-20 leading-140 font-semibold text-indigo md:text-12"
             >
-              {{ item.link.title }}
             </span>
           </th>
 

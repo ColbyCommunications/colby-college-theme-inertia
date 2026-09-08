@@ -7,7 +7,7 @@
         <Picture
           class="absolute h-full w-full object-cover"
           :src="image"
-          :alt="`Image of ${props.name}`"
+          :alt="decodedAltText"
         />
       </div>
     </div>
@@ -18,7 +18,7 @@
       <div class="directory-card__content">
         <h1 class="font-body text-24 leading-115 font-semibold text-indigo">
           <span class="sr-only">Directory profile for </span>
-          {{ name }}
+          <span v-html="name"></span>
         </h1>
         <div
           v-if="pronouns && !hide_pronouns"
@@ -143,7 +143,9 @@
               >
                 Office Hours
               </h2>
-              <p class="font-body text-12 leading-[1.5] font-normal text-indigo">
+              <p
+                class="font-body text-12 leading-[1.5] font-normal text-indigo"
+              >
                 {{ office_hours }}
               </p>
             </div>
@@ -285,11 +287,14 @@ const hasImage = computed(() => {
   return props.image && !props.hide_photo;
 });
 
-const imageAlt = computed(() => {
-  if (props.image.alt) return props.image.alt;
-  if (props.post.first_name && props.post.last_name) {
-    return `Image of ${props.post.first_name} ${props.post.last_name}`;
+const decodedAltText = computed(() => {
+  if (typeof document === "undefined") {
+    // Fallback for Server-Side Rendering (SSR) if applicable
+    return `Image of ${props.name}`;
   }
-  return "Directory Image";
+
+  const txt = document.createElement("textarea");
+  txt.innerHTML = props.name;
+  return `Image of ${txt.value}`;
 });
 </script>
