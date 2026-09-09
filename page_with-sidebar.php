@@ -459,7 +459,7 @@ function colby_process_single_block(
 
             // Get people exclusions.
             $people_exclusions =
-                get_field('exclude_from_listings');
+                $block['attrs']['data']['exclude_from_listings'];
 
             $final_people_items = [];
 
