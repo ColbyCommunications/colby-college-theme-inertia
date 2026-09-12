@@ -22,34 +22,20 @@
           :paragraph="paragraph"
           :buttons="{ items: buttons }"
         />
-      </div>
-
-      <!-- image -->
-      <div
-        class="facts-figures__image mt-12 md:order-[-1] md:col-span-5 md:mt-0"
-      >
-        <Picture
-          class="h-full w-full object-cover"
-          :src="image?.sizes?.Square"
-          :alt="image?.alt || ''"
-        />
-      </div>
-    </div>
-
-    <!-- facts grid -->
+        <!-- facts grid -->
     <div
-      class="facts-figures__inner relative mx-auto my-0 mt-12 w-full max-w-screen-2xl gap-x-10 px-5 md:mt-0 md:grid md:grid-cols-12"
+      class="facts-figures__inner relative mx-auto my-0 mt-12 w-full max-w-screen-2xl "
     >
       <div
-        class="pb-6 md:relative md:bottom-[16px] md:col-span-7 md:col-start-6 md:pb-8 lg:bottom-[70px] lg:col-span-6 lg:col-start-7"
+        class=""
       >
         <div
-          class="grid w-full max-w-screen-2xl grid-cols-6 gap-x-3 md:gap-x-10 md:gap-y-6"
+          class="grid w-full max-w-screen-2xl grid-cols-12"
         >
           <div
             v-for="(fact, i) in facts"
             :key="i"
-            class="facts-figures__figure col-span-2"
+            class="facts-figures__figure col-span-4"
           >
             <h3
               class="font-extended text-36 leading-115 font-semibold text-indigo"
@@ -65,6 +51,21 @@
         </div>
       </div>
     </div>
+      </div>
+
+      <!-- image -->
+      <div
+        class="facts-figures__image mt-12 md:order-[-1] md:col-span-5 md:mt-0"
+      >
+        <Picture
+          class="h-full w-full object-cover"
+          :src="image?.sizes?.Square"
+          :alt="image?.alt || ''"
+        />
+      </div>
+    </div>
+
+    
   </div>
 </template>
 
