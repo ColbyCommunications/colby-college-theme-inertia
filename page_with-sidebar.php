@@ -316,16 +316,12 @@ function colby_process_single_block(
      * Core HTML / Classic
      * ---------------------------------------------------------
      */
-    if (
-        $block_name === 'core/html'
-        || $block_name === 'core/classic'
-    ) {
-        $block['attrs']['data'] = [
-            'html' => wp_kses_post(
-                $block['innerHTML'] ?? ''
-            ),
-        ];
-
+    if (($block['blockName'] ?? null) === 'core/html' || ($block['blockName'] ?? null) === 'core/classic') {
+        $block['attrs'] = isset($block['attrs']) && is_array($block['attrs']) ? $block['attrs'] : [];
+        $block['attrs']['data'] = isset($block['attrs']['data']) && is_array($block['attrs']['data']) ? $block['attrs']['data'] : [];
+    
+        $block['attrs']['data']['html'] = $block['innerHTML'] ?? '';
+    
         return $block;
     }
 
@@ -366,6 +362,36 @@ function colby_process_single_block(
                 $block['attrs']['data']['blocks'],
                 $block_path . '_group'
             );
+
+        return $block;
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * Core Embed (Vimeo, YouTube, etc.)
+     * ---------------------------------------------------------
+     */
+    if ($block_name === 'core/embed') {
+        $block['attrs'] = isset($block['attrs']) && is_array($block['attrs']) ? $block['attrs'] : [];
+        $block['attrs']['data'] = isset($block['attrs']['data']) && is_array($block['attrs']['data']) ? $block['attrs']['data'] : [];
+
+        $raw_html = $block['innerHTML'] ?? '';
+        $url = $block['attrs']['url'] ?? '';
+
+        if ($url) {
+            $iframe = wp_oembed_get($url);
+            
+            if ($iframe) {
+                $raw_html = preg_replace(
+                    '/(<div[^>]*class="[^"]*wp-block-embed__wrapper[^"]*"[^>]*>).*?(<\/div>)/is',
+                    '$1' . $iframe . '$2',
+                    $raw_html
+                );
+            }
+        }
+
+        $block['attrs']['data']['embed'] = $raw_html;
+        $block['innerHTML'] = $raw_html; 
 
         return $block;
     }

@@ -75,6 +75,7 @@ const blockRegistry = {
   "acf/accordion": () => import("../Accordion/Accordion.vue"),
   "acf/people-grid": () => import("../PeopleGrid/PeopleGrid.vue"),
   "acf/embed": () => import("../Embed/Embed.vue"),
+  "core/embed": () => import("../Embed/Embed.vue"),
   "acf/image": () => import("../Image/Image.vue"),
   "acf/image-text": () => import("../ImageText/ImageText.vue"),
   "acf/overlay-wide-image": () =>
@@ -138,6 +139,7 @@ function getComponentProps(item, index) {
     ...(item.attrs?.data || {}),
     blockAttrs: item.attrs || {},
     renderedHtml: item.innerHTML || "",
+    embed: item.attrs?.data?.embed || item.innerHTML || "",
     priority: isPriorityMediaBlock(item, index),
   };
 }

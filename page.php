@@ -171,15 +171,10 @@ function colby_process_single_block(array $block, int $index = 0, string $path =
     $block['attrs']['data'] = get_structured_block_data($block, $block_path);
 
     if (($block['blockName'] ?? null) === 'core/html' || ($block['blockName'] ?? null) === 'core/classic') {
-        $block['attrs'] = isset($block['attrs']) && is_array($block['attrs'])
-            ? $block['attrs']
-            : [];
+        $block['attrs'] = isset($block['attrs']) && is_array($block['attrs']) ? $block['attrs'] : [];
+        $block['attrs']['data'] = isset($block['attrs']['data']) && is_array($block['attrs']['data']) ? $block['attrs']['data'] : [];
     
-        $block['attrs']['data'] = isset($block['attrs']['data']) && is_array($block['attrs']['data'])
-            ? $block['attrs']['data']
-            : [];
-    
-        $block['attrs']['data']['html'] = wp_kses_post($block['innerHTML'] ?? '');
+        $block['attrs']['data']['html'] = $block['innerHTML'] ?? '';
     
         return $block;
     } elseif (($block['blockName'] ?? null) === 'gravityforms/form') {
@@ -206,6 +201,29 @@ function colby_process_single_block(array $block, int $index = 0, string $path =
         );
     } elseif (($block['blockName'] ?? null) === 'acf/advanced-accordion') {
         $block = colby_prepare_advanced_accordion_block($block, $block_path);
+    } elseif (($block['blockName'] ?? null) === 'core/embed') {
+        $block['attrs'] = isset($block['attrs']) && is_array($block['attrs']) ? $block['attrs'] : [];
+        $block['attrs']['data'] = isset($block['attrs']['data']) && is_array($block['attrs']['data']) ? $block['attrs']['data'] : [];
+
+        $raw_html = $block['innerHTML'] ?? '';
+        $url = $block['attrs']['url'] ?? '';
+
+        if ($url) {
+            $iframe = wp_oembed_get($url);
+            
+            if ($iframe) {
+                // Match the wrapper div, capture the opening and closing tags, 
+                // and replace the inner content (the raw URL) with the iframe.
+                $raw_html = preg_replace(
+                    '/(<div[^>]*class="[^"]*wp-block-embed__wrapper[^"]*"[^>]*>).*?(<\/div>)/is',
+                    '$1' . $iframe . '$2',
+                    $raw_html
+                );
+            }
+        }
+
+        $block['attrs']['data']['embed'] = $raw_html;
+        $block['innerHTML'] = $raw_html; 
     }
 
     $block = enrich_block_data($block, $index);
