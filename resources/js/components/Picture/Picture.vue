@@ -78,20 +78,22 @@ function normalizeSrc(src) {
   if (!src) {
     return "";
   }
+  if (src.includes('imagedelivery.net')) {
+    return src;
+  } else {
+    const rawSrc = String(src.replace(/-scaled/g, ""));
+    const colby = window.colby || {};
 
-  const rawSrc = String(src.replace(/-scaled/g, ""));
-  const colby = window.colby || {};
-
-  if (colby.isLocal && colby.PRIMARY_DOMAIN && !props.fromApi) {
-    try {
-      const url = new URL(rawSrc, window.location.origin);
-      return `https://${colby.PRIMARY_DOMAIN}${url.pathname}`;
-    } catch {
-      return rawSrc;
+    if (colby.isLocal && colby.PRIMARY_DOMAIN && !props.fromApi) {
+      try {
+        const url = new URL(rawSrc, window.location.origin);
+        return `https://${colby.PRIMARY_DOMAIN}${url.pathname}`;
+      } catch {
+        return rawSrc;
+      }
     }
+    return rawSrc;
   }
-
-  return rawSrc;
 }
 
 const processedSrc = computed(() => normalizeSrc(props.src));
@@ -100,6 +102,11 @@ function cdnImageUrl(width, quality) {
   if (!processedSrc.value) {
     return "";
   }
+
+  if (processedSrc.value.includes('imagedelivery.net')) {
+    return processedSrc.value;
+  }
+  
 
   return `https://${colby.PRIMARY_DOMAIN}/cdn-cgi/image/width=${width},format=auto,quality=${quality}/${processedSrc.value}`;
 }

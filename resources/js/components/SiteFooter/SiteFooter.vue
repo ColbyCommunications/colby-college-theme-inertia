@@ -137,7 +137,7 @@
           <img v-else :src="logo" :style="logoStyle" />
         </a>
         <p
-          class="mt-8 font-body text-14 leading-130 font-normal text-gray-500 md:mt-7"
+          class="mt-8 font-body text-14 leading-130 font-normal text-white md:mt-7"
           v-html="address?.text"
         />
       </div>
