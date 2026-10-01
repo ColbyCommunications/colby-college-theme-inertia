@@ -56,7 +56,12 @@
                 </picture>
               </div>
 
-              {{ item.link ? item.link.title : item.title }}
+              <template v-if="item.link">
+                {{ item.link.title }}
+              </template>
+              <template v-else>
+                <span v-html="formatBrTags(item.title)"></span>
+              </template>
             </component>
           </td>
 
@@ -66,6 +71,7 @@
             :key="`col-${itemIndex}-${colIndex}`"
             class="px-6 py-2 font-body text-16 leading-140 font-normal text-indigo md:text-12"
           >
+            <!-- Standard interpolation for link columns -->
             <a
               v-if="column.link_or_text === 'link'"
               :href="column.link.url"
@@ -73,12 +79,18 @@
             >
               {{ column.link.title }}
             </a>
+
+            <!-- Formatted v-html for plain text columns -->
             <template v-else>
-              <span>{{
-                Array.isArray(column.column)
-                  ? column.column.join(", ")
-                  : column.column
-              }}</span>
+              <span
+                v-html="
+                  formatBrTags(
+                    Array.isArray(column.column)
+                      ? column.column.join(', ')
+                      : column.column,
+                  )
+                "
+              ></span>
             </template>
           </td>
         </tr>
@@ -885,4 +897,16 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("resize", handleResize);
 });
+
+// Helper function to format text with <br> tags for v-html rendering (multiline text)
+const formatBrTags = (text) => {
+  if (!text) return "";
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
+    .replace(/&lt;br\s*\/?&gt;/gi, "<br>");
+};
 </script>
