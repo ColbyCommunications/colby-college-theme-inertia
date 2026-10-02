@@ -16,9 +16,10 @@
               'sr-only': heading.generated,
             }"
           >
-            <span :class="{ 'sr-only': heading.generated }">
-              {{ heading.text }}
-            </span>
+            <span
+              :class="{ 'sr-only': heading.generated }"
+              v-html="formatBrTags(heading.text)"
+            ></span>
           </th>
         </tr>
         <tr
