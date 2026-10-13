@@ -100,6 +100,8 @@ const blockRegistry = {
   "acf/related-section": () => import("../RelatedSection/RelatedSection.vue"),
   "acf/table-section": () => import("../TableSection/TableSection.vue"),
   "acf/pdf-embed": () => import("../PdfEmbed/PdfEmbed.vue"),
+  "acf/progress-bar": () => import("../ProgressBar/ProgressBar.vue"),
+  "acf/pop-open-section": () => import("../PopOpenSection/PopOpenSection.vue"),
 
   "core/heading": () => import("../Heading/Heading.vue"),
   "core/group": () => import("../Group/Group.vue"),

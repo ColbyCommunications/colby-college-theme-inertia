@@ -1,0 +1,22 @@
+{
+    "name": "acf/pop-open-section",
+    "title": "Pop Open Section",
+    "description": "Display introductory content with additional content revealed in a modal or side drawer.",
+    "category": "layout",
+    "icon": "welcome-widgets-menus",
+    "keywords": [
+      "modal",
+      "drawer",
+      "popup",
+      "reveal",
+      "content"
+    ],
+    "supports": {
+      "align": false
+    },
+    "acf": {
+      "mode": "edit",
+      "blockVersion": 2,
+      "renderTemplate": "template.php"
+    }
+  }

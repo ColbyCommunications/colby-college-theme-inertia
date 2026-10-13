@@ -124,6 +124,20 @@ function enrich_block_data(array $block, int $index): array
     return $block;
 }
 
+function colby_prepare_pop_open_section_block(
+	array $block,
+	string $path
+): array {
+	$inner_blocks = $block['innerBlocks'] ?? array();
+
+	$block['attrs']['data']['blocks'] = colby_process_blocks(
+		$inner_blocks,
+		$path . '_inner'
+	);
+
+	return $block;
+}
+
 function colby_prepare_advanced_accordion_block(array $block, string $block_path): array
 {
     $block['attrs'] = isset($block['attrs']) && is_array($block['attrs'])
@@ -224,6 +238,13 @@ function colby_process_single_block(array $block, int $index = 0, string $path =
 
         $block['attrs']['data']['embed'] = $raw_html;
         $block['innerHTML'] = $raw_html; 
+    } elseif (
+        ($block['blockName'] ?? '') === 'acf/pop-open-section'
+    ) {
+        $block = colby_prepare_pop_open_section_block(
+            $block,
+            $block_path
+        );
     }
 
     $block = enrich_block_data($block, $index);

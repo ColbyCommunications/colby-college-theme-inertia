@@ -270,6 +270,37 @@ function colby_prepare_advanced_accordion_block(array $block, string $block_path
     return $block;
 }
 
+function colby_prepare_pop_open_section_block(
+    array $block,
+    string $block_path
+): array {
+
+    $block['attrs'] =
+        isset($block['attrs']) && is_array($block['attrs'])
+            ? $block['attrs']
+            : [];
+
+    $block['attrs']['data'] =
+        isset($block['attrs']['data']) && is_array($block['attrs']['data'])
+            ? $block['attrs']['data']
+            : [];
+
+    $inner_blocks = $block['innerBlocks'] ?? [];
+
+    /*
+     * Flatten nested core/group blocks just like Advanced Accordion
+     * panels do, then run every child through the normal block
+     * processing pipeline.
+     */
+    $block['attrs']['data']['blocks'] =
+        colby_process_blocks(
+            colby_flatten_group_descendants($inner_blocks),
+            $block_path . '_pop_open'
+        );
+
+    return $block;
+}
+
 
 function colby_process_single_block(
     array $block,
@@ -424,6 +455,18 @@ function colby_process_single_block(
         if ($block_name === 'acf/advanced-accordion') {
             $block =
                 colby_prepare_advanced_accordion_block(
+                    $block,
+                    $block_path
+                );
+        }
+
+        /*
+        * Pop Open Section recursively processes its
+        * inner blocks.
+        */
+        if ($block_name === 'acf/pop-open-section') {
+            $block =
+                colby_prepare_pop_open_section_block(
                     $block,
                     $block_path
                 );
