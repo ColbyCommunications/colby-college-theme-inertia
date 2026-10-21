@@ -157,10 +157,60 @@ if (!function_exists('colby_block_article_section_normalize_faculty_items')) {
 if (!function_exists('colby_block_article_section_get_remote_data')) {
     function colby_block_article_section_get_remote_data(array $data, int $index, array $block = []): array
     {
+        $method = $data['display_posts_method'] ?? '';
         $render_api = $data['render_api'] ?? false;
 
-        if (colby_block_article_section_is_truthy($render_api)) {
+        if ($method === 'internal') {
+            $data['render_api'] = false;
+            $category_id = $data['render_posts_category'] ?? null;
 
+            $query_args = [
+                'post_type'      => 'post',
+                'post__not_in'   => !empty($data['internal_post_exclusions']) ? (array) $data['internal_post_exclusions'] : [],
+                'posts_per_page' => 10,
+            ];
+
+            if (!empty($category_id)) {
+                $query_args['tax_query'] = [
+                    [
+                        'taxonomy' => 'category',
+                        'field'    => 'term_id',
+                        'terms'    => (array) $category_id,
+                    ],
+                ];
+            }
+
+            $posts = get_posts($query_args);
+
+            $formatted_items = is_array($posts) ? array_map(function ($post) {
+                $clean_title = colby_block_article_section_strip_html_preserve_emphasis($post->post_title ?? '');
+                $thumb_url = get_the_post_thumbnail_url($post->ID, 'large') ?: '';
+
+                return [
+                    'ID'         => $post->ID,
+                    'heading'    => $clean_title,
+                    'title'      => ['rendered' => $clean_title],
+                    'subheading' => $post->post_type === 'post' ? date("M d, Y", strtotime($post->post_date)) : null,
+                    'paragraph'  => wp_trim_words(get_the_excerpt($post->ID), 50),
+                    'image'      => $thumb_url ? ['url' => $thumb_url, 'src' => $thumb_url] : null,
+                    'buttons'    => [
+                        [
+                            'button' => [
+                                'size'  => 'small',
+                                'title' => 'Read More',
+                                'url'   => get_permalink($post->ID),
+                            ],
+                        ],
+                    ],
+                ];
+            }, $posts) : [];
+
+            $data['items'] = $formatted_items;
+            $data['initial_items'] = $formatted_items;
+            $data['hydrated_from_server'] = !empty($formatted_items);
+            $data['should_client_refresh'] = false;
+
+        } elseif ($method === 'api' || colby_block_article_section_is_truthy($render_api)) {
             $endpoint = colby_block_article_section_get_endpoint($data);
 
             if (!$endpoint) {
@@ -181,49 +231,17 @@ if (!function_exists('colby_block_article_section_get_remote_data')) {
                         $item['title']['rendered'] = $clean_title;
                         $item['heading'] = $clean_title;
                     }
-                    
+
                     $summary_path = $item['post-meta-fields']['summary'][0] ?? null;
                     if ($summary_path) {
                         $item['post-meta-fields']['summary'][0] = colby_block_article_section_strip_html_preserve_emphasis($summary_path);
                     }
-                    
+
                     return $item;
                 }, $items) : [];
             }
 
             $data['initial_items'] = is_array($items) ? $items : [];
-            $data['hydrated_from_server'] = !empty($data['initial_items']);
-            $data['should_client_refresh'] = false;
-        } else if($data['display_posts_method'] === 'internal') {
-            $items = get_posts([
-                'post_type' => 'post',
-                'post__not_in' => $data['internal_post_exclusions'] ?? [],
-                'posts_per_page' => 10,
-                'tax_query' => [
-                    'taxonomy' => 'category',
-                    'field' => 'term_id',
-                    'terms'  => $data['render_posts_category'] ?? [],
-                ]
-            ]);
-            
-            $data['initial_items'] = is_array($items) ? array_map(function (&$post) {
-                $clean_title = colby_block_article_section_strip_html_preserve_emphasis($post->post_title ?? '');
-                
-                $post->heading = $clean_title;
-                $post->title = ['rendered' => $clean_title];
-                $post->subheading = $post->post_type == 'post' ? date("M d, Y", strtotime($post->post_date)) : null;
-                $post->paragraph = wp_trim_words(get_the_excerpt($post->ID), 50);
-                $post->buttons = [
-                    [
-                        'button' => [
-                            'size' => 'small',
-                            'title' => 'Read More',
-                            'url' => get_permalink($post->ID),
-                        ],
-                    ],
-                ];                
-                return $post;
-            }, $items) : [];
             $data['hydrated_from_server'] = !empty($data['initial_items']);
             $data['should_client_refresh'] = false;
         }

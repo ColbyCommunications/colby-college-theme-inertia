@@ -18,9 +18,9 @@
 
   <div
     v-else
-    class="article-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto space-y-16 md:space-y-0"
+    class="article-section__inner mx-auto my-0 w-full max-w-screen-2xl space-y-16 gap-x-10 px-5 md:grid md:grid-cols-12 md:space-y-0"
   >
-    <div class="article-section__intro md:col-span-4 lg:col-span-3 space-y-10">
+    <div class="article-section__intro space-y-10 md:col-span-4 lg:col-span-3">
       <Context
         size="small"
         :type="type"
@@ -32,8 +32,13 @@
       />
     </div>
 
-    <div class="article-section__grid md:col-start-5 md:col-span-8">
-      <ArticleGrid v-bind="props" :columns="perView" :api_source="api" :items="normalizedItems" />
+    <div class="article-section__grid md:col-span-8 md:col-start-5">
+      <ArticleGrid
+        v-bind="props"
+        :columns="perView"
+        :api_source="api"
+        :items="normalizedItems"
+      />
     </div>
   </div>
 </template>
@@ -71,7 +76,6 @@ const props = defineProps({
   hydrated_from_server: { type: Boolean, default: false },
   should_client_refresh: { type: Boolean, default: false },
 });
-
 
 function normalizeImage(image) {
   if (!image || typeof image !== "object") {
@@ -113,9 +117,10 @@ function normalizeItems(items = []) {
 /**
  * Use these everywhere downstream
  */
-const normalizedItems = computed(() => normalizeItems(props.items));
-const normalizedInitialItems = computed(() =>
-  normalizeItems(props.initial_items)
+const normalizedItems = computed(() =>
+  normalizeItems(props.items?.length ? props.items : props.initial_items),
 );
-
+const normalizedInitialItems = computed(() =>
+  normalizeItems(props.initial_items),
+);
 </script>
