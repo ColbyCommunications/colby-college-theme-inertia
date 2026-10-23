@@ -1,6 +1,6 @@
 <template>
-  <div class="media-aside max-w-screen-2xl w-full my-0 mx-auto">
-    <div class="media-aside__inner md:grid md:grid-cols-12 gap-10">
+  <div class="media-aside mx-auto my-0 w-full max-w-screen-2xl">
+    <div class="media-aside__inner gap-10 md:grid md:grid-cols-12">
       <!-- Main media area -->
       <div class="media-aside__main md:col-span-9">
         <!-- Carousel mode -->
@@ -20,7 +20,7 @@
                   />
                   <p
                     v-if="item.image?.caption"
-                    class="media-aside__caption font-body font-normal text-12 text-indigo leading-140 mt-2"
+                    class="media-aside__caption mt-2 font-body text-12 leading-140 font-normal text-indigo"
                   >
                     {{ item.image.caption }}
                   </p>
@@ -41,7 +41,7 @@
           </div>
           <p
             v-if="image?.caption"
-            class="media-aside__caption font-body font-normal text-12 text-indigo leading-140 mt-2"
+            class="media-aside__caption mt-2 font-body text-12 leading-140 font-normal text-indigo"
           >
             {{ image.caption }}
           </p>
@@ -50,7 +50,7 @@
 
       <!-- Aside -->
       <div
-        class="media-aside__aside md:col-span-3 space-y-2 mt-8 md:mt-0"
+        class="media-aside__aside mt-8 space-y-2 md:col-span-3 md:mt-0"
         :class="{ grid: carousel }"
       >
         <!-- Carousel aside: show context per slide -->
@@ -59,21 +59,20 @@
             <div
               v-for="(item, index) in items"
               :key="index"
-              class="media-aside__context-wrap absolute top-0 left-0 w-full invisible opacity-0 translate-y-[60px] grid space-y-2 transition-all duration-300 ease-in-out"
+              class="media-aside__context-wrap invisible absolute top-0 left-0 grid w-full translate-y-[60px] space-y-2 opacity-0 transition-all duration-300 ease-in-out"
               :class="{
-                '!visible !opacity-100 !translate-y-0':
-                  activeSlide === index,
+                '!visible !translate-y-0 !opacity-100': activeSlide === index,
               }"
             >
               <h2
                 v-if="item.heading"
-                class="font-body font-bold text-16 leading-130 text-indigo"
+                class="font-body text-16 leading-130 font-bold text-indigo"
               >
                 {{ item.heading }}
               </h2>
               <p
                 v-if="item.paragraph"
-                class="font-body font-normal text-12 leading-140 text-indigo"
+                class="font-body text-12 leading-140 font-normal text-indigo"
               >
                 {{ item.paragraph }}
               </p>
@@ -84,20 +83,20 @@
               />
             </div>
           </div>
-          <div class="inline-flex self-end gap-4 md:pb-6">
+          <div class="inline-flex gap-4 self-end md:pb-6">
             <button
-              class="inline-flex items-center justify-center w-10 h-8 bg-snow hover:bg-cloud focus:bg-cloud rounded border-[0.75px] border-solid border-indigo transition-all duration-200 ease-in-out"
+              class="inline-flex h-8 w-10 cursor-pointer items-center justify-center rounded border-[0.75px] border-solid border-indigo bg-snow transition-all duration-200 ease-in-out hover:bg-cloud focus:bg-cloud"
               @click="changeSlide('prev')"
             >
               <span class="sr-only">Previous</span>
-              <Icon name="chevron" class="fill-azure w-1.5" />
+              <Icon name="chevron" class="w-1.5 fill-azure" />
             </button>
             <button
-              class="inline-flex items-center justify-center w-10 h-8 bg-snow hover:bg-cloud focus:bg-cloud rounded border-[0.75px] border-solid border-indigo transition-all duration-200 ease-in-out"
+              class="inline-flex h-8 w-10 cursor-pointer items-center justify-center rounded border-[0.75px] border-solid border-indigo bg-snow transition-all duration-200 ease-in-out hover:bg-cloud focus:bg-cloud"
               @click="changeSlide('next')"
             >
               <span class="sr-only">Next</span>
-              <Icon name="chevron" class="rotate-180 fill-azure w-1.5" />
+              <Icon name="chevron" class="w-1.5 rotate-180 fill-azure" />
             </button>
           </div>
         </template>
@@ -106,13 +105,13 @@
         <template v-else>
           <h2
             v-if="heading"
-            class="font-body font-bold text-16 leading-130 text-indigo"
+            class="font-body text-16 leading-130 font-bold text-indigo"
           >
             {{ heading }}
           </h2>
           <p
             v-if="paragraph"
-            class="font-body font-normal text-12 leading-140 text-indigo"
+            class="font-body text-12 leading-140 font-normal text-indigo"
           >
             {{ paragraph }}
           </p>
