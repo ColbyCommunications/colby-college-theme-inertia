@@ -12,7 +12,7 @@
       >
         <div>
           <a
-            class="mb-4 block transition-all duration-200 ease-in-out hover:text-white hover:underline "
+            class="mb-4 block transition-all duration-200 ease-in-out hover:text-white hover:underline"
             :href="address.url"
             aria-label="Go to colby.edu homepage"
           >
@@ -24,9 +24,9 @@
           </a>
 
           <AthleticsLogo
-              v-if="display_athletics_logo"
-              class="relative left-[-11px] w-[125px] md:w-[100px] lg:hidden"
-            />
+            v-if="display_athletics_logo"
+            class="relative left-[-11px] w-[125px] md:w-[100px] lg:hidden"
+          />
         </div>
 
         <address
@@ -35,32 +35,33 @@
           <div v-html="address.text"></div>
 
           <a
-            class="block transition-all duration-200 ease-in-out hover:text-white hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+            class="block min-h-[44px] min-w-[44px] leading-[44px] transition-all duration-200 ease-in-out hover:text-white hover:underline"
             :href="`tel:${phone}`"
           >
             {{ phone }}
           </a>
         </address>
-          <AthleticsLogo
-            v-if="display_athletics_logo"
-            class="absolute top-[-14px] left-[-20px] hidden w-[125px] lg:block md:w-[100px]"
-          />
+        <AthleticsLogo
+          v-if="display_athletics_logo"
+          class="absolute top-[-14px] left-[-20px] hidden w-[125px] md:w-[100px] lg:block"
+        />
       </div>
 
       <div
-        class="footer__right md:col-span-7 md:pl-10 lg:col-start-6 lg:col-end-13 lg:pl-16"
+        class="footer__right min-w-0 md:col-span-7 md:pl-10 lg:col-start-6 lg:col-end-13 lg:pl-16"
       >
+        <!-- Replaced hardcoded grid-cols with auto-fit and minmax -->
         <ul
-          class="footer__links flex flex-wrap border-y border-solid border-[#365185] pt-8 pb-4 md:border-y-0 md:pt-0 md:pb-0"
+          class="footer__links grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] items-center gap-x-4 gap-y-2 border-y border-solid border-[#365185] pt-8 pb-4 md:border-y-0 md:pt-0 md:pb-0 lg:gap-x-6"
         >
           <li
             v-for="(item, index) in menus.footer"
             :key="index"
-            class="mb-4 flex min-h-[44px] min-w-[44px] basis-1/2 items-center font-body text-16 leading-130 font-normal text-white md:text-14 lg:basis-1/4"
+            class="flex min-h-[44px] items-center font-body text-16 leading-[1.3] font-normal text-white md:text-14"
           >
             <a
               :href="item.url"
-              class="w-full transition-all duration-200 ease-in-out hover:text-white hover:underline min-h-[44px] min-w-[44px] leading-[44px]"
+              class="break-words transition-all duration-200 ease-in-out hover:text-white hover:underline"
             >
               {{ item.title }}
             </a>
@@ -231,7 +232,6 @@ const props = defineProps({
   footerStyle: { type: String, default: "" },
   display_athletics_logo: { type: Boolean },
 });
-
 </script>
 <style scoped>
 .home .nondescrimination-message {
