@@ -1,10 +1,10 @@
 <template>
   <div
-    class="full-bleed-hero py-24 relative bg-cover bg-center !max-w-full"
+    class="full-bleed-hero relative !max-w-full bg-cover bg-center py-24"
     :class="type === 'dark' ? 'bg-bluemarble__pattern' : 'bg-marble__pattern'"
   >
     <div
-      class="full-bleed-hero__inner grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto"
+      class="full-bleed-hero__inner mx-auto my-0 grid w-full max-w-screen-2xl gap-x-10 px-5 md:grid-cols-12"
     >
       <div class="full-bleed-hero__context md:col-span-8 md:col-start-3">
         <Context
@@ -28,7 +28,7 @@
         "
       >
         <div
-          class="full-bleed-hero__image relative pb-[100%] mt-16"
+          class="full-bleed-hero__image relative mt-16 pb-[100%]"
           :class="
             type === 'dark'
               ? 'md:pb-[44.79166666666667%]'
@@ -36,7 +36,7 @@
           "
         >
           <Picture
-            class="absolute w-full h-full object-cover"
+            class="absolute h-full w-full object-cover"
             :src="imageSrc"
             :alt="image.alt"
             :loading="priority ? 'eager' : 'lazy'"
@@ -47,7 +47,7 @@
         </div>
         <p
           v-if="image.caption"
-          class="hero__caption font-body font-normal text-12 leading-140 mt-2"
+          class="hero__caption mt-2 font-body text-12 leading-140 font-normal"
           :class="type === 'light' ? 'text-gray-800' : 'text-white'"
         >
           {{ image.caption }}
