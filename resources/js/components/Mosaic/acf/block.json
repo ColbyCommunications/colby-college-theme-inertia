@@ -1,0 +1,17 @@
+{
+  "name": "acf/mosaic",
+  "title": "Mosaic",
+  "description": "A staggered mosaic gallery of images with optional links and aspect ratio controls.",
+  "category": "layout",
+  "icon": "grid-view",
+  "keywords": ["mosaic", "gallery", "images", "masonry", "grid"],
+  "acf": {
+    "mode": "edit",
+    "renderTemplate": "mosaic.php"
+  },
+  "supports": {
+    "align": false,
+    "anchor": true,
+    "jsx": false
+  }
+}
