@@ -7,7 +7,7 @@
   "keywords": ["layout", "article", "grid", "image"],
   "acf": {
     "mode": "edit",
-    "blockVersion": 3
+    "blockVersion": 2
   },
   "supports": {
     "align": false
