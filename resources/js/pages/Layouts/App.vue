@@ -22,20 +22,7 @@
     />
     <main
       id="main"
-      class="
-        colby-page 
-        pb-20 
-        md:pb-[100px] 
-        [&>div+div]:mt-20 
-        md:[&>div>section:not(section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel'])>div:not(.section-nav):not(.hero):not(.home-hero):not(.overlay-hero)]:mt-[100px] 
-        [&>div>section>div.full-bleed]:w-full 
-        [&>div>section>div:not(.full-bleed):not(.block-quote)]:px-[10px] 
-        md:[&>div>section>div:not(.full-bleed)]:mx-auto 
-        md:[&>div>section>div:not(.full-bleed)]:max-w-screen-2xl 
-        md:[&>div>section[data-block-name='acf/context-article-grid']+section[data-block-name='acf/hero']>div]:mt-[100px] 
-        md:[&>div>section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel']]:mt-[-50px]
-        [&>div>section:not(:first-child):not(section[data-block-name='acf/section-nav'])]:mt-[50px]
-        "
+      class="colby-page pb-20 md:pb-[100px] [&>div+div]:mt-20 [&>div>section:has(.overlay-hero)+section:has(.featured-events)]:!mt-0 md:[&>div>section:has(.overlay-hero)+section>.featured-events]:!mt-0 [&>div>section:not(:first-child):not(section[data-block-name='acf/section-nav']):not(:has(.full-bleed-hero))]:mt-[50px] md:[&>div>section:not(section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel'])>div:not(.section-nav):not(.hero):not(.home-hero):not(.overlay-hero):not(.full-bleed-hero)]:mt-[100px] [&>div>section>div.full-bleed]:w-full md:[&>div>section>div:not(.full-bleed)]:mx-auto md:[&>div>section>div:not(.full-bleed)]:max-w-screen-2xl [&>div>section>div:not(.full-bleed):not(.block-quote)]:px-[10px] md:[&>div>section[data-block-name='acf/context-article-grid']+section[data-block-name='acf/hero']>div]:mt-[100px] md:[&>div>section[data-block-name='acf/home-hero']+section[data-block-name='acf/carousel']]:mt-[-50px]"
     >
       <h1 v-if="pageTitle" class="sr-only">{{ pageTitle }}</h1>
       <slot>
