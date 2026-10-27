@@ -1,5 +1,9 @@
 <template>
-  <div class="wysiwyg-content" v-html="processedHtml"></div>
+  <div
+    class="wysiwyg-content break-words hyphens-auto"
+    lang="en"
+    v-html="processedHtml"
+  ></div>
 </template>
 
 <script setup>
@@ -37,7 +41,8 @@ const paragraphColor = computed(() =>
 );
 
 const blockStartsRegex = /^\s*<(p|ul|ol)\b/i;
-const loneClasses = "inline-flex items-center min-h-[44px]";
+const loneClasses =
+  "inline-flex items-center min-h-[44px] max-w-full break-words";
 const blockBoundariesRegex =
   /<p[^>]*>|<\/p>|<li[^>]*>|<\/li>|<br\s*\/?>|<ul[^>]*>|<\/ul>|<ol[^>]*>|<\/ol>|<div[^>]*>|<\/div>/i;
 const anchorRegex = /<a\b[^>]*>.*?<\/a>/gi;
