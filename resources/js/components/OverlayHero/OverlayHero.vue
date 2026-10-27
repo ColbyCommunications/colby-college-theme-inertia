@@ -1,13 +1,10 @@
 <template>
   <div
     ref="overlayHeroRef"
-    class="overlay-hero relative overflow-hidden full-bleed"
+    class="overlay-hero full-bleed relative overflow-hidden"
     :class="[
       !hasAnyVideo
-        ? [
-            'h-[calc(100vh_-_100px)]',
-            size === 'medium' ? 'md:h-[400px]' : '',
-          ]
+        ? ['h-[calc(100vh_-_100px)]', size === 'medium' ? 'md:h-[400px]' : '']
         : 'h-[calc(100vh_-_100px)] md:h-auto',
     ]"
   >
@@ -33,14 +30,20 @@
             :buttons="{ items: buttons }"
           />
 
-          <button v-if="video?.id" class="btn group inline-flex flex-row items-center rounded border-[0.75px] border-solid font-body leading-130 font-normal !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out focus:outline focus:outline-2 focus:outline-gold min-w-[44px] min-h-[44px] space-x-1.5 text-12 py-1 px-3.5 border-white text-white hover:text-indigo hover:bg-white mt-4" @click="setActive">
+          <button
+            v-if="video?.id"
+            class="btn group mt-4 inline-flex min-h-[44px] min-w-[44px] cursor-pointer flex-row items-center space-x-1.5 rounded border-[0.75px] border-solid border-white px-3.5 py-1 font-body text-12 leading-130 font-normal text-white !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-white hover:text-indigo focus:outline focus:outline-2 focus:outline-gold"
+            @click="setActive"
+          >
             <Icon
               name="play"
               class="w-3 fill-gold transition-all duration-400 ease-in-out group-hover:fill-gold"
             />
             <span class="btn__text">
               Watch
-              <div class="btn__border block h-px w-0 transition-all duration-200 ease-in-out group-hover:w-full bg-indigo" />
+              <div
+                class="btn__border block h-px w-0 bg-indigo transition-all duration-200 ease-in-out group-hover:w-full"
+              />
             </span>
           </button>
         </div>
@@ -182,11 +185,11 @@ const selectedVideoLoop = computed(() => {
 const hasBackgroundLoopVideo = computed(() =>
   Boolean(
     props.video_loop ||
-      props.video_loop_tablet ||
-      props.video_loop_mobile ||
-      props.hls_video_loop ||
-      props.hls_video_loop_tablet ||
-      props.hls_video_loop_mobile,
+    props.video_loop_tablet ||
+    props.video_loop_mobile ||
+    props.hls_video_loop ||
+    props.hls_video_loop_tablet ||
+    props.hls_video_loop_mobile,
   ),
 );
 
@@ -194,8 +197,8 @@ const hasAnyVideo = computed(() =>
   Boolean(props.video?.id || hasBackgroundLoopVideo.value),
 );
 
-const isDecorativeBackgroundVideo = computed(() =>
-  hasBackgroundLoopVideo.value && !props.video?.id
+const isDecorativeBackgroundVideo = computed(
+  () => hasBackgroundLoopVideo.value && !props.video?.id,
 );
 
 function setActive() {
