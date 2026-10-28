@@ -28,7 +28,7 @@
         "
       >
         <div
-          class="full-bleed-hero__image relative mt-16 pb-[100%]"
+          class="full-bleed-hero__image relative mt-10 pb-[100%]"
           :class="
             type === 'dark'
               ? 'md:pb-[44.79166666666667%]'

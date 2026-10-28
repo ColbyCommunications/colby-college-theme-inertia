@@ -117,6 +117,54 @@ add_action('init', function () {
 			)
 		);
 
+    // alumni events
+		register_post_type(
+			'events',
+			array(
+				'labels'            => array(
+					'name'               => __( 'Events' ),
+					'singular_name'      => __( 'Event' ),
+					'add_new_item'       => __( 'Add Event' ),
+					'edit_item'          => __( 'Edit Event' ),
+					'new_item'           => __( 'New Event' ),
+					'view_item'          => __( 'View Event' ),
+					'search_items'       => __( 'Search Event' ),
+					'not_found'          => __( 'Event not found.' ),
+					'not_found_in_trash' => __( 'No Event found in trash.' ),
+				),
+				'rewrite'           => array( 'slug' => 'events/event-calendar' ),
+				'public'            => true,
+				'has_archive'       => true,
+				'menu_icon'         => 'dashicons-calendar-alt',
+				'show_in_nav_menus' => true,
+				'show_in_rest'      => true,
+				'supports'          => array( 'title', 'editor', 'revisions', 'excerpt', 'thumbnail' ),
+			)
+		);
+
+		register_post_type(
+			'subevents',
+			array(
+				'labels'            => array(
+					'name'               => __( 'Subevents' ),
+					'singular_name'      => __( 'Subevent' ),
+					'add_new_item'       => __( 'Add Subevent' ),
+					'edit_item'          => __( 'Edit Subevent' ),
+					'new_item'           => __( 'New Subevent' ),
+					'view_item'          => __( 'View Subevent' ),
+					'search_items'       => __( 'Search Subevent' ),
+					'not_found'          => __( 'Subevent not found.' ),
+					'not_found_in_trash' => __( 'No Subevent found in trash.' ),
+				),
+				'public'            => true,
+				'has_archive'       => false,
+				'menu_icon'         => 'dashicons-calendar',
+				'show_in_nav_menus' => true,
+				'show_in_rest'      => true,
+				'supports'          => array( 'title', 'editor', 'revisions', 'excerpt', 'thumbnail' ),
+			)
+		);
+
 
     // taxonomies
     register_taxonomy(
@@ -144,6 +192,33 @@ add_action('init', function () {
 					'singular_name' => __( 'Category' ),
 					'add_new_item'  => __( 'Add New Category' ),
 					'menu_name'     => __( 'Categories' ),
+				),
+			)
+		);
+
+        // alumni taxonomy
+        register_taxonomy(
+			'groupings',
+			'subevents',
+			array(
+				'hierarchical'      => true,
+				'show_ui'           => true,
+				'show_in_rest'      => true,
+				'show_admin_column' => true,
+				'query_var'         => true,
+				'public'            => true,
+				'show_tagcloud'     => false,
+				'capabilities'      => array(
+					'manage_terms' => 'manage_options',
+					'edit_terms'   => 'manage_options',
+					'delete_terms' => 'manage_options',
+					'assign_terms' => 'manage_options',
+				),
+				'labels'            => array(
+					'name'          => __( 'Groupings' ),
+					'singular_name' => __( 'Grouping' ),
+					'add_new_item'  => __( 'Add New Grouping' ),
+					'menu_name'     => __( 'Groupings' ),
 				),
 			)
 		);
