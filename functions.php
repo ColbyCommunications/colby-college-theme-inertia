@@ -281,6 +281,35 @@ function colby_get_menu_cached(string $location): array {
   return $menu;
 }
 
+function colby_get_menu_by_id_cached( $menu_id ): array {
+  $menu_id = absint($menu_id );
+  if ( ! $menu_id ) {
+      return [];
+  }
+
+  $cache_key = 'colby_menu_id_' .$menu_id;
+  $cached    = get_transient($cache_key );
+
+  if ( $cached !== false && is_array($cached ) ) {
+      return $cached;
+  }
+
+  $items = wp_get_nav_menu_items($menu_id ) ?: [];
+  $menu  = array_map( function ($item ) {
+      return [
+          'id'     => $item->ID,
+          'title'  => $item->title,
+          'url'    => $item->url,
+          'parent' => (int) $item->menu_item_parent,
+          'order'  => (int) $item->menu_order,
+      ];
+  }, $items );
+
+  set_transient( $cache_key,$menu, HOUR_IN_SECONDS * 12 );
+
+  return $menu;
+}
+
 add_action('template_redirect', function () {
   $global_site_data = [
     'site_data' => [
@@ -300,30 +329,86 @@ add_action('template_redirect', function () {
       'social'  => colby_get_menu_cached('social'),
     ],
   ];
+  
+  $header_logo_id            = get_theme_mod( 'header_logo' );
+  $header_logo_desktop_width = get_theme_mod( 'header_logo_desktop_width' );
+  $header_logo_mobile_width  = get_theme_mod( 'header_logo_mobile_width' );
 
-  $header_logo_id = get_theme_mod( 'header_logo' );
-  $header_logo_styles = get_theme_mod( 'header_logo_styles' );
+  $header_logo_styles = [
+    'desktop' => $header_logo_desktop_width,
+    'mobile'  => $header_logo_mobile_width,
+  ];
 
-  $headerlogo = wp_get_attachment_image_src( $header_logo_id , 'full' );
-  if($headerlogo) {
-    $global_site_data['site_data']['headerlogo'] = esc_url( $headerlogo[0] );
+  $headerlogo = wp_get_attachment_image_src( $header_logo_id, 'full' );
+  if ( $headerlogo ) {
+    $global_site_data['site_data']['headerlogo']        = esc_url( $headerlogo[0] );
     $global_site_data['site_data']['headerlogo_styles'] = $header_logo_styles;
   }
 		
-  $footer_logo_id = get_theme_mod( 'footer_logo' );
-  $footer_logo_styles = get_theme_mod( 'footer_logo_styles' );
+  $footer_logo_id            = get_theme_mod( 'footer_logo' );
+  $footer_logo_desktop_width = get_theme_mod( 'footer_logo_desktop_width' );
+  $footer_logo_mobile_width  = get_theme_mod( 'footer_logo_mobile_width' );
 
-  $footerlogo = wp_get_attachment_image_src( $footer_logo_id , 'full' );
-  if($footerlogo) {
-    $global_site_data['site_data']['footerlogo'] = esc_url( $footerlogo[0] );
+  $footer_logo_styles = [
+    'desktop' => $footer_logo_desktop_width,
+    'mobile'  => $footer_logo_mobile_width,
+  ];
+
+  $footerlogo = wp_get_attachment_image_src( $footer_logo_id, 'full' );
+  if ( $footerlogo ) {
+    $global_site_data['site_data']['footerlogo']        = esc_url( $footerlogo[0] );
     $global_site_data['site_data']['footerlogo_styles'] = $footer_logo_styles;
   }
   
-  $display_athletics_logo = get_theme_mod( 'display_athletics_logo', true );
+$display_athletics_logo = get_theme_mod( 'display_athletics_logo', true );
   $global_site_data['site_data']['display_athletics_logo'] = $display_athletics_logo;
-  
-  $footer_style = get_theme_mod( 'footer_style', 'colby.edu' ); 
+
+  $footer_style = get_theme_mod( 'footer_style', 'colby.edu' );
   $global_site_data['site_data']['footer_style'] = $footer_style;
+
+  $col_1_menu_id        = absint( get_theme_mod( 'footer_right_col_1_menu', 0 ) );
+  $col_2_menu_id        = absint( get_theme_mod( 'footer_right_col_2_menu', 0 ) );
+  $col_3_menu_id        = absint( get_theme_mod( 'footer_right_col_3_menu', 0 ) );
+  $col_4_menu_id        = absint( get_theme_mod( 'footer_right_col_4_menu', 0 ) );
+  $action_left_menu_id  = absint( get_theme_mod( 'footer_bottom_action_left_menu', 0 ) );
+  $action_right_menu_id = absint( get_theme_mod( 'footer_bottom_action_right_menu', 0 ) );
+
+  $global_site_data['site_data']['footer_config'] = [
+    'show_top'              => (bool) get_theme_mod( 'footer_show_top', true ),
+    'left_variant'          => get_theme_mod( 'footer_top_left_variant', 'colby' ),
+    'show_athletics'        => (bool) $display_athletics_logo,
+    'show_vertical_divider' => (bool) get_theme_mod( 'footer_top_vertical_divider', true ),
+    'show_bottom_divider'   => (bool) get_theme_mod( 'footer_top_bottom_divider', false ),
+    'right_variant'         => get_theme_mod( 'footer_top_right_variant', 'colby' ),
+    'col_1_heading'         => get_theme_mod( 'footer_right_col_1_heading', '' ),
+    'col_1_items'           => colby_get_menu_by_id_cached( $col_1_menu_id ),
+    'col_2_heading'         => get_theme_mod( 'footer_right_col_2_heading', '' ),
+    'col_2_items'           => colby_get_menu_by_id_cached( $col_2_menu_id ),
+    'col_3_heading'         => get_theme_mod( 'footer_right_col_3_heading', '' ),
+    'col_3_items'           => colby_get_menu_by_id_cached( $col_3_menu_id ),
+    'col_4_heading'         => get_theme_mod( 'footer_right_col_4_heading', '' ),
+    'col_4_items'           => colby_get_menu_by_id_cached( $col_4_menu_id ),
+    'show_bottom'           => (bool) get_theme_mod( 'footer_show_bottom', true ),
+    'show_action_left'      => (bool) get_theme_mod( 'footer_bottom_show_action_left', true ),
+    'action_left_style'     => get_theme_mod( 'footer_bottom_action_left_style', 'link' ),
+    'action_left_items'     => $action_left_menu_id
+      ? colby_get_menu_by_id_cached( $action_left_menu_id )
+      : $global_site_data['menus']['action'],
+    'show_action_right'     => (bool) get_theme_mod( 'footer_bottom_show_action_right', false ),
+    'action_right_style'    => get_theme_mod( 'footer_bottom_action_right_style', 'filled' ),
+    'action_right_items'    => colby_get_menu_by_id_cached( $action_right_menu_id ),
+    'show_social'           => (bool) get_theme_mod( 'footer_bottom_show_social', true ),
+    'social_size'           => get_theme_mod( 'footer_bottom_social_size', 'small' ),
+    'show_policy'           => (bool) get_theme_mod( 'footer_show_nondiscrimination', false ),
+    'policy_heading'        => get_theme_mod(
+      'footer_nondiscrimination_heading',
+      'NOTICE OF NONDISCRIMINATORY POLICY AS TO STUDENTS'
+    ),
+    'policy_body'           => get_theme_mod(
+      'footer_nondiscrimination_body',
+      'Colby College admits students of any race, color, national and ethnic origin to all the rights, privileges, programs, and activities generally accorded or made available to students at the school. It does not discriminate on the basis of race, color, national and ethnic origin in administration of its educational policies, admissions policies, scholarship and loan programs, and athletic and other school-administered programs. See <a href="https://afa.colby.edu/nondiscrimination-policy/" target="_blank" class="text-indigo italic underline hover:text-coal hover:no-underline">Colby\'s Nondiscrimination Policy and Compliance Information.</a>'
+    ),
+  ];
   
   $algolia_index = get_theme_mod( 'algolia_index'); 
   $global_site_data['site_data']['algolia_index'] = $algolia_index;
@@ -644,12 +729,36 @@ function mytheme_add_customizer_panels( $wp_customize ) {
   ) );
 
   // Header Logo Styles Control (Text Input)
-  $wp_customize->add_control( 'header_logo_styles', array(
-      'label'       => __( 'Header Logo Styles (CSS)', 'mytheme' ),
+  // 1. Header Logo Desktop Width
+  $wp_customize->add_setting( 'header_logo_desktop_width', array(
+      'default'           => '',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'sanitize_text_field',
+  ) );
+
+  $wp_customize->add_control( 'header_logo_desktop_width', array(
+      'label'       => __( 'Header Logo Width (Desktop)', 'mytheme' ),
       'section'     => 'header_settings_section',
-      'settings'    => 'header_logo_styles',
+      'settings'    => 'header_logo_desktop_width',
       'type'        => 'text',
-      'description' => __( 'Enter custom CSS styles for the header logo (e.g., "width: 150px;").', 'mytheme' ),
+      'description' => __( 'Enter header logo pixel width for desktop (e.g., "150px" or "width: 150px;").', 'mytheme' ),
+  ) );
+
+  // 2. Header Logo Mobile Width
+  $wp_customize->add_setting( 'header_logo_mobile_width', array(
+      'default'           => '',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'sanitize_text_field',
+  ) );
+
+  $wp_customize->add_control( 'header_logo_mobile_width', array(
+      'label'       => __( 'Header Logo Width (Mobile)', 'mytheme' ),
+      'section'     => 'header_settings_section',
+      'settings'    => 'header_logo_mobile_width',
+      'type'        => 'text',
+      'description' => __( 'Enter header logo pixel width for mobile (e.g., "120px" or "width: 120px;").', 'mytheme' ),
   ) );
 
 $wp_customize->add_setting( 'utility_menu_style', array(
@@ -758,55 +867,552 @@ $wp_customize->add_setting( 'utility_menu_style', array(
       'description' => __( 'Select an image for your website footer logo.', 'mytheme' ),
   ) ) );
 
-  // Footer Logo Styles Setting (Text Field)
-  $wp_customize->add_setting( 'footer_logo_styles', array(
+  // 1. Footer Logo Desktop Width
+  $wp_customize->add_setting( 'footer_logo_desktop_width', array(
       'default'           => '',
       'type'              => 'theme_mod',
       'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'sanitize_text_field',
   ) );
 
-  // Footer Logo Styles Control (Text Input)
-  $wp_customize->add_control( 'footer_logo_styles', array(
-      'label'       => __( 'Footer Logo Styles (CSS)', 'mytheme' ),
+  $wp_customize->add_control( 'footer_logo_desktop_width', array(
+      'label'       => __( 'Footer Logo Width (Desktop)', 'mytheme' ),
       'section'     => 'footer_settings_section',
-      'settings'    => 'footer_logo_styles',
+      'settings'    => 'footer_logo_desktop_width',
       'type'        => 'text',
-      'description' => __( 'Enter custom CSS styles for the footer logo (e.g., "width: 100px;").', 'mytheme' ),
+      'description' => __( 'Enter footer logo pixel width for desktop (e.g., "150px" or "width: 150px;").', 'mytheme' ),
   ) );
 
-// Display Athletics Logo Checkbox Setting
-  $wp_customize->add_setting( 'display_athletics_logo', array(
-      'default'           => 1, // Default to not displayed
+  // 2. Footer Logo Mobile Width
+  $wp_customize->add_setting( 'footer_logo_mobile_width', array(
+      'default'           => '',
       'type'              => 'theme_mod',
       'capability'        => 'edit_theme_options',
-      'sanitize_callback' => 'mytheme_sanitize_checkbox', // Custom sanitize function
+      'sanitize_callback' => 'sanitize_text_field',
   ) );
 
-  // Display Athletics Logo Checkbox Control
-  $wp_customize->add_control( 'display_athletics_logo', array(
-      'label'       => __( 'Display Athletics Logo', 'mytheme' ),
+  $wp_customize->add_control( 'footer_logo_mobile_width', array(
+      'label'       => __( 'Footer Logo Width (Mobile)', 'mytheme' ),
       'section'     => 'footer_settings_section',
-      'settings'    => 'display_athletics_logo',
+      'settings'    => 'footer_logo_mobile_width',
+      'type'        => 'text',
+      'description' => __( 'Enter footer logo pixel width for mobile (e.g., "120px" or "width: 120px;").', 'mytheme' ),
+  ) );
+
+// =========================================================================
+  // 1. TOP SECTION
+  // =========================================================================
+  $wp_customize->add_setting( 'footer_show_top', array(
+      'default'           => 1,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'mytheme_sanitize_checkbox',
+  ) );
+
+  $wp_customize->add_control( 'footer_show_top', array(
+      'label'       => __( 'Show Top Section', 'mytheme' ),
+      'section'     => 'footer_settings_section',
+      'settings'    => 'footer_show_top',
       'type'        => 'checkbox',
-      'description' => __( 'Check to display a separate athletics logo in the footer.', 'mytheme' ),
   ) );
 
-$wp_customize->add_setting( 'footer_style', array(
-      'default'           => 'colby.edu', // Default option
+  // --- Top: Left Side Variant ---
+  $wp_customize->add_setting( 'footer_top_left_variant', array(
+      'default'           => 'colby',
       'type'              => 'theme_mod',
       'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'sanitize_text_field',
   ) );
 
-  $wp_customize->add_control( 'footer_style', array(
-      'label'       => __( 'Footer Style', 'mytheme' ),
-      'section'     => 'footer_settings_section',
-      'settings'    => 'footer_style',
-      'type'        => 'select', // Specifies a dropdown
-      'choices'     => array(
-          'colby.edu'  => __( 'colby.edu', 'mytheme' ),
-          'child_site' => __( 'Child Site', 'mytheme' ), // Using 'child_site' as value for consistency
+  $wp_customize->add_control( 'footer_top_left_variant', array(
+      'label'           => __( 'Top Left Side: Style', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_top_left_variant',
+      'type'            => 'select',
+      'choices'         => array(
+          'colby'     => __( 'Colby Variant', 'mytheme' ),
+          'variant_2' => __( 'Variant 2', 'mytheme' ),
       ),
-      'description' => __( 'Choose the desired style for the website footer.', 'mytheme' ),
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_top', 1 );
+      },
+  ) );
+
+  // --- Top: Left Side -> Display Athletics Logo (Only for Colby Variant) ---
+  $wp_customize->add_setting( 'display_athletics_logo', array(
+      'default'           => 1,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'mytheme_sanitize_checkbox',
+  ) );
+
+  $wp_customize->add_control( 'display_athletics_logo', array(
+      'label'           => __( 'Display Athletics Logo', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'display_athletics_logo',
+      'type'            => 'checkbox',
+      'description'     => __( 'Check to display a separate athletics logo in the footer.', 'mytheme' ),
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_top', 1 )
+              && get_theme_mod( 'footer_top_left_variant', 'colby' ) === 'colby';
+      },
+  ) );
+
+  // --- Top: Right Side Variant ---
+  $wp_customize->add_setting( 'footer_top_right_variant', array(
+      'default'           => 'colby',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'sanitize_text_field',
+  ) );
+
+  $wp_customize->add_control( 'footer_top_right_variant', array(
+      'label'           => __( 'Top Right Side: Style', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_top_right_variant',
+      'type'            => 'select',
+      'choices'         => array(
+          'colby'      => __( 'Colby Variant', 'mytheme' ),
+          'single_col' => __( 'Single Column', 'mytheme' ),
+          'two_col'    => __( 'Two Column', 'mytheme' ),
+          'three_col'  => __( 'Three Column', 'mytheme' ),
+          'four_col'   => __( 'Four Column', 'mytheme' ),
+      ),
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_top', 1 );
+      },
+  ) );
+
+  // Build choices array of all available WordPress menus
+  $nav_menus        = wp_get_nav_menus();
+  $nav_menu_choices = array( 0 => __( '— Select a Menu —', 'mytheme' ) );
+  foreach ( $nav_menus as $nav_menu ) {
+      $nav_menu_choices[ $nav_menu->term_id ] = $nav_menu->name;
+  }
+
+  // --- Column 1 Heading & Menu (Shown for Single, Two, Three, or Four Column) ---
+  $wp_customize->add_setting( 'footer_right_col_1_heading', array(
+      'default'           => '',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'sanitize_text_field',
+  ) );
+
+  $wp_customize->add_control( 'footer_right_col_1_heading', array(
+      'label'           => __( 'Column 1 Heading', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_right_col_1_heading',
+      'type'            => 'text',
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_top', 1 )
+              && in_array( get_theme_mod( 'footer_top_right_variant', 'colby' ), array( 'single_col', 'two_col', 'three_col', 'four_col' ), true );
+      },
+  ) );
+
+  $wp_customize->add_setting( 'footer_right_col_1_menu', array(
+      'default'           => 0,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'absint',
+  ) );
+
+  $wp_customize->add_control( 'footer_right_col_1_menu', array(
+      'label'           => __( 'Column 1 Menu', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_right_col_1_menu',
+      'type'            => 'select',
+      'choices'         => $nav_menu_choices,
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_top', 1 )
+              && in_array( get_theme_mod( 'footer_top_right_variant', 'colby' ), array( 'single_col', 'two_col', 'three_col', 'four_col' ), true );
+      },
+  ) );
+
+  // --- Column 2 Heading & Menu (Shown for Two, Three, or Four Column) ---
+  $wp_customize->add_setting( 'footer_right_col_2_heading', array(
+      'default'           => '',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'sanitize_text_field',
+  ) );
+
+  $wp_customize->add_control( 'footer_right_col_2_heading', array(
+      'label'           => __( 'Column 2 Heading', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_right_col_2_heading',
+      'type'            => 'text',
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_top', 1 )
+              && in_array( get_theme_mod( 'footer_top_right_variant', 'colby' ), array( 'two_col', 'three_col', 'four_col' ), true );
+      },
+  ) );
+
+  $wp_customize->add_setting( 'footer_right_col_2_menu', array(
+      'default'           => 0,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'absint',
+  ) );
+
+  $wp_customize->add_control( 'footer_right_col_2_menu', array(
+      'label'           => __( 'Column 2 Menu', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_right_col_2_menu',
+      'type'            => 'select',
+      'choices'         => $nav_menu_choices,
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_top', 1 )
+              && in_array( get_theme_mod( 'footer_top_right_variant', 'colby' ), array( 'two_col', 'three_col', 'four_col' ), true );
+      },
+  ) );
+
+  // --- Column 3 Heading & Menu (Shown for Three or Four Column) ---
+  $wp_customize->add_setting( 'footer_right_col_3_heading', array(
+      'default'           => '',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'sanitize_text_field',
+  ) );
+
+  $wp_customize->add_control( 'footer_right_col_3_heading', array(
+      'label'           => __( 'Column 3 Heading', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_right_col_3_heading',
+      'type'            => 'text',
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_top', 1 )
+              && in_array( get_theme_mod( 'footer_top_right_variant', 'colby' ), array( 'three_col', 'four_col' ), true );
+      },
+  ) );
+
+  $wp_customize->add_setting( 'footer_right_col_3_menu', array(
+      'default'           => 0,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'absint',
+  ) );
+
+  $wp_customize->add_control( 'footer_right_col_3_menu', array(
+      'label'           => __( 'Column 3 Menu', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_right_col_3_menu',
+      'type'            => 'select',
+      'choices'         => $nav_menu_choices,
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_top', 1 )
+              && in_array( get_theme_mod( 'footer_top_right_variant', 'colby' ), array( 'three_col', 'four_col' ), true );
+      },
+  ) );
+
+  // --- Column 4 Heading & Menu (Shown for Four Column) ---
+  $wp_customize->add_setting( 'footer_right_col_4_heading', array(
+      'default'           => '',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'sanitize_text_field',
+  ) );
+
+  $wp_customize->add_control( 'footer_right_col_4_heading', array(
+      'label'           => __( 'Column 4 Heading', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_right_col_4_heading',
+      'type'            => 'text',
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_top', 1 )
+              && get_theme_mod( 'footer_top_right_variant', 'colby' ) === 'four_col';
+      },
+  ) );
+
+  $wp_customize->add_setting( 'footer_right_col_4_menu', array(
+      'default'           => 0,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'absint',
+  ) );
+
+  $wp_customize->add_control( 'footer_right_col_4_menu', array(
+      'label'           => __( 'Column 4 Menu', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_right_col_4_menu',
+      'type'            => 'select',
+      'choices'         => $nav_menu_choices,
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_top', 1 )
+              && get_theme_mod( 'footer_top_right_variant', 'colby' ) === 'four_col';
+      },
+  ) );
+
+  // --- Top: Show Vertical Divider (Between Left & Right) ---
+  $wp_customize->add_setting( 'footer_top_vertical_divider', array(
+      'default'           => 1,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'mytheme_sanitize_checkbox',
+  ) );
+
+  $wp_customize->add_control( 'footer_top_vertical_divider', array(
+      'label'           => __( 'Top: Show Vertical Divider', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_top_vertical_divider',
+      'type'            => 'checkbox',
+      'description'     => __( 'Displays a vertical line between the Left and Right sections.', 'mytheme' ),
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_top', 1 );
+      },
+  ) );
+
+  // --- Top: Show Horizontal Bottom Divider (Below Top Section) ---
+  $wp_customize->add_setting( 'footer_top_bottom_divider', array(
+      'default'           => 0,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'mytheme_sanitize_checkbox',
+  ) );
+
+  $wp_customize->add_control( 'footer_top_bottom_divider', array(
+      'label'           => __( 'Top: Show Bottom Divider', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_top_bottom_divider',
+      'type'            => 'checkbox',
+      'description'     => __( 'Displays a horizontal line below the Top section.', 'mytheme' ),
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_top', 1 );
+      },
+  ) );
+
+  // =========================================================================
+  // 2. BOTTOM SECTION
+  // =========================================================================
+  $wp_customize->add_setting( 'footer_show_bottom', array(
+      'default'           => 1,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'mytheme_sanitize_checkbox',
+  ) );
+
+  $wp_customize->add_control( 'footer_show_bottom', array(
+      'label'       => __( 'Show Bottom Section', 'mytheme' ),
+      'section'     => 'footer_settings_section',
+      'settings'    => 'footer_show_bottom',
+      'type'        => 'checkbox',
+  ) );
+
+  // --- Bottom: Action Menu Left Toggle ---
+  $wp_customize->add_setting( 'footer_bottom_show_action_left', array(
+      'default'           => 1,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'mytheme_sanitize_checkbox',
+  ) );
+
+  $wp_customize->add_control( 'footer_bottom_show_action_left', array(
+      'label'           => __( 'Bottom: Show Action Menu Left', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_bottom_show_action_left',
+      'type'            => 'checkbox',
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_bottom', 1 );
+      },
+  ) );
+
+  // --- Bottom: Action Menu Left Select ---
+  $wp_customize->add_setting( 'footer_bottom_action_left_menu', array(
+      'default'           => 0,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'absint',
+  ) );
+
+  $wp_customize->add_control( 'footer_bottom_action_left_menu', array(
+      'label'           => __( 'Action Menu Left: Menu', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_bottom_action_left_menu',
+      'type'            => 'select',
+      'choices'         => $nav_menu_choices,
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_bottom', 1 )
+              && (bool) get_theme_mod( 'footer_bottom_show_action_left', 1 );
+      },
+  ) );
+
+  // --- Bottom: Action Menu Left Button Style ---
+  $wp_customize->add_setting( 'footer_bottom_action_left_style', array(
+      'default'           => 'link',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'sanitize_text_field',
+  ) );
+
+  $wp_customize->add_control( 'footer_bottom_action_left_style', array(
+      'label'           => __( 'Action Menu Left: Button Style', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_bottom_action_left_style',
+      'type'            => 'select',
+      'choices'         => array(
+          'link'    => __( 'Link Style', 'mytheme' ),
+          'outline' => __( 'Outline', 'mytheme' ),
+          'filled'  => __( 'Filled', 'mytheme' ),
+      ),
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_bottom', 1 )
+              && (bool) get_theme_mod( 'footer_bottom_show_action_left', 1 );
+      },
+  ) );
+
+  // --- Bottom: Action Menu Right Toggle ---
+  $wp_customize->add_setting( 'footer_bottom_show_action_right', array(
+      'default'           => 0,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'mytheme_sanitize_checkbox',
+  ) );
+
+  $wp_customize->add_control( 'footer_bottom_show_action_right', array(
+      'label'           => __( 'Bottom: Show Action Menu Right', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_bottom_show_action_right',
+      'type'            => 'checkbox',
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_bottom', 1 );
+      },
+  ) );
+
+  // --- Bottom: Action Menu Right Select ---
+  $wp_customize->add_setting( 'footer_bottom_action_right_menu', array(
+      'default'           => 0,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'absint',
+  ) );
+
+  $wp_customize->add_control( 'footer_bottom_action_right_menu', array(
+      'label'           => __( 'Action Menu Right: Menu', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_bottom_action_right_menu',
+      'type'            => 'select',
+      'choices'         => $nav_menu_choices,
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_bottom', 1 )
+              && (bool) get_theme_mod( 'footer_bottom_show_action_right', 0 );
+      },
+  ) );
+
+  // --- Bottom: Action Menu Right Button Style ---
+  $wp_customize->add_setting( 'footer_bottom_action_right_style', array(
+      'default'           => 'filled',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'sanitize_text_field',
+  ) );
+
+  $wp_customize->add_control( 'footer_bottom_action_right_style', array(
+      'label'           => __( 'Action Menu Right: Button Style', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_bottom_action_right_style',
+      'type'            => 'select',
+      'choices'         => array(
+          'link'    => __( 'Link Style', 'mytheme' ),
+          'outline' => __( 'Outline', 'mytheme' ),
+          'filled'  => __( 'Filled', 'mytheme' ),
+      ),
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_bottom', 1 )
+              && (bool) get_theme_mod( 'footer_bottom_show_action_right', 0 );
+      },
+  ) );
+
+  // --- Bottom: Social Menu Toggle ---
+  $wp_customize->add_setting( 'footer_bottom_show_social', array(
+      'default'           => 1,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'mytheme_sanitize_checkbox',
+  ) );
+
+  $wp_customize->add_control( 'footer_bottom_show_social', array(
+      'label'           => __( 'Bottom: Show Social Menu', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_bottom_show_social',
+      'type'            => 'checkbox',
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_bottom', 1 );
+      },
+  ) );
+
+  // --- Bottom: Social Icon Size (Conditional on Social Menu Toggle) ---
+  $wp_customize->add_setting( 'footer_bottom_social_size', array(
+      'default'           => 'small',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'sanitize_text_field',
+  ) );
+
+  $wp_customize->add_control( 'footer_bottom_social_size', array(
+      'label'           => __( 'Social Icon Size', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_bottom_social_size',
+      'type'            => 'radio',
+      'choices'         => array(
+          'small' => __( 'Small', 'mytheme' ),
+          'large' => __( 'Large', 'mytheme' ),
+      ),
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_bottom', 1 )
+              && (bool) get_theme_mod( 'footer_bottom_show_social', 1 );
+      },
+  ) );
+
+  // =========================================================================
+  // 3. NONDISCRIMINATION POLICY SECTION
+  // =========================================================================
+  $wp_customize->add_setting( 'footer_show_nondiscrimination', array(
+      'default'           => 0,
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'mytheme_sanitize_checkbox',
+  ) );
+
+  $wp_customize->add_control( 'footer_show_nondiscrimination', array(
+      'label'       => __( 'Show Nondiscrimination Policy', 'mytheme' ),
+      'section'     => 'footer_settings_section',
+      'settings'    => 'footer_show_nondiscrimination',
+      'type'        => 'checkbox',
+  ) );
+
+  // --- Policy Heading ---
+  $wp_customize->add_setting( 'footer_nondiscrimination_heading', array(
+      'default'           => 'NOTICE OF NONDISCRIMINATORY POLICY AS TO STUDENTS',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'sanitize_text_field',
+  ) );
+
+  $wp_customize->add_control( 'footer_nondiscrimination_heading', array(
+      'label'           => __( 'Nondiscrimination Policy Heading', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_nondiscrimination_heading',
+      'type'            => 'text',
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_nondiscrimination', 0 );
+      },
+  ) );
+
+  // --- Policy Body ---
+  $wp_customize->add_setting( 'footer_nondiscrimination_body', array(
+      'default'           => 'Colby College admits students of any race, color, national and ethnic origin to all the rights, privileges, programs, and activities generally accorded or made available to students at the school. It does not discriminate on the basis of race, color, national and ethnic origin in administration of its educational policies, admissions policies, scholarship and loan programs, and athletic and other school-administered programs. See <a href="https://afa.colby.edu/nondiscrimination-policy/" target="_blank" class="text-indigo italic underline hover:text-coal hover:no-underline">Colby\'s Nondiscrimination Policy and Compliance Information.</a>',
+      'type'              => 'theme_mod',
+      'capability'        => 'edit_theme_options',
+      'sanitize_callback' => 'wp_kses_post',
+  ) );
+
+  $wp_customize->add_control( 'footer_nondiscrimination_body', array(
+      'label'           => __( 'Nondiscrimination Policy Body (HTML allowed)', 'mytheme' ),
+      'section'         => 'footer_settings_section',
+      'settings'        => 'footer_nondiscrimination_body',
+      'type'            => 'textarea',
+      'active_callback' => function() {
+          return (bool) get_theme_mod( 'footer_show_nondiscrimination', 0 );
+      },
   ) );
 }
 add_action( 'customize_register', 'mytheme_add_customizer_panels' );

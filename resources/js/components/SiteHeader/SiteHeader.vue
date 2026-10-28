@@ -10,12 +10,15 @@
         class="header__left hidden h-full md:flex md:items-center md:justify-center"
       >
         <div class="flex flex-col">
-          <ColbyLogo
-            v-if="logo.length == 0"
-            :url="url"
-            fillColor="--color-indigo"
-          />
-          <img v-else :src="logo" :style="logoStyle" />
+          <ColbyLogo v-if="!logo" :url="url" fillColor="--color-indigo" />
+          <a v-else :href="url || '/'" class="inline-block">
+            <img
+              :src="logo"
+              :style="desktopWidthStyle"
+              class="block h-auto"
+              alt="Site Logo"
+            />
+          </a>
         </div>
       </div>
       <!-- Header Right -->
@@ -28,8 +31,18 @@
         <MainMenu :menu="menus.main" :isCurrent="isCurrent" />
       </div>
       <!-- Mobile -->
-      <div class="flex w-full justify-between pt-3 md:hidden md:pt-0">
-        <ColbyLogo :url="url" fillColor="--color-indigo" />
+      <div
+        class="flex w-full items-center justify-between pt-3 md:hidden md:pt-0"
+      >
+        <ColbyLogo v-if="!logo" :url="url" fillColor="--color-indigo" />
+        <a v-else :href="url || '/'" class="inline-block">
+          <img
+            :src="logo"
+            :style="mobileWidthStyle"
+            class="block h-auto"
+            alt="Site Logo"
+          />
+        </a>
         <Hamburger @update:active="active = $event" />
       </div>
       <Transition name="mobile-menu">
@@ -40,7 +53,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import ColbyLogo from "../Logos/ColbyLogo.vue";
 import Hamburger from "../Hamburger/Hamburger.vue";
 import UtilityMenu from "../Menus/UtilityMenu.vue";
@@ -54,9 +67,35 @@ const props = defineProps({
   },
   url: { type: String, default: "" },
   logo: { type: String, default: "" },
-  logoStyle: { type: String, default: "" },
+  logoStyle: {
+    type: [Object, String],
+    default: () => ({ desktop: "", mobile: "" }),
+  },
   utilityMenuStyle: { type: String, default: "" },
   utilityMenuButton: { type: Object, default: () => ({ text: "", url: "" }) },
+});
+
+// Normalizes width input whether the user types "150", "150px", or "width: 150px;"
+const parseWidth = (val) => {
+  if (!val || typeof val !== "string") return undefined;
+  const cleaned = val
+    .replace(/width\s*:/i, "")
+    .replace(/;/g, "")
+    .trim();
+  if (!cleaned) return undefined;
+  return /^\d+$/.test(cleaned) ? `${cleaned}px` : cleaned;
+};
+
+const desktopWidthStyle = computed(() => {
+  if (typeof props.logoStyle === "string") return props.logoStyle;
+  const w = parseWidth(props.logoStyle?.desktop);
+  return w ? { width: w } : {};
+});
+
+const mobileWidthStyle = computed(() => {
+  if (typeof props.logoStyle === "string") return props.logoStyle;
+  const w = parseWidth(props.logoStyle?.mobile || props.logoStyle?.desktop);
+  return w ? { width: w } : {};
 });
 
 // Reactive toggle for mobile menu
