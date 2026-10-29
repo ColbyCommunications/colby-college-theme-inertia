@@ -25,7 +25,7 @@
 <script setup>
 import { computed } from "vue";
 import MediaItem from "../MediaItem/MediaItem.vue";
-import CtaCard from "../CtaCard/CtaCard.vue";
+import CtaCard from "../CTACard/CtaCard.vue";
 import BlockQuote from "../BlockQuote/BlockQuote.vue";
 import MediaContextCard from "../MediaContextCard/MediaContextCard.vue";
 
