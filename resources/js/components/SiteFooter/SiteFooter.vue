@@ -11,97 +11,80 @@
       v-if="config.show_top"
       class="footer__inner mx-auto my-0 w-full max-w-screen-2xl space-y-8 px-5 md:grid md:grid-cols-12 md:space-y-0 md:gap-x-10"
     >
-      <!-- TOP LEFT: Colby Variant -->
+      <!-- TOP LEFT: Modular Layout -->
       <div
-        v-if="config.left_variant === 'colby'"
-        class="footer__left relative flex items-start justify-between border-solid md:col-span-5 md:justify-start md:space-x-8 lg:space-x-12"
-        :class="
-          config.show_vertical_divider ? 'md:border-r md:border-white/20' : ''
-        "
-      >
-        <div>
-          <a
-            class="mb-4 block transition-all duration-200 ease-in-out hover:text-white hover:underline"
-            :href="address?.url"
-            aria-label="Go to colby.edu homepage"
-          >
-            <ColbyLogo v-if="!logo" :url="url" fillColor="--color-white" />
-            <template v-else>
-              <img
-                :src="logo"
-                :style="desktopWidthStyle"
-                class="hidden h-auto md:block"
-                alt="Site Logo"
-              />
-              <img
-                :src="logo"
-                :style="mobileWidthStyle"
-                class="block h-auto md:hidden"
-                alt="Site Logo"
-              />
-            </template>
-          </a>
-
-          <AthleticsLogo
-            v-if="config.show_athletics"
-            class="relative left-[-11px] w-[125px] md:w-[100px] lg:hidden"
-          />
-        </div>
-
-        <address
-          class="footer__address w-[225px] space-y-2 font-body text-20 leading-140 font-normal text-white not-italic md:w-[120px] md:text-12"
-        >
-          <div v-html="address?.text"></div>
-
-          <a
-            v-if="phone"
-            class="block min-h-[44px] min-w-[44px] leading-[44px] transition-all duration-200 ease-in-out hover:text-white hover:underline"
-            :href="`tel:${phone}`"
-          >
-            {{ phone }}
-          </a>
-        </address>
-
-        <AthleticsLogo
-          v-if="config.show_athletics"
-          class="absolute top-[-14px] left-[-20px] hidden w-[125px] md:w-[100px] lg:block"
-        />
-      </div>
-
-      <!-- TOP LEFT: Variant 2 (Child Site Style) -->
-      <div
-        v-else
-        class="footer__left border-solid md:col-span-5"
+        class="footer__left flex min-w-0 flex-col gap-y-6 border-solid md:col-span-5"
         :class="
           config.show_vertical_divider
-            ? 'md:border-r md:border-white/20 md:pr-8'
+            ? 'md:border-r md:border-white/20 md:pr-8 lg:pr-10'
             : ''
         "
       >
-        <a
-          class="mb-4 block transition-all duration-200 ease-in-out hover:text-white hover:underline"
-          :href="address?.url"
-          aria-label="Go to the homepage"
+        <!-- Top Row: Logos & Address -->
+        <div
+          v-if="
+            config.show_logo ||
+            config.show_athletics ||
+            (config.show_address && (address?.text || phone))
+          "
+          class="flex flex-wrap items-start justify-between gap-x-6 gap-y-6 md:justify-start xl:gap-x-8"
         >
-          <ColbyLogo v-if="!logo" :url="url" fillColor="--color-white" />
-          <template v-else>
-            <img
-              :src="logo"
-              :style="desktopWidthStyle"
-              class="hidden h-auto md:block"
-              alt="Site Logo"
+          <!-- Logos Column (Stacked on lg and below, flattened into row on xl+) -->
+          <div
+            v-if="config.show_logo || config.show_athletics"
+            class="flex shrink-0 flex-col items-start gap-y-4 xl:contents"
+          >
+            <a
+              v-if="config.show_logo"
+              class="block max-w-full shrink-0 transition-all duration-200 ease-in-out hover:text-white hover:underline xl:order-1"
+              :href="address?.url || url || '/'"
+              aria-label="Go to homepage"
+            >
+              <ColbyLogo v-if="!logo" :url="url" fillColor="--color-white" />
+              <template v-else>
+                <img
+                  :src="logo"
+                  :style="desktopWidthStyle"
+                  class="hidden h-auto max-w-full md:block"
+                  alt="Site Logo"
+                />
+                <img
+                  :src="logo"
+                  :style="mobileWidthStyle"
+                  class="block h-auto max-w-full md:hidden"
+                  alt="Site Logo"
+                />
+              </template>
+            </a>
+
+            <AthleticsLogo
+              v-if="config.show_athletics"
+              class="relative left-[-11px] w-[125px] shrink-0 md:w-[100px] xl:top-[-14px] xl:left-0 xl:order-3"
             />
-            <img
-              :src="logo"
-              :style="mobileWidthStyle"
-              class="block h-auto md:hidden"
-              alt="Site Logo"
-            />
-          </template>
-        </a>
-        <p
-          class="mt-8 font-body text-14 leading-130 font-normal text-white md:mt-7"
-          v-html="address?.text"
+          </div>
+
+          <!-- Address & Phone Column (Middle on xl+, Right of stacked logos on lg and below) -->
+          <address
+            v-if="config.show_address && (address?.text || phone)"
+            class="footer__address shrink-0 space-y-2 font-body text-20 leading-140 font-normal whitespace-nowrap text-white not-italic md:text-12 xl:order-2"
+          >
+            <div v-if="address?.text" v-html="address.text"></div>
+
+            <a
+              v-if="phone"
+              class="block min-h-[44px] min-w-[44px] leading-[44px] transition-all duration-200 ease-in-out hover:text-white hover:underline"
+              :href="`tel:${phone}`"
+            >
+              {{ phone }}
+            </a>
+          </address>
+        </div>
+
+        <!-- Mission Statement (Full width of the left column) -->
+        <div
+          v-if="config.show_mission && (config.mission || mission)"
+          class="font-body text-14 leading-[1.5] font-normal text-white"
+          v-html="config.mission || mission"
         />
       </div>
 
@@ -114,9 +97,9 @@
             : 'md:col-start-6 md:col-end-13',
         ]"
       >
-        <!-- Right Option 1: Colby Variant -->
+        <!-- Right Option 1: Unsorted Variant -->
         <ul
-          v-if="config.right_variant === 'colby'"
+          v-if="config.right_variant === 'unsorted'"
           class="footer__links grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] items-center gap-x-4 gap-y-2 lg:gap-x-6"
           :class="
             config.show_vertical_divider
@@ -178,7 +161,7 @@
         </div>
       </div>
 
-      <!-- Conditional Horizontal Bottom Divider (Works for any variant) -->
+      <!-- Conditional Horizontal Bottom Divider -->
       <div
         v-if="config.show_bottom_divider"
         class="col-span-12 border-b border-[#365185] pt-4 md:border-white/20 md:pt-12"
@@ -270,6 +253,7 @@ const props = defineProps({
   menus: { type: Object, default: () => ({}) },
   url: { type: String, default: "" },
   address: { type: Object, default: () => ({}) },
+  mission: { type: String, default: "" },
   phone: { type: String, default: "" },
   logo: { type: String, default: "" },
   logoStyle: {
@@ -288,11 +272,14 @@ const config = computed(() => {
 
   return {
     show_top: raw.show_top ?? true,
-    left_variant: raw.left_variant || "colby",
+    show_logo: raw.show_logo ?? true,
+    show_mission: raw.show_mission ?? false,
+    mission: raw.mission || "",
+    show_address: raw.show_address ?? true,
     show_athletics: raw.show_athletics ?? props.display_athletics_logo ?? true,
     show_vertical_divider: raw.show_vertical_divider ?? true,
     show_bottom_divider: raw.show_bottom_divider ?? false,
-    right_variant: raw.right_variant || "colby",
+    right_variant: raw.right_variant || "unsorted",
     col_1_heading: raw.col_1_heading || "",
     col_1_items: Array.isArray(raw.col_1_items) ? raw.col_1_items : [],
     col_2_heading: raw.col_2_heading || "",
