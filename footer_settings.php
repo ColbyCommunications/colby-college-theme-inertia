@@ -5,7 +5,7 @@
 
 if ( ! function_exists( 'mytheme_sanitize_checkbox' ) ) {
     function mytheme_sanitize_checkbox( $checked ) {
-        return ( ( isset( $checked ) && true ==$checked ) ? true : false );
+        return ( ( isset( $checked ) && true == $checked ) ? true : false );
     }
 }
 
@@ -15,42 +15,52 @@ if ( ! function_exists( 'mytheme_sanitize_checkbox' ) ) {
  * @param array $default_action_menu Fallback action menu items.
  * @return array
  */
-function colby_get_footer_site_data( array $default_action_menu = [] ): array {$data = [];
+function colby_get_footer_site_data( array $default_action_menu = [] ): array {
+    $data = [];
 
     $footer_logo_id            = get_theme_mod( 'footer_logo' );
-    $footer_logo_desktop_width = get_theme_mod( 'footer_logo_desktop_width' );$footer_logo_mobile_width  = get_theme_mod( 'footer_logo_mobile_width' );
+    $footer_logo_desktop_width = get_theme_mod( 'footer_logo_desktop_width' );
+    $footer_logo_mobile_width  = get_theme_mod( 'footer_logo_mobile_width' );
 
     $footer_logo_styles = [
         'desktop' => $footer_logo_desktop_width,
         'mobile'  => $footer_logo_mobile_width,
     ];
 
-    $footerlogo = wp_get_attachment_image_src($footer_logo_id, 'full' );
+    $footerlogo = wp_get_attachment_image_src( $footer_logo_id, 'full' );
     if ( $footerlogo ) {
-        $data['footerlogo']        = esc_url($footerlogo[0] );
-        $data['footerlogo_styles'] =$footer_logo_styles;
+        $data['footerlogo']        = esc_url( $footerlogo[0] );
+        $data['footerlogo_styles'] = $footer_logo_styles;
     }
 
-    $data['display_athletics_logo'] = get_theme_mod( 'display_athletics_logo', true );$data['footer_style']           = get_theme_mod( 'footer_style', 'colby.edu' );
+    $data['display_athletics_logo'] = get_theme_mod( 'display_athletics_logo', true );
+    $data['footer_style']           = get_theme_mod( 'footer_style', 'colby.edu' );
 
-    $col_1_menu_id        = absint( get_theme_mod( 'footer_right_col_1_menu', 0 ) );$col_2_menu_id        = absint( get_theme_mod( 'footer_right_col_2_menu', 0 ) );
-    $col_3_menu_id        = absint( get_theme_mod( 'footer_right_col_3_menu', 0 ) );$col_4_menu_id        = absint( get_theme_mod( 'footer_right_col_4_menu', 0 ) );
-    $action_left_menu_id  = absint( get_theme_mod( 'footer_bottom_action_left_menu', 0 ) );$action_right_menu_id = absint( get_theme_mod( 'footer_bottom_action_right_menu', 0 ) );
+    $col_1_menu_id        = absint( get_theme_mod( 'footer_right_col_1_menu', 0 ) );
+    $col_2_menu_id        = absint( get_theme_mod( 'footer_right_col_2_menu', 0 ) );
+    $col_3_menu_id        = absint( get_theme_mod( 'footer_right_col_3_menu', 0 ) );
+    $col_4_menu_id        = absint( get_theme_mod( 'footer_right_col_4_menu', 0 ) );
+    $action_left_menu_id  = absint( get_theme_mod( 'footer_bottom_action_left_menu', 0 ) );
+    $action_right_menu_id = absint( get_theme_mod( 'footer_bottom_action_right_menu', 0 ) );
 
     $data['footer_config'] = [
         'show_top'              => (bool) get_theme_mod( 'footer_show_top', true ),
         'show_logo'             => (bool) get_theme_mod( 'footer_top_show_logo', true ),
         'show_mission'          => (bool) get_theme_mod( 'footer_top_show_mission', false ),
-        'mission'               => get_theme_mod( 'footer_mission', '' ),
+        'mission'               => function_exists( 'get_field' ) ? ( get_field( 'mission', 'options' ) ?: '' ) : '',
         'show_address'          => (bool) get_theme_mod( 'footer_top_show_address', true ),
         'show_athletics'        => (bool) get_theme_mod( 'display_athletics_logo', true ),
         'show_vertical_divider' => (bool) get_theme_mod( 'footer_top_vertical_divider', true ),
         'show_bottom_divider'   => (bool) get_theme_mod( 'footer_top_bottom_divider', false ),
-        'right_variant'         => get_theme_mod( 'footer_top_right_variant', 'colby' ),
+        'right_variant'         => get_theme_mod( 'footer_top_right_variant', 'unsorted' ),
         'col_1_heading'         => get_theme_mod( 'footer_right_col_1_heading', '' ),
-        'col_1_items'           => colby_get_menu_by_id_cached( $col_1_menu_id ), 'col_2_heading'         => get_theme_mod( 'footer_right_col_2_heading', '' ), 'col_2_items'           => colby_get_menu_by_id_cached($col_2_menu_id ),
+        'col_1_items'           => colby_get_menu_by_id_cached( $col_1_menu_id ),
+        'col_2_heading'         => get_theme_mod( 'footer_right_col_2_heading', '' ),
+        'col_2_items'           => colby_get_menu_by_id_cached( $col_2_menu_id ),
         'col_3_heading'         => get_theme_mod( 'footer_right_col_3_heading', '' ),
-        'col_3_items'           => colby_get_menu_by_id_cached( $col_3_menu_id ), 'col_4_heading'         => get_theme_mod( 'footer_right_col_4_heading', '' ), 'col_4_items'           => colby_get_menu_by_id_cached($col_4_menu_id ),
+        'col_3_items'           => colby_get_menu_by_id_cached( $col_3_menu_id ),
+        'col_4_heading'         => get_theme_mod( 'footer_right_col_4_heading', '' ),
+        'col_4_items'           => colby_get_menu_by_id_cached( $col_4_menu_id ),
         'show_bottom'           => (bool) get_theme_mod( 'footer_show_bottom', true ),
         'show_action_left'      => (bool) get_theme_mod( 'footer_bottom_show_action_left', true ),
         'action_left_style'     => get_theme_mod( 'footer_bottom_action_left_style', 'link' ),
@@ -194,27 +204,9 @@ add_action( 'customize_register', function( $wp_customize ) {
         'section'         => 'footer_settings_section',
         'settings'        => 'footer_top_show_mission',
         'type'            => 'checkbox',
+        'description'     => __( 'Displays the Mission Statement from Global Settings.', 'mytheme' ),
         'active_callback' => function() {
             return (bool) get_theme_mod( 'footer_show_top', 1 );
-        },
-    ) );
-
-    // --- Top Left: Mission Text Input ---
-    $wp_customize->add_setting( 'footer_mission', array(
-        'default'           => '',
-        'type'              => 'theme_mod',
-        'capability'        => 'edit_theme_options',
-        'sanitize_callback' => 'wp_kses_post',
-    ) );
-
-    $wp_customize->add_control( 'footer_mission', array(
-        'label'           => __( 'Mission Statement Text', 'mytheme' ),
-        'section'         => 'footer_settings_section',
-        'settings'        => 'footer_mission',
-        'type'            => 'textarea',
-        'active_callback' => function() {
-            return (bool) get_theme_mod( 'footer_show_top', 1 )
-                && (bool) get_theme_mod( 'footer_top_show_mission', 0 );
         },
     ) );
 
@@ -258,7 +250,7 @@ add_action( 'customize_register', function( $wp_customize ) {
 
     // --- Top: Right Side Variant ---
     $wp_customize->add_setting( 'footer_top_right_variant', array(
-        'default'           => 'colby',
+        'default'           => 'unsorted',
         'type'              => 'theme_mod',
         'capability'        => 'edit_theme_options',
         'sanitize_callback' => 'sanitize_text_field',
@@ -270,7 +262,7 @@ add_action( 'customize_register', function( $wp_customize ) {
         'settings'        => 'footer_top_right_variant',
         'type'            => 'select',
         'choices'         => array(
-            'unsorted'      => __( 'Unsorted', 'mytheme' ),
+            'unsorted'   => __( 'Unsorted', 'mytheme' ),
             'single_col' => __( 'Single Column', 'mytheme' ),
             'two_col'    => __( 'Two Column', 'mytheme' ),
             'three_col'  => __( 'Three Column', 'mytheme' ),
@@ -303,7 +295,7 @@ add_action( 'customize_register', function( $wp_customize ) {
         'type'            => 'text',
         'active_callback' => function() {
             return (bool) get_theme_mod( 'footer_show_top', 1 )
-                && in_array( get_theme_mod( 'footer_top_right_variant', 'colby' ), array( 'single_col', 'two_col', 'three_col', 'four_col' ), true );
+                && in_array( get_theme_mod( 'footer_top_right_variant', 'unsorted' ), array( 'single_col', 'two_col', 'three_col', 'four_col' ), true );
         },
     ) );
 
@@ -322,7 +314,7 @@ add_action( 'customize_register', function( $wp_customize ) {
         'choices'         => $nav_menu_choices,
         'active_callback' => function() {
             return (bool) get_theme_mod( 'footer_show_top', 1 )
-                && in_array( get_theme_mod( 'footer_top_right_variant', 'colby' ), array( 'single_col', 'two_col', 'three_col', 'four_col' ), true );
+                && in_array( get_theme_mod( 'footer_top_right_variant', 'unsorted' ), array( 'single_col', 'two_col', 'three_col', 'four_col' ), true );
         },
     ) );
 
@@ -341,7 +333,7 @@ add_action( 'customize_register', function( $wp_customize ) {
         'type'            => 'text',
         'active_callback' => function() {
             return (bool) get_theme_mod( 'footer_show_top', 1 )
-                && in_array( get_theme_mod( 'footer_top_right_variant', 'colby' ), array( 'two_col', 'three_col', 'four_col' ), true );
+                && in_array( get_theme_mod( 'footer_top_right_variant', 'unsorted' ), array( 'two_col', 'three_col', 'four_col' ), true );
         },
     ) );
 
@@ -360,7 +352,7 @@ add_action( 'customize_register', function( $wp_customize ) {
         'choices'         => $nav_menu_choices,
         'active_callback' => function() {
             return (bool) get_theme_mod( 'footer_show_top', 1 )
-                && in_array( get_theme_mod( 'footer_top_right_variant', 'colby' ), array( 'two_col', 'three_col', 'four_col' ), true );
+                && in_array( get_theme_mod( 'footer_top_right_variant', 'unsorted' ), array( 'two_col', 'three_col', 'four_col' ), true );
         },
     ) );
 
@@ -379,7 +371,7 @@ add_action( 'customize_register', function( $wp_customize ) {
         'type'            => 'text',
         'active_callback' => function() {
             return (bool) get_theme_mod( 'footer_show_top', 1 )
-                && in_array( get_theme_mod( 'footer_top_right_variant', 'colby' ), array( 'three_col', 'four_col' ), true );
+                && in_array( get_theme_mod( 'footer_top_right_variant', 'unsorted' ), array( 'three_col', 'four_col' ), true );
         },
     ) );
 
@@ -398,7 +390,7 @@ add_action( 'customize_register', function( $wp_customize ) {
         'choices'         => $nav_menu_choices,
         'active_callback' => function() {
             return (bool) get_theme_mod( 'footer_show_top', 1 )
-                && in_array( get_theme_mod( 'footer_top_right_variant', 'colby' ), array( 'three_col', 'four_col' ), true );
+                && in_array( get_theme_mod( 'footer_top_right_variant', 'unsorted' ), array( 'three_col', 'four_col' ), true );
         },
     ) );
 
@@ -417,7 +409,7 @@ add_action( 'customize_register', function( $wp_customize ) {
         'type'            => 'text',
         'active_callback' => function() {
             return (bool) get_theme_mod( 'footer_show_top', 1 )
-                && get_theme_mod( 'footer_top_right_variant', 'colby' ) === 'four_col';
+                && get_theme_mod( 'footer_top_right_variant', 'unsorted' ) === 'four_col';
         },
     ) );
 
@@ -436,7 +428,7 @@ add_action( 'customize_register', function( $wp_customize ) {
         'choices'         => $nav_menu_choices,
         'active_callback' => function() {
             return (bool) get_theme_mod( 'footer_show_top', 1 )
-                && get_theme_mod( 'footer_top_right_variant', 'colby' ) === 'four_col';
+                && get_theme_mod( 'footer_top_right_variant', 'unsorted' ) === 'four_col';
         },
     ) );
 

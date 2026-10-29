@@ -11,6 +11,8 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 require_once __DIR__ . '/directory_sync.php';
 require_once __DIR__ . '/directory_form_auth.php';
 
+require_once __DIR__ . '/acf_fields.php';
+
 require_once __DIR__ . '/header_settings.php';
 require_once __DIR__ . '/footer_settings.php';
 
@@ -322,6 +324,7 @@ add_action('template_redirect', function () {
       'alert'             => get_field('alert', 'options'),
       'address'           => get_field('address', 'options'),
       'phone'             => get_field('phone', 'options'),
+      'mission'            => get_field('mission', 'options'),
     ],
     'menus' => [
       'main'    => colby_get_menu_cached('main'),
