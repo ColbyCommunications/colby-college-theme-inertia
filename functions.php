@@ -609,22 +609,79 @@ if (!function_exists('dd')) {
   }
 }
 
-function disable_h1_heading_level() {
+function colby_add_block_categories( $categories, $editor_context ) {
+    $custom_categories = array(
+        array(
+            'slug'  => 'colby-hero',
+            'title' => __( 'Heroes', 'colby' ),
+            'icon'  => null,
+        ),
+        array(
+            'slug'  => 'colby-layout',
+            'title' => __( 'Layout', 'colby' ),
+            'icon'  => null,
+        ),
+        array(
+            'slug'  => 'colby-media',
+            'title' => __( 'Media', 'colby' ),
+            'icon'  => null,
+        ),
+    );
+
+    // Insert the custom categories at the beginning.
+    array_splice( $categories, 0, 0, $custom_categories );
+
+    return $categories;
+}
+add_filter( 'block_categories_all', 'colby_add_block_categories', 10, 2 );
+
+
+function colby_customize_block_editor() {
     ?>
     <script>
     wp.domReady(function() {
-        wp.blocks.registerBlockVariation = function() {};
-        
+
+        // Remove H1 from core/heading.
         const settings = wp.blocks.getBlockType('core/heading');
 
-        if (settings && settings.attributes.levelOptions) {
-            settings.attributes.levelOptions.default = [2,3,4,5,6];
+        if (settings && settings.attributes && settings.attributes.levelOptions) {
+            settings.attributes.levelOptions.default = [2, 3, 4, 5, 6];
         }
+
+        // Hide core Grid variation from Design.
+        if (wp.blocks.unregisterBlockVariation) {
+            wp.blocks.unregisterBlockVariation('core/group', 'group-grid');
+        }
+
+        // Hide core Row variation from Design.
+        if (wp.blocks.unregisterBlockVariation) {
+            wp.blocks.unregisterBlockVariation('core/group', 'group-row');
+        }
+
+        // Hide core Stack variation from Design.
+        if (wp.blocks.unregisterBlockVariation) {
+            wp.blocks.unregisterBlockVariation('core/group', 'group-stack');
+        }
+
+        // Hide core Accordion blocks.
+        const blocksToHide = [
+            'core/accordion',
+            'core/accordion-item',
+            'core/accordion-header',
+            'core/accordion-panel',
+        ];
+
+        blocksToHide.forEach(function(blockName) {
+            if (wp.blocks.getBlockType(blockName)) {
+                wp.blocks.unregisterBlockType(blockName);
+            }
+        });
+
     });
     </script>
     <?php
 }
-add_action('admin_footer', 'disable_h1_heading_level');
+add_action('admin_footer', 'colby_customize_block_editor');
 
 function force_tinymce_underline_tags($init) {
     $init['formats'] = json_encode([
