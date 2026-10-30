@@ -102,6 +102,11 @@ const blockRegistry = {
   "acf/pdf-embed": () => import("../PdfEmbed/PdfEmbed.vue"),
   "acf/social-grid": () => import("../SocialGrid/SocialGrid.vue"),
   "acf/mosaic": () => import("../Mosaic/Mosaic.vue"),
+  "acf/media-item": () => import("../MediaItem/MediaItem.vue"),
+  "acf/cta-card": () => import("../CTACard/CtaCard.vue"),
+  "acf/grid": () => import("../Grid/Grid.vue"),
+  "acf/media-context-card": () =>
+    import("../MediaContextCard/MediaContextCard.vue"),
 
   "core/heading": () => import("../Heading/Heading.vue"),
   "core/group": () => import("../Group/Group.vue"),

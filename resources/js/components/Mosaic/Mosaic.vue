@@ -3,49 +3,27 @@
     <div
       v-if="items && items.length"
       ref="gridRef"
-      class="mosaic__grid grid grid-flow-dense auto-rows-[4px]"
+      class="mosaic__grid grid grid-flow-dense auto-rows-[4px] items-start"
       :class="[gridColumnClasses, gapClasses.columnGap]"
     >
-      <component
-        :is="item.url ? 'a' : 'div'"
+      <div
         v-for="(item, index) in items"
         :key="index"
         :ref="(el) => setItemRef(el, index)"
-        :href="item.url || undefined"
-        :target="item.url && item.new_tab ? '_blank' : undefined"
-        :rel="item.url && item.new_tab ? 'noopener noreferrer' : undefined"
-        class="mosaic__item block w-full overflow-hidden"
-        :class="[
-          getItemSpanClasses(item),
-          gapClasses.marginBottom,
-          item.url ? 'group cursor-pointer' : '',
-        ]"
+        style="container-type: inline-size"
+        class="mosaic__item @container block w-full overflow-hidden"
+        :class="[getItemSpanClasses(item), gapClasses.marginBottom]"
         :style="{
           gridRowEnd: rowSpans[index] ? `span ${rowSpans[index]}` : undefined,
         }"
       >
-        <div
-          v-if="item.image?.url || item.image?.src"
-          class="relative w-full overflow-hidden bg-gray-100"
-          :class="getRatioClass(item.ratio)"
-        >
-          <img
-            :src="item.image.url || item.image.src"
-            :alt="item.image.alt || ''"
-            :width="item.image.width || undefined"
-            :height="item.image.height || undefined"
-            loading="lazy"
-            class="block w-full transition-transform duration-500 ease-out"
-            :class="[
-              item.ratio && item.ratio !== 'original'
-                ? 'h-full object-cover'
-                : 'h-auto',
-              item.url ? 'group-hover:scale-105' : '',
-            ]"
-            @load="calculateRowSpans"
-          />
-        </div>
-      </component>
+        <component
+          :is="resolveComponent(item.acf_fc_layout)"
+          v-bind="item"
+          :col-span="getActiveSpanNumber(item)"
+          @load="calculateRowSpans"
+        />
+      </div>
     </div>
   </section>
 </template>
@@ -59,6 +37,10 @@ import {
   watch,
   nextTick,
 } from "vue";
+import MediaItem from "../MediaItem/MediaItem.vue";
+import CtaCard from "../CTACard/CtaCard.vue";
+import BlockQuote from "../BlockQuote/BlockQuote.vue";
+import MediaContextCard from "../MediaContextCard/MediaContextCard.vue";
 
 const props = defineProps({
   columns: {
@@ -79,14 +61,26 @@ const props = defineProps({
   },
 });
 
+const componentMap = {
+  media_item: MediaItem,
+  media_context_card: MediaContextCard,
+  cta_card: CtaCard,
+  block_quote: BlockQuote,
+};
+
+const resolveComponent = (layout) => componentMap[layout] || MediaItem;
+
 const gridRef = ref(null);
 const itemRefs = ref([]);
 const rowSpans = ref({});
-let resizeObserver = null;
+let itemResizeObserver = null;
 
 const setItemRef = (el, index) => {
   if (el) {
     itemRefs.value[index] = el;
+    if (itemResizeObserver && el.firstElementChild) {
+      itemResizeObserver.observe(el.firstElementChild);
+    }
   }
 };
 
@@ -126,12 +120,15 @@ const gridColumnClasses = computed(() => {
     .join(" ");
 });
 
-// Reads the active conditional col_span field and clamps it per breakpoint
-const getItemSpanClasses = (item) => {
+const getActiveSpanNumber = (item) => {
   const activeColKey = `col_span_${props.columns}`;
   const rawSpan = item?.[activeColKey] || item?.col_span || 1;
   const desired = Math.max(1, Number(rawSpan) || 1);
+  return Math.min(desired, breakpointCols.value.lg);
+};
 
+const getItemSpanClasses = (item) => {
+  const desired = getActiveSpanNumber(item);
   const { base, sm, md, lg } = breakpointCols.value;
 
   const baseSpan = Math.min(desired, base);
@@ -189,16 +186,6 @@ const gapClasses = computed(() => {
   return gaps[props.gap] || gaps.medium;
 });
 
-const getRatioClass = (ratio) => {
-  const ratios = {
-    original: "",
-    portrait: "aspect-[3/4]",
-    square: "aspect-square",
-    landscape: "aspect-[4/3]",
-  };
-  return ratios[ratio] || "";
-};
-
 const calculateRowSpans = () => {
   const rowTrackHeight = 4;
   const updated = {};
@@ -223,17 +210,26 @@ const calculateRowSpans = () => {
 onMounted(() => {
   calculateRowSpans();
 
-  if (typeof ResizeObserver !== "undefined" && gridRef.value) {
-    resizeObserver = new ResizeObserver(() => {
+  if (typeof ResizeObserver !== "undefined") {
+    itemResizeObserver = new ResizeObserver(() => {
       calculateRowSpans();
     });
-    resizeObserver.observe(gridRef.value);
+
+    if (gridRef.value) {
+      itemResizeObserver.observe(gridRef.value);
+    }
+
+    itemRefs.value.forEach((el) => {
+      if (el?.firstElementChild) {
+        itemResizeObserver.observe(el.firstElementChild);
+      }
+    });
   }
 });
 
 onBeforeUnmount(() => {
-  if (resizeObserver) {
-    resizeObserver.disconnect();
+  if (itemResizeObserver) {
+    itemResizeObserver.disconnect();
   }
 });
 
@@ -241,6 +237,11 @@ watch(
   () => [props.items, props.columns, props.min_columns, props.gap],
   async () => {
     await nextTick();
+    itemRefs.value.forEach((el) => {
+      if (itemResizeObserver && el?.firstElementChild) {
+        itemResizeObserver.observe(el.firstElementChild);
+      }
+    });
     calculateRowSpans();
   },
   { deep: true },
