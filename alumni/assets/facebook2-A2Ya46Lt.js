@@ -1,0 +1,1 @@
+import{o,c as t,a}from"./iframe-DiUsv2ty.js";import"./preload-helper-DK9VPF6O.js";const r={viewBox:"0 0 24 24"};function n(s,e){return o(),t("svg",r,[...e[0]||(e[0]=[a("path",{d:"M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"},null,-1)])])}const l={render:n};export{l as default,n as render};
