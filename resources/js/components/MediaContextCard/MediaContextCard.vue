@@ -116,14 +116,18 @@
       <!-- STYLE B: STATIC, SLIDE-UP, SLIDE-LEFT, OR FADE -->
       <div
         v-else
-        class="media-context-card__overlay absolute inset-0 flex flex-col overflow-hidden p-6 transition-all duration-500 ease-out md:p-8"
+        class="media-context-card__overlay absolute inset-0 flex flex-col overflow-hidden transition-all duration-500 ease-out"
         :class="[
           `media-context-card__overlay--${reveal_style}`,
+          reveal_style === 'static'
+            ? `media-context-card__overlay--static-${gradient === 'none' ? 'none' : 'partial'}`
+            : 'p-6 md:p-8',
           overlayVisibilityClasses,
         ]"
       >
         <div
-          class="no-scrollbar mt-auto max-h-full w-full overflow-y-auto"
+          class="media-context-card__overlay-content no-scrollbar mt-auto max-h-full w-full overflow-y-auto"
+          :class="reveal_style === 'static' ? 'p-6 md:p-8' : ''"
           @click.stop
         >
           <Context
@@ -378,15 +382,22 @@ const handleCardClick = (e) => {
 }
 
 /* OTHER REVEAL STYLES (Static, Slide-Up, Slide-Left, Fade) */
-.media-context-card__overlay--static {
+.media-context-card__overlay--static-partial
+  .media-context-card__overlay-content {
   background: linear-gradient(
     to top,
-    rgba(var(--mcc-bg-rgb), 0.94) 0%,
-    rgba(var(--mcc-bg-rgb), 0.7) 28%,
-    rgba(var(--mcc-bg-rgb), 0.38) 55%,
-    rgba(var(--mcc-bg-rgb), 0.12) 78%,
+    rgba(var(--mcc-bg-rgb), 0.92) 0%,
+    rgba(var(--mcc-bg-rgb), 0.78) 30%,
+    rgba(var(--mcc-bg-rgb), 0.5) 55%,
+    rgba(var(--mcc-bg-rgb), 0.22) 75%,
+    rgba(var(--mcc-bg-rgb), 0.06) 90%,
     rgba(var(--mcc-bg-rgb), 0) 100%
   );
+  padding-top: 4.5rem;
+}
+
+.media-context-card__overlay--static-none {
+  background-color: transparent;
 }
 
 .media-context-card__overlay--slide-up {
