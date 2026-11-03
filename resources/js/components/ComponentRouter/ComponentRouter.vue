@@ -107,6 +107,8 @@ const blockRegistry = {
   "acf/grid": () => import("../Grid/Grid.vue"),
   "acf/media-context-card": () =>
     import("../MediaContextCard/MediaContextCard.vue"),
+  "acf/bg-inset-media-context": () =>
+    import("../BgInsetMediaContext/BgInsetMediaContext.vue"),
 
   "core/heading": () => import("../Heading/Heading.vue"),
   "core/group": () => import("../Group/Group.vue"),
@@ -219,6 +221,7 @@ function getPlaceholderHeight(item) {
     "acf/collage-section": 500,
     "acf/context-section": 500,
     "acf/featured-events": 500,
+    "acf/bg-inset-media-context": 500,
     "acf/full-bleed-hero": 250,
     "acf/home-section": 250,
     "acf/icon-section": 250,
