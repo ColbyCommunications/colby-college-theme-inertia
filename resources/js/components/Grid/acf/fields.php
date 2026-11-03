@@ -6,7 +6,7 @@ if ( ! function_exists( 'colby_grid_span_subfields' ) ) {
   function colby_grid_span_subfields( string $prefix ): array {
     $fields = array();
 
-    for ( $max_cols = 2; $max_cols <= 8; $max_cols++ ) {
+    for ( $max_cols = 2; $max_cols <= 6; $max_cols++ ) {
       $choices = array();
       for ( $i = 1; $i <= $max_cols; $i++ ) {
         $choices[ (string) $i ] = $i === 1 ? '1 Column' : "{$i} Columns";
@@ -53,8 +53,6 @@ acf_add_local_field_group( array(
         '4' => '4 Columns',
         '5' => '5 Columns',
         '6' => '6 Columns',
-        '7' => '7 Columns',
-        '8' => '8 Columns',
       ),
       'default_value' => '4',
       'return_format' => 'value',
@@ -63,7 +61,7 @@ acf_add_local_field_group( array(
       'key' => 'field_grid_min_columns',
       'label' => 'Minimum Columns (Mobile)',
       'name' => 'min_columns',
-      'type' => 'radio',
+      'type' => 'select',
       'wrapper' => array( 'width' => '25' ),
       'choices' => array(
         '1' => '1 Column',
@@ -72,14 +70,13 @@ acf_add_local_field_group( array(
         '4' => '4 Columns',
       ),
       'default_value' => '1',
-      'layout' => 'horizontal',
       'return_format' => 'value',
     ),
     array(
       'key' => 'field_grid_gap',
       'label' => 'Spacing',
       'name' => 'gap',
-      'type' => 'radio',
+      'type' => 'select',
       'wrapper' => array( 'width' => '25' ),
       'choices' => array(
         'none'   => 'None',
@@ -88,7 +85,6 @@ acf_add_local_field_group( array(
         'large'  => 'Large',
       ),
       'default_value' => 'medium',
-      'layout' => 'horizontal',
       'return_format' => 'value',
     ),
     array(

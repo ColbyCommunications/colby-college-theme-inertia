@@ -61,10 +61,10 @@ const componentMap = {
 
 const resolveComponent = (layout) => componentMap[layout] || MediaItem;
 
-// Progressive column counts across mobile (base), sm, md, and lg (desktop) up to 8 columns
+// Progressive column counts across mobile (base), sm, md, and lg (desktop) up to 6 columns
 const breakpointCols = computed(() => {
   const min = Math.min(4, Math.max(1, Number(props.min_columns) || 1));
-  const max = Math.min(8, Math.max(min, Number(props.columns) || 4));
+  const max = Math.min(6, Math.max(min, Number(props.columns) || 4));
 
   const sm = Math.min(max, Math.max(min, 2));
   const md = Math.min(max, Math.max(sm, Math.ceil(max / 2)));
@@ -100,8 +100,6 @@ const gridColumnClasses = computed(() => {
     4: "lg:grid-cols-4",
     5: "lg:grid-cols-5",
     6: "lg:grid-cols-6",
-    7: "lg:grid-cols-7",
-    8: "lg:grid-cols-8",
   };
 
   return [baseMap[base], smMap[sm], mdMap[md], lgMap[lg]]
@@ -152,8 +150,6 @@ const getItemSpanClasses = (item) => {
     4: "lg:col-span-4",
     5: "lg:col-span-5",
     6: "lg:col-span-6",
-    7: "lg:col-span-7",
-    8: "lg:col-span-8",
   };
 
   return [
