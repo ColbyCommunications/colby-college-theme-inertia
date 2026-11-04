@@ -193,6 +193,27 @@ acf_add_local_field_group( array(
             )
           ),
         ),
+        'layout_grid_paragraph' => array(
+          'key' => 'layout_grid_paragraph',
+          'name' => 'paragraph',
+          'label' => 'Paragraph',
+          'display' => 'block',
+          'sub_fields' => array_merge(
+            colby_grid_span_subfields( 'paragraph' ),
+            array(
+              array(
+                'key' => 'field_grid_clone_paragraph',
+                'label' => 'Paragraph',
+                'name' => 'paragraph_clone',
+                'type' => 'clone',
+                'clone' => array( 0 => 'group_637634c513270' ),
+                'display' => 'seamless',
+                'prefix_label' => 0,
+                'prefix_name' => 0,
+              ),
+            )
+          ),
+        ),
       ),
     ),
   ),

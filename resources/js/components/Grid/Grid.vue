@@ -28,6 +28,7 @@ import MediaItem from "../MediaItem/MediaItem.vue";
 import CtaCard from "../CTACard/CtaCard.vue";
 import BlockQuote from "../BlockQuote/BlockQuote.vue";
 import MediaContextCard from "../MediaContextCard/MediaContextCard.vue";
+import Paragraph from "../Paragraph/Paragraph.vue";
 
 const props = defineProps({
   columns: {
@@ -57,6 +58,7 @@ const componentMap = {
   media_context_card: MediaContextCard,
   cta_card: CtaCard,
   block_quote: BlockQuote,
+  paragraph: Paragraph,
 };
 
 const resolveComponent = (layout) => componentMap[layout] || MediaItem;
