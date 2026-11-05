@@ -1,8 +1,8 @@
 <template>
   <div class="media-aside mx-auto my-0 w-full max-w-screen-2xl">
-    <div class="media-aside__inner gap-10 md:grid md:grid-cols-12">
+    <div class="media-aside__inner gap-10 lg:grid lg:grid-cols-12">
       <!-- Main media area -->
-      <div class="media-aside__main md:col-span-9">
+      <div class="media-aside__main lg:col-span-8 xl:col-span-9">
         <!-- Carousel mode -->
         <div v-if="carousel" ref="glideEl">
           <div class="media-aside__window" data-glide-window>
@@ -50,40 +50,40 @@
 
       <!-- Aside -->
       <div
-        class="media-aside__aside mt-8 space-y-2 md:col-span-3 md:mt-0"
-        :class="{ grid: carousel }"
+        class="media-aside__aside mt-8 flex flex-col justify-between space-y-4 lg:col-span-4 lg:mt-0 xl:col-span-3"
       >
         <!-- Carousel aside: show context per slide -->
         <template v-if="carousel">
-          <div class="relative h-44 md:h-auto">
+          <div class="grid grid-cols-1 items-start">
             <div
               v-for="(item, index) in items"
               :key="index"
-              class="media-aside__context-wrap invisible absolute top-0 left-0 grid w-full translate-y-[60px] space-y-2 opacity-0 transition-all duration-300 ease-in-out"
-              :class="{
-                '!visible !translate-y-0 !opacity-100': activeSlide === index,
-              }"
+              class="media-aside__context-wrap col-start-1 row-start-1 flex w-full flex-col space-y-3 transition-all duration-300 ease-in-out"
+              :class="
+                activeSlide === index
+                  ? 'visible z-10 translate-y-0 opacity-100'
+                  : 'pointer-events-none invisible z-0 translate-y-4 opacity-0'
+              "
             >
               <h2
                 v-if="item.heading"
-                class="font-body text-16 leading-130 font-bold text-indigo"
+                class="font-body text-18 leading-130 font-bold text-indigo"
               >
                 {{ item.heading }}
               </h2>
               <p
                 v-if="item.paragraph"
-                class="font-body text-12 leading-140 font-normal text-indigo"
+                class="font-body leading-140 font-normal text-indigo"
               >
                 {{ item.paragraph }}
               </p>
-              <ButtonGroup
-                v-if="item.buttons && item.buttons.length"
-                size="large"
-                :items="item.buttons"
-              />
+              <div v-if="item.buttons && item.buttons.length" class="pt-1">
+                <ButtonGroup size="large" :items="item.buttons" />
+              </div>
             </div>
           </div>
-          <div class="inline-flex gap-4 self-end md:pb-6">
+
+          <div class="inline-flex gap-4 pt-4 lg:pb-6">
             <button
               class="inline-flex h-8 w-10 cursor-pointer items-center justify-center rounded border-[0.75px] border-solid border-indigo bg-snow transition-all duration-200 ease-in-out hover:bg-cloud focus:bg-cloud"
               @click="changeSlide('prev')"
@@ -102,25 +102,23 @@
         </template>
 
         <!-- Static aside -->
-        <template v-else>
+        <div v-else class="flex flex-col space-y-3">
           <h2
             v-if="heading"
-            class="font-body text-16 leading-130 font-bold text-indigo"
+            class="font-body text-18 leading-130 font-bold text-indigo"
           >
             {{ heading }}
           </h2>
           <p
             v-if="paragraph"
-            class="font-body text-12 leading-140 font-normal text-indigo"
+            class="font-body leading-140 font-normal text-indigo"
           >
             {{ paragraph }}
           </p>
-          <ButtonGroup
-            v-if="buttons && buttons.length"
-            size="large"
-            :items="buttons"
-          />
-        </template>
+          <div v-if="buttons && buttons.length" class="pt-1">
+            <ButtonGroup size="large" :items="buttons" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
