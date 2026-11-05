@@ -5,9 +5,7 @@
     aria-label="Utility menu"
   >
     <!-- Left side: Utility links -->
-    <ul
-      class="hidden w-0 md:grid md:inline-flex md:w-auto md:grid-cols-3 md:grid-cols-none md:grid-rows-2 md:grid-rows-none md:gap-0 md:gap-x-5 md:space-x-6"
-    >
+    <ul class="hidden w-0 md:inline-flex md:w-auto md:gap-x-5 md:space-x-6">
       <li
         v-if="
           utilityMenuButton &&
@@ -17,7 +15,7 @@
         class="flex list-none items-center font-body text-16 leading-110 font-normal md:text-12"
       >
         <a
-          class="block flex min-h-[44px] min-w-[44px] items-center text-center font-body text-14 leading-120 font-normal text-white hover:underline md:text-12"
+          class="flex min-h-[44px] min-w-[44px] items-center text-center font-body text-14 leading-120 font-normal text-white hover:underline md:text-12"
           :href="utilityMenuButton.url"
         >
           <div class="rounded-sm border border-gray-800 bg-indigo px-2 py-1">
@@ -86,12 +84,10 @@
   </nav>
   <nav
     v-else
-    class="header__utility flex h-[118px] justify-end bg-snow px-5 pt-4 lg:h-auto lg:pt-0"
+    class="header__utility float-right block bg-snow px-5 md:flex md:h-auto md:justify-end md:pt-0"
     aria-label="Utility menu"
   >
-    <ul
-      class="hidden w-0 md:grid md:inline-flex md:w-auto md:grid-cols-3 md:grid-cols-none md:grid-rows-2 md:grid-rows-none md:gap-0 md:gap-x-5 md:space-x-6"
-    >
+    <ul class="hidden w-0 md:inline-flex md:w-auto md:gap-x-5 md:space-x-6">
       <li
         v-if="
           utilityMenuButton &&
@@ -101,7 +97,7 @@
         class="flex list-none items-center font-body text-16 leading-110 font-normal md:text-12"
       >
         <a
-          class="block flex min-h-[44px] min-w-[44px] items-center text-center font-body text-14 leading-120 font-normal text-white hover:underline md:text-12"
+          class="flex min-h-[44px] min-w-[44px] items-center text-center font-body text-14 leading-120 font-normal text-white hover:underline md:text-12"
           :href="utilityMenuButton.url"
         >
           <div class="rounded-sm border border-gray-800 bg-indigo px-2 py-1">
@@ -121,7 +117,11 @@
           {{ item.title }}
         </a>
       </li>
-      <!-- Search (opens in modal) -->
+    </ul>
+    <!-- Search visible on mobile & desktop, matching colby.edu style -->
+    <ul
+      class="flex space-x-6 bg-snow px-5 md:static md:float-right md:ml-6 md:block md:bg-transparent md:px-0"
+    >
       <li
         class="group inline-block font-body text-14 leading-110 font-normal md:text-12"
       >
