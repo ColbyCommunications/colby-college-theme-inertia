@@ -181,6 +181,27 @@ acf_add_local_field_group( array(
             )
           ),
         ),
+        'layout_mosaic_paragraph' => array(
+          'key' => 'layout_mosaic_paragraph',
+          'name' => 'paragraph',
+          'label' => 'Paragraph',
+          'display' => 'block',
+          'sub_fields' => array_merge(
+            colby_mosaic_span_subfields( 'paragraph' ),
+            array(
+              array(
+                'key' => 'field_mosaic_clone_paragraph',
+                'label' => 'Paragraph',
+                'name' => 'paragraph_clone',
+                'type' => 'clone',
+                'clone' => array( 0 => 'group_637634c513270' ),
+                'display' => 'seamless',
+                'prefix_label' => 0,
+                'prefix_name' => 0,
+              ),
+            )
+          ),
+        ),
         'layout_mosaic_media_context' => array(
           'key' => 'layout_mosaic_media_context',
           'name' => 'media_context_card',
