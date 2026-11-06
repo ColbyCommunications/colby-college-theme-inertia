@@ -207,15 +207,16 @@
             </component>
 
             <div class="button-group mt-4 flex flex-wrap gap-4">
-              <button
-                type="button"
-                class="btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-[#dfecfd] bg-[#fafbff] px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-cloud focus:bg-cloud focus:outline focus:outline-2 focus:outline-gold"
-                @click="toggleAccordion(i)"
-              >
-                <span class="btn__text">
-                  {{ expandedIndex === i ? "Close" : "Read More" }}
-                </span>
-              </button>
+              <Button
+                size="small"
+                type="light"
+                url="#"
+                :title="expandedIndex === i ? 'Close' : 'Read More'"
+                role="button"
+                :aria-expanded="expandedIndex === i"
+                class="cursor-pointer"
+                @click.prevent="toggleAccordion(i)"
+              />
             </div>
           </div>
         </article>
@@ -248,17 +249,17 @@
 
             <div
               v-if="Array.isArray(items[i].buttons)"
-              class="mt-auto flex justify-end px-4 pb-4"
+              class="mt-auto flex flex-wrap justify-end gap-2 px-4 pb-4"
             >
-              <a
+              <Button
                 v-for="(buttonObj, buttonIndex) in items[i].buttons"
                 :key="buttonIndex"
-                :href="buttonObj.button.url"
+                size="small"
+                type="light"
+                :url="buttonObj.button.url"
+                :title="buttonObj.button.title"
                 :target="buttonObj.button.target || '_self'"
-                class="btn group ml-2 inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-[#e7f0fe] bg-[#fafbff] px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-cloud focus:bg-cloud focus:outline focus:outline-2 focus:outline-gold"
-              >
-                {{ buttonObj.button.title }}
-              </a>
+              />
             </div>
           </div>
         </Transition>
@@ -307,24 +308,21 @@
             <div
               v-if="Array.isArray(items[i].buttons)"
               :class="[
-                'mt-auto flex px-4 pb-4',
+                'mt-auto flex flex-wrap gap-2 px-4 pb-4',
                 accordionDirection(i) === 'left'
                   ? 'justify-start'
                   : 'justify-end',
               ]"
             >
-              <a
+              <Button
                 v-for="(buttonObj, buttonIndex) in items[i].buttons"
                 :key="buttonIndex"
-                :href="buttonObj.button.url"
+                size="small"
+                type="light"
+                :url="buttonObj.button.url"
+                :title="buttonObj.button.title"
                 :target="buttonObj.button.target || '_self'"
-                :class="[
-                  'btn group inline-flex cursor-pointer flex-row items-center space-x-1.5 rounded border border-solid border-[#e8f1fe] bg-[#fafbff] px-3 py-1 font-body text-10 leading-130 font-normal text-indigo !no-underline outline-offset-[-1px] transition-all duration-200 ease-in-out hover:bg-cloud focus:bg-cloud focus:outline focus:outline-2 focus:outline-gold',
-                  accordionDirection(i) === 'left' ? 'mr-2' : 'ml-2',
-                ]"
-              >
-                {{ buttonObj.button.title }}
-              </a>
+              />
             </div>
           </div>
         </Transition>
@@ -346,6 +344,7 @@ import {
 import Glide from "@glidejs/glide";
 import TextGroup from "../TextGroup/TextGroup.vue";
 import Article from "../Article/Article.vue";
+import Button from "../Button/Button.vue";
 import Picture from "../Picture/Picture.vue";
 import ArrowControls from "../ArrowControls/ArrowControls.vue";
 

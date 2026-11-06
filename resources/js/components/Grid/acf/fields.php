@@ -6,7 +6,7 @@ if ( ! function_exists( 'colby_grid_span_subfields' ) ) {
   function colby_grid_span_subfields( string $prefix ): array {
     $fields = array();
 
-    for ( $max_cols = 2; $max_cols <= 8; $max_cols++ ) {
+    for ( $max_cols = 2; $max_cols <= 6; $max_cols++ ) {
       $choices = array();
       for ( $i = 1; $i <= $max_cols; $i++ ) {
         $choices[ (string) $i ] = $i === 1 ? '1 Column' : "{$i} Columns";
@@ -53,8 +53,6 @@ acf_add_local_field_group( array(
         '4' => '4 Columns',
         '5' => '5 Columns',
         '6' => '6 Columns',
-        '7' => '7 Columns',
-        '8' => '8 Columns',
       ),
       'default_value' => '4',
       'return_format' => 'value',
@@ -63,7 +61,7 @@ acf_add_local_field_group( array(
       'key' => 'field_grid_min_columns',
       'label' => 'Minimum Columns (Mobile)',
       'name' => 'min_columns',
-      'type' => 'radio',
+      'type' => 'select',
       'wrapper' => array( 'width' => '25' ),
       'choices' => array(
         '1' => '1 Column',
@@ -72,14 +70,13 @@ acf_add_local_field_group( array(
         '4' => '4 Columns',
       ),
       'default_value' => '1',
-      'layout' => 'horizontal',
       'return_format' => 'value',
     ),
     array(
       'key' => 'field_grid_gap',
       'label' => 'Spacing',
       'name' => 'gap',
-      'type' => 'radio',
+      'type' => 'select',
       'wrapper' => array( 'width' => '25' ),
       'choices' => array(
         'none'   => 'None',
@@ -88,7 +85,6 @@ acf_add_local_field_group( array(
         'large'  => 'Large',
       ),
       'default_value' => 'medium',
-      'layout' => 'horizontal',
       'return_format' => 'value',
     ),
     array(
@@ -190,6 +186,27 @@ acf_add_local_field_group( array(
                 'name' => 'media_context',
                 'type' => 'clone',
                 'clone' => array( 0 => 'group_component_media_context_card' ),
+                'display' => 'seamless',
+                'prefix_label' => 0,
+                'prefix_name' => 0,
+              ),
+            )
+          ),
+        ),
+        'layout_grid_paragraph' => array(
+          'key' => 'layout_grid_paragraph',
+          'name' => 'paragraph',
+          'label' => 'Paragraph',
+          'display' => 'block',
+          'sub_fields' => array_merge(
+            colby_grid_span_subfields( 'paragraph' ),
+            array(
+              array(
+                'key' => 'field_grid_clone_paragraph',
+                'label' => 'Paragraph',
+                'name' => 'paragraph_clone',
+                'type' => 'clone',
+                'clone' => array( 0 => 'group_637634c513270' ),
                 'display' => 'seamless',
                 'prefix_label' => 0,
                 'prefix_name' => 0,

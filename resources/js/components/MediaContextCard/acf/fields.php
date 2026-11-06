@@ -84,10 +84,17 @@ acf_add_local_field_group( array(
             'value'    => 'peek',
           ),
         ),
+        array(
+          array(
+            'field'    => 'field_mcc_reveal_style',
+            'operator' => '==',
+            'value'    => 'static',
+          ),
+        ),
       ),
       'choices' => array(
         'none'    => 'None',
-        'partial' => 'Partial (Over Heading & Superheading Only)',
+        'partial' => 'Partial (Over Text Content Only)',
       ),
       'default_value' => 'partial',
       'return_format' => 'value',

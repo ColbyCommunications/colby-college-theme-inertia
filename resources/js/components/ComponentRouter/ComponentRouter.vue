@@ -232,7 +232,9 @@ function getPlaceholderHeight(item) {
     "acf/media-context-section": 250,
     "acf/related-section": 250,
     "acf/table-section": 250,
-
+    "acf/bg-inset-media-context": 500,
+    "acf/grid": 300,
+    "acf/mosaic": 300,
     "core/heading": 0,
     "core/group": 600,
     "core/html": 500,

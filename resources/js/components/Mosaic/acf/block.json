@@ -2,8 +2,8 @@
   "name": "acf/mosaic",
   "title": "Mosaic",
   "description": "A staggered mosaic gallery of images with optional links and aspect ratio controls.",
-  "category": "layout",
-  "icon": "grid-view",
+  "category": "colby-layout",
+  "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' height='24px' width='24px' fill='#1f1f1f'><path d='M3,21V3H21V21H3Zm2-2h6V5H5V19Zm8,0h6V12H13v7Zm0-9h6V5H13v5Z'/></svg>",
   "keywords": ["mosaic", "gallery", "images", "masonry", "grid"],
   "acf": {
     "mode": "edit",

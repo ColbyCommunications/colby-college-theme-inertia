@@ -23,7 +23,7 @@ acf_add_local_field_group(array(
 				'sub_fields' => array(
 					array(
 						'key' => 'field_645947f941645',
-						'label' => 'Subheading',
+						'label' => 'Superheading',
 						'name' => 'subheading',
 						'aria-label' => '',
 						'type' => 'text',
@@ -101,7 +101,7 @@ acf_add_local_field_group(array(
 				'sub_fields' => array(
 					array(
 						'key' => 'field_6459487141649',
-						'label' => 'Subheading',
+						'label' => 'Superheading',
 						'name' => 'subheading',
 						'aria-label' => '',
 						'type' => 'text',
@@ -251,7 +251,7 @@ acf_add_local_field_group(array(
 					),
 					array(
 						'key' => 'field_64596934f871e',
-						'label' => 'Subheading',
+						'label' => 'Superheading',
 						'name' => 'subheading',
 						'aria-label' => '',
 						'type' => 'text',

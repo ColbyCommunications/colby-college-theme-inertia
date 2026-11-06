@@ -25,8 +25,8 @@ function colby_get_header_site_data(): array {
         $data['headerlogo_styles'] =$header_logo_styles;
     }
 
-    $data['algolia_index']       = get_theme_mod( 'algolia_index' );
-    $data['algolia_qs_index']    = get_theme_mod( 'algolia_qs_index' );$data['utility_menu_style']  = get_theme_mod( 'utility_menu_style', 'colby.edu' );
+    $data['algolia_index']    = trim( (string) get_theme_mod( 'algolia_index', 'prod_colbyedu_aggregated' ) ) ?: 'prod_colbyedu_aggregated';
+    $data['algolia_qs_index'] = trim( (string) get_theme_mod( 'algolia_qs_index', 'prod_colbyedu_aggregated_query_suggestions' ) ) ?: 'prod_colbyedu_aggregated_query_suggestions';
     $data['utility_button_text'] = get_theme_mod( 'utility_menu_button_text', '' );$data['utility_button_url']  = get_theme_mod( 'utility_menu_button_url', '' );
 
     return $data;

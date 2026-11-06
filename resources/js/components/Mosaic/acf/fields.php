@@ -73,7 +73,7 @@ acf_add_local_field_group( array(
       'key' => 'field_mosaic_columns',
       'label' => 'Columns (Desktop)',
       'name' => 'columns',
-      'type' => 'radio',
+      'type' => 'select',
       'wrapper' => array( 'width' => '33' ),
       'choices' => array(
         '2' => '2 Columns',
@@ -81,13 +81,12 @@ acf_add_local_field_group( array(
         '4' => '4 Columns',
       ),
       'default_value' => '3',
-      'layout' => 'horizontal',
     ),
     array(
       'key' => 'field_mosaic_min_columns',
       'label' => 'Minimum Columns (Mobile)',
       'name' => 'min_columns',
-      'type' => 'radio',
+      'type' => 'select',
       'wrapper' => array( 'width' => '33' ),
       'choices' => array(
         '1' => '1 Column',
@@ -95,13 +94,12 @@ acf_add_local_field_group( array(
         '3' => '3 Columns',
       ),
       'default_value' => '1',
-      'layout' => 'horizontal',
     ),
     array(
       'key' => 'field_mosaic_gap',
       'label' => 'Spacing',
       'name' => 'gap',
-      'type' => 'radio',
+      'type' => 'select',
       'wrapper' => array( 'width' => '34' ),
       'choices' => array(
         'small' => 'Small',
@@ -109,7 +107,6 @@ acf_add_local_field_group( array(
         'large' => 'Large',
       ),
       'default_value' => 'medium',
-      'layout' => 'horizontal',
     ),
     array(
       'key' => 'field_mosaic_items',
@@ -177,6 +174,27 @@ acf_add_local_field_group( array(
                 'name' => 'quote_clone',
                 'type' => 'clone',
                 'clone' => array( 0 => 'group_6419fb841b5da' ),
+                'display' => 'seamless',
+                'prefix_label' => 0,
+                'prefix_name' => 0,
+              ),
+            )
+          ),
+        ),
+        'layout_mosaic_paragraph' => array(
+          'key' => 'layout_mosaic_paragraph',
+          'name' => 'paragraph',
+          'label' => 'Paragraph',
+          'display' => 'block',
+          'sub_fields' => array_merge(
+            colby_mosaic_span_subfields( 'paragraph' ),
+            array(
+              array(
+                'key' => 'field_mosaic_clone_paragraph',
+                'label' => 'Paragraph',
+                'name' => 'paragraph_clone',
+                'type' => 'clone',
+                'clone' => array( 0 => 'group_637634c513270' ),
                 'display' => 'seamless',
                 'prefix_label' => 0,
                 'prefix_name' => 0,
