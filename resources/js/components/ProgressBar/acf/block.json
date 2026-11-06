@@ -1,0 +1,20 @@
+{
+    "name": "acf/progress-bar",
+    "title": "Progress Bar",
+    "description": "Display a labeled progress indicator.",
+    "category": "layout",
+    "icon": "chart-bar",
+    "keywords": [
+      "progress",
+      "percentage",
+      "bar",
+      "status"
+    ],
+    "supports": {
+      "align": false
+    },
+    "acf": {
+      "mode": "edit",
+      "blockVersion": 2
+    }
+  }

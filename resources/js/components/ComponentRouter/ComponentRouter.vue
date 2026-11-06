@@ -109,6 +109,8 @@ const blockRegistry = {
     import("../MediaContextCard/MediaContextCard.vue"),
   "acf/bg-inset-media-context": () =>
     import("../BgInsetMediaContext/BgInsetMediaContext.vue"),
+  "acf/progress-bar": () =>
+    import("../ProgressBar/ProgressBar.vue"),
 
   "core/heading": () => import("../Heading/Heading.vue"),
   "core/group": () => import("../Group/Group.vue"),

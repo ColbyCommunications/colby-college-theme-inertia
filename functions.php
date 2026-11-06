@@ -259,12 +259,23 @@ function colby_get_breadcrumbs_cached(): array {
 
   $breadcrumbs = [];
 
-  if (is_archive()) {
+
+  if (is_post_type_archive( 'people' )) {
       $breadcrumbs[] = [
           'title' => 'People',
           'url'   => '/people/',
       ];
-  } elseif (is_page() && $object_id) {
+    } elseif (is_post_type_archive( 'events' )) {
+    // TODO move this out into Alumni-specific plugin
+      $breadcrumbs[] = [
+          'title' => 'Events',
+          'url'   => '/events/',
+      ];
+      $breadcrumbs[] = [
+          'title' => 'Events Calendar',
+          'url'   => '/events/events-calendar/',
+      ];
+  } elseif (is_page()  && $object_id) {
       $ancestors = array_reverse(get_post_ancestors($object_id));
 
       foreach ($ancestors as $ancestor_id) {
