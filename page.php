@@ -164,6 +164,20 @@ function colby_prepare_advanced_accordion_block(array $block, string $block_path
     return $block;
 }
 
+function colby_prepare_pop_open_section_block(
+	array $block,
+	string $path
+): array {
+	$inner_blocks = $block['innerBlocks'] ?? array();
+
+	$block['attrs']['data']['blocks'] = colby_process_blocks(
+		$inner_blocks,
+		$path . '_inner'
+	);
+
+	return $block;
+}
+
 function colby_process_single_block(array $block, int $index = 0, string $path = 'root'): array
 {
     $block_path = $path . '_' . $index;
@@ -201,6 +215,12 @@ function colby_process_single_block(array $block, int $index = 0, string $path =
         );
     } elseif (($block['blockName'] ?? null) === 'acf/advanced-accordion') {
         $block = colby_prepare_advanced_accordion_block($block, $block_path);
+    } 
+    elseif (($block['blockName'] ?? '') === 'acf/pop-open-section') {
+        $block = colby_prepare_pop_open_section_block(
+            $block,
+            $block_path
+        );
     } elseif (($block['blockName'] ?? null) === 'core/embed') {
         $block['attrs'] = isset($block['attrs']) && is_array($block['attrs']) ? $block['attrs'] : [];
         $block['attrs']['data'] = isset($block['attrs']['data']) && is_array($block['attrs']['data']) ? $block['attrs']['data'] : [];
