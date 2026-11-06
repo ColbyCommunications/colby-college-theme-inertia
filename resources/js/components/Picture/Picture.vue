@@ -84,7 +84,7 @@ function normalizeSrc(src) {
     const rawSrc = String(src.replace(/-scaled/g, ""));
     const colby = window.colby || {};
 
-    if (colby.isLocal && colby.PRIMARY_DOMAIN && !props.fromApi) {
+    if ((colby.isLocal || colby.isUpsun) && colby.PRIMARY_DOMAIN && !props.fromApi) {
       try {
         const url = new URL(rawSrc, window.location.origin);
         return `https://${colby.PRIMARY_DOMAIN}${url.pathname}`;
