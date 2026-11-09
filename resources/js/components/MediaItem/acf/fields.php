@@ -12,9 +12,9 @@ acf_add_local_field_group( array(
       'name' => 'ratio',
       'type' => 'select',
       'choices' => array(
-        'original' => 'Original (Full Image)',
-        'portrait' => 'Portrait (3:4)',
-        'square' => 'Square (1:1)',
+        'original'  => 'Original (Full Image)',
+        'portrait'  => 'Portrait (3:4)',
+        'square'    => 'Square (1:1)',
         'landscape' => 'Landscape (4:3)',
       ),
       'default_value' => 'original',
@@ -34,7 +34,34 @@ acf_add_local_field_group( array(
       'label' => 'URL (Optional)',
       'name' => 'url',
       'type' => 'url',
-      'wrapper' => array( 'width' => '70' ),
+      'wrapper' => array( 'width' => '50' ),
+    ),
+    array(
+      'key' => 'field_media_item_url_icon_color',
+      'label' => 'URL Icon Color',
+      'name' => 'url_icon_color',
+      'type' => 'select',
+      'wrapper' => array( 'width' => '25' ),
+      'conditional_logic' => array(
+        array(
+          array(
+            'field'    => 'field_media_item_url',
+            'operator' => '!=empty',
+          ),
+        ),
+      ),
+      'choices' => array(
+        'indigo' => 'Indigo',
+        'gold'   => 'Gold',
+        'azure'  => 'Azure',
+        'snow'   => 'Snow',
+        'cloud'  => 'Cloud',
+        'stone'  => 'Stone',
+        'slate'  => 'Slate',
+        'coal'   => 'Coal',
+      ),
+      'default_value' => 'indigo',
+      'return_format' => 'value',
     ),
     array(
       'key' => 'field_media_item_target',
@@ -42,11 +69,11 @@ acf_add_local_field_group( array(
       'name' => 'new_tab',
       'type' => 'true_false',
       'ui' => 1,
-      'wrapper' => array( 'width' => '30' ),
+      'wrapper' => array( 'width' => '25' ),
       'conditional_logic' => array(
         array(
           array(
-            'field' => 'field_media_item_url',
+            'field'    => 'field_media_item_url',
             'operator' => '!=empty',
           ),
         ),
