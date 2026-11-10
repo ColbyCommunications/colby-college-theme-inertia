@@ -30,7 +30,7 @@
       <span
         v-if="url"
         aria-hidden="true"
-        class="media-item__cue pointer-events-none absolute top-4 right-4 z-10 flex h-8 w-8 items-center justify-center rounded-full border backdrop-blur-md transition-colors duration-300 ease-out md:top-5 md:right-5 md:h-9 md:w-9"
+        class="media-item__cue pointer-events-none absolute top-0 right-0 z-10 flex h-6 w-6 items-center justify-center border-b border-l backdrop-blur-md transition-colors duration-300 ease-out md:h-7 md:w-7"
         :class="cueThemeClasses"
       >
         <svg
