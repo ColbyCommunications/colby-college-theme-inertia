@@ -107,15 +107,24 @@ const toggleActive = () => {
 // Current page detection for active menu items
 const isCurrent = (item) => {
   try {
+    if (!item?.url) return false;
+
     const there = new URL(item.url, window.location.origin);
 
     // Only mark as current if it's on the same origin
     if (there.origin !== window.location.origin) return false;
 
+    // Normalize paths: strip trailing slashes, default to '/'
     const herePath = window.location.pathname.replace(/\/+$/, "") || "/";
     const therePath = there.pathname.replace(/\/+$/, "") || "/";
 
-    return herePath === therePath;
+    // 1. Root page ('/') should only match exactly to avoid matching everything
+    if (therePath === "/") {
+      return herePath === "/";
+    }
+
+    // 2. Exact match OR starts with the item's path followed by a sub-route separator '/'
+    return herePath === therePath || herePath.startsWith(`${therePath}/`);
   } catch {
     return false;
   }
