@@ -54,7 +54,8 @@
       </video>
 
       <Picture
-        :alt="isDecorative ? '' : image.alt || ''"
+        v-if="image?.url || image?.src"
+        :alt="isDecorative ? '' : image?.alt || ''"
         class="absolute top-0 left-0 z-[2] h-full w-full object-cover transition-opacity duration-500 ease-in-out"
         :class="showPoster ? 'opacity-100' : 'pointer-events-none opacity-0'"
         :src="image.url || image.src"
@@ -129,7 +130,9 @@ const videoReady = ref(false);
 
 let player = null;
 
-const isInteractive = computed(() => Boolean(props.id && !props.isBackgroundOnly));
+const isInteractive = computed(() =>
+  Boolean(props.id && !props.isBackgroundOnly),
+);
 
 const posterUrl = computed(() => {
   const source =
