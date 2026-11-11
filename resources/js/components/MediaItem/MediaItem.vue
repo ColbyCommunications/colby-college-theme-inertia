@@ -30,11 +30,11 @@
       <span
         v-if="url"
         aria-hidden="true"
-        class="media-item__cue pointer-events-none absolute top-4 right-4 z-10 flex h-8 w-8 items-center justify-center rounded-full border backdrop-blur-md transition-colors duration-300 ease-out md:top-5 md:right-5 md:h-9 md:w-9"
+        class="media-item__cue pointer-events-none absolute top-0 right-0 z-10 flex h-5 w-5 items-center justify-center border backdrop-blur-md transition-colors duration-300 ease-out md:top-0 md:right-0 md:h-5 md:w-5"
         :class="cueThemeClasses"
       >
         <svg
-          class="h-4 w-4 overflow-visible md:h-[18px] md:w-[18px]"
+          class="h-3 w-3 overflow-visible md:h-[12px] md:w-[12px]"
           viewBox="0 0 18 18"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
