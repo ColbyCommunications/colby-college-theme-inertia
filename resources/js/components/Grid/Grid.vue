@@ -1,5 +1,5 @@
 <template>
-  <section class="grid-block mx-auto my-0 w-full max-w-screen-2xl">
+  <div class="grid-block mx-auto my-0 w-full max-w-screen-2xl">
     <div
       v-if="items && items.length"
       class="grid-block__inner grid items-stretch"
@@ -19,7 +19,7 @@
         />
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup>
