@@ -5,24 +5,26 @@
       <div class="media-aside__main lg:col-span-8 xl:col-span-9">
         <!-- Carousel mode -->
         <div v-if="carousel" ref="glideEl">
-          <div class="media-aside__window" data-glide-window>
+          <div class="media-aside__window overflow-hidden" data-glide-window>
             <div class="glide__track" data-glide-el="track">
-              <div class="glide__slides">
+              <div class="glide__slides !items-start">
                 <div
                   v-for="(item, index) in items"
                   :key="index"
-                  class="media-aside__slide glide__slide"
+                  class="media-aside__slide glide__slide !h-auto"
                 >
                   <Picture
-                    class="w-full object-cover"
-                    :src="item.image?.sizes.Landscape"
+                    class="h-auto w-full object-cover"
+                    :src="item.image?.sizes?.Landscape"
                     :alt="item.image?.alt"
+                    :width="getImageWidth(item.image)"
+                    :height="getImageHeight(item.image)"
                   />
                   <p
-                    v-if="item.image?.caption"
-                    class="media-aside__caption mt-2 font-body text-12 leading-140 font-normal text-indigo"
+                    v-if="hasAnyCaption"
+                    class="media-aside__caption mt-2 min-h-[1.5rem] font-body text-12 leading-140 font-normal text-indigo"
                   >
-                    {{ item.image.caption }}
+                    {{ item.image?.caption || "" }}
                   </p>
                 </div>
               </div>
@@ -34,9 +36,11 @@
         <template v-else>
           <div class="media-aside__image">
             <Picture
-              class="w-full object-cover"
-              :src="image?.sizes.Landscape"
+              class="h-auto w-full object-cover"
+              :src="image?.sizes?.Landscape"
               :alt="image?.alt"
+              :width="getImageWidth(image)"
+              :height="getImageHeight(image)"
             />
           </div>
           <p
@@ -58,11 +62,11 @@
             <div
               v-for="(item, index) in items"
               :key="index"
-              class="media-aside__context-wrap col-start-1 row-start-1 flex w-full flex-col space-y-3 transition-all duration-300 ease-in-out"
+              class="media-aside__context-wrap col-start-1 row-start-1 flex w-full flex-col space-y-3 transition-opacity duration-300 ease-in-out"
               :class="
                 activeSlide === index
-                  ? 'visible z-10 translate-y-0 opacity-100'
-                  : 'pointer-events-none invisible z-0 translate-y-4 opacity-0'
+                  ? 'visible z-10 opacity-100'
+                  : 'pointer-events-none invisible z-0 opacity-0'
               "
             >
               <h2
@@ -83,8 +87,12 @@
             </div>
           </div>
 
-          <div class="inline-flex gap-4 pt-4 lg:pb-6">
+          <div
+            class="inline-flex gap-4 pt-4"
+            :class="hasAnyCaption ? 'lg:pb-6' : 'lg:pb-0'"
+          >
             <button
+              type="button"
               class="inline-flex h-8 w-10 cursor-pointer items-center justify-center rounded border-[0.75px] border-solid border-indigo bg-snow transition-all duration-200 ease-in-out hover:bg-cloud focus:bg-cloud"
               @click="changeSlide('prev')"
             >
@@ -92,6 +100,7 @@
               <Icon name="chevron" class="w-1.5 fill-azure" />
             </button>
             <button
+              type="button"
               class="inline-flex h-8 w-10 cursor-pointer items-center justify-center rounded border-[0.75px] border-solid border-indigo bg-snow transition-all duration-200 ease-in-out hover:bg-cloud focus:bg-cloud"
               @click="changeSlide('next')"
             >
@@ -125,7 +134,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, nextTick } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from "vue";
 import Glide from "@glidejs/glide";
 import Picture from "@/js/components/Picture/Picture.vue";
 import ButtonGroup from "@/js/components/ButtonGroup/ButtonGroup.vue";
@@ -144,10 +153,17 @@ const activeSlide = ref(0);
 const glideEl = ref(null);
 let glide = null;
 
-const mapButtons = (btns) =>
-  btns.map((btn) => ({
-    button: { url: btn.url, title: btn.title, target: btn.target || "" },
-  }));
+const getImageWidth = (img) =>
+  Number(img?.sizes?.["Landscape-width"] || img?.width || 1200);
+
+const getImageHeight = (img) =>
+  Number(img?.sizes?.["Landscape-height"] || img?.height || 800);
+
+const hasAnyCaption = computed(
+  () =>
+    Array.isArray(props.items) &&
+    props.items.some((item) => Boolean(item?.image?.caption)),
+);
 
 const changeSlide = (dir) => {
   if (!glide) return;
@@ -159,6 +175,7 @@ onMounted(async () => {
   await nextTick();
   const win = glideEl.value?.querySelector("[data-glide-window]");
   if (!win) return;
+
   glide = new Glide(win, {
     type: "carousel",
     gap: 0,
@@ -166,9 +183,11 @@ onMounted(async () => {
     autoplay: false,
     perView: 1,
   });
+
   glide.on("run", () => {
     activeSlide.value = glide.index;
   });
+
   glide.mount();
 });
 
