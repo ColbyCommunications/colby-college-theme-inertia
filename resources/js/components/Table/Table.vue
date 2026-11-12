@@ -149,7 +149,7 @@
           />
         </svg>
       </label>
-
+      <div>
       <select
         v-if="api === 'Course Catalogue'"
         v-model="selectedDepartment"
@@ -220,8 +220,8 @@
         <option value="Natural Sciences">Natural Sciences</option>
         <option value="Social Sciences">Social Sciences</option>
       </select>
-
-      <div v-if="filterOptions.length > 0" class="mb-6 flex md:mb-0">
+    </div>
+      <!--<div v-if="filterOptions.length > 0" class="mb-6 flex md:mb-0">
         <button
           class="mr-5 min-h-[44px] min-w-[44px] cursor-pointer font-body text-10 leading-130 text-indigo hover:underline"
           :class="filters.term === 'all' ? 'font-bold' : 'font-normal'"
@@ -242,7 +242,7 @@
         >
           {{ term }}
         </button>
-      </div>
+      </div>-->
     </div>
 
     <table

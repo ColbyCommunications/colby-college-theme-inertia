@@ -285,7 +285,7 @@ if (!function_exists('colby_block_table_get_endpoint')) {
         switch ($data['api'] ?? '') {
             case 'Department Courses':
             case 'Course Catalogue':
-                return 'https://www.colby.edu/endpoints/v2/courses/';
+                return 'https://www.colby.edu/endpoints/v3/courses/';
 
             case 'Majors and Minors':
                 return 'https://www.colby.edu/endpoints/v1/majorsminors/';
@@ -308,7 +308,7 @@ if (!function_exists('colby_block_table_group_v2_courses')) {
         $grouped = [];
 
         foreach ($rows as $row) {
-            $course_number = $row['secCrsNo'] ?? '';
+            $course_number = $row['crsno'] ?? '';
 
             if ($course_number === '') {
                 continue;
@@ -325,22 +325,23 @@ if (!function_exists('colby_block_table_group_v2_courses')) {
 
         foreach ($grouped as $rows_for_course) {
             $first = $rows_for_course[0] ?? [];
-
-            $course = [
-                'secCrsNo'    => $first['secCrsNo'] ?? '',
-                'dept'        => $first['dept'] ?? '',
-                'longTitle'   => $first['longTitle'] ?? '',
-                'maxhrs'      => (int) ($first['maxhrs'] ?? 0),
-                'minhrs'      => (int) ($first['minhrs'] ?? 0),
-                'area'        => $first['area'] ?? '',
-                'prereq'      => $first['prereq'] ?? '',
-                'diversity'   => $first['diversity'] ?? '',
-                'writing'     => $first['writing'] ?? '',
-                'abstr'       => $first['abstr'] ?? '',
-                'sessOffered' => $first['sessOffered'] ?? '',
-                'labsci'      => '',
-                'sections'    => [],
-            ];
+            if ($first['dept'] != 'COLBY') {
+                $course = [
+                    'secCrsNo'    => $first['crsno'] ?? '',
+                    'dept'        => $first['dept'] ?? '',
+                    'longTitle'   => $first['longTitle'] ?? '',
+                    'maxhrs'      => (int) ($first['maxhrs'] ?? 0),
+                    'minhrs'      => (int) ($first['minhrs'] ?? 0),
+                    'area'        => $first['area'] ?? '',
+                    'prereq'      => $first['prereq'] ?? '',
+                    'diversity'   => $first['diversity'] ?? '',
+                    'writing'     => $first['writing'] ?? '',
+                    'abstr'       => $first['abstr'] ?? '',
+                    'sessOffered' => $first['sessOffered'] ?? '',
+                    'labsci'      => '',
+                    'sections'    => [],
+                ];
+            }
 
             foreach ($rows_for_course as $row) {
                 $course['sections'][] = [
