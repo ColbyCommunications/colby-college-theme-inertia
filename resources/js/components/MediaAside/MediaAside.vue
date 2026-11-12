@@ -180,7 +180,7 @@ onMounted(async () => {
     type: "carousel",
     gap: 0,
     animationDuration: 600,
-    autoplay: false,
+    autoplay: 5000,
     perView: 1,
   });
 
