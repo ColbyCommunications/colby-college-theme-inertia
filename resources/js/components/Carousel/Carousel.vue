@@ -23,20 +23,24 @@
       @mouseleave="playCarousel"
       ref="rootEl"
     >
-      <div class="carousel__window w-full" data-glide-window>
+      <div class="carousel__window w-full overflow-hidden" data-glide-window>
         <div class="glide__track" data-glide-el="track">
           <div class="glide__slides">
             <div
               v-for="(item, idx) in slides"
               :key="'basic-' + idx"
-              class="carousel__slide glide__slide"
+              class="carousel__slide glide__slide overflow-hidden"
             >
-              <Picture
-                v-if="item.image"
-                class="h-full w-full object-cover"
-                :src="item.image?.src"
-                :alt="item.image?.alt || ''"
-              />
+              <div class="aspect-[760/430] w-full overflow-hidden">
+                <Picture
+                  v-if="item.image"
+                  class="block h-full w-full object-cover"
+                  :src="item.image?.sizes?.Rectangle || item.image?.src"
+                  :alt="item.image?.alt || ''"
+                  :width="760"
+                  :height="430"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -75,6 +79,7 @@
       </div>
     </div>
   </div>
+
   <div
     v-if="render_api && mode == 'latest'"
     class="carousel__inner mx-auto my-0 w-full max-w-screen-2xl gap-x-10 px-5 md:grid md:grid-cols-12"
@@ -98,21 +103,25 @@
       @mouseleave="playCarousel"
       ref="rootEl"
     >
-      <div class="carousel__window w-full" data-glide-window ref="window">
+      <div
+        class="carousel__window w-full overflow-hidden"
+        data-glide-window
+        ref="window"
+      >
         <div class="glide__track" data-glide-el="track">
           <div class="glide__slides">
             <div
               v-for="(it, idx) in slides"
-              class="carousel__slide glide__slide"
+              class="carousel__slide glide__slide overflow-hidden"
               :key="'ctx-api-' + idx"
             >
-              <div class="relative pb-[56.578947368421055%]">
+              <div class="aspect-[760/430] w-full overflow-hidden">
                 <Picture
-                  class="absolute top-0 left-0 h-full w-full object-cover"
+                  class="block h-full w-full object-cover"
                   :src="firstOg(it)?.url"
                   :alt="it.yoast_head_json?.og_description || ''"
-                  :height="firstOg(it)?.height"
-                  :width="firstOg(it)?.width"
+                  :width="760"
+                  :height="430"
                   :fromApi="true"
                 />
               </div>
@@ -166,6 +175,7 @@
       </div>
     </div>
   </div>
+
   <div
     v-if="render_api && mode == 'academic'"
     class="article-section__inner mx-auto my-0 w-full max-w-screen-2xl space-y-16 gap-x-10 px-5 md:grid md:grid-cols-12 md:space-y-0"
@@ -191,7 +201,7 @@
       ref="rootEl"
     >
       <div
-        class="article-grid mx-auto my-0 max-w-screen-2xl"
+        class="article-grid mx-auto my-0 max-w-screen-2xl overflow-hidden"
         data-glide-window
         ref="window"
       >
@@ -200,21 +210,21 @@
             <div
               v-for="(it, idx) in slides"
               :key="'ctx-api-' + idx"
-              class="article-grid__item glide__slide"
+              class="article-grid__item glide__slide overflow-hidden"
             >
               <article class="article space-y-4">
                 <a
                   v-if="it.yoast_head_json.og_image[0].url"
-                  class="article__image relative block overflow-hidden"
+                  class="article__image relative block aspect-[760/430] w-full overflow-hidden"
                   :href="it.guid.rendered"
                 >
-                  <picture>
+                  <picture class="block h-full w-full">
                     <source
                       media="(min-width:768px)"
                       :srcset="it.yoast_head_json.og_image[0].url"
                     />
                     <img
-                      class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
+                      class="block h-full w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
                       :src="it.yoast_head_json.og_image[0].url"
                       :alt="it.yoast_head_json.og_description"
                     />
@@ -249,6 +259,7 @@
       </div>
     </div>
   </div>
+
   <div
     v-else-if="render_api && mode == 'faculty'"
     class="article-section__inner mx-auto my-0 w-full max-w-screen-2xl space-y-16 gap-x-10 px-5 md:grid md:grid-cols-12 md:space-y-0"
@@ -274,7 +285,7 @@
       ref="rootEl"
     >
       <div
-        class="article-grid mx-auto my-0 max-w-screen-2xl"
+        class="article-grid mx-auto my-0 max-w-screen-2xl overflow-hidden"
         data-glide-window
         ref="window"
       >
@@ -283,21 +294,21 @@
             <div
               v-for="(it, idx) in slides"
               :key="'ctx-api-' + idx"
-              class="article-grid__item glide__slide"
+              class="article-grid__item glide__slide overflow-hidden"
             >
               <article class="article space-y-4">
                 <a
                   v-if="it.yoast_head_json.og_image[0].url"
-                  class="article__image relative block overflow-hidden"
+                  class="article__image relative block aspect-[760/430] w-full overflow-hidden"
                   :href="it.guid.rendered"
                 >
-                  <picture>
+                  <picture class="block h-full w-full">
                     <source
                       media="(min-width:768px)"
                       :srcset="it.yoast_head_json.og_image[0].url"
                     />
                     <img
-                      class="w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
+                      class="block h-full w-full object-cover transition-all duration-500 ease-in-out hover:scale-105"
                       :src="it.yoast_head_json.og_image[0].url"
                       :alt="it.yoast_head_json.og_description"
                     />
@@ -378,7 +389,7 @@ const props = defineProps({
   size: { type: String, default: "small" },
 
   perView: { type: Number, default: 1 },
-  gap: { type: Number, default: 0 },
+  gap: { type: Number, default: 1 },
 
   autoplay: { type: Boolean, default: true },
   interval: { type: [Number, String], default: 5000 },
@@ -449,7 +460,7 @@ function normalizeImage(image) {
 
   return {
     ...image,
-    src: image.src || image.url || "",
+    src: image.sizes?.Rectangle || image.src || image.url || "",
   };
 }
 
