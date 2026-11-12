@@ -1,6 +1,6 @@
 <template>
   <button
-    class="arrow-btn inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded border-[0.75px] border-solid border-indigo bg-white transition-all duration-200 ease-in-out hover:bg-cloud focus:bg-cloud hover:border-snow"
+    class="arrow-btn inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded border-[0.75px] border-solid border-indigo bg-white transition-all duration-200 ease-in-out hover:border-snow hover:bg-cloud focus-visible:bg-cloud"
     @click="handleClick"
   >
     <span class="sr-only">
