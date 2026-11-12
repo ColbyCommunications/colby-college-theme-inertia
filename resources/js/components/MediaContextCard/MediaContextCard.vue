@@ -1,7 +1,7 @@
 <template>
   <div
     ref="cardRef"
-    class="media-context-card group relative w-full overflow-hidden bg-indigo select-none"
+    class="media-context-card group/card relative w-full overflow-hidden bg-indigo select-none"
     :class="[
       ratioClass,
       hasInteractiveReveal ? 'is-interactive cursor-pointer' : '',
@@ -28,10 +28,12 @@
       loop
       muted
       playsinline
-      class="block w-full transition-transform duration-700 ease-out"
+      class="block w-full scale-100 transform-gpu transition-transform duration-700 ease-out"
       :class="[
         ratio && ratio !== 'original' ? 'h-full object-cover' : 'h-auto',
-        hasInteractiveReveal && !forceClosed ? 'group-hover:scale-105' : '',
+        hasInteractiveReveal && !forceClosed
+          ? 'group-hover/card:scale-105'
+          : '',
         isActive ? 'scale-105' : '',
       ]"
       @loadedmetadata="handleMediaLoad"
@@ -44,10 +46,12 @@
       :width="image?.width || undefined"
       :height="image?.height || undefined"
       loading="lazy"
-      class="block w-full transition-transform duration-700 ease-out"
+      class="block w-full scale-100 transform-gpu transition-transform duration-700 ease-out"
       :class="[
         ratio && ratio !== 'original' ? 'h-full object-cover' : 'h-auto',
-        hasInteractiveReveal && !forceClosed ? 'group-hover:scale-105' : '',
+        hasInteractiveReveal && !forceClosed
+          ? 'group-hover/card:scale-105'
+          : '',
         isActive ? 'scale-105' : '',
       ]"
       @load="handleMediaLoad"
@@ -67,7 +71,7 @@
           isActive
             ? 'rotate-45'
             : !forceClosed
-              ? 'group-focus-within:rotate-45 group-hover:rotate-45'
+              ? 'group-focus-within/card:rotate-45 group-hover/card:rotate-45'
               : '',
         ]"
         viewBox="0 0 16 16"
@@ -121,7 +125,7 @@
                 ? 'grid-rows-[1fr] opacity-100'
                 : forceClosed
                   ? 'grid-rows-[0fr] opacity-0'
-                  : 'grid-rows-[0fr] opacity-0 group-focus-within:grid-rows-[1fr] group-focus-within:opacity-100 group-hover:grid-rows-[1fr] group-hover:opacity-100'
+                  : 'grid-rows-[0fr] opacity-0 group-focus-within/card:grid-rows-[1fr] group-focus-within/card:opacity-100 group-hover/card:grid-rows-[1fr] group-hover/card:opacity-100'
             "
           >
             <div class="min-h-0 overflow-hidden">
@@ -346,18 +350,18 @@ const overlayVisibilityClasses = computed(() => {
     case "slide-up":
       if (isActive.value) return "translate-y-0 opacity-100";
       if (forceClosed.value) return "translate-y-full opacity-0";
-      return "translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100";
+      return "translate-y-full opacity-0 group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100";
 
     case "slide-left":
       if (isActive.value) return "translate-x-0 opacity-100";
       if (forceClosed.value) return "-translate-x-full opacity-0";
-      return "-translate-x-full opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-focus-within:translate-x-0 group-focus-within:opacity-100";
+      return "-translate-x-full opacity-0 group-hover/card:translate-x-0 group-hover/card:opacity-100 group-focus-within/card:translate-x-0 group-focus-within/card:opacity-100";
 
     case "fade":
     default:
       if (isActive.value) return "opacity-100";
       if (forceClosed.value) return "opacity-0";
-      return "opacity-0 group-hover:opacity-100 group-focus-within:opacity-100";
+      return "opacity-0 group-hover/card:opacity-100 group-focus-within/card:opacity-100";
   }
 });
 
