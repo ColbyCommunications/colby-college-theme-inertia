@@ -137,6 +137,8 @@ function getNewPeople( $directory_data, $course_data ) {
       $WDIsRetiree = 1;
     }
 
+    // [{"crs":"AY257","sec":"A","title":"Anthropology of Slowness"}]
+
     $WDCourses = '';
 
     $filteredCourses = array_filter( $course_data, function( $course ) use ( $WDEmployeeID ) {
@@ -224,7 +226,7 @@ function getNewPeople( $directory_data, $course_data ) {
       }
 
       if ( $matchingPhoto ) {
-        $imageURL = 'https://colby.edu/college/WorkdayPhotos/v2/MD5/' . $matchingPhoto;
+        $imageURL = 'https://www.colby.edu/college/WorkdayPhotos/v2/MD5/' . $matchingPhoto;
         $desc     = $WDPrefFirstName . ' ' . $WDPrefLastName;
         $image    = media_sideload_image( $imageURL, $ID, $desc, 'id' );
         if ( ! is_wp_error( $image ) ) {
@@ -283,7 +285,7 @@ function getNewPeople( $directory_data, $course_data ) {
       if ( $matchingPhoto ) {
         $img_parts   = explode( '_', $matchingPhoto );
         $date        = substr( $img_parts[1], 0, 8 );
-        $imageURL    = 'https://colby.edu/college/WorkdayPhotos/v2/MD5/' . $matchingPhoto;
+        $imageURL = 'https://www.colby.edu/college/WorkdayPhotos/v2/MD5/' . $matchingPhoto;
         $desc        = $WDPrefFirstName . ' ' . $WDPrefLastName;
         $DBImageName = get_the_post_thumbnail_url( $ID );
         if ( $DBImageName ) {
