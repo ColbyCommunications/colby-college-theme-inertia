@@ -11,8 +11,10 @@ $query = new WP_Query([
 ]);
 
 $people = array_map(function ($post) {
-    $thumbnail_id = get_post_thumbnail_id($post->ID);
-    $thumbnail = $thumbnail_id
+    $hide_photo   = get_post_meta($post->ID, 'hide_photo', true);
+    $is_hidden    = !empty($hide_photo) && ($hide_photo === '1' || $hide_photo == 1 || $hide_photo === 'yes');
+    $thumbnail_id = $is_hidden ? 0 : get_post_thumbnail_id($post->ID);
+    $thumbnail    = $thumbnail_id
         ? wp_get_attachment_image_url($thumbnail_id, 'Square_mobile')
         : '';
 
