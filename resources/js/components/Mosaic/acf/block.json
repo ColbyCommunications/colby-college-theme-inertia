@@ -7,11 +7,12 @@
   "keywords": ["mosaic", "gallery", "images", "masonry", "grid"],
   "acf": {
     "mode": "edit",
-    "renderTemplate": "mosaic.php"
+    "blockVersion": 2
   },
   "supports": {
     "align": false,
     "anchor": true,
-    "jsx": false
+    "jsx": false,
+    "mode": false
   }
 }

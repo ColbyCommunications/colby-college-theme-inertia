@@ -7,11 +7,12 @@
   "keywords": ["grid", "columns", "layout", "cards"],
   "acf": {
     "mode": "edit",
-    "renderTemplate": "grid.php"
+    "blockVersion": 2
   },
   "supports": {
     "align": false,
     "anchor": true,
-    "jsx": false
+    "jsx": false,
+    "mode": false
   }
 }
