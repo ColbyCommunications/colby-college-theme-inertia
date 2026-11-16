@@ -12,7 +12,6 @@
   "supports": {
     "align": false,
     "anchor": true,
-    "jsx": false,
-    "mode": false
+    "jsx": false
   }
 }
