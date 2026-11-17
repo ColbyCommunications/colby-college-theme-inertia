@@ -1,5 +1,5 @@
 <template>
-  <div class="pop-open-section">
+  <section class="pop-open-section">
     <div
       class="pop-open-section__inner mx-auto my-0 w-full max-w-screen-2xl gap-x-10 px-5 md:grid md:grid-cols-12"
       :class="{ 'my-24': hero }"
@@ -42,13 +42,10 @@
               class="space-y-8 [&_.context-section__inner]:!block [&_.context-section__inner]:!px-0"
             >
               <div v-for="(item, index) in blockItems" :key="index">
-                <component
-                  :is="item.level || 'h2'"
+                <Heading
                   v-if="item.acf_fc_layout === 'heading'"
-                  class="font-extended text-24 leading-115 text-indigo"
-                >
-                  {{ item.heading }}
-                </component>
+                  :heading="formatHeadingHtml(item)"
+                />
                 <component
                   :is="resolveComponent(item.acf_fc_layout)"
                   v-else-if="resolveComponent(item.acf_fc_layout)"
@@ -60,7 +57,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
@@ -69,6 +66,7 @@ import Context from "../Context/Context.vue";
 import Button from "../Button/Button.vue";
 import Drawer from "@/js/components/Drawer/Drawer.vue";
 
+import Heading from "../Heading/Heading.vue";
 import Paragraph from "../Paragraph/Paragraph.vue";
 import Accordion from "../Accordion/Accordion.vue";
 import ContextSection from "../ContextSection/ContextSection.vue";
@@ -135,6 +133,18 @@ const resolvedDrawerTitle = computed(() => {
 const blockItems = computed(() =>
   props.drawer_items?.length ? props.drawer_items : props.items || [],
 );
+
+const formatHeadingHtml = (item) => {
+  const tag = ["h2", "h3", "h4", "h5", "h6"].includes(item.level)
+    ? item.level
+    : "h2";
+  const text = item.heading || "";
+  // If `text` already starts with an <h2..h6> tag, pass it directly; otherwise wrap it
+  if (/^<h[2-6]\b/i.test(text.trim())) {
+    return text;
+  }
+  return `<${tag}>${text}</${tag}>`;
+};
 
 const componentMap = {
   paragraph: Paragraph,
