@@ -677,7 +677,7 @@ add_action('wp_head', function() {
     ? PRIMARY_DOMAIN
     : ('ON' === getenv('LANDO') ? 'www.colby.edu' : (wp_parse_url(home_url(), PHP_URL_HOST) ?: ''));
 
-  echo '<script type="text/javascript">window.colby = window.colby || {}; window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';window.colby.PRIMARY_DOMAIN = "' . esc_js($primary_domain) . '";window.colby.isLocal = ' . ('ON' === getenv( 'LANDO' ) ? 'true' : 'false') .'</script>';
+  echo '<script type="text/javascript">window.colby = window.colby || {}; window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';window.colby.PRIMARY_DOMAIN = "' . esc_js($primary_domain) . '";window.colby.isLocal = ' . ('ON' === getenv( 'LANDO' ) ? 'true' : 'false') .';window.colby.isUpsun = ' . (getenv('PLATFORM_RELATIONSHIPS') !== false ? 'true' : 'false') .'</script>';
 }, 1);
 
 if (!function_exists('dump')) {
