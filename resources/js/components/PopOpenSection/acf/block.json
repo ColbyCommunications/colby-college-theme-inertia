@@ -1,26 +1,18 @@
 {
-    "name": "acf/pop-open-section",
-    "title": "Pop Open Section",
-    "description": "Display introductory content with additional content revealed in a modal or side drawer.",
-    "category": "layout",
-    "icon": "welcome-widgets-menus",
-    "keywords": [
-      "modal",
-      "drawer",
-      "popup",
-      "reveal",
-      "content"
-    ],
-    "supports": {
-      "align": false,
-      "anchor": true,
-      "mode": false,
-      "jsx": true
-    },
-    "acf": {
-      "mode": "preview",
-      "blockVersion": 2,
-      "renderTemplate": "template.php"
-    },
-    "providesContext": { "acf/fields": "data" }
+  "name": "acf/pop-open-section",
+  "title": "Pop Open Section",
+  "description": "Display introductory content with additional content revealed in a modal or side drawer.",
+  "category": "layout",
+  "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" height=\"24px\" width=\"24px\" fill=\"#1f1f1f\"><path d=\"M7.5,16l4-4l-4-4v8ZM16,19h3V5H16V19ZM5,19h9V5H5V19Zm11,0h3H16ZM3,21V3H21V21H3Z\"/></svg>",
+  "keywords": ["modal", "drawer", "popup", "reveal", "content"],
+  "supports": {
+    "align": false,
+    "anchor": true,
+    "mode": false,
+    "jsx": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
   }
+}
