@@ -34,34 +34,51 @@
       class="mx-auto my-0 grid w-full max-w-screen-2xl grid-cols-9 gap-10 px-5"
       :class="{ 'mt-14': filters }"
     >
-      <div
-        v-for="(item, index) in items"
-        :key="index"
-        class="article-grid__item col-span-9 md:col-span-3"
-      >
-        <article class="article space-y-4">
-          <div class="context w-full space-y-5">
-            <TextGroup
-              size="xsmall"
-              :type="type === 'dark' ? 'light' : 'dark'"
-              :subheading="stripHTML(item.date)"
-              :heading="stripHTML(item.title)"
-              :paragraph="stripHTML(item.time)"
-            />
+      <!-- Results Grid -->
+      <template v-if="items.length > 0">
+        <div
+          v-for="(item, index) in items"
+          :key="index"
+          class="article-grid__item col-span-9 md:col-span-3"
+        >
+          <article class="article space-y-4">
+            <div class="context w-full space-y-5">
+              <TextGroup
+                size="xsmall"
+                :type="type === 'dark' ? 'light' : 'dark'"
+                :subheading="stripHTML(item.date)"
+                :heading="stripHTML(item.title)"
+                :paragraph="stripHTML(item.time)"
+              />
 
-            <ButtonGroup
-              :type="type"
-              size="small"
-              :items="[{ button: { url: item.url, title: 'Learn More', target: '_blank' } }]"
-            />
-          </div>
-        </article>
+              <ButtonGroup
+                :type="type"
+                size="small"
+                :items="[{ button: { url: item.url, title: 'Learn More', target: '_blank' } }]"
+              />
+            </div>
+          </article>
+        </div>
+      </template>
+
+      <!-- Empty State -->
+      <div
+        v-else
+        class="col-span-9 py-12 text-center"
+      >
+        <p
+          class="font-body text-18 font-medium"
+          :class="type === 'dark' ? 'text-white' : 'text-indigo'"
+        >
+          No results found
+        </p>
       </div>
     </div>
   </div>
 </template>
+
 <script setup>
-import { ref, onMounted} from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 import TextGroup from "../TextGroup/TextGroup.vue";
 import ButtonGroup from "../ButtonGroup/ButtonGroup.vue";
@@ -87,7 +104,6 @@ const props = defineProps({
     default: false,
   },
 });
-
 
 // Reactive State
 const currentEndpoint = ref(props.initialEndpoint);
@@ -142,12 +158,14 @@ const requestData = async (url) => {
     const response = await axios.get(url);
 
     // Map response to internal structure
-    const mappedItems = response.data.map((item) => ({
-      date: item.date,
-      title: item.title,
-      time: item.date_time,
-      url: item.url,
-    }));
+    const mappedItems = Array.isArray(response.data)
+      ? response.data.map((item) => ({
+          date: item.date,
+          title: item.title,
+          time: item.date_time,
+          url: item.url,
+        }))
+      : [];
 
     // Apply limit if prop exists
     if (props.limit) {
@@ -157,6 +175,7 @@ const requestData = async (url) => {
     }
   } catch (error) {
     console.error("Error fetching endpoint data:", error);
+    items.value = [];
   }
 };
 

@@ -1,5 +1,6 @@
 <template>
   <img
+    v-if="imageSrc"
     :class="class"
     :src="imageSrc"
     :alt="alt"
@@ -78,7 +79,7 @@ function normalizeSrc(src) {
   if (!src) {
     return "";
   }
-  if (src.includes('imagedelivery.net')) {
+  if (src.includes("imagedelivery.net")) {
     return src;
   } else {
     const rawSrc = String(src.replace(/-scaled/g, ""));
@@ -103,10 +104,9 @@ function cdnImageUrl(width, quality) {
     return "";
   }
 
-  if (processedSrc.value.includes('imagedelivery.net')) {
+  if (processedSrc.value.includes("imagedelivery.net")) {
     return processedSrc.value;
   }
-  
 
   return `https://${colby.PRIMARY_DOMAIN}/cdn-cgi/image/width=${width},format=auto,quality=${quality}/${processedSrc.value}`;
 }
