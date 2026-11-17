@@ -1,5 +1,5 @@
 <template>
-  <section class="pop-open-section">
+  <div class="pop-open-section">
     <div
       class="pop-open-section__inner mx-auto my-0 w-full max-w-screen-2xl gap-x-10 px-5 md:grid md:grid-cols-12"
       :class="{ 'my-24': hero }"
@@ -60,7 +60,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup>

@@ -1,8 +1,6 @@
 <template>
   <div ref="rootEl" class="progress-bar w-full">
-    <!-- Outer wrapper centered on the page and controlled by bar_width -->
     <div class="progress-bar__container mx-auto w-full" :class="barWidthClass">
-      <!-- Optional Heading & Paragraph using Context (matches ContextSection sizing) -->
       <div
         v-if="heading || paragraph"
         :id="headingId"
@@ -16,9 +14,7 @@
         />
       </div>
 
-      <!-- Bar + Parallel Metrics -->
       <div class="w-full">
-        <!-- Parallel Metrics Row when assigned to TOP -->
         <div
           v-if="isParallelTop && hasParallelContent"
           class="mb-2.5 flex items-end justify-between gap-4"
