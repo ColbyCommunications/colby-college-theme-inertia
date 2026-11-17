@@ -1,20 +1,15 @@
 {
-    "name": "acf/progress-bar",
-    "title": "Progress Bar",
-    "description": "Display a labeled progress indicator.",
-    "category": "layout",
-    "icon": "chart-bar",
-    "keywords": [
-      "progress",
-      "percentage",
-      "bar",
-      "status"
-    ],
-    "supports": {
-      "align": false
-    },
-    "acf": {
-      "mode": "edit",
-      "blockVersion": 2
-    }
+  "name": "acf/progress-bar",
+  "title": "Progress Bar",
+  "description": "Display a labeled progress indicator.",
+  "category": "layout",
+  "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" height=\"24px\" width=\"24px\" fill=\"#1f1f1f\"><path d=\"M2,15V9H22v6H2Zm12-2h6V11H14v2Z\"/></svg>",
+  "keywords": ["progress", "percentage", "bar", "status"],
+  "supports": {
+    "align": false
+  },
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
   }
+}
