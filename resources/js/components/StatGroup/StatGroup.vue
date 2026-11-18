@@ -86,10 +86,12 @@ const innerAlignmentClasses = computed(() => {
 function getItemClasses(index) {
   const count = props.items.length;
   const baseSpan =
-    "col-span-8 text-center sm:col-span-4 sm:text-left md:col-span-2";
+    props.alignment === "center"
+      ? "col-span-8 text-center sm:col-span-4 md:col-span-2"
+      : "col-span-8 text-center sm:col-span-4 sm:text-left md:col-span-2";
 
   if (props.alignment === "right") {
-    if (count === 1) return `${baseSpan} md:col-start-7`;
+    if (count === 1) return `${baseSpan} sm:col-start-5 md:col-start-7`;
     if (count === 2)
       return index === 0
         ? `${baseSpan} md:col-start-5`
@@ -99,11 +101,14 @@ function getItemClasses(index) {
   }
 
   if (props.alignment === "center") {
-    if (count === 1) return `${baseSpan} md:col-start-4`;
+    if (count === 1) return `${baseSpan} sm:col-start-3 md:col-start-4`;
     if (count === 2)
       return index === 0 ? `${baseSpan} md:col-start-3` : baseSpan;
-    if (count === 3)
-      return index === 0 ? `${baseSpan} md:col-start-2` : baseSpan;
+    if (count === 3) {
+      if (index === 0) return `${baseSpan} md:col-start-2`;
+      if (index === 2) return `${baseSpan} sm:col-start-3 md:col-start-auto`;
+      return baseSpan;
+    }
   }
 
   return baseSpan;
