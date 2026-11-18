@@ -15,6 +15,7 @@
           :buttons="{ items: buttons }"
         />
       </div>
+
       <div class="stat-group__main col-span-12" :class="groupAlignmentClasses">
         <div
           class="grid grid-cols-8 gap-8 sm:gap-10"
@@ -44,14 +45,20 @@
 
 <script setup>
 import { computed } from "vue";
+
 import Context from "@/js/components/Context/Context.vue";
 
 const props = defineProps({
   subheading: { type: String, default: "" },
+
   heading: { type: String, default: "" },
+
   paragraph: { type: String, default: "" },
+
   alignment: { type: String, default: "left" },
+
   buttons: { type: Array, default: () => [] },
+
   items: { type: Array, default: () => [] },
 });
 
@@ -64,6 +71,7 @@ const groupAlignmentClasses = computed(() => {
       return "lg:col-start-5 lg:col-span-8";
 
     case "left":
+
     default:
       return "lg:col-start-1 lg:col-span-8";
   }
@@ -78,6 +86,7 @@ const innerAlignmentClasses = computed(() => {
       return "justify-end";
 
     case "left":
+
     default:
       return "justify-start";
   }
@@ -85,30 +94,30 @@ const innerAlignmentClasses = computed(() => {
 
 function getItemClasses(index) {
   const count = props.items.length;
+
   const baseSpan =
-    props.alignment === "center"
-      ? "col-span-8 text-center sm:col-span-4 md:col-span-2"
-      : "col-span-8 text-center sm:col-span-4 sm:text-left md:col-span-2";
+    "col-span-8 text-center sm:col-span-4 sm:text-left md:col-span-2";
 
   if (props.alignment === "right") {
-    if (count === 1) return `${baseSpan} sm:col-start-5 md:col-start-7`;
+    if (count === 1) return `${baseSpan} md:col-start-7`;
+
     if (count === 2)
       return index === 0
         ? `${baseSpan} md:col-start-5`
         : `${baseSpan} md:col-start-7`;
+
     if (count === 3)
       return index === 0 ? `${baseSpan} md:col-start-3` : baseSpan;
   }
 
   if (props.alignment === "center") {
-    if (count === 1) return `${baseSpan} sm:col-start-3 md:col-start-4`;
+    if (count === 1) return `${baseSpan} md:col-start-4`;
+
     if (count === 2)
       return index === 0 ? `${baseSpan} md:col-start-3` : baseSpan;
-    if (count === 3) {
-      if (index === 0) return `${baseSpan} md:col-start-2`;
-      if (index === 2) return `${baseSpan} sm:col-start-3 md:col-start-auto`;
-      return baseSpan;
-    }
+
+    if (count === 3)
+      return index === 0 ? `${baseSpan} md:col-start-2` : baseSpan;
   }
 
   return baseSpan;
