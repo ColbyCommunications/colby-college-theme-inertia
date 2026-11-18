@@ -9,7 +9,7 @@
         v-for="(item, index) in items"
         :key="index"
         style="container-type: inline-size"
-        class="grid-block__item @container flex h-full w-full flex-col overflow-hidden [&_.md\:grid-cols-12]:!block [&_.md\:grid-cols-12]:!px-0 [&_.media-item>div]:h-full [&_img]:h-full [&_img]:object-cover [&_video]:h-full [&_video]:object-cover [&>*]:h-full"
+        class="grid-block__item @container flex h-full w-full flex-col overflow-hidden [&_.md\:grid-cols-12]:!block [&_.md\:grid-cols-12]:!px-0 [&_.media-item>div]:h-full [&_img]:h-full [&_img]:object-cover [&_video]:h-full [&_video]:object-cover [&>*]:flex [&>*]:h-full [&>*]:w-full [&>*]:flex-col [&>*]:justify-center"
         :class="[getItemSpanClasses(item), getCellAspectClass(item)]"
       >
         <component
