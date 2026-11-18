@@ -214,6 +214,55 @@ acf_add_local_field_group( array(
             )
           ),
         ),
+        'layout_grid_context_section' => array(
+          'key' => 'layout_grid_context_section',
+          'name' => 'context_section',
+          'label' => 'Context Section',
+          'display' => 'block',
+          'sub_fields' => array_merge(
+            colby_grid_span_subfields( 'context_section' ),
+            array(
+              array(
+                'key' => 'field_grid_cs_align',
+                'label' => 'Align',
+                'name' => 'align',
+                'type' => 'radio',
+                'choices' => array(
+                  'left'   => 'Left',
+                  'center' => 'Center',
+                ),
+                'default_value' => 'left',
+                'return_format' => 'value',
+                'layout' => 'horizontal',
+                'wrapper' => array( 'width' => '25' ),
+              ),
+              array(
+                'key' => 'field_grid_cs_size',
+                'label' => 'Size',
+                'name' => 'size',
+                'type' => 'radio',
+                'choices' => array(
+                  'medium' => 'Medium',
+                  'large'  => 'Large',
+                ),
+                'default_value' => 'medium',
+                'return_format' => 'value',
+                'layout' => 'horizontal',
+                'wrapper' => array( 'width' => '25' ),
+              ),
+              array(
+                'key' => 'field_grid_clone_context_direct',
+                'label' => 'Context',
+                'name' => 'context_clone',
+                'type' => 'clone',
+                'clone' => array( 0 => 'group_62eff83a5aa1e' ),
+                'display' => 'seamless',
+                'prefix_label' => 0,
+                'prefix_name' => 0,
+              ),
+            )
+          ),
+        ),
       ),
     ),
   ),

@@ -9,7 +9,7 @@
         v-for="(item, index) in items"
         :key="index"
         style="container-type: inline-size"
-        class="grid-block__item @container flex h-full w-full flex-col overflow-hidden [&_.media-item>div]:h-full [&_img]:h-full [&_img]:object-cover [&_video]:h-full [&_video]:object-cover [&>*]:h-full"
+        class="grid-block__item @container flex h-full w-full flex-col overflow-hidden [&_.md\:grid-cols-12]:!block [&_.md\:grid-cols-12]:!px-0 [&_.media-item>div]:h-full [&_img]:h-full [&_img]:object-cover [&_video]:h-full [&_video]:object-cover [&>*]:h-full"
         :class="[getItemSpanClasses(item), getCellAspectClass(item)]"
       >
         <component
@@ -29,6 +29,7 @@ import CtaCard from "../CTACard/CtaCard.vue";
 import BlockQuote from "../BlockQuote/BlockQuote.vue";
 import MediaContextCard from "../MediaContextCard/MediaContextCard.vue";
 import Paragraph from "../Paragraph/Paragraph.vue";
+import ContextSection from "../ContextSection/ContextSection.vue";
 
 const props = defineProps({
   columns: {
@@ -59,6 +60,7 @@ const componentMap = {
   cta_card: CtaCard,
   block_quote: BlockQuote,
   paragraph: Paragraph,
+  context_section: ContextSection,
 };
 
 const resolveComponent = (layout) => componentMap[layout] || MediaItem;
@@ -174,17 +176,15 @@ const gapClass = computed(() => {
   return gaps[props.gap] ?? gaps.medium;
 });
 
-// Applies a uniform aspect ratio only to 1-column items when row_style is set;
-// multi-column items stretch naturally to match their 1-column neighbors' height.
 const getCellAspectClass = (item) => {
   if (props.row_style === "stretch" || getActiveSpanNumber(item) > 1) {
     return "";
   }
 
   const ratios = {
-    square: "aspect-square",
-    landscape: "aspect-[4/3]",
-    portrait: "aspect-[3/4]",
+    square: "[&:has(img,video,picture)]:aspect-square",
+    landscape: "[&:has(img,video,picture)]:aspect-[4/3]",
+    portrait: "[&:has(img,video,picture)]:aspect-[3/4]",
   };
 
   return ratios[props.row_style] || "";
