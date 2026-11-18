@@ -451,7 +451,6 @@ onMounted(() => {
   }
 
   if (typeof IntersectionObserver !== "undefined" && rootEl.value) {
-    const scrollRoot = rootEl.value.closest('[role="dialog"]') || null;
     observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -461,7 +460,7 @@ onMounted(() => {
           }
         });
       },
-      { root: scrollRoot, threshold: 0.2 },
+      { threshold: 0.2 },
     );
     observer.observe(rootEl.value);
   } else {

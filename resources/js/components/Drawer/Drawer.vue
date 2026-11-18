@@ -9,11 +9,11 @@
       />
     </Transition>
 
-    <Transition :name="transitionName">
+    <Transition :name="transitionName" @after-enter="refreshWaypoints">
       <div
         v-if="modelValue"
         ref="drawerRef"
-        class="fixed top-0 z-[9999] h-dvh w-full max-w-[640px] overflow-y-auto bg-white shadow-xl"
+        class="fixed inset-y-0 z-[9999] flex w-full max-w-[640px] flex-col overflow-hidden bg-white shadow-xl"
         :class="sideClasses"
         role="dialog"
         aria-modal="true"
@@ -23,7 +23,7 @@
         @keydown="onKeydown"
       >
         <div
-          class="sticky top-0 z-20 flex min-h-[64px] items-center justify-between border-b border-gray-200 bg-white px-5 md:px-8"
+          class="z-20 flex min-h-[64px] shrink-0 items-center justify-between border-b border-gray-200 bg-white px-5 md:px-8"
         >
           <h2
             v-if="title"
@@ -38,7 +38,7 @@
           <button
             ref="closeButtonRef"
             type="button"
-            class="ml-auto inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center"
+            class="ml-auto inline-flex min-h-[44px] min-w-[44px] shrink-0 cursor-pointer items-center justify-center"
             aria-label="Close"
             @click="close"
           >
@@ -48,7 +48,12 @@
           </button>
         </div>
 
-        <div class="p-5 md:p-8">
+        <div
+          ref="scrollContainerRef"
+          class="flex-1 overflow-y-auto overscroll-contain p-5 md:p-8"
+          style="-webkit-overflow-scrolling: touch"
+          @scroll.passive="onDrawerScroll"
+        >
           <slot />
         </div>
       </div>
@@ -85,12 +90,14 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue"]);
 
 const drawerRef = ref(null);
+const scrollContainerRef = ref(null);
 const closeButtonRef = ref(null);
 
 const instance = getCurrentInstance();
 const titleId = `drawer-title-${instance?.uid ?? Math.random().toString(36).slice(2, 9)}`;
 
 let previouslyFocusedElement = null;
+let rafId = null;
 
 const sideClasses = computed(() => {
   return props.side === "left" ? "left-0" : "right-0";
@@ -102,6 +109,30 @@ const transitionName = computed(() => {
 
 const close = () => {
   emit("update:modelValue", false);
+};
+
+const refreshWaypoints = () => {
+  if (typeof window === "undefined") return;
+  window.Waypoint?.refreshAll?.();
+  window.Waypoint?.Context?.refreshAll?.();
+};
+
+const onDrawerScroll = () => {
+  if (rafId !== null) return;
+  rafId = window.requestAnimationFrame(() => {
+    refreshWaypoints();
+    rafId = null;
+  });
+};
+
+const lockScroll = () => {
+  document.documentElement.style.overflow = "hidden";
+  document.body.style.overflow = "hidden";
+};
+
+const unlockScroll = () => {
+  document.documentElement.style.overflow = "";
+  document.body.style.overflow = "";
 };
 
 const getFocusableElements = () => {
@@ -164,17 +195,18 @@ watch(
     if (isOpen) {
       previouslyFocusedElement = document.activeElement;
 
-      document.body.style.overflow = "hidden";
+      lockScroll();
 
       await nextTick();
 
-      closeButtonRef.value?.focus();
+      closeButtonRef.value?.focus({ preventScroll: true });
+      refreshWaypoints();
     } else {
-      document.body.style.overflow = "";
+      unlockScroll();
 
       await nextTick();
 
-      previouslyFocusedElement?.focus?.();
+      previouslyFocusedElement?.focus?.({ preventScroll: true });
       previouslyFocusedElement = null;
     }
   },
@@ -182,7 +214,10 @@ watch(
 
 onBeforeUnmount(() => {
   if (typeof document !== "undefined") {
-    document.body.style.overflow = "";
+    unlockScroll();
+  }
+  if (rafId !== null && typeof window !== "undefined") {
+    window.cancelAnimationFrame(rafId);
   }
 });
 </script>

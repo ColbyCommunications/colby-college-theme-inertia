@@ -245,11 +245,8 @@ onMounted(async () => {
     });
   }
 
-  const scrollContext = container.value.closest('[role="dialog"]') || window;
-
   waypointInstance = new window.Waypoint({
     element: container.value,
-    context: scrollContext,
     handler: function () {
       if (props.subheading) {
         animateSubheading();
