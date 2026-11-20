@@ -5,6 +5,11 @@ import path from "path";
 import svgLoader from "vite-svg-loader";
 
 export default defineConfig(({ command, mode }) => {
+  // Dynamically resolve Lando domain (e.g., 'colby.lndo.site')
+  const landoAppName = process.env.LANDO_APP_NAME;
+  const landoDomain = process.env.LANDO_DOMAIN || "lndo.site";
+  const landoHost = landoAppName ? `${landoAppName}.${landoDomain}` : "localhost";
+
   return {
     plugins: [vue(), svgLoader()],
     resolve: {
@@ -17,14 +22,14 @@ export default defineConfig(({ command, mode }) => {
       port: 5173,
       strictPort: true,
       watch: { usePolling: true, interval: 100 },
-      origin: "https://colby.lndo.site",
+      origin: `https://${landoHost}`,
       css: {
         postcss: "./postcss.config.js",
       },
       // HMR through same origin proxy still uses the internal host
       hmr: {
         protocol: "wss",
-        host: "colby.lndo.site",
+        host: landoHost,
         clientPort: 443,
         path: "/vite",
       },

@@ -270,6 +270,37 @@ function colby_prepare_advanced_accordion_block(array $block, string $block_path
     return $block;
 }
 
+function colby_prepare_pop_open_section_block(
+    array $block,
+    string $block_path
+): array {
+
+    $block['attrs'] =
+        isset($block['attrs']) && is_array($block['attrs'])
+            ? $block['attrs']
+            : [];
+
+    $block['attrs']['data'] =
+        isset($block['attrs']['data']) && is_array($block['attrs']['data'])
+            ? $block['attrs']['data']
+            : [];
+
+    $inner_blocks = $block['innerBlocks'] ?? [];
+
+    /*
+     * Flatten nested core/group blocks just like Advanced Accordion
+     * panels do, then run every child through the normal block
+     * processing pipeline.
+     */
+    $block['attrs']['data']['blocks'] =
+        colby_process_blocks(
+            colby_flatten_group_descendants($inner_blocks),
+            $block_path . '_pop_open'
+        );
+
+    return $block;
+}
+
 
 function colby_process_single_block(
     array $block,
@@ -424,6 +455,17 @@ function colby_process_single_block(
         if ($block_name === 'acf/advanced-accordion') {
             $block =
                 colby_prepare_advanced_accordion_block(
+                    $block,
+                    $block_path
+                );
+        }
+
+        /*
+        * Pop Open Section recursively processes its inner blocks.
+        */
+        if ($block_name === 'acf/pop-open-section') {
+            $block =
+                colby_prepare_pop_open_section_block(
                     $block,
                     $block_path
                 );
@@ -698,7 +740,9 @@ $align = function_exists('get_field') ? (get_field('align', $post->ID) ?: 'defau
 $image_orientation = function_exists('get_field') ? (get_field('image_orientation', $post->ID) ?: 'square') : 'square';
 
 // strip "-scaled"
-$image['url'] = preg_replace('/-scaled(\.[a-zA-Z0-9]+)$/', '$1', $image['url']);
+if (is_array($image) && !empty($image['url'])) {
+    $image['url'] = preg_replace('/-scaled(\.[a-zA-Z0-9]+)$/', '$1', $image['url']);
+}
 
 $hero = null;
 if ($hero_type === 'overlay') {
@@ -746,29 +790,26 @@ $args = [
     'primary_category' => ''
 ];
 
-$primary_cat_id = get_post_meta($post->ID, '_yoast_wpseo_primary_page-categories')[0];
+$primary_cat_id = get_post_meta($post->ID, '_yoast_wpseo_primary_page-categories', true);
 $primary_category = '';
 
-// dd($primary_cat_id);
 if ($primary_cat_id) {
     // Get the full term object (name, slug, link, etc.)
     $category = get_term($primary_cat_id);
-    $primary_category = $category->name;
-    
-    if ($primary_category === 'Office') {
-        $primary_category = 'Office';
-        $args['address'] = get_post_meta($post->ID, 'address')[0];
-        $args['phone'] = get_post_meta($post->ID, 'phone')[0];
-        $args['email'] = get_post_meta($post->ID, 'email')[0];
-        $args['fax'] = get_post_meta($post->ID, 'fax')[0];
-        $args['location'] = get_post_meta($post->ID, 'location')[0];
-        $args['image']   = get_the_post_thumbnail_url($post->ID, 'Square');
-    } else if ($primary_category === 'Site') {
-        $primary_category = 'Site';
-    } else if ($primary_category === 'Department') {
-        $primary_category = 'Department';
+
+    if ($category && !is_wp_error($category)) {
+        $primary_category = $category->name;
+
+        if ($primary_category === 'Office') {
+            $args['address']  = get_post_meta($post->ID, 'address', true);
+            $args['phone']    = get_post_meta($post->ID, 'phone', true);
+            $args['email']    = get_post_meta($post->ID, 'email', true);
+            $args['fax']      = get_post_meta($post->ID, 'fax', true);
+            $args['location'] = get_post_meta($post->ID, 'location', true);
+            $args['image']    = get_the_post_thumbnail_url($post->ID, 'Square');
+        }
     }
-} 
+}
 
 $args['primary_category'] = $primary_category;
 

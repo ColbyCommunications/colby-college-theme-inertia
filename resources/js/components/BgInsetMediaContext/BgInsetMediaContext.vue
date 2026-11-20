@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-inset-media-context">
+  <div class="bg-inset-media-context full-bleed">
     <div
       class="bg-inset-media-context__inner mx-auto my-0 w-full max-w-screen-2xl gap-x-10 px-5 md:grid md:grid-cols-12"
     >

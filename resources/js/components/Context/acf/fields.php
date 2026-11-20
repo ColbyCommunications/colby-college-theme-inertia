@@ -8,7 +8,7 @@ acf_add_local_field_group( array(
 	'fields' => array(
 		array(
 			'key' => 'field_62eff8493661d',
-			'label' => 'Subheading',
+			'label' => 'Superheading',
 			'name' => 'subheading',
 			'aria-label' => '',
 			'type' => 'text',

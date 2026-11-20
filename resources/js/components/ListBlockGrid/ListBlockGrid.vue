@@ -1,11 +1,11 @@
 <template>
   <div
-    class="list-block-grid mx-auto my-0 grid w-full max-w-screen-2xl grid-cols-12 gap-10"
+    class="list-block-grid mx-auto my-0 grid w-full max-w-screen-2xl grid-cols-12 gap-6 lg:gap-10"
   >
     <div
       v-for="(item, index) in items"
       :key="index"
-      class="list-block-grid__item col-span-12"
+      class="list-block-grid__item col-span-12 min-w-0"
       :class="colClass"
     >
       <ListBlock
@@ -31,9 +31,9 @@ const props = defineProps({
 const colClass = computed(() => {
   switch (Number(props.columns)) {
     case 4:
-      return "md:col-span-3";
+      return "sm:col-span-6 lg:col-span-3";
     case 3:
-      return "md:col-span-4";
+      return "sm:col-span-6 lg:col-span-4";
     default:
       return "md:col-span-6";
   }

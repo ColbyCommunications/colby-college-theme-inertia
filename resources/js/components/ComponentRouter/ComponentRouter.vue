@@ -100,6 +100,19 @@ const blockRegistry = {
   "acf/related-section": () => import("../RelatedSection/RelatedSection.vue"),
   "acf/table-section": () => import("../TableSection/TableSection.vue"),
   "acf/pdf-embed": () => import("../PdfEmbed/PdfEmbed.vue"),
+  "acf/social-grid": () => import("../SocialGrid/SocialGrid.vue"),
+  "acf/mosaic": () => import("../Mosaic/Mosaic.vue"),
+  "acf/media-item": () => import("../MediaItem/MediaItem.vue"),
+  "acf/cta-card": () => import("../CTACard/CtaCard.vue"),
+  "acf/grid": () => import("../Grid/Grid.vue"),
+  "acf/media-context-card": () =>
+    import("../MediaContextCard/MediaContextCard.vue"),
+  "acf/bg-inset-media-context": () =>
+    import("../BgInsetMediaContext/BgInsetMediaContext.vue"),
+  "acf/progress-bar": () =>
+    import("../ProgressBar/ProgressBar.vue"),
+  "acf/pop-open-section": () =>
+  import("../PopOpenSection/PopOpenSection.vue"),
 
   "core/heading": () => import("../Heading/Heading.vue"),
   "core/group": () => import("../Group/Group.vue"),
@@ -212,6 +225,7 @@ function getPlaceholderHeight(item) {
     "acf/collage-section": 500,
     "acf/context-section": 500,
     "acf/featured-events": 500,
+    "acf/bg-inset-media-context": 500,
     "acf/full-bleed-hero": 250,
     "acf/home-section": 250,
     "acf/icon-section": 250,
@@ -222,7 +236,9 @@ function getPlaceholderHeight(item) {
     "acf/media-context-section": 250,
     "acf/related-section": 250,
     "acf/table-section": 250,
-
+    "acf/bg-inset-media-context": 500,
+    "acf/grid": 300,
+    "acf/mosaic": 300,
     "core/heading": 0,
     "core/group": 600,
     "core/html": 500,

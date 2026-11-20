@@ -102,7 +102,7 @@ if (!function_exists('colby_block_home_section_normalize_news_items')) {
                     ]
                     : null,
                 'subheading' => $item['post-meta-fields']['primary_category'] ?? '',
-                'heading' => colby_block_home_section_decode($item['title']['rendered'] ?? ''),
+                'title' => ['rendered' => colby_block_home_section_decode($item['title']['rendered'] ?? '')],
                 'paragraph' => colby_block_home_section_decode($item['post-meta-fields']['summary'][0] ?? ''),
                 'buttons' => [
                     [
@@ -195,7 +195,7 @@ if (!function_exists('colby_block_home_section_normalize_event')) {
             ],
             'image' => colby_block_home_section_get_image($post_id),
             'subheading' => $date_label,
-            'heading' => get_the_title($post_id),
+            'title' => ['rendered' => get_the_title($post_id)],
             'paragraph' => get_the_excerpt($post_id),
             'url' => get_permalink($post_id),
             'buttons' => [

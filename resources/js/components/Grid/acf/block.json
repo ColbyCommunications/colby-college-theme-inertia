@@ -1,0 +1,17 @@
+{
+  "name": "acf/grid",
+  "title": "Grid",
+  "description": "An even-row structural grid supporting up to 8 columns for media, CTAs, and quotes.",
+  "category": "colby-layout",
+  "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' height='24px' width='24px' fill='#1f1f1f'><path d='M3,21V3H21V21H3Zm16-2V13H13v6h6ZM19,5H13v6h6V5ZM5,5v6h6V5H5ZM5,19h6V13H5v6Z'/></svg>",
+  "keywords": ["grid", "columns", "layout", "cards"],
+  "acf": {
+    "mode": "edit",
+    "blockVersion": 2
+  },
+  "supports": {
+    "align": false,
+    "anchor": true,
+    "jsx": false
+  }
+}

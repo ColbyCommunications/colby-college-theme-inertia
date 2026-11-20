@@ -11,6 +11,11 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 require_once __DIR__ . '/directory_sync.php';
 require_once __DIR__ . '/directory_form_auth.php';
 
+require_once __DIR__ . '/acf_fields.php';
+
+require_once __DIR__ . '/header_settings.php';
+require_once __DIR__ . '/footer_settings.php';
+
 // Isolated plugin iframe handlers.
 $tablepress_iframe_file = __DIR__ . '/inc/iframe-embeds/tablepress.php';
 
@@ -117,6 +122,54 @@ add_action('init', function () {
 			)
 		);
 
+    // alumni events
+		register_post_type(
+			'events',
+			array(
+				'labels'            => array(
+					'name'               => __( 'Events' ),
+					'singular_name'      => __( 'Event' ),
+					'add_new_item'       => __( 'Add Event' ),
+					'edit_item'          => __( 'Edit Event' ),
+					'new_item'           => __( 'New Event' ),
+					'view_item'          => __( 'View Event' ),
+					'search_items'       => __( 'Search Event' ),
+					'not_found'          => __( 'Event not found.' ),
+					'not_found_in_trash' => __( 'No Event found in trash.' ),
+				),
+				'rewrite'           => array( 'slug' => 'events/event-calendar' ),
+				'public'            => true,
+				'has_archive'       => true,
+				'menu_icon'         => 'dashicons-calendar-alt',
+				'show_in_nav_menus' => true,
+				'show_in_rest'      => true,
+				'supports'          => array( 'title', 'editor', 'revisions', 'excerpt', 'thumbnail' ),
+			)
+		);
+
+		register_post_type(
+			'subevents',
+			array(
+				'labels'            => array(
+					'name'               => __( 'Subevents' ),
+					'singular_name'      => __( 'Subevent' ),
+					'add_new_item'       => __( 'Add Subevent' ),
+					'edit_item'          => __( 'Edit Subevent' ),
+					'new_item'           => __( 'New Subevent' ),
+					'view_item'          => __( 'View Subevent' ),
+					'search_items'       => __( 'Search Subevent' ),
+					'not_found'          => __( 'Subevent not found.' ),
+					'not_found_in_trash' => __( 'No Subevent found in trash.' ),
+				),
+				'public'            => true,
+				'has_archive'       => false,
+				'menu_icon'         => 'dashicons-calendar',
+				'show_in_nav_menus' => true,
+				'show_in_rest'      => true,
+				'supports'          => array( 'title', 'editor', 'revisions', 'excerpt', 'thumbnail' ),
+			)
+		);
+
 
     // taxonomies
     register_taxonomy(
@@ -144,6 +197,33 @@ add_action('init', function () {
 					'singular_name' => __( 'Category' ),
 					'add_new_item'  => __( 'Add New Category' ),
 					'menu_name'     => __( 'Categories' ),
+				),
+			)
+		);
+
+        // alumni taxonomy
+        register_taxonomy(
+			'groupings',
+			'subevents',
+			array(
+				'hierarchical'      => true,
+				'show_ui'           => true,
+				'show_in_rest'      => true,
+				'show_admin_column' => true,
+				'query_var'         => true,
+				'public'            => true,
+				'show_tagcloud'     => false,
+				'capabilities'      => array(
+					'manage_terms' => 'manage_options',
+					'edit_terms'   => 'manage_options',
+					'delete_terms' => 'manage_options',
+					'assign_terms' => 'manage_options',
+				),
+				'labels'            => array(
+					'name'          => __( 'Groupings' ),
+					'singular_name' => __( 'Grouping' ),
+					'add_new_item'  => __( 'Add New Grouping' ),
+					'menu_name'     => __( 'Groupings' ),
 				),
 			)
 		);
@@ -179,12 +259,23 @@ function colby_get_breadcrumbs_cached(): array {
 
   $breadcrumbs = [];
 
-  if (is_archive()) {
+
+  if (is_post_type_archive( 'people' )) {
       $breadcrumbs[] = [
           'title' => 'People',
           'url'   => '/people/',
       ];
-  } elseif (is_page() && $object_id) {
+    } elseif (is_post_type_archive( 'events' )) {
+    // TODO move this out into Alumni-specific plugin
+      $breadcrumbs[] = [
+          'title' => 'Events',
+          'url'   => '/events/',
+      ];
+      $breadcrumbs[] = [
+          'title' => 'Events Calendar',
+          'url'   => '/events/events-calendar/',
+      ];
+  } elseif (is_page()  && $object_id) {
       $ancestors = array_reverse(get_post_ancestors($object_id));
 
       foreach ($ancestors as $ancestor_id) {
@@ -281,15 +372,45 @@ function colby_get_menu_cached(string $location): array {
   return $menu;
 }
 
+function colby_get_menu_by_id_cached( $menu_id ): array {
+  $menu_id = absint($menu_id );
+  if ( ! $menu_id ) {
+      return [];
+  }
+
+  $cache_key = 'colby_menu_id_' .$menu_id;
+  $cached    = get_transient($cache_key );
+
+  if ( $cached !== false && is_array($cached ) ) {
+      return $cached;
+  }
+
+  $items = wp_get_nav_menu_items($menu_id ) ?: [];
+  $menu  = array_map( function ($item ) {
+      return [
+          'id'     => $item->ID,
+          'title'  => $item->title,
+          'url'    => $item->url,
+          'parent' => (int) $item->menu_item_parent,
+          'order'  => (int) $item->menu_order,
+      ];
+  }, $items );
+
+  set_transient( $cache_key,$menu, HOUR_IN_SECONDS * 12 );
+
+  return $menu;
+}
+
 add_action('template_redirect', function () {
   $global_site_data = [
     'site_data' => [
-      'name'        => get_bloginfo('name'),
-      'description' => get_bloginfo('description'),
-      'url'         => home_url('/'),
-      'alert'  => get_field('alert', 'options'),
-      'address' => get_field('address', 'options'),
-      'phone'   => get_field('phone', 'options'),
+      'name'              => get_bloginfo('name'),
+      'description'       => get_bloginfo('description'),
+      'url'               => home_url('/'),
+      'alert'             => get_field('alert', 'options'),
+      'address'           => get_field('address', 'options'),
+      'phone'             => get_field('phone', 'options'),
+      'mission'            => get_field('mission', 'options'),
     ],
     'menus' => [
       'main'    => colby_get_menu_cached('main'),
@@ -301,49 +422,21 @@ add_action('template_redirect', function () {
     ],
   ];
 
-  $header_logo_id = get_theme_mod( 'header_logo' );
-  $header_logo_styles = get_theme_mod( 'header_logo_styles' );
+  // Merge Header & Algolia settings from header_settings.php
+  $global_site_data['site_data'] = array_merge(
+    $global_site_data['site_data'],
+    colby_get_header_site_data()
+  );
 
-  $headerlogo = wp_get_attachment_image_src( $header_logo_id , 'full' );
-  if($headerlogo) {
-    $global_site_data['site_data']['headerlogo'] = esc_url( $headerlogo[0] );
-    $global_site_data['site_data']['headerlogo_styles'] = $header_logo_styles;
-  }
-		
-  $footer_logo_id = get_theme_mod( 'footer_logo' );
-  $footer_logo_styles = get_theme_mod( 'footer_logo_styles' );
-
-  $footerlogo = wp_get_attachment_image_src( $footer_logo_id , 'full' );
-  if($footerlogo) {
-    $global_site_data['site_data']['footerlogo'] = esc_url( $footerlogo[0] );
-    $global_site_data['site_data']['footerlogo_styles'] = $footer_logo_styles;
-  }
-  
-  $display_athletics_logo = get_theme_mod( 'display_athletics_logo', true );
-  $global_site_data['site_data']['display_athletics_logo'] = $display_athletics_logo;
-  
-  $footer_style = get_theme_mod( 'footer_style', 'colby.edu' ); 
-  $global_site_data['site_data']['footer_style'] = $footer_style;
-  
-  $algolia_index = get_theme_mod( 'algolia_index'); 
-  $global_site_data['site_data']['algolia_index'] = $algolia_index;
-  
-  $algolia_qs_index = get_theme_mod( 'algolia_qs_index'); 
-  $global_site_data['site_data']['algolia_qs_index'] = $algolia_qs_index;
-
-  $utility_menu_style = get_theme_mod( 'utility_menu_style', 'colby.edu' ); 
-  $global_site_data['site_data']['utility_menu_style'] = $utility_menu_style;
-  
-  $utility_button_text = get_theme_mod( 'utility_menu_button_text', '' ); 
-  $global_site_data['site_data']['utility_button_text'] = $utility_button_text;
-  $utility_button_url = get_theme_mod( 'utility_menu_button_url', '' ); 
-  $global_site_data['site_data']['utility_button_url'] = $utility_button_url;
+  // Merge Footer settings & footer_config from footer_settings.php
+  $global_site_data['site_data'] = array_merge(
+    $global_site_data['site_data'],
+    colby_get_footer_site_data( $global_site_data['menus']['action'] ?? [] )
+  );
 
   $global_site_data['site_data']['breadcrumbs_menu'] = colby_get_breadcrumbs_cached();
 
-
   // dd($global_site_data);
-
 
   Inertia::share($global_site_data);
 
@@ -584,7 +677,7 @@ add_action('wp_head', function() {
     ? PRIMARY_DOMAIN
     : ('ON' === getenv('LANDO') ? 'www.colby.edu' : (wp_parse_url(home_url(), PHP_URL_HOST) ?: ''));
 
-  echo '<script type="text/javascript">window.colby = window.colby || {}; window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';window.colby.PRIMARY_DOMAIN = "' . esc_js($primary_domain) . '";window.colby.isLocal = ' . ('ON' === getenv( 'LANDO' ) ? 'true' : 'false') .'</script>';
+  echo '<script type="text/javascript">window.colby = window.colby || {}; window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';window.colby.PRIMARY_DOMAIN = "' . esc_js($primary_domain) . '";window.colby.isLocal = ' . ('ON' === getenv( 'LANDO' ) ? 'true' : 'false') .';window.colby.isUpsun = ' . (getenv('PLATFORM_RELATIONSHIPS') !== false ? 'true' : 'false') .'</script>';
 }, 1);
 
 if (!function_exists('dump')) {
@@ -602,235 +695,79 @@ if (!function_exists('dd')) {
   }
 }
 
+function colby_add_block_categories( $categories, $editor_context ) {
+    $custom_categories = array(
+        array(
+            'slug'  => 'colby-hero',
+            'title' => __( 'Heroes', 'colby' ),
+            'icon'  => null,
+        ),
+        array(
+            'slug'  => 'colby-layout',
+            'title' => __( 'Layout', 'colby' ),
+            'icon'  => null,
+        ),
+        array(
+            'slug'  => 'colby-media',
+            'title' => __( 'Media', 'colby' ),
+            'icon'  => null,
+        ),
+    );
 
-function mytheme_add_customizer_panels( $wp_customize ) {
+    // Insert the custom categories at the beginning.
+    array_splice( $categories, 0, 0, $custom_categories );
 
-  // --- Header Settings Panel ---
-  $wp_customize->add_panel( 'colby_theme_settings_panel', array(
-      'title'       => __( 'Colby Theme Settings', 'mytheme' ),
-      'description' => __( 'Manage your website header settings, including logo and styles.', 'mytheme' ),
-      'priority'    => 25, // Placed after Site Identity (priority 20)
-  ) );
-
-  // Header Logo Section
-  $wp_customize->add_section( 'header_settings_section', array(
-      'title'    => __( 'Header Settings', 'mytheme' ),
-      'panel'    => 'colby_theme_settings_panel', // Associate with Header Settings panel
-      'priority' => 10,
-  ) );
-
-  // Header Logo Setting (Media Select)
-  $wp_customize->add_setting( 'header_logo', array(
-      'default'           => '', // No default logo
-      'type'              => 'theme_mod', // Stores in theme_mod options
-      'capability'        => 'edit_theme_options',
-      'sanitize_callback' => 'absint', // Sanitize as absolute integer (attachment ID)
-  ) );
-
-  // Header Logo Control (Media Upload)
-  $wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'header_logo', array(
-      'label'       => __( 'Upload Header Logo', 'mytheme' ),
-      'section'     => 'header_settings_section',
-      'settings'    => 'header_logo',
-      'mime_type'   => 'image', // Only allow image uploads
-      'description' => __( 'Select an image for your website header logo.', 'mytheme' ),
-  ) ) );
-
-  // Header Logo Styles Setting (Text Field)
-  $wp_customize->add_setting( 'header_logo_styles', array(
-      'default'           => '',
-      'type'              => 'theme_mod',
-      'capability'        => 'edit_theme_options',
-  ) );
-
-  // Header Logo Styles Control (Text Input)
-  $wp_customize->add_control( 'header_logo_styles', array(
-      'label'       => __( 'Header Logo Styles (CSS)', 'mytheme' ),
-      'section'     => 'header_settings_section',
-      'settings'    => 'header_logo_styles',
-      'type'        => 'text',
-      'description' => __( 'Enter custom CSS styles for the header logo (e.g., "width: 150px;").', 'mytheme' ),
-  ) );
-
-$wp_customize->add_setting( 'utility_menu_style', array(
-      'default'           => 'colby.edu', // Default option
-      'type'              => 'theme_mod',
-      'capability'        => 'edit_theme_options',
-  ) );
-
-  $wp_customize->add_control( 'utility_menu_style', array(
-      'label'       => __( 'Utility Menu Style', 'mytheme' ),
-      'section'     => 'header_settings_section',
-      'settings'    => 'utility_menu_style',
-      'type'        => 'select', // Specifies a dropdown
-      'choices'     => array(
-          'colby.edu'  => __( 'colby.edu', 'mytheme' ),
-          'child_site' => __( 'Child Site', 'mytheme' ), // Using 'child_site' as value for consistency
-      ),
-      'description' => __( 'Choose the desired style for the website utility menu.', 'mytheme' ),
-  ) );
-
-  $wp_customize->add_setting( 'utility_menu_button_text', array(
-      'default'           => '', // Default option
-      'type'              => 'theme_mod',
-      'capability'        => 'edit_theme_options',
-  ) );
-
-  $wp_customize->add_control( 'utility_menu_button_text', array(
-      'label'       => __( 'Utility Menu Button Text', 'mytheme' ),
-      'section'     => 'header_settings_section',
-      'type'        => 'text',
-      'description' => __( 'Enter text for utility menu button.', 'mytheme' ),
-  ) );
-
-  $wp_customize->add_setting( 'utility_menu_button_url', array(
-      'default'           => '', // Default option
-      'type'              => 'theme_mod',
-      'capability'        => 'edit_theme_options',
-  ) );
-
-  $wp_customize->add_control( 'utility_menu_button_url', array(
-      'label'       => __( 'Utility Menu Button URL', 'mytheme' ),
-      'section'     => 'header_settings_section',
-      'type'        => 'text',
-      'description' => __( 'Enter the URL for utility menu button.', 'mytheme' ),
-  ) );
-
-
-// Algolia
-  $wp_customize->add_section( 'algolia_settings_section', array(
-      'title'    => __( 'Algolia Settings', 'mytheme' ),
-      'panel'    => 'colby_theme_settings_panel', // Associate with Header Settings panel
-      'priority' => 10,
-  ) );
-
-// Algolia Index (Text Field)
-  $wp_customize->add_setting( 'algolia_index', array(
-      'default'           => '',
-      'type'              => 'theme_mod',
-      'capability'        => 'edit_theme_options',
-  ) );
-
-  // Algolia Index Control (Text Input)
-  $wp_customize->add_control( 'algolia_index', array(
-      'label'       => __( 'Algoia Index', 'mytheme' ),
-      'section'     => 'algolia_settings_section',
-      'settings'    => 'algolia_index',
-      'type'        => 'text',
-  ) );
-
-// Algolia Query Suggestion Index (Text Field)
-  $wp_customize->add_setting( 'algolia_qs_index', array(
-      'default'           => '',
-      'type'              => 'theme_mod',
-      'capability'        => 'edit_theme_options',
-  ) );
-
-  // Algolia Query Suggestion Index Control (Text Input)
-  $wp_customize->add_control( 'algolia_qs_index', array(
-      'label'       => __( 'Algoia Query Suggestion Index', 'mytheme' ),
-      'section'     => 'algolia_settings_section',
-      'settings'    => 'algolia_qs_index',
-      'type'        => 'text',
-  ) );
-
-  // Footer Logo Section
-  $wp_customize->add_section( 'footer_settings_section', array(
-      'title'    => __( 'Footer Settings', 'mytheme' ),
-      'panel'    => 'colby_theme_settings_panel', // Associate with Footer Settings panel
-      'priority' => 10,
-  ) );
-
-  // Footer Logo Setting (Media Select)
-  $wp_customize->add_setting( 'footer_logo', array(
-      'default'           => '',
-      'type'              => 'theme_mod',
-      'capability'        => 'edit_theme_options',
-      'sanitize_callback' => 'absint',
-  ) );
-
-  // Footer Logo Control (Media Upload)
-  $wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'footer_logo', array(
-      'label'       => __( 'Upload Footer Logo', 'mytheme' ),
-      'section'     => 'footer_settings_section',
-      'settings'    => 'footer_logo',
-      'mime_type'   => 'image',
-      'description' => __( 'Select an image for your website footer logo.', 'mytheme' ),
-  ) ) );
-
-  // Footer Logo Styles Setting (Text Field)
-  $wp_customize->add_setting( 'footer_logo_styles', array(
-      'default'           => '',
-      'type'              => 'theme_mod',
-      'capability'        => 'edit_theme_options',
-  ) );
-
-  // Footer Logo Styles Control (Text Input)
-  $wp_customize->add_control( 'footer_logo_styles', array(
-      'label'       => __( 'Footer Logo Styles (CSS)', 'mytheme' ),
-      'section'     => 'footer_settings_section',
-      'settings'    => 'footer_logo_styles',
-      'type'        => 'text',
-      'description' => __( 'Enter custom CSS styles for the footer logo (e.g., "width: 100px;").', 'mytheme' ),
-  ) );
-
-// Display Athletics Logo Checkbox Setting
-  $wp_customize->add_setting( 'display_athletics_logo', array(
-      'default'           => 1, // Default to not displayed
-      'type'              => 'theme_mod',
-      'capability'        => 'edit_theme_options',
-      'sanitize_callback' => 'mytheme_sanitize_checkbox', // Custom sanitize function
-  ) );
-
-  // Display Athletics Logo Checkbox Control
-  $wp_customize->add_control( 'display_athletics_logo', array(
-      'label'       => __( 'Display Athletics Logo', 'mytheme' ),
-      'section'     => 'footer_settings_section',
-      'settings'    => 'display_athletics_logo',
-      'type'        => 'checkbox',
-      'description' => __( 'Check to display a separate athletics logo in the footer.', 'mytheme' ),
-  ) );
-
-$wp_customize->add_setting( 'footer_style', array(
-      'default'           => 'colby.edu', // Default option
-      'type'              => 'theme_mod',
-      'capability'        => 'edit_theme_options',
-  ) );
-
-  $wp_customize->add_control( 'footer_style', array(
-      'label'       => __( 'Footer Style', 'mytheme' ),
-      'section'     => 'footer_settings_section',
-      'settings'    => 'footer_style',
-      'type'        => 'select', // Specifies a dropdown
-      'choices'     => array(
-          'colby.edu'  => __( 'colby.edu', 'mytheme' ),
-          'child_site' => __( 'Child Site', 'mytheme' ), // Using 'child_site' as value for consistency
-      ),
-      'description' => __( 'Choose the desired style for the website footer.', 'mytheme' ),
-  ) );
+    return $categories;
 }
-add_action( 'customize_register', 'mytheme_add_customizer_panels' );
+add_filter( 'block_categories_all', 'colby_add_block_categories', 10, 2 );
 
-function mytheme_sanitize_checkbox( $checked ) {
-  return ( ( isset( $checked ) && true == $checked ) ? true : false );
-}
 
-function disable_h1_heading_level() {
+function colby_customize_block_editor() {
     ?>
     <script>
     wp.domReady(function() {
-        wp.blocks.registerBlockVariation = function() {};
-        
+
+        // Remove H1 from core/heading.
         const settings = wp.blocks.getBlockType('core/heading');
 
-        if (settings && settings.attributes.levelOptions) {
-            settings.attributes.levelOptions.default = [2,3,4,5,6];
+        if (settings && settings.attributes && settings.attributes.levelOptions) {
+            settings.attributes.levelOptions.default = [2, 3, 4, 5, 6];
         }
+
+        // Hide core Grid variation from Design.
+        if (wp.blocks.unregisterBlockVariation) {
+            wp.blocks.unregisterBlockVariation('core/group', 'group-grid');
+        }
+
+        // Hide core Row variation from Design.
+        if (wp.blocks.unregisterBlockVariation) {
+            wp.blocks.unregisterBlockVariation('core/group', 'group-row');
+        }
+
+        // Hide core Stack variation from Design.
+        if (wp.blocks.unregisterBlockVariation) {
+            wp.blocks.unregisterBlockVariation('core/group', 'group-stack');
+        }
+
+        // Hide core Accordion blocks.
+        const blocksToHide = [
+            'core/accordion',
+            'core/accordion-item',
+            'core/accordion-header',
+            'core/accordion-panel',
+        ];
+
+        blocksToHide.forEach(function(blockName) {
+            if (wp.blocks.getBlockType(blockName)) {
+                wp.blocks.unregisterBlockType(blockName);
+            }
+        });
+
     });
     </script>
     <?php
 }
-add_action('admin_footer', 'disable_h1_heading_level');
+add_action('admin_footer', 'colby_customize_block_editor');
 
 function force_tinymce_underline_tags($init) {
     $init['formats'] = json_encode([

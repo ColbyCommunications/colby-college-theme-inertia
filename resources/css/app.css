@@ -22,8 +22,6 @@
   }
 } */
 
-
-
 /* (Optional) small site tweaks */
 .prose :where(img) {
   margin-top: 1rem;
@@ -68,8 +66,6 @@
   }
 }
 
-
-
 .material-symbols-sharp {
   font-family: "Material Symbols Sharp";
   font-weight: normal;
@@ -84,7 +80,6 @@
   direction: ltr;
 }
 
-
 /* Theme tokens */
 @theme {
   /* --- Colors --- */
@@ -92,16 +87,15 @@
   --color-white: #ffffff;
 
   --color-indigo: #012169;
-  --color-gold: #EEB808;
-  --color-azure: #0646C3;
+  --color-gold: #eeb808;
+  --color-azure: #0646c3;
   --color-snow: #f2f6f9;
   --color-cloud: #eef4ff;
-  --color-stone: #B5B5B5;
+  --color-stone: #b5b5b5;
   --color-slate: #666666;
-  --color-coal: #0F0F0F;
-  
-  --color-notification-red: #dc3924;
+  --color-coal: #0f0f0f;
 
+  --color-notification-red: #dc3924;
 
   /* --- Typography --- */
   --font-regular: "Noto Sans Variable", sans-serif;
@@ -132,7 +126,6 @@
   --font-weight-bold: 700;
   --font-weight-extrabold: 800;
   --font-weight-black: 900;
-  
 
   --leading-100: 100%;
   --leading-110: 110%;

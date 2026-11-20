@@ -1,5 +1,8 @@
 <template>
-  <div class="widget space-y-3 bg-cloud p-5">
+  <div
+    class="widget min-w-0 space-y-3 bg-cloud p-5 break-words hyphens-auto"
+    lang="en"
+  >
     <h2
       v-if="heading"
       class="font-extended text-14 leading-130 font-bold tracking-8 text-azure uppercase md:text-12"

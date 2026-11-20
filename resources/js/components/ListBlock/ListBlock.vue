@@ -1,6 +1,6 @@
 <template>
   <div
-    class="list-block h-full py-6 px-8 border border-solid border-indigo rounded-md"
+    class="list-block h-full w-full min-w-0 overflow-hidden rounded-md border border-solid border-indigo px-5 py-6 break-words md:px-8"
     :class="type === 'dark' ? 'bg-cloud' : 'bg-white'"
   >
     <Context

@@ -64,6 +64,8 @@ let splitHeading = null;
 
 const emit = defineEmits(["animation-complete"]);
 
+const SCROLL_TRIGGER_OFFSET = "85%";
+
 const props = defineProps({
   size: { type: String, default: "medium" },
   align: { type: String, default: "left" },
@@ -75,6 +77,7 @@ const props = defineProps({
   hero: { type: Boolean, default: false },
   date: { type: Boolean, default: false },
   disableAnimations: { type: Boolean, default: false },
+  scrollOffset: { type: String, default: SCROLL_TRIGGER_OFFSET },
 });
 
 const sizes = computed(() => {
@@ -169,30 +172,30 @@ const animateSubheading = () => {
   if (!container.value || isBot.value || !splitSubheading) return;
 
   gsap.to(splitSubheading.words, {
-    duration: 0.5,
-    stagger: 0.1,
+    duration: 0.35,
+    stagger: 0.06,
     opacity: 1,
     ease: "power3.easeInOut",
-    onComplete: () => {
-      animateHeading();
-      animateParagraph();
-    },
   });
+
+  animateHeading(0.15);
+  animateParagraph(0.3);
 };
 
-const animateHeading = () => {
+const animateHeading = (delay = 0) => {
   if (!container.value || isBot.value || !splitHeading) return;
 
   gsap.to(splitHeading.words, {
+    delay,
     duration: 0.2,
-    stagger: 0.1,
+    stagger: 0.08,
     opacity: 1,
     y: 0,
     ease: "power3.easeInOut",
   });
 };
 
-const animateParagraph = () => {
+const animateParagraph = (delay = 0.25) => {
   if (!container.value || isBot.value) return;
 
   const target = container.value.querySelectorAll(".text-group__p, ul, ol");
@@ -203,7 +206,7 @@ const animateParagraph = () => {
   }
 
   gsap.to(target, {
-    delay: 0.4,
+    delay,
     duration: 0.4,
     stagger: 0.08,
     opacity: 1,
@@ -255,7 +258,7 @@ onMounted(async () => {
       }
       this.destroy();
     },
-    offset: "bottom-in-view",
+    offset: props.scrollOffset,
   });
 });
 

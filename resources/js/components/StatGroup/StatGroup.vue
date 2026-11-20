@@ -1,9 +1,11 @@
 <template>
   <div class="stat-group">
     <div
-      class="stat-group__inner md:grid grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 space-y-24 my-0 mx-auto"
+      class="stat-group__inner mx-auto my-0 w-full max-w-screen-2xl grid-cols-12 space-y-24 gap-x-10 px-5 md:grid"
     >
-      <div class="stat-group__intro md:col-start-2 lg:col-start-3 md:col-span-10 lg:col-span-8">
+      <div
+        class="stat-group__intro md:col-span-10 md:col-start-2 lg:col-span-8 lg:col-start-3"
+      >
         <Context
           size="xlarge"
           align="center"
@@ -13,27 +15,25 @@
           :buttons="{ items: buttons }"
         />
       </div>
-      <div
-        class="stat-group__main col-span-12"
-        :class="groupAlignmentClasses"
-      >
+
+      <div class="stat-group__main col-span-12" :class="groupAlignmentClasses">
         <div
-          class="grid grid-cols-8 gap-10"
+          class="grid grid-cols-8 gap-8 sm:gap-10"
           :class="innerAlignmentClasses"
         >
           <div
             v-for="(item, index) in items"
             :key="index"
-            class="space-y-3"
+            class="min-w-0 space-y-3"
             :class="getItemClasses(index)"
           >
             <h3
-              class="font-extended font-normal text-36 leading-[1.5] -tracking-3 text-indigo"
+              class="font-extended -tracking-3 text-36 leading-[1.5] font-normal text-indigo"
             >
               {{ item.heading }}
             </h3>
 
-            <p class="font-body font-normal text-14 leading-[1.5] text-indigo">
+            <p class="font-body text-14 leading-[1.5] font-normal text-indigo">
               {{ item.paragraph }}
             </p>
           </div>
@@ -45,16 +45,23 @@
 
 <script setup>
 import { computed } from "vue";
+
 import Context from "@/js/components/Context/Context.vue";
 
 const props = defineProps({
   subheading: { type: String, default: "" },
+
   heading: { type: String, default: "" },
+
   paragraph: { type: String, default: "" },
+
   alignment: { type: String, default: "left" },
+
   buttons: { type: Array, default: () => [] },
+
   items: { type: Array, default: () => [] },
 });
+
 const groupAlignmentClasses = computed(() => {
   switch (props.alignment) {
     case "center":
@@ -64,6 +71,7 @@ const groupAlignmentClasses = computed(() => {
       return "lg:col-start-5 lg:col-span-8";
 
     case "left":
+
     default:
       return "lg:col-start-1 lg:col-span-8";
   }
@@ -78,6 +86,7 @@ const innerAlignmentClasses = computed(() => {
       return "justify-end";
 
     case "left":
+
     default:
       return "justify-start";
   }
@@ -86,27 +95,32 @@ const innerAlignmentClasses = computed(() => {
 function getItemClasses(index) {
   const count = props.items.length;
 
+  const baseSpan =
+    "col-span-8 text-center sm:col-span-4 sm:text-left md:col-span-2";
+
   if (props.alignment === "right") {
-    if (count === 1) return "col-span-4 md:col-span-2 md:col-start-7";
-    if (count === 2) return index === 0
-      ? "col-span-4 md:col-span-2 md:col-start-5"
-      : "col-span-4 md:col-span-2 md:col-start-7";
-    if (count === 3) return index === 0
-      ? "col-span-4 md:col-span-2 md:col-start-3"
-      : "col-span-4 md:col-span-2";
+    if (count === 1) return `${baseSpan} md:col-start-7`;
+
+    if (count === 2)
+      return index === 0
+        ? `${baseSpan} md:col-start-5`
+        : `${baseSpan} md:col-start-7`;
+
+    if (count === 3)
+      return index === 0 ? `${baseSpan} md:col-start-3` : baseSpan;
   }
 
   if (props.alignment === "center") {
-    if (count === 1) return "col-span-4 md:col-span-2 md:col-start-4";
-    if (count === 2) return index === 0
-      ? "col-span-4 md:col-span-2 md:col-start-3"
-      : "col-span-4 md:col-span-2";
-    if (count === 3) return index === 0
-      ? "col-span-4 md:col-span-2 md:col-start-2"
-      : "col-span-4 md:col-span-2";
+    if (count === 1) return `${baseSpan} md:col-start-4`;
+
+    if (count === 2)
+      return index === 0 ? `${baseSpan} md:col-start-3` : baseSpan;
+
+    if (count === 3)
+      return index === 0 ? `${baseSpan} md:col-start-2` : baseSpan;
   }
 
-  return "col-span-4 md:col-span-2";
+  return baseSpan;
 }
 
 const buttonItems = computed(() =>

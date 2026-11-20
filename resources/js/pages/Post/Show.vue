@@ -2,13 +2,20 @@
   <AppLayout>
     <div class="post">
       <FullBleedHero
-        :heading="title"
-        :subheading="use_post_date ? date : ''"
-        :paragraph="excerpt"
-        type="light"
-        :image="image"
+        :heading="hero?.heading || title"
+        :subheading="hero?.subheading || (use_post_date ? date : '')"
+        :paragraph="hero?.paragraph ?? excerpt"
+        :type="hero?.type || 'light'"
+        :image="hero?.image || image"
         :hero="true"
       />
+
+      <SectionNav
+        v-if="sectionMenu?.items?.length"
+        :heading="sectionMenu.heading"
+        :items="sectionMenu.items"
+      />
+
       <div
         class="post__inner mb-20 
         [&>.wysiwyg>div]:mt-16 
@@ -40,6 +47,8 @@
         md:[&>.wysiwyg>div>section[data-block-name='acf/image-text']]:col-start-3 
         md:[&>.wysiwyg>div>section[data-block-name='acf/image']]:col-span-8 
         md:[&>.wysiwyg>div>section[data-block-name='acf/image']]:col-start-3
+        md:[&>.wysiwyg>div>section[data-block-name='core/group']]:col-span-8 
+        md:[&>.wysiwyg>div>section[data-block-name='core/group']]:col-start-3
         
         [&_h2]:leading-110
         [&_h2]:-tracking-3
@@ -72,25 +81,103 @@
   </AppLayout>
 </template>
 <script setup>
-  import { computed, defineAsyncComponent } from "vue";
-  import AppLayout from '../Layouts/App.vue';
-  import { usePage } from "@inertiajs/vue3";
-  import ComponentRouter from "../../components/ComponentRouter/ComponentRouter.vue";
-  const FullBleedHero = defineAsyncComponent(() => import("../../components/FullBleedHero/FullBleedHero.vue"));
+import {
+  computed,
+  defineAsyncComponent,
+} from "vue";
 
-  const props = defineProps({
-    title: String,
-    acf: Object,
-    date: String,
-    image: Object,
-    excerpt: String,
-    use_post_date: Boolean,
-    blocks: {
-      type: Array,
-      default: null,
-    },
-  });
-  const page = usePage();
+import { usePage } from "@inertiajs/vue3";
 
-  const resolvedBlocks = computed(() => props.blocks || page.props?.blocks || []);
+import AppLayout from "../Layouts/App.vue";
+import ComponentRouter from "../../components/ComponentRouter/ComponentRouter.vue";
+import SectionNav from "../../components/SectionNav/SectionNav.vue";
+
+const FullBleedHero = defineAsyncComponent(() =>
+  import(
+    "../../components/FullBleedHero/FullBleedHero.vue"
+  )
+);
+
+
+const props = defineProps({
+  title: {
+    type: String,
+    default: "",
+  },
+
+  acf: {
+    type: Object,
+    default: () => ({}),
+  },
+
+  date: {
+    type: String,
+    default: "",
+  },
+
+  image: {
+    type: Object,
+    default: null,
+  },
+
+  excerpt: {
+    type: String,
+    default: "",
+  },
+
+  use_post_date: {
+    type: Boolean,
+    default: false,
+  },
+
+  blocks: {
+    type: Array,
+    default: () => [],
+  },
+
+  /**
+   * Normalized hero data from single.php.
+   *
+   * Events use event_date as hero.subheading.
+   */
+  hero: {
+    type: Object,
+    default: null,
+  },
+
+  /**
+   * Events Menu or Colby Impact Menu,
+   * resolved by WordPress in single.php.
+   */
+  sectionMenu: {
+    type: Object,
+    default: () => ({
+      heading: "",
+      items: [],
+    }),
+  },
+
+  isEvent: {
+    type: Boolean,
+    default: false,
+  },
+
+  eventDate: {
+    type: String,
+    default: "",
+  },
+
+  showSubmitStory: {
+    type: Boolean,
+    default: true,
+  },
+});
+
+const page = usePage();
+
+console.log(props);
+
+const resolvedBlocks = computed(() => {
+  return props.blocks || page.props?.blocks || [];
+});
 </script>
