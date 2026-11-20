@@ -30,6 +30,7 @@ import BlockQuote from "../BlockQuote/BlockQuote.vue";
 import MediaContextCard from "../MediaContextCard/MediaContextCard.vue";
 import Paragraph from "../Paragraph/Paragraph.vue";
 import ContextSection from "../ContextSection/ContextSection.vue";
+import Embed from "../Embed/Embed.vue";
 
 const props = defineProps({
   columns: {
@@ -61,6 +62,7 @@ const componentMap = {
   block_quote: BlockQuote,
   paragraph: Paragraph,
   context_section: ContextSection,
+  embed: Embed,
 };
 
 const resolveComponent = (layout) => componentMap[layout] || MediaItem;

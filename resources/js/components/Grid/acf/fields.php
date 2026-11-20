@@ -263,6 +263,27 @@ acf_add_local_field_group( array(
             )
           ),
         ),
+        'layout_grid_embed' => array(
+          'key' => 'layout_grid_embed',
+          'name' => 'embed',
+          'label' => 'Embed',
+          'display' => 'block',
+          'sub_fields' => array_merge(
+            colby_grid_span_subfields( 'embed' ),
+            array(
+              array(
+                'key' => 'field_grid_clone_embed',
+                'label' => 'Embed',
+                'name' => 'embed_clone',
+                'type' => 'clone',
+                'clone' => array( 0 => 'group_63caf7a3df4c7' ),
+                'display' => 'seamless',
+                'prefix_label' => 0,
+                'prefix_name' => 0,
+              ),
+            )
+          ),
+        ),
       ),
     ),
   ),
