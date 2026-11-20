@@ -1,10 +1,10 @@
 <template>
   <div
-    class="home-hero full-bleed relative h-[calc(100vh_-_145px)] overflow-hidden md:h-[calc(100vh_-_100px)]"
+    class="home-hero full-bleed relative isolate flex min-h-[calc(100svh_-_145px)] flex-col justify-end overflow-hidden md:min-h-[calc(100svh_-_100px)]"
   >
     <!-- Bottom overlay -->
     <div
-      class="home-hero__bottom absolute bottom-0 left-0 w-full pt-24 pb-[50px]"
+      class="home-hero__bottom relative z-10 w-full pt-16 pb-8 md:pt-24 md:pb-[50px]"
       :style="{
         background:
           'linear-gradient(180deg, rgba(1, 33, 105, 0) 0%, rgba(14, 20, 34, 0.4) 25%)',
@@ -13,9 +13,11 @@
       <div
         class="home-hero__inner mx-auto my-0 grid w-full max-w-screen-2xl gap-x-10 px-5 md:grid-cols-12"
       >
-        <div class="home-hero__main md:col-span-7 md:col-start-6">
+        <div
+          class="home-hero__main min-w-0 break-words md:col-span-7 md:col-start-6"
+        >
           <Context
-            size="xlarge"
+            :size="isMobile ? 'large' : 'xlarge'"
             type="light"
             :arrow="true"
             :reverse="true"
@@ -29,7 +31,7 @@
 
       <div
         v-if="caption"
-        class="home-hero__inner mx-auto my-0 mt-24 w-full max-w-screen-2xl px-5"
+        class="home-hero__caption home-hero__inner mx-auto my-0 mt-8 w-full max-w-screen-2xl px-5 md:mt-24"
       >
         <div
           class="font-extended text-right text-12 font-bold tracking-8 text-gold uppercase md:text-left"
@@ -223,13 +225,23 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* styling for aligning context component text in home hero for mobile to prevent cut-off in mobile landscape view*/
+/* Fluid heading fallback on narrow viewports */
+@media (max-width: 767px) {
+  .home-hero__main :deep(h1),
+  .home-hero__main :deep(h2) {
+    font-size: clamp(1.75rem, 7vw, 2.75rem);
+    line-height: 1.15;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Prevent cut-off in mobile landscape view */
 @media (max-height: 500px) and (orientation: landscape) {
   .home-hero__bottom {
     padding-top: 1.5rem !important;
     padding-bottom: 1.5rem !important;
   }
-  .home-hero__inner.mt-24 {
+  .home-hero__caption {
     margin-top: 1.5rem !important;
   }
 }
